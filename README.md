@@ -4,7 +4,7 @@ A structured, year-long deep dive from **foundational probability** to **Stochas
 
 ## 📍 The Curriculum
 
-The full, 52-week study plan is documented in **[CURRICULUM.md](https://www.google.com/search?q=./CURRICULUM.md)**.
+The full, 52-week study plan is documented in **[CURRICULUM.md](./CURRICULUM.md)**.
 
 It is divided into five phases:
 
