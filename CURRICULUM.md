@@ -22,8 +22,8 @@ Use these short tags throughout the plan.
   https://projects.iq.harvard.edu/stat110/book
 - **[BoP]** Book of Proof (Hammack, free PDF):  
   https://richardhammack.github.io/BookOfProof/Main.pdf
-- **[MIT-6042]** Mathematics for Computer Science (MIT 6.042J OCW notes + assignments):  
-  https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-sc-science-fall-2005/  
+- **[MIT-6042]** Mathematics for Computer Science (MIT 6.042J OCW notes + assignments):
+  https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2005/  
   Video playlist: https://www.youtube.com/playlist?list=PLB7540DEDD482705B
 
 ### Linear algebra + optimization (Phase 2 backbone)
@@ -88,13 +88,14 @@ You already finished up to:
 
 **Stat110**
 
-- S1: Lectures 5–6
-- S2: Discrete RV problems (Bernoulli, Binomial, Geometric)
+- Lectures 1–6 (probability fundamentals, conditioning, Monty Hall, Simpson's Paradox)
+- Lecture 7 (Gambler's Ruin and Random Variables) + exercises
 
 So you are ready to continue with:
 
-- Continuous RVs, expectation/variance, joint distributions, conditioning, CLT
-- Start minimal diffusion artifacts immediately (tiny toy setups)
+- Finish Lecture 8 (Random Variables and Their Distributions)
+- Complete Week 1 artifact (forward noising notebook)
+- Start minimal diffusion contact immediately
 
 ---
 
@@ -157,140 +158,173 @@ Choose ONE:
 
 # Phase 1 — Probability core + minimal diffusion toys (Weeks 1–8)
 
-**Phase goal:** become fluent in (1) continuous RV mechanics, (2) conditioning, (3) Gaussian identities,
-while building “diffusion-adjacent” intuition every week.
+**Phase goal:** become fluent in (1) RV mechanics, (2) expectation/variance, (3) Gaussian identities, (4) conditioning,
+while building "diffusion-adjacent" intuition every week.
 
-> For Stat110 problems: use **[Stat110-Practice]** and pick the set matching your lecture/topic (search the page for the lecture number or keywords like “continuous”, “expectation”, “joint”, “CLT”, etc.).
+> For Stat110 problems: use **[Stat110-Practice]** and pick the set matching your lecture/topic.
 
-### Week 1 — Continuous RVs + first diffusion toy
+**Lectures covered:** 7–10, 12–14, 19, 21–22, 26–30 (15 lectures total, ~2/week)
 
-- S1 (Theory): **Stat110 Lectures 7–8** via **[Stat110-YT]** (continuous RVs: pdf/cdf, common continuous dists)
-- S2 (Problems): from **[Stat110-Practice]** choose 6–10 on:
-  - pdf/cdf basics
-  - computing probabilities by integration
-  - change of variables (simple transforms)
-- S3 (Artifact): `notebooks/w01_forward_noising_blobs.ipynb`
-  - Generate 2D data (mixture of Gaussians “blobs”)
+**Lectures skipped (not essential for diffusion):** 11 (Poisson), 15 (Midterm Review), 16 (Exponential), 17–18 (MGFs), 20 (Multinomial/Cauchy), 23–24 (Beta/Gamma), 25 (Order Statistics)
+
+### Week 1 — Random Variables + First Diffusion Toy
+
+- S1 (~2h): **Stat110 Lectures 7–8** via **[Stat110-YT]**
+  - Lecture 7: Gambler's Ruin and Random Variables
+  - Lecture 8: Random Variables and Their Distributions (PMF, CDF)
+- S2 (~2h): **[Stat110-Practice]** 6–8 problems on:
+  - PMF/CDF basics
+  - Computing probabilities for discrete RVs
+  - Binomial, Geometric distributions
+- S3 (~2h): `notebooks/w01_forward_noising_blobs.ipynb`
+  - Generate 2D data (mixture of Gaussians "blobs")
   - Implement forward noising: `x_t = x_0 + sigma(t) * eps`
   - Plot histograms / scatter across t
   - Save 1 figure to `notes/figures/w01_*.png`
 
-Diffusion contact (must do):
+Diffusion contact (45–60 min):
 
-- 45–60 min: implement `sigma(t)` schedules (linear + geometric) and compare how fast the distribution “washes out”.
+- Implement `sigma(t)` schedules (linear + geometric) and compare how fast the distribution "washes out".
 
-### Week 2 — Expectation / variance (make it automatic)
+### Week 2 — Expectation Mastery
 
-- S1: **Stat110 Lectures 9–10** (**[Stat110-YT]**) (expectation, LOTUS, indicators, variance tricks)
-- S2: **[Stat110-Practice]** 6–10 problems on:
-  - LOTUS + “compute E[g(X)]”
-  - indicators + linearity
-  - variance shortcuts (e.g., Var(aX+b), decomposition)
-- S3: `notes/w02_expectation_toolkit.md`
-  - A one-page “Expectation toolkit”:
-    - linearity
-    - indicators
-    - symmetry
-    - conditioning trick pattern (“condition on the first thing that happens”)
+- S1 (~2h): **Stat110 Lectures 9–10** (**[Stat110-YT]**)
+  - Lecture 9: Expectation, Indicator Random Variables, Linearity
+  - Lecture 10: Expectation Continued (variance intro)
+- S2 (~2h): **[Stat110-Practice]** 6–10 problems on:
+  - LOTUS + "compute E[g(X)]"
+  - Indicator variable tricks
+  - Variance shortcuts: Var(aX+b), decomposition
+- S3 (~2h): `notes/w02_expectation_toolkit.md`
+  - A one-page "Expectation toolkit":
+    - Linearity of expectation
+    - Indicator method pattern
+    - Symmetry argument pattern
+    - Conditioning trick pattern ("condition on first thing that happens")
 
-Diffusion contact:
+Diffusion contact (45–60 min):
 
 - Derive and code-check `E[x_t|x_0]` and `Var(x_t|x_0)` for your forward noising model.
 
-### Week 3 — Joint distributions + independence
+### Week 3 — Continuous Distributions + The Normal
 
-- S1: **Stat110 Lectures 11–12** (**[Stat110-YT]**) (joint, conditional density, independence)
-- S2: **[Stat110-Practice]** 6–10 problems on:
-  - joint → marginal
-  - conditional density
-  - independence checks
-- S3: `notebooks/w03_joint_gaussians_conditionals.ipynb`
-  - sample correlated Gaussians in 2D/3D
-  - visualize conditional slices / regression line intuition
-  - compare analytic conditional mean vs empirical
+- S1 (~2h): **Stat110 Lectures 12–13** (**[Stat110-YT]**)
+  - Lecture 12: Discrete vs. Continuous, the Uniform
+  - Lecture 13: Normal Distribution
+- S2 (~2h): **[Stat110-Practice]** 6–10 problems on:
+  - PDF/CDF relationships
+  - Computing probabilities by integration
+  - Normal distribution properties, standardization
+- S3 (~2h): `notebooks/w03_gaussian_properties.ipynb`
+  - Explore Gaussian properties computationally:
+    - Plot PDF/CDF, verify area = 1
+    - Demonstrate closure under linear transformation
+    - Show sum of independent Gaussians is Gaussian
+    - Visualize the "68-95-99.7 rule"
 
-Diffusion contact:
+Diffusion contact (45–60 min):
 
 - `notes/w03_score_of_gaussian.md`: compute the score of a Gaussian:
-  - `∇_x log N(x; μ, Σ) = -Σ^{-1}(x-μ)`
-  - verify with finite differences on a grid
+  - `∇_x log N(x; μ, σ²) = -(x - μ)/σ²`
+  - Verify with finite differences on a grid
 
-### Week 4 (Checkpoint 1) — Conditioning mastery
+### Week 4 (Checkpoint 1) — LOTUS + Conditioning Mastery
 
-- S1: Stat110 conditioning coverage as needed (**[Stat110-YT]** + **[Stat110-Text]**)
-- S2: 4–6 **hard** conditioning problems from **[Stat110-Practice]**:
+- S1 (~1.5h): **Stat110 Lecture 14** (**[Stat110-YT]**)
+  - Lecture 14: Location, Scale, and LOTUS
+  - Review: conditioning concepts from Lectures 4–6
+- S2 (~2h): 4–6 **hard** conditioning problems from **[Stat110-Practice]**:
   - Bayes + LOTP
-  - “condition on a useful event / first step”
-- S3 (Project): `mini_projects/checkpoint_01_conditioning_in_code/`
-  - Pick 1 concrete problem (e.g., medical test Bayes, urns, gambler’s ruin step)
+  - "Condition on a useful event / first step"
+- S3 (~2h, Project): `mini_projects/checkpoint_01_conditioning_in_code/`
+  - Pick 1 concrete problem (e.g., medical test Bayes, urns, gambler's ruin step)
   - Write:
     - `analysis.md` (clean derivation)
     - `simulate.py` (Monte Carlo)
     - `results.ipynb` (plots + comparison)
 
-Diffusion contact:
+Diffusion contact (45–60 min):
 
 - `notes/w04_conditioning_in_diffusion.md`:
   - 1 page: where conditioning shows up (Gaussian posterior, denoising as conditional expectation)
 
-### Week 5 — LLN/CLT intuition + empirical verification
+### Week 5 — Joint Distributions + Covariance
 
-- S1: **Stat110 Lectures 13–14** (**[Stat110-YT]**) (LLN, CLT, Chebyshev)
-- S2: **[Stat110-Practice]** problems on:
-  - Chebyshev bounds
-  - CLT approximations
-  - sanity checks with simulation
-- S3: `notebooks/w05_clt_simulations.ipynb`
-  - simulate sums/means of RVs
-  - show convergence to Normal (plots + short explanations)
+- S1 (~2h): **Stat110 Lectures 19, 21** (**[Stat110-YT]**)
+  - Lecture 19: Joint, Conditional, and Marginal Distributions
+  - Lecture 21: Covariance and Correlation
+- S2 (~2h): **[Stat110-Practice]** 6–10 problems on:
+  - Joint → marginal integration
+  - Conditional density derivation
+  - Computing covariance and correlation
+- S3 (~2h): `notebooks/w05_joint_gaussians.ipynb`
+  - Sample correlated 2D Gaussians from covariance matrix
+  - Visualize conditional slices
+  - Compute conditional mean analytically, verify empirically
+  - Show: conditional of joint Gaussian is Gaussian
 
-Diffusion contact:
+Diffusion contact (45–60 min):
 
-- Connect denoising to “estimating signal from noise” (Gaussian conditioning story):
-  - write 5–10 bullet points + 1 equation you can re-derive.
+- Extend score computation to 2D Gaussian
+- `∇_x log N(x; μ, Σ) = -Σ⁻¹(x - μ)`
+- Visualize score as vector field
 
-### Week 6 — Entropy / KL / cross-entropy (research literacy)
+### Week 6 — Transformations + KL Divergence
 
-- S1:
-  - Read **[MML-Book]** sections covering KL / entropy (Part I probability chapter)
-  - Optional intuition: skim any diffusion KL discussion in **[MIT-6S184-Notes]**
-- S2:
-  - Derive KL for 1D Gaussians then multivariate Gaussians (write it cleanly)
-  - Implement a numeric KL estimate (histograms) and compare to closed form
-- S3: `notebooks/w06_kl_gaussians.ipynb`
-  - histogram-KL estimate vs analytic KL for Gaussians
-  - show failure modes (binning sensitivity)
+- S1 (~1h): **Stat110 Lecture 22** (**[Stat110-YT]**)
+  - Lecture 22: Transformations and Convolutions
+- S2 (~2h): **[Stat110-Practice]** 6–8 problems on:
+  - Change of variables (1D and 2D)
+  - Jacobian computation
+  - Simple transformations of known distributions
+- S3 (~2h): `notebooks/w06_kl_gaussians.ipynb`
+  - Derive KL divergence for 1D Gaussians analytically
+  - Implement histogram-based KL estimate
+  - Compare analytic vs empirical, show sensitivity to binning
 
-Diffusion contact:
+Diffusion contact (45–60 min):
 
 - `notes/w06_where_kl_appears.md`:
-  - 1 page: KL in variational objectives, why “matching distributions” keeps showing up in diffusion/flow formulations.
+  - 1 page: KL in variational objectives, why "matching distributions" keeps showing up in diffusion/flow formulations.
 
-### Week 7 — MGFs/characteristic functions OR skip (optional)
+### Week 7 — Conditional Expectation + Inequalities
 
-- If you feel shaky: do MGFs basics via **[Stat110-YT/Text]**.
-- Otherwise: **skip** and use the time to strengthen your weakest Phase-1 topic (conditioning/joint/CLT).
-- S3 (Artifact): `notes/w07_mgf_onepager.md` **or** a “weak-topic repair” note.
+- S1 (~2h): **Stat110 Lectures 26–27** (**[Stat110-YT]**)
+  - Lecture 26: Conditional Expectation Continued
+  - Lecture 27: Conditional Expectation Given an R.V.
+- S2 (~2h): **[Stat110-Practice]** 6–8 problems on:
+  - Computing E[Y|X] for various distributions
+  - Tower property: E[E[Y|X]] = E[Y]
+  - Conditional variance
+- S3 (~2h): `notes/w07_conditional_expectation_in_diffusion.md`
+  - Tower property: why we can compute E[x_0] by iterated conditioning
+  - Denoising score matching: the score is related to E[x_0|x_t]
+  - Connection: ∇_x log p(x_t) ∝ (E[x_0|x_t] - x_t)
 
-Diffusion contact:
+Diffusion contact (integrated into S3):
 
-- `notebooks/w07_score_mog.ipynb`:
-  - score of a mixture of Gaussians (analytic) vs finite differences on a grid
-  - visualize vector field arrows
+- The note IS the diffusion contact this week.
 
-### Week 8 (Checkpoint 2) — Probability mini-exam + toy score matching
+### Week 8 (Checkpoint 2) — CLT + Toy Score Matching
 
-- S1: review your weak points (re-watch 1–2 Stat110 lectures if needed)
-- S2: mini-exam:
-  - 6 problems total
-  - timebox ~20–30 min per hard problem
-  - write clean solutions in `proofs/phase1_exam/`
-- S3 (Project): `mini_projects/checkpoint_02_toy_score_matching/`
+- S1 (~2.5h): **Stat110 Lectures 28–30** (**[Stat110-YT]**)
+  - Lecture 28: Inequalities (Markov, Chebyshev, Jensen)
+  - Lecture 29: Law of Large Numbers and Central Limit Theorem
+  - Lecture 30: Chi-Square, Student-t, Multivariate Normal (skim for MV Normal)
+- S2 (~2h): mini-exam:
+  - 6 problems total (mix from all Phase 1 topics)
+  - Timebox ~20–30 min per hard problem
+  - Write clean solutions in `proofs/phase1_exam/`
+- S3 (~2h, Project): `mini_projects/checkpoint_02_toy_score_matching/`
   - Train a tiny MLP on 2D blobs to predict:
-    - either noise `eps` (denoising)
-    - or score `∇ log p_t(x)`
+    - Either noise `eps` (denoising)
+    - Or score `∇ log p_t(x)`
   - Plot learned vector field vs true (for Gaussian or MoG)
   - Write `report.md` (1–2 pages: setup, results, what broke, what you learned)
+
+Diffusion contact (integrated into S3):
+
+- The entire checkpoint IS diffusion contact
 
 ---
 
@@ -597,7 +631,7 @@ Write one post (Markdown in repo, or publish externally):
 
 Use these only as needed:
 
-- **[Tao-Analysis]** Analysis I (draft): https://www.math.ucla.edu/~tao/Analysis1.pdf
+- **[MIT-RealAnalysis]** MIT 18.100B Real Analysis (OCW): https://ocw.mit.edu/courses/18-100b-real-analysis-spring-2025/
 - **[Boyd-Book]** Convex Optimization (book): https://web.stanford.edu/~boyd/cvxbook/
 - Full rigor SDE texts (only if you truly want) — otherwise rely on **[MIT-6S184]**, **[Higham-SDE]**, **[SarkkaSolin]**
 
