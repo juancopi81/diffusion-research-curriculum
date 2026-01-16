@@ -149,4 +149,86 @@ which is the **Hypergeometric** distribution form (same structure as "sampling $
 
 - ✅ Conditioning-on-success-count ⇒ uniform over sequences (Problem 1)
 - ✅ Binomial sum/difference + conditional (Problem 2a–c)
-- TODO (optional): add Week 1 Gambler's Ruin write-up if needed
+
+## Problem 3 — Gambler’s Ruin with unfavorable odds (p ≠ q)
+
+**Statement.**  
+A gambler repeatedly plays a game where in each round he wins \$1 with probability
+$p=\tfrac13$ and loses \$1 with probability $q=\tfrac23$. He starts with \$1,000,000
+and plans to quit if he is ever **ahead by \$2**.  
+Show that the probability that he is ever ahead by \$2 is **less than $1/4$**.
+
+---
+
+### Solution (via Gambler’s Ruin formula)
+
+Model the gambler’s fortune as a biased random walk with
++1 w.p. $p=\tfrac13$ and −1 w.p. $q=\tfrac23$.
+
+Define the target as reaching **\$2 above the starting point**, and ruin as reaching \$0.
+Shift the process so the state space is
+
+$$
+\{0,1,\dots,N\}, \qquad N=1{,}000{,}002,
+$$
+
+where the gambler starts at $i=1{,}000{,}000$.
+
+For gambler’s ruin with $p\neq q$, the probability of hitting $N$ before $0$ is
+
+$$
+\mathbb{P}(\text{hit }N\text{ before }0)
+= \frac{1-(q/p)^i}{1-(q/p)^N}.
+$$
+
+Here, $q/p = 2$, so
+
+$$
+\mathbb{P}(\text{ahead by \$2})
+= \frac{1-2^{\,1{,}000{,}000}}{1-2^{\,1{,}000{,}002}}
+= \frac{2^{1{,}000{,}000}-1}{4\cdot 2^{1{,}000{,}000}-1}.
+$$
+
+Since
+
+$$
+\frac{2^{1{,}000{,}000}-1}{4\cdot 2^{1{,}000{,}000}-1}
+\;<\;
+\frac{2^{1{,}000{,}000}}{4\cdot 2^{1{,}000{,}000}}
+=\frac14,
+$$
+
+the desired probability is strictly less than $1/4$.
+
+---
+
+### Alternative viewpoint (book’s approach — recurrence)
+
+Let $a_i$ be the probability of ever being ahead by \$2 before ruin, starting with fortune $i$.
+
+Conditioning on the first step gives
+
+$$
+a_i=\tfrac13 a_{i+1}+\tfrac23 a_{i-1},
+$$
+
+with boundary conditions
+
+$$
+a_0=0,\qquad a_{i+2}=1.
+$$
+
+Solving this difference equation (or using gambler’s ruin) yields
+
+$$
+a_i=\frac{2^i-1}{2^{i+2}-1},
+$$
+
+which matches the expression obtained above and is always $<\tfrac14$.
+
+---
+
+**Key takeaway:**  
+With unfavorable odds ($p<q$), even starting with an enormous bankroll does **not**
+make short-term profit events likely; the success probability is controlled by the bias,
+not by the initial capital.
