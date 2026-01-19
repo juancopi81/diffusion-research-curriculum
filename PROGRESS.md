@@ -3,22 +3,23 @@
 ## Current Status
 
 - **Phase:** 1 (Probability Core)
-- **Week:** 1
+- **Week:** 2
 - **Started:** 2025-01-14
+- **Week 1 Completed:** 2025-01-19
 
 ---
 
 ## Phase 1 — Probability Core + Minimal Diffusion Toys
 
-### Week 1 — Random Variables + First Diffusion Toy
+### Week 1 — Random Variables + First Diffusion Toy ✅
 
-| Task                                  | Status | Date       | Notes                    |
-| ------------------------------------- | ------ | ---------- | ------------------------ |
-| S1: Lecture 7 (Gambler's Ruin, RVs)   | ✅     | 2025-01-14 |                          |
-| S1: Lecture 8 (RV Distributions)      | ⬜     |            |                          |
-| S2: Problems (PMF/CDF basics)         | 🔄     | 2025-01-15 | Gambler's Ruin exercises |
-| S3: `w01_forward_noising_blobs.ipynb` | ⬜     |            |                          |
-| Diffusion: sigma(t) schedules         | ⬜     |            |                          |
+| Task                                  | Status | Date       | Notes                                    |
+| ------------------------------------- | ------ | ---------- | ---------------------------------------- |
+| S1: Lecture 7 (Gambler's Ruin, RVs)   | ✅     | 2025-01-14 |                                          |
+| S1: Lecture 8 (RV Distributions)      | ✅     | 2025-01-19 | Bernoulli, Binomial, Hypergeometric      |
+| S2: Problems (PMF/CDF basics)         | ✅     | 2025-01-19 | 3 problems: conditioning, Bin sums, ruin |
+| S3: `w01_forward_noising_blobs.ipynb` | ✅     | 2025-01-19 | Linear vs geometric schedules            |
+| Diffusion: sigma(t) schedules         | ✅     | 2025-01-19 | Comparison figure generated              |
 
 ### Week 2 — Expectation Mastery
 
