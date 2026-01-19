@@ -19,8 +19,11 @@ It is divided into five phases:
 ## 🚀 Current Progress
 
 - **Phase:** 1 (Probability Core)
-- **Target:** Week 8 — Stat110 Lectures 7 & 8 (Gambler's Ruin, RVs & Distributions)
-- **Next Milestone:** [Checkpoint 02] Toy Score Matching on 2D Blobs.
+- **Week:** 2 — Expectation Mastery
+- **Completed:** Week 1 (RVs, Distributions, Forward Noising)
+- **Next Milestone:** Checkpoint 1 (Week 4) — Conditioning in Code
+
+See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 
 ---
 
