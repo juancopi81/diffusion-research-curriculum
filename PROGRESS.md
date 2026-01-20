@@ -26,7 +26,7 @@
 | Task                                       | Status | Date       | Notes                          |
 | ------------------------------------------ | ------ | ---------- | ------------------------------ |
 | S1: Lecture 9 (Expectation, Indicators)    | ✅     | 2025-01-19 | CDF, linearity, indicators     |
-| S1: Lecture 10 (Expectation Continued)     | ⬜     |            |                                |
+| S1: Lecture 10 (Expectation Continued)     | ✅     | 2025-01-20 | Linearity proof, NegBin, St. Petersburg |
 | S2: Problems (LOTUS, variance)             | ⬜     |            |                                |
 | S3: `w02_expectation_toolkit.md`           | ⬜     |            |                                |
 | Diffusion: E[x_t\|x_0], Var(x_t\|x_0)      | ⬜     |            |                                |
