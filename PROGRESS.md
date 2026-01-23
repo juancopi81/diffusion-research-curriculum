@@ -3,9 +3,10 @@
 ## Current Status
 
 - **Phase:** 1 (Probability Core)
-- **Week:** 2
+- **Week:** 3
 - **Started:** 2025-01-14
 - **Week 1 Completed:** 2025-01-19
+- **Week 2 Completed:** 2025-01-23
 
 ---
 
@@ -21,15 +22,15 @@
 | S3: `w01_forward_noising_blobs.ipynb` | ✅     | 2025-01-19 | Linear vs geometric schedules            |
 | Diffusion: sigma(t) schedules         | ✅     | 2025-01-19 | Comparison figure generated              |
 
-### Week 2 — Expectation Mastery
+### Week 2 — Expectation Mastery ✅
 
 | Task                                       | Status | Date       | Notes                          |
 | ------------------------------------------ | ------ | ---------- | ------------------------------ |
 | S1: Lecture 9 (Expectation, Indicators)    | ✅     | 2025-01-19 | CDF, linearity, indicators     |
 | S1: Lecture 10 (Expectation Continued)     | ✅     | 2025-01-20 | Linearity proof, NegBin, St. Petersburg |
-| S2: Problems (LOTUS, variance)             | ⬜     |            |                                |
-| S3: `w02_expectation_toolkit.md`           | ⬜     |            |                                |
-| Diffusion: E[x_t\|x_0], Var(x_t\|x_0)      | ⬜     |            |                                |
+| S2: Problems (LOTUS, variance)             | ✅     | 2025-01-23 | 5 problems in `proofs/w02_stat110_expectation.md` |
+| S3: `w02_expectation_toolkit.md`           | ✅     | 2025-01-23 | Patterns + distributions reference |
+| Diffusion: E[x_t\|x_0], Var(x_t\|x_0)      | ✅     | 2025-01-23 | Derived + verified in `w02_forward_moments.ipynb` |
 
 ### Week 3 — Continuous Distributions + The Normal
 
