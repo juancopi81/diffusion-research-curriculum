@@ -24,23 +24,23 @@
 
 ### Week 2 — Expectation Mastery ✅
 
-| Task                                       | Status | Date       | Notes                          |
-| ------------------------------------------ | ------ | ---------- | ------------------------------ |
-| S1: Lecture 9 (Expectation, Indicators)    | ✅     | 2025-01-19 | CDF, linearity, indicators     |
-| S1: Lecture 10 (Expectation Continued)     | ✅     | 2025-01-20 | Linearity proof, NegBin, St. Petersburg |
-| S2: Problems (LOTUS, variance)             | ✅     | 2025-01-23 | 5 problems in `proofs/w02_stat110_expectation.md` |
-| S3: `w02_expectation_toolkit.md`           | ✅     | 2025-01-23 | Patterns + distributions reference |
-| Diffusion: E[x_t\|x_0], Var(x_t\|x_0)      | ✅     | 2025-01-23 | Derived + verified in `w02_forward_moments.ipynb` |
+| Task                                    | Status | Date       | Notes                                             |
+| --------------------------------------- | ------ | ---------- | ------------------------------------------------- |
+| S1: Lecture 9 (Expectation, Indicators) | ✅     | 2025-01-19 | CDF, linearity, indicators                        |
+| S1: Lecture 10 (Expectation Continued)  | ✅     | 2025-01-20 | Linearity proof, NegBin, St. Petersburg           |
+| S2: Problems (LOTUS, variance)          | ✅     | 2025-01-23 | 5 problems in `proofs/w02_stat110_expectation.md` |
+| S3: `w02_expectation_toolkit.md`        | ✅     | 2025-01-23 | Patterns + distributions reference                |
+| Diffusion: E[x_t\|x_0], Var(x_t\|x_0)   | ✅     | 2025-01-23 | Derived + verified in `w02_forward_moments.ipynb` |
 
 ### Week 3 — Continuous Distributions + The Normal
 
-| Task                                  | Status | Date | Notes |
-| ------------------------------------- | ------ | ---- | ----- |
-| S1: Lecture 12 (Continuous, Uniform)  | ⬜     |      |       |
-| S1: Lecture 13 (Normal Distribution)  | ⬜     |      |       |
-| S2: Problems (PDF/CDF, Normal)        | ⬜     |      |       |
-| S3: `w03_gaussian_properties.ipynb`   | ⬜     |      |       |
-| Diffusion: `w03_score_of_gaussian.md` | ⬜     |      |       |
+| Task                                  | Status | Date       | Notes                                 |
+| ------------------------------------- | ------ | ---------- | ------------------------------------- |
+| S1: Lecture 12 (Continuous, Uniform)  | ✅     | 2025-01-26 | PDF, CDF, Uniform, LOTUS, inverse CDF |
+| S1: Lecture 13 (Normal Distribution)  | ⬜     |            |                                       |
+| S2: Problems (PDF/CDF, Normal)        | ⬜     |            |                                       |
+| S3: `w03_gaussian_properties.ipynb`   | ⬜     |            |                                       |
+| Diffusion: `w03_score_of_gaussian.md` | ⬜     |            |                                       |
 
 ### Week 4 (Checkpoint 1) — LOTUS + Conditioning Mastery
 
