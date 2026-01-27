@@ -37,7 +37,7 @@
 | Task                                  | Status | Date       | Notes                                 |
 | ------------------------------------- | ------ | ---------- | ------------------------------------- |
 | S1: Lecture 12 (Continuous, Uniform)  | ✅     | 2025-01-26 | PDF, CDF, Uniform, LOTUS, inverse CDF |
-| S1: Lecture 13 (Normal Distribution)  | ⬜     |            |                                       |
+| S1: Lecture 13 (Normal Distribution)  | ✅     | 2025-01-27 | Inverse CDF, Normal PDF, mean/variance |
 | S2: Problems (PDF/CDF, Normal)        | ⬜     |            |                                       |
 | S3: `w03_gaussian_properties.ipynb`   | ⬜     |            |                                       |
 | Diffusion: `w03_score_of_gaussian.md` | ⬜     |            |                                       |
