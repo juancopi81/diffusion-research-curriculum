@@ -34,13 +34,13 @@
 
 ### Week 3 — Continuous Distributions + The Normal
 
-| Task                                  | Status | Date       | Notes                                 |
-| ------------------------------------- | ------ | ---------- | ------------------------------------- |
-| S1: Lecture 12 (Continuous, Uniform)  | ✅     | 2025-01-26 | PDF, CDF, Uniform, LOTUS, inverse CDF |
-| S1: Lecture 13 (Normal Distribution)  | ✅     | 2025-01-27 | Inverse CDF, Normal PDF, mean/variance |
-| S2: Problems (PDF/CDF, Normal)        | ⬜     |            |                                       |
-| S3: `w03_gaussian_properties.ipynb`   | ⬜     |            |                                       |
-| Diffusion: `w03_score_of_gaussian.md` | ⬜     |            |                                       |
+| Task                                  | Status | Date       | Notes                                                   |
+| ------------------------------------- | ------ | ---------- | ------------------------------------------------------- |
+| S1: Lecture 12 (Continuous, Uniform)  | ✅     | 2025-01-26 | PDF, CDF, Uniform, LOTUS, inverse CDF                   |
+| S1: Lecture 13 (Normal Distribution)  | ✅     | 2025-01-27 | Inverse CDF, Normal PDF, mean/variance                  |
+| S2: Problems (PDF/CDF, Normal)        | ✅     | 2025-01-27 | 4 problems sovled in `w03_stat110_continuous_normal.md` |
+| S3: `w03_gaussian_properties.ipynb`   | ⬜     |            |                                                         |
+| Diffusion: `w03_score_of_gaussian.md` | ⬜     |            |                                                         |
 
 ### Week 4 (Checkpoint 1) — LOTUS + Conditioning Mastery
 
