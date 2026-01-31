@@ -19,8 +19,8 @@ It is divided into five phases:
 ## 🚀 Current Progress
 
 - **Phase:** 1 (Probability Core)
-- **Week:** 2 — Expectation Mastery
-- **Completed:** Week 1 (RVs, Distributions, Forward Noising)
+- **Week:** 3 — Continuous Distributions + The Normal ✅
+- **Completed:** Weeks 1-3 (RVs, Expectation, Gaussian Properties, Score Function)
 - **Next Milestone:** Checkpoint 1 (Week 4) — Conditioning in Code
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.

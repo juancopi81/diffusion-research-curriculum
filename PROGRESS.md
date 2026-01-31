@@ -3,10 +3,11 @@
 ## Current Status
 
 - **Phase:** 1 (Probability Core)
-- **Week:** 3
+- **Week:** 3 ✅
 - **Started:** 2025-01-14
 - **Week 1 Completed:** 2025-01-19
 - **Week 2 Completed:** 2025-01-23
+- **Week 3 Completed:** 2025-01-31
 
 ---
 
@@ -32,15 +33,15 @@
 | S3: `w02_expectation_toolkit.md`        | ✅     | 2025-01-23 | Patterns + distributions reference                |
 | Diffusion: E[x_t\|x_0], Var(x_t\|x_0)   | ✅     | 2025-01-23 | Derived + verified in `w02_forward_moments.ipynb` |
 
-### Week 3 — Continuous Distributions + The Normal
+### Week 3 — Continuous Distributions + The Normal ✅
 
 | Task                                  | Status | Date       | Notes                                                   |
 | ------------------------------------- | ------ | ---------- | ------------------------------------------------------- |
 | S1: Lecture 12 (Continuous, Uniform)  | ✅     | 2025-01-26 | PDF, CDF, Uniform, LOTUS, inverse CDF                   |
 | S1: Lecture 13 (Normal Distribution)  | ✅     | 2025-01-27 | Inverse CDF, Normal PDF, mean/variance                  |
-| S2: Problems (PDF/CDF, Normal)        | ✅     | 2025-01-27 | 4 problems sovled in `w03_stat110_continuous_normal.md` |
-| S3: `w03_gaussian_properties.ipynb`   | ⬜     |            |                                                         |
-| Diffusion: `w03_score_of_gaussian.md` | ⬜     |            |                                                         |
+| S2: Problems (PDF/CDF, Normal)        | ✅     | 2025-01-27 | 4 problems solved in `w03_stat110_continuous_normal.md` |
+| S3: `w03_gaussian_properties.ipynb`   | ✅     | 2025-01-31 | 5 checkpoints: PDF, CDF, linear transform, sums, 68-95-99.7 |
+| Diffusion: `w03_score_of_gaussian.md` | ✅     | 2025-01-31 | Score derivation + verification notebook                |
 
 ### Week 4 (Checkpoint 1) — LOTUS + Conditioning Mastery
 
