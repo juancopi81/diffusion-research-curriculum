@@ -33,15 +33,50 @@ Let $Z \sim \mathcal{N}(0,1)$. Find $E|Z|$.
 
 ### My attempt (to complete)
 
-_Pending._
+Using LOTUS with the standard normal PDF $\phi(z)=\frac{1}{\sqrt{2\pi}}e^{-z^2/2}$:
+
+$$
+E|Z|=\int_{-\infty}^{\infty}|z|\phi(z)\,dz
+=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}|z|e^{-z^2/2}\,dz.
+$$
+
+Since $|z|e^{-z^2/2}$ is even:
+
+$$
+E|Z|
+=\frac{2}{\sqrt{2\pi}}\int_{0}^{\infty}ze^{-z^2/2}\,dz.
+$$
+
+Let $u=z^2/2$, so $du=z\,dz$:
+
+$$
+\int_{0}^{\infty}ze^{-z^2/2}\,dz
+=\int_{0}^{\infty}e^{-u}\,du
+=1.
+$$
+
+Therefore,
+
+$$
+E|Z|=\frac{2}{\sqrt{2\pi}}=\sqrt{\frac{2}{\pi}}.
+$$
 
 ### What I initially missed / corrected
 
-_Pending._
+I initially mixed up $E|Z|$ with $E(Z)$.  
+The symmetry argument that gives zero applies to $E(Z)$ (signed values cancel), not to $E|Z|$.
+
+Key correction: interpret $E|Z|$ as the average distance from 0. Distances do not cancel, and the even-function rewrite to $2\int_0^\infty$ is the right way to use symmetry here.
 
 ### Book's solution (for comparison)
 
-_Pending._
+Matches my final result exactly:
+
+$$
+E|Z|=\sqrt{\frac{2}{\pi}}.
+$$
+
+The book uses the same ideas: LOTUS, even symmetry, and a substitution to turn the integral into an exponential integral.
 
 ---
 
