@@ -25,11 +25,7 @@ in a given 3 second time interval.
   \lambda = \underbrace{5}_{\text{area (in}^2\text{)}} \cdot \underbrace{\frac{1}{3}}_{\text{rate (drops/in}^2\text{/sec)}} \cdot \underbrace{3}_{\text{time (sec)}} = 5.
   $$
 
-- Then:
-
-  ```math
-  P(X=0)=e^{-\lambda}=e^{-5}.
-  ```
+- Then: $P(X=0)=e^{-\lambda}=e^{-5}$.
 
 ### What I initially missed / corrected
 
