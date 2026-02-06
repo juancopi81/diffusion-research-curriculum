@@ -20,6 +20,14 @@
 - Filenames: start with week number (`wNN_`), use lowercase with underscores; suffix solved variants with `_solved`.
 - Data/figures: store small assets under the closest module (`notes/figures/`, `mini_projects/<name>/figures/`). Avoid committing files >10 MB.
 
+## Markdown LaTeX Style (GitHub-safe)
+- Use inline math as `$...$` for equations inside sentences and list items.
+- Do not use inline `$$...$$` (GitHub frequently mis-renders this).
+- Use display math as standalone blocks only:
+  `$$` on its own line, equation lines, then closing `$$` on its own line.
+- In list items, prefer inline math; if an equation is long/complex, move it outside the list as a standalone display block.
+- Avoid complex inline constructs in bullets (for example `\underbrace`, `\begin{cases}`, `\begin{aligned}`); use standalone display math for those.
+
 ## Testing Guidelines
 - No formal test suite yet; prefer `pytest` under `tests/` for any reusable code.
 - For notebooks, include lightweight `assert` checks and seeded RNGs (`numpy.random.default_rng(seed)`) to keep outputs reproducible.

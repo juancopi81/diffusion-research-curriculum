@@ -27,6 +27,14 @@ uv run python <script.py>
 - `mini_projects/` - Monthly checkpoint projects with reports
 - `papers/` - Paper summaries and key derivations
 
+## Markdown LaTeX Style (GitHub-safe)
+
+- Use inline math as `$...$` for equations in prose and list items.
+- Do not use inline `$$...$$`.
+- Use display math only as standalone blocks with opening/closing `$$` on their own lines.
+- Inside list items, keep equations inline when possible; for long/complex equations, place a standalone display block outside the list.
+- Keep `\begin{cases}` and `\begin{aligned}` in standalone display math blocks (not inline).
+
 ## Curriculum Phases
 
 1. **Phase 1 (Weeks 1-8)**: Probability core (Stat110) + minimal diffusion toys
