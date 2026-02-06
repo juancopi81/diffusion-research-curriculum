@@ -3,7 +3,7 @@
 ## Current Status
 
 - **Phase:** 1 (Probability Core)
-- **Week:** 3 ✅
+- **Week:** 4 🔄
 - **Started:** 2025-01-14
 - **Week 1 Completed:** 2025-01-19
 - **Week 2 Completed:** 2025-01-23
@@ -47,7 +47,8 @@
 
 | Task                                          | Status | Date | Notes |
 | --------------------------------------------- | ------ | ---- | ----- |
-| S1: Lecture 14 (LOTUS)                        | ⬜     |      |       |
+| S1: Lecture 14 (LOTUS)                        | ✅     | 2026-02-02 | Notes in `notes/w04_stat101_normal_loc_scale.md` |
+| S1: Review Lectures 4–6 (conditioning)        | ✅     | 2026-02-02 | Completed review (no separate artifact) |
 | S2: Hard conditioning problems                | ⬜     |      |       |
 | S3: `checkpoint_01_conditioning_in_code/`     | ⬜     |      |       |
 | Diffusion: `w04_conditioning_in_diffusion.md` | ⬜     |      |       |
