@@ -34,3 +34,9 @@
 - Do not store secrets or private datasets in the repo or notebooks; load credentials via environment variables when needed.
 - Prefer small, derived datasets checked into version control; keep raw or bulky data in external storage and document access steps.
 - Add ignore rules for new tools that generate caches; keep the repo lightweight.
+
+## Skills
+A skill is a set of local instructions to follow that is stored in a `SKILL.md` file.
+
+### Available repo skills
+- `weekly-diffusion-notebook`: Create or refactor weekly unsolved/solved notebook pairs in `notebooks/` using this repo's `wNN_topic` conventions, reproducibility defaults, and experiment/tutorial templates; scaffold `wNN_topic.ipynb` first and create `wNN_topic_solved.ipynb` as an exact copy for solution work. (file: `.agents/skills/weekly-diffusion-notebook/SKILL.md`)

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Weekly Diffusion Notebook"
+  short_description: "Build weekly paired notebooks reproducibly."
+  default_prompt: "Use $weekly-diffusion-notebook to scaffold this week's unsolved and solved notebook pair in notebooks/."
