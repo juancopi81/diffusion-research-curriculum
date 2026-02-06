@@ -27,9 +27,9 @@ in a given 3 second time interval.
 
 - Then:
 
-  $$
+  ```math
   P(X=0)=e^{-\lambda}=e^{-5}.
-  $$
+  ```
 
 ### What I initially missed / corrected
 
