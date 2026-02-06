@@ -233,9 +233,11 @@ Diffusion contact (45–60 min):
 - S1 (~1.5h): **Stat110 Lecture 14** (**[Stat110-YT]**)
   - Lecture 14: Location, Scale, and LOTUS
   - Review: conditioning concepts from Lectures 4–6
-- S2 (~2h): 4–6 **hard** conditioning problems from **[Stat110-Practice]**:
-  - Bayes + LOTP
-  - "Condition on a useful event / first step"
+- S2 (~2h): 4–6 mixed problems from **[Stat110-Practice]**:
+  - 2–3 on Lecture 14 topics (Location/Scale, standardization, LOTUS)
+  - 2–3 **hard** conditioning review problems:
+    - Bayes + LOTP
+    - "Condition on a useful event / first step"
 - S3 (~2h, Project): `mini_projects/checkpoint_01_conditioning_in_code/`
   - Pick 1 concrete problem (e.g., medical test Bayes, urns, gambler's ruin step)
   - Write:
