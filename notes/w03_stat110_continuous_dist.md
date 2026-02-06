@@ -27,12 +27,11 @@ $f(x)$ is **not** a probability; it is what you integrate to get probabilities.
 
 Sanity checks / validity conditions:
 
-- If $a=b$, then
-  $$\mathbb{P}(a\le X\le a)=\int_a^a f(x)\,dx = 0.$$
+- If $a=b$, then $\mathbb{P}(a\le X\le a)=\int_a^a f(x)\,dx = 0.$
   (An integral over a zero-width interval is zero; hence $\mathbb{P}(X=x)=0$ for any single point.)
-- $$f(x)\ge 0.$$
+- $f(x)\ge 0.$
   (Probabilities cannot be negative, so the integrand must be non-negative.)
-- $$\int_{-\infty}^{\infty} f(x)\,dx = 1.$$
+- $\int_{-\infty}^{\infty} f(x)\,dx = 1.$
   (This integral equals $\mathbb{P}(-\infty < X < \infty)$, the probability that $X$ takes some value, which must be 1.)
 
 **Small-interval approximation (density intuition).** For $\varepsilon>0$ very small:

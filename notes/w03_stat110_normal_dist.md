@@ -69,21 +69,16 @@ Take $U \sim \text{Unif}(0,1)$ and set $X = F^{-1}(U)$.
 
 Solve for the inverse step by step:
 
-1. Set the CDF equal to $u$:
-   $$u = 1 - e^{-x}$$
+1. Set the CDF equal to $u$: $u = 1 - e^{-x}$.
 
 2. Isolate the exponential term (subtract 1 from both sides, then multiply by $-1$):
-   $$u - 1 = -e^{-x}$$
-   $$1 - u = e^{-x}$$
+   $u - 1 = -e^{-x}$ and $1 - u = e^{-x}$.
 
-3. Take the natural logarithm of both sides:
-   $$\ln(1-u) = \ln(e^{-x})$$
+3. Take the natural logarithm of both sides: $\ln(1-u) = \ln(e^{-x})$.
 
-4. Simplify the right side using $\ln(e^a) = a$:
-   $$\ln(1-u) = -x$$
+4. Simplify the right side using $\ln(e^a) = a$: $\ln(1-u) = -x$.
 
-5. Multiply both sides by $-1$ to solve for $x$:
-   $$x = -\ln(1-u)$$
+5. Multiply both sides by $-1$ to solve for $x$: $x = -\ln(1-u)$.
 
 Therefore,
 

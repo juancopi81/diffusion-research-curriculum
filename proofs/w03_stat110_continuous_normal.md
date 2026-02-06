@@ -21,9 +21,7 @@ in a given 3 second time interval.
   - $20 \text{ drops}/(\text{in}^2\cdot\text{min}) = \dfrac{20}{60}=\dfrac{1}{3} \text{ drops}/(\text{in}^2\cdot\text{sec})$
 - For a $5\text{ in}^2$ region over $3$ seconds the expected values is given by:
 
-  $$
-  \lambda = \underbrace{5}_{\text{area (in}^2\text{)}} \cdot \underbrace{\frac{1}{3}}_{\text{rate (drops/in}^2\text{/sec)}} \cdot \underbrace{3}_{\text{time (sec)}} = 5.
-  $$
+  - $\lambda = \underbrace{5}_{\text{area (in}^2\text{)}} \cdot \underbrace{\frac{1}{3}}_{\text{rate (drops/in}^2\text{/sec)}} \cdot \underbrace{3}_{\text{time (sec)}} = 5.$
 
 - Then: $P(X=0)=e^{-\lambda}=e^{-5}$.
 
@@ -33,22 +31,16 @@ in a given 3 second time interval.
   It’s about imagining **splitting** space/time into many **tiny** pieces so that each tiny piece has
   a very small chance of a drop, which motivates the Poisson model.
 - Also, it helps to write the mean explicitly for $t$ minutes:
-  $$
-  \lambda(t) = (20\ \text{drops}/(\text{in}^2\cdot\text{min}))\cdot(5\ \text{in}^2)\cdot(t\ \text{min}) = 100t.
-  $$
+  - $\lambda(t) = (20\ \text{drops}/(\text{in}^2\cdot\text{min}))\cdot(5\ \text{in}^2)\cdot(t\ \text{min}) = 100t.$
   Then for $3$ seconds, $t=\frac{1}{20}$ minute, so $\lambda=100\cdot\frac{1}{20}=5$.
 
 ### Book's solution (for comparison)
 
 - Compute the region’s rate per minute:
-  $$
-  20\cdot 5 = 100 \ \text{drops/min}.
-  $$
+  - $20\cdot 5 = 100 \ \text{drops/min}.$
 - Use $X(t)\sim \text{Poisson}(\lambda(t))$ with $\lambda(t)=100t$.
 - For $3$ seconds ($t=1/20$ minute):
-  $$
-  P(\text{no drops in }3\text{ sec}) = P(X=0)=e^{-100/20}=e^{-5}.
-  $$
+  - $P(\text{no drops in }3\text{ sec}) = P(X=0)=e^{-100/20}=e^{-5}.$
   (Note: the Poisson formula gives $e^{-\lambda}$, i.e. the exponent is negative.)
 
 ---
@@ -67,59 +59,35 @@ Show that $SZ \sim N(0,1)$.
 ### My attempt (what I wrote / idea)
 
 - The pdf of $Z\sim N(0,1)$ is
-  $$
-  f_Z(z)=\frac{1}{\sqrt{2\pi}}e^{-z^2/2}.
-  $$
+  - $f_Z(z)=\frac{1}{\sqrt{2\pi}}e^{-z^2/2}.$
 - Since the exponent depends on $z^2$, the pdf is symmetric:
-  $$
-  f_Z(z)=f_Z(-z).
-  $$
+  - $f_Z(z)=f_Z(-z).$
 - Since $S$ is $+1$ half the time and $-1$ half the time, $SZ$ is $Z$ half the time and $-Z$ half the time, so (mixing the two cases):
-  $$
-  f_{SZ}(z)=\frac12 f_Z(z)+\frac12 f_Z(-z)
-  =\frac12 f_Z(z)+\frac12 f_Z(z)
-  =f_Z(z).
-  $$
+  - $f_{SZ}(z)=\frac12 f_Z(z)+\frac12 f_Z(-z) =\frac12 f_Z(z)+\frac12 f_Z(z) =f_Z(z).$
 - Therefore $SZ$ has the same pdf as $Z$, so $SZ \sim N(0,1)$.
 
 ### What I initially missed / corrected
 
 - The “half the time $Z$, half the time $-Z$” step is made rigorous by **conditioning on $S$** (law of total probability):
-  $$
-  f_{SZ}(z)=P(S=1)\,f_{SZ\mid S=1}(z)+P(S=-1)\,f_{SZ\mid S=-1}(z)
-  =\frac12 f_Z(z)+\frac12 f_{-Z}(z).
-  $$
+  - $f_{SZ}(z)=P(S=1)\,f_{SZ\mid S=1}(z)+P(S=-1)\,f_{SZ\mid S=-1}(z) =\frac12 f_Z(z)+\frac12 f_{-Z}(z).$
 - Then use the transformation fact
-  $$
-  f_{-Z}(z)=f_Z(-z),
-  $$
+  - $f_{-Z}(z)=f_Z(-z),$
   and finally symmetry $f_Z(-z)=f_Z(z)$.
 
 ### Book's solution (for comparison)
 
 - Condition on $S$ to compute the CDF of $SZ$:
-  $$
-  P(SZ\le x)
-  =P(SZ\le x\mid S=1)\frac12 + P(SZ\le x\mid S=-1)\frac12.
-  $$
+  - $P(SZ\le x) =P(SZ\le x\mid S=1)\frac12 + P(SZ\le x\mid S=-1)\frac12.$
 - Simplify each conditional term:
   - If $S=1$, then $SZ=Z$, so $P(SZ\le x\mid S=1)=P(Z\le x)$.
   - If $S=-1$, then $SZ=-Z$, so
-    $$
-    P(SZ\le x\mid S=-1)=P(-Z\le x)=P(Z\ge -x).
-    $$
+    - $P(SZ\le x\mid S=-1)=P(-Z\le x)=P(Z\ge -x).$
 - So:
-  $$
-  P(SZ\le x)=\frac12 P(Z\le x)+\frac12 P(Z\ge -x).
-  $$
+  - $P(SZ\le x)=\frac12 P(Z\le x)+\frac12 P(Z\ge -x).$
 - By symmetry of the standard normal,
-  $$
-  P(Z\ge -x)=P(Z\le x),
-  $$
+  - $P(Z\ge -x)=P(Z\le x),$
   hence
-  $$
-  P(SZ\le x)=\frac12 \Phi(x)+\frac12 \Phi(x)=\Phi(x),
-  $$
+  - $P(SZ\le x)=\frac12 \Phi(x)+\frac12 \Phi(x)=\Phi(x),$
   which is the CDF of $N(0,1)$. Therefore $SZ\sim N(0,1)$.
 
 ---
@@ -133,76 +101,40 @@ Find the **CDF** and **PDF** of $Y$ (the CDF should be in terms of $\Phi$).
 ### My attempt (what I wrote / idea)
 
 - Start from the definition of the CDF:
-  $$
-  F_Y(y)=P(Y\le y)=P(e^X\le y).
-  $$
+  - $F_Y(y)=P(Y\le y)=P(e^X\le y).$
 - Since $e^X>0$ always, if $y\le 0$ then the event $\{e^X\le y\}$ is impossible:
-  $$
-  F_Y(y)=0,\qquad y\le 0.
-  $$
+  - $F_Y(y)=0,\qquad y\le 0.$
 - For $y>0$, apply $\log(\cdot)$ (monotone increasing) to both sides:
-  $$
-  P(e^X\le y)=P(X\le \log y).
-  $$
+  - $P(e^X\le y)=P(X\le \log y).$
   Therefore
-  $$
-  F_Y(y)=P(X\le \log y)=F_X(\log y),\qquad y>0.
-  $$
+  - $F_Y(y)=P(X\le \log y)=F_X(\log y),\qquad y>0.$
 - Since $X\sim N(\mu,\sigma^2)$,
-  $$
-  F_X(x)=\Phi\!\left(\frac{x-\mu}{\sigma}\right),
-  $$
+  - $F_X(x)=\Phi\!\left(\frac{x-\mu}{\sigma}\right),$
   so substituting $x=\log y$:
-  $$
-  F_Y(y)=\Phi\!\left(\frac{\log y-\mu}{\sigma}\right),\qquad y>0.
-  $$
+  - $F_Y(y)=\Phi\!\left(\frac{\log y-\mu}{\sigma}\right),\qquad y>0.$
 
 ### What I initially missed / corrected
 
 - **Uppercase vs lowercase:** $\Phi$ is a **CDF** (an integral / area), while $\phi$ is the **PDF** (the curve height):
-  $$
-  \Phi(z)=\int_{-\infty}^{z}\phi(t)\,dt,
-  \qquad
-  \phi(z)=\frac{1}{\sqrt{2\pi}}e^{-z^2/2}.
-  $$
+  - $\Phi(z)=\int_{-\infty}^{z}\phi(t)\,dt, \qquad \phi(z)=\frac{1}{\sqrt{2\pi}}e^{-z^2/2}.$
   So $\dfrac{d}{dz}\Phi(z)=\phi(z)$.
 - When differentiating the CDF to get the PDF, I must use the **chain rule**.
   Let
-  $$
-  g(y)=\frac{\log y-\mu}{\sigma}.
-  $$
+  - $g(y)=\frac{\log y-\mu}{\sigma}.$
   Then
-  $$
-  g'(y)=\frac{1}{\sigma}\cdot\frac{1}{y}=\frac{1}{\sigma y}.
-  $$
+  - $g'(y)=\frac{1}{\sigma}\cdot\frac{1}{y}=\frac{1}{\sigma y}.$
 - Therefore, for $y>0$:
-  $$
-  f_Y(y)=\frac{d}{dy}F_Y(y)
-  =\frac{d}{dy}\Phi(g(y))
-  =\phi(g(y))\cdot g'(y)
-  =\phi\!\left(\frac{\log y-\mu}{\sigma}\right)\cdot\frac{1}{\sigma y}.
-  $$
+  - $f_Y(y)=\frac{d}{dy}F_Y(y) =\frac{d}{dy}\Phi(g(y)) =\phi(g(y))\cdot g'(y) =\phi\!\left(\frac{\log y-\mu}{\sigma}\right)\cdot\frac{1}{\sigma y}.$
   And $f_Y(y)=0$ for $y\le 0$.
 
 ### Book's solution (for comparison)
 
 - The book often writes $\log$ as $\ln$ (natural log), but it’s the same thing here.
 - It presents the PDF by expanding $\phi(\cdot)$:
-  $$
-  f_Y(y)=\frac{1}{\sigma y}\,\phi\!\left(\frac{\ln y-\mu}{\sigma}\right)
-  =\frac{1}{\sigma y\sqrt{2\pi}}
-    \exp\!\left(-\frac{(\ln y-\mu)^2}{2\sigma^2}\right),
-  \qquad y>0,
-  $$
+  - $f_Y(y)=\frac{1}{\sigma y}\,\phi\!\left(\frac{\ln y-\mu}{\sigma}\right) =\frac{1}{\sigma y\sqrt{2\pi}} \exp\!\left(-\frac{(\ln y-\mu)^2}{2\sigma^2}\right), \qquad y>0,$
   and $f_Y(y)=0$ for $y\le 0$.
 - CDF (same as ours):
-  $$
-  F_Y(y)=
-  \begin{cases}
-  0, & y\le 0,\\[6pt]
-  \Phi\!\left(\dfrac{\ln y-\mu}{\sigma}\right), & y>0.
-  \end{cases}
-  $$
+  - $F_Y(y)= \begin{cases} 0, & y\le 0,\\[6pt] \Phi\!\left(\dfrac{\ln y-\mu}{\sigma}\right), & y>0. \end{cases}$
 
 ---
 
@@ -217,23 +149,11 @@ Find the **CDF** and **PDF** of $Y$ (the CDF should be in terms of $\Phi$).
 #### 1) Compute the CDF from the PDF
 
 - For $x\le 0$:
-  $$
-  F(x)=P(X\le x)=0.
-  $$
+  - $F(x)=P(X\le x)=0.$
 - For $x>0$:
-  $$
-  F(x)=\int_0^x \lambda e^{-\lambda t}\,dt
-  = \left[-e^{-\lambda t}\right]_0^x
-  = 1-e^{-\lambda x}.
-  $$
+  - $F(x)=\int_0^x \lambda e^{-\lambda t}\,dt = \left[-e^{-\lambda t}\right]_0^x = 1-e^{-\lambda x}.$
   So the CDF is
-  $$
-  F(x)=
-  \begin{cases}
-  0, & x\le 0,\\
-  1-e^{-\lambda x}, & x>0.
-  \end{cases}
-  $$
+  - $F(x)= \begin{cases} 0, & x\le 0,\\ 1-e^{-\lambda x}, & x>0. \end{cases}$
 
 #### 2) Invert the CDF
 
@@ -319,13 +239,9 @@ And $f_X(x)=0$ for $x\le 0$.
 - Compute $F(x)$, invert it to get $F^{-1}(u)$, then apply the **inverse transform sampling theorem**:
   if $U\sim\text{Unif}(0,1)$ and $X=F^{-1}(U)$, then $X$ has CDF $F$.
 - So the generator for Exponential$(\lambda)$ is:
-  $$
-  X=-\frac{1}{\lambda}\ln(1-U).
-  $$
+  - $X=-\frac{1}{\lambda}\ln(1-U).$
 - Often it’s also written as:
-  $$
-  X=-\frac{1}{\lambda}\ln U,
-  $$
+  - $X=-\frac{1}{\lambda}\ln U,$
   because $1-U\sim \text{Unif}(0,1)$ as well (uniform symmetry).
 
 ---

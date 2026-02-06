@@ -109,7 +109,7 @@ Score-based models (including diffusion models) work by:
 
 1. **Training**: Learn to estimate $s(x) = \nabla_x \log p_{\text{data}}(x)$ from samples
 2. **Generation**: Start from noise $x_T \sim N(0, I)$ and follow the score:
-   $$x_{t-1} = x_t + \eta \cdot s(x_t) + \text{noise}$$
+   $x_{t-1} = x_t + \eta \cdot s(x_t) + \text{noise}$.
 
 This is called **Langevin dynamics**.
 
