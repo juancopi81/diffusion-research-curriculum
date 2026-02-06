@@ -20,10 +20,13 @@ in a given 3 second time interval.
 - Convert the rate:
   - $20 \text{ drops}/(\text{in}^2\cdot\text{min}) = \dfrac{20}{60}=\dfrac{1}{3} \text{ drops}/(\text{in}^2\cdot\text{sec})$
 - For a $5\text{ in}^2$ region over $3$ seconds the expected values is given by:
+
   $$
   \lambda = \underbrace{5}_{\text{area (in}^2\text{)}} \cdot \underbrace{\frac{1}{3}}_{\text{rate (drops/in}^2\text{/sec)}} \cdot \underbrace{3}_{\text{time (sec)}} = 5.
   $$
+
 - Then:
+
   $$
   P(X=0)=e^{-\lambda}=e^{-5}.
   $$
