@@ -9,11 +9,11 @@
 
 | Concept               | Discrete random variable $X$                          | Continuous random variable $X$                                                               |
 | --------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| **PMF / PDF**         | **PMF:** $$p_X(x)=\mathbb{P}(X=x)$$                   | **PDF:** $$f_X(x)$$ (density; not a probability)<br>$$\mathbb{P}(X=x)=0 \ \text{for all }x$$ |
-| **CDF**               | $$F_X(x)=\mathbb{P}(X\le x)$$                         | $$F_X(x)=\mathbb{P}(X\le x)$$                                                                |
-| **$\mathbb{E}[X]$**   | $$\mathbb{E}[X]=\sum_x x\,\mathbb{P}(X=x)$$           | $$\mathbb{E}[X]=\int_{-\infty}^{\infty} x\,f_X(x)\,dx$$                                      |
-| **$\mathrm{Var}(X)$** | $$\mathrm{Var}(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2$$ | $$\mathrm{Var}(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2$$                                        |
-| **LOTUS**             | $$\mathbb{E}[g(X)]=\sum_x g(x)\,\mathbb{P}(X=x)$$     | $$\mathbb{E}[g(X)]=\int_{-\infty}^{\infty} g(x)\,f_X(x)\,dx$$                                |
+| **PMF / PDF**         | **PMF:** $p_X(x)=\mathbb{P}(X=x)$                   | **PDF:** $f_X(x)$ (density; not a probability)<br>$\mathbb{P}(X=x)=0 \ \text{for all }x$ |
+| **CDF**               | $F_X(x)=\mathbb{P}(X\le x)$                         | $F_X(x)=\mathbb{P}(X\le x)$                                                                |
+| **$\mathbb{E}[X]$**   | $\mathbb{E}[X]=\sum_x x\,\mathbb{P}(X=x)$           | $\mathbb{E}[X]=\int_{-\infty}^{\infty} x\,f_X(x)\,dx$                                      |
+| **$\mathrm{Var}(X)$** | $\mathrm{Var}(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2$ | $\mathrm{Var}(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2$                                        |
+| **LOTUS**             | $\mathbb{E}[g(X)]=\sum_x g(x)\,\mathbb{P}(X=x)$     | $\mathbb{E}[g(X)]=\int_{-\infty}^{\infty} g(x)\,f_X(x)\,dx$                                |
 
 ---
 

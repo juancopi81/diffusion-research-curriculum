@@ -96,7 +96,14 @@ where the sum is over all $x$ with $\mathbb{P}(X=x) > 0$.
 
 ## 6) Bernoulli and indicator random variables
 
-An Indicator Random Variable $X = I_A$ for an event $A$ is defined as:$$X = \begin{cases} 1 & \text{if } A \text{ occurs} \\ 0 & \text{otherwise} \end{cases}$$
+An Indicator Random Variable $X = I_A$ for an event $A$ is defined as:
+
+$$
+X = \begin{cases}
+1, & \text{if } A \text{ occurs} \\
+0, & \text{otherwise}
+\end{cases}
+$$
 
 ### Bernoulli($p$)
 
@@ -108,7 +115,12 @@ $$\mathbb{E}[X] = 1\cdot \mathbb{P}(X=1) + 0\cdot \mathbb{P}(X=0) = p.$$
 
 Define the indicator of event $A$:
 
-$$\mathbf{1}_A = \begin{cases} 1, & \text{if } A \text{ occurs} \\ 0, & \text{otherwise.} \end{cases}$$
+$$
+\mathbf{1}_A = \begin{cases}
+1, & \text{if } A \text{ occurs} \\
+0, & \text{otherwise.}
+\end{cases}
+$$
 
 Then
 

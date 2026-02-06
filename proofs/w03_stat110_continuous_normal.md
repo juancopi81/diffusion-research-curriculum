@@ -19,9 +19,9 @@ in a given 3 second time interval.
 - Use a **Poisson** model for the number of drops hitting the region in a time interval.
 - Convert the rate:
   - $20 \text{ drops}/(\text{in}^2\cdot\text{min}) = \dfrac{20}{60}=\dfrac{1}{3} \text{ drops}/(\text{in}^2\cdot\text{sec})$
-- For a $5\text{ in}^2$ region over $3$ seconds the expected values is given by:
+- For a $5\text{ in}^2$ region over $3$ seconds the expected value is:
 
-  - $\lambda = \underbrace{5}_{\text{area (in}^2\text{)}} \cdot \underbrace{\frac{1}{3}}_{\text{rate (drops/in}^2\text{/sec)}} \cdot \underbrace{3}_{\text{time (sec)}} = 5.$
+  - $\lambda = 5 \cdot \frac{1}{3} \cdot 3 = 5$ (area $\times$ rate $\times$ time).
 
 - Then: $P(X=0)=e^{-\lambda}=e^{-5}$.
 
@@ -134,7 +134,7 @@ Find the **CDF** and **PDF** of $Y$ (the CDF should be in terms of $\Phi$).
   - $f_Y(y)=\frac{1}{\sigma y}\,\phi\!\left(\frac{\ln y-\mu}{\sigma}\right) =\frac{1}{\sigma y\sqrt{2\pi}} \exp\!\left(-\frac{(\ln y-\mu)^2}{2\sigma^2}\right), \qquad y>0,$
   and $f_Y(y)=0$ for $y\le 0$.
 - CDF (same as ours):
-  - $F_Y(y)= \begin{cases} 0, & y\le 0,\\[6pt] \Phi\!\left(\dfrac{\ln y-\mu}{\sigma}\right), & y>0. \end{cases}$
+  - $F_Y(y)=0$ for $y\le 0$, and $F_Y(y)=\Phi\!\left(\dfrac{\ln y-\mu}{\sigma}\right)$ for $y>0$.
 
 ---
 
@@ -153,7 +153,7 @@ Find the **CDF** and **PDF** of $Y$ (the CDF should be in terms of $\Phi$).
 - For $x>0$:
   - $F(x)=\int_0^x \lambda e^{-\lambda t}\,dt = \left[-e^{-\lambda t}\right]_0^x = 1-e^{-\lambda x}.$
   So the CDF is
-  - $F(x)= \begin{cases} 0, & x\le 0,\\ 1-e^{-\lambda x}, & x>0. \end{cases}$
+  - $F(x)=0$ for $x\le 0$, and $F(x)=1-e^{-\lambda x}$ for $x>0$.
 
 #### 2) Invert the CDF
 

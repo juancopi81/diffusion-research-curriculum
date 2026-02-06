@@ -250,7 +250,7 @@ Find:
 
 ### My approach (bag-indicators)
 
-- For each bag $$j \in \{1,2,\dots,20\}$$, define an indicator:
+- For each bag $j \in \{1,2,\dots,20\}$, define an indicator:
 
 $$
 X_j =
@@ -260,7 +260,7 @@ X_j =
 \end{cases}
 $$
 
-- Let $$X$$ be the total number of bags received by students 1–3:
+- Let $X$ be the total number of bags received by students 1–3:
 
 $$
 X=\sum_{j=1}^{20} X_j
@@ -286,8 +286,8 @@ $$
 
 ### Book’s approach (student-count RVs)
 
-- Let $$X_j^{(\text{book})}$$ be the **number of bags** that student $$j$$ gets.
-  Then (for each fixed student $$j$$):
+- Let $X_j^{(\text{book})}$ be the **number of bags** that student $j$ gets.
+  Then (for each fixed student $j$):
 
 $$
 X_j^{(\text{book})} \sim \text{Bin}\!\left(20,\frac{1}{20}\right)
@@ -309,10 +309,10 @@ $$
 
 Both expressions count the **same total number of bags received by students 1–3**:
 
-- “Count by bags” (my way): sum over bags $$j$$, whether bag $$j$$ landed in $$\{1,2,3\}$$.
-- “Count by students” (book): sum over students $$1,2,3$$, how many bags each got.
+- “Count by bags” (my way): sum over bags $j$, whether bag $j$ landed in $\{1,2,3\}$.
+- “Count by students” (book): sum over students $1,2,3$, how many bags each got.
 
-So the same random variable $$X$$ can be written either as
+So the same random variable $X$ can be written either as
 
 $$
 X=\sum_{j=1}^{20} X_j
@@ -332,7 +332,7 @@ $$
 
 always holds.
 
-- But independence _is_ useful (in Part ii) when computing probabilities like $$\left(\frac{19}{20}\right)^{20}$$.
+- But independence _is_ useful (in Part ii) when computing probabilities like $\left(\frac{19}{20}\right)^{20}$.
 
 ---
 
@@ -340,7 +340,7 @@ always holds.
 
 ### My approach (student “at least one” indicators)
 
-- For each student $$j \in \{1,2,\dots,20\}$$, define an indicator:
+- For each student $j \in \{1,2,\dots,20\}$, define an indicator:
 
 $$
 Y_j =
@@ -350,7 +350,7 @@ Y_j =
 \end{cases}
 $$
 
-- Let $$Y$$ be the number of students who get at least one bag:
+- Let $Y$ be the number of students who get at least one bag:
 
 $$
 Y=\sum_{j=1}^{20} Y_j
@@ -362,9 +362,9 @@ $$
 E[Y] = \sum_{j=1}^{20}E[Y_j] = 20\,E[Y_1] = 20\,P(Y_1=1)
 $$
 
-- Compute $$P(Y_1=1)$$ via the complement event “student 1 gets **zero** bags”.
+- Compute $P(Y_1=1)$ via the complement event “student 1 gets **zero** bags”.
 
-For a single bag, $$P(\text{does NOT go to student 1})=\frac{19}{20}$$.  
+For a single bag, $P(\text{does NOT go to student 1})=\frac{19}{20}$.  
 Using independence across the 20 bags:
 
 $$
@@ -385,7 +385,7 @@ $$
 
 ### Book’s answer (same idea, different notation)
 
-The book defines $$I_j$$ as the indicator that student $$j$$ gets at least one bag, i.e.
+The book defines $I_j$ as the indicator that student $j$ gets at least one bag, i.e.
 
 $$
 I_j = 1\{X_j^{(\text{book})}\ge 1\}.
@@ -402,8 +402,8 @@ $$
 
 ### Bridge (matching my notation to the book)
 
-- My $$Y_j$$ **is exactly** the book’s $$I_j$$.
-- The book’s $$X_j^{(\text{book})}$$ is a _count_ RV (“how many bags student $$j$$ gets”), which is **different from** my Part (i) $$X_j$$ (which was a _bag-indexed indicator_).
+- My $Y_j$ **is exactly** the book’s $I_j$.
+- The book’s $X_j^{(\text{book})}$ is a _count_ RV (“how many bags student $j$ gets”), which is **different from** my Part (i) $X_j$ (which was a _bag-indexed indicator_).
 
 ---
 

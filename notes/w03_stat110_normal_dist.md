@@ -14,9 +14,9 @@ Let $F$ be a **continuous, strictly increasing** CDF (so it has an inverse $F^{-
 If
 
 - $U \sim \text{Unif}(0,1)$
-- define $$X = F^{-1}(U),$$
+- define $X = F^{-1}(U),$
 
-then $$X \sim F.$$
+then $X \sim F.$
 
 This is the basic **simulation trick**: start with uniform noise and transform it through $F^{-1}$.
 
@@ -26,7 +26,7 @@ If
 
 - $X \sim F$ (and $F$ is continuous),
 
-then $$F(X) \sim \text{Unif}(0,1).$$
+then $F(X) \sim \text{Unif}(0,1).$
 
 **Meaning:** “plug $X$ into its own CDF.”
 
