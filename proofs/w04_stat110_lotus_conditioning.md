@@ -90,6 +90,21 @@ for $0<\lambda<1$, and states $E(X!)=\infty$ for $\lambda\ge1$.
 This matches the derivation above. I added the explicit edge case $\lambda=0$:
 $E(X!)=1$.
 
+### Memory card (quick review)
+
+- LOTUS: to compute $E[g(X)]$, apply $g$ inside the expectation:
+  $$
+  E[g(X)] = \sum_x g(x)P(X=x) \quad \text{or} \quad E[g(X)] = \int g(x)f_X(x)\,dx.
+  $$
+  You do not need to find the distribution of $g(X)$ first.
+- Poisson intuition: $X\sim\mathrm{Pois}(\lambda)$ is a count of arrivals/events in a fixed interval, with average rate $\lambda$.
+- In this problem:
+  $$
+  E(X!)=e^{-\lambda}\sum_{k=0}^{\infty}\lambda^k.
+  $$
+  The factorial in $X!$ cancels the factorial in the Poisson pmf, so the problem becomes a geometric-series convergence check.
+- Final condition: $E(X!)$ is finite for $0\le\lambda<1$, and infinite for $\lambda\ge1$.
+
 ## Problem 2
 
 **Statement.**  
