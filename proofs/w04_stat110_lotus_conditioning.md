@@ -16,15 +16,79 @@ For $X \sim \mathrm{Pois}(\lambda)$, find $E(X!)$ (the average factorial of $X$)
 
 ### My attempt (to complete)
 
-_Pending._
+Using LOTUS for a discrete random variable:
+
+$$
+E[g(X)] = \sum_{k=0}^{\infty} g(k)\,P(X=k).
+$$
+
+Here, $g(k)=k!$ and $X\sim\mathrm{Pois}(\lambda)$, so
+
+$$
+P(X=k)=e^{-\lambda}\frac{\lambda^k}{k!}.
+$$
+
+Therefore,
+
+$$
+E(X!)=\sum_{k=0}^{\infty} k!\,e^{-\lambda}\frac{\lambda^k}{k!}
+=e^{-\lambda}\sum_{k=0}^{\infty}\lambda^k.
+$$
+
+Now we identify the series:
+
+$$
+\sum_{k=0}^{\infty}\lambda^k = 1+\lambda+\lambda^2+\cdots
+$$
+
+which is a geometric series with ratio $\lambda$.
+
+To justify the formula carefully, first use the finite partial sum:
+
+$$
+S_n=\sum_{k=0}^{n}\lambda^k=\frac{1-\lambda^{n+1}}{1-\lambda}\quad(\lambda\neq1).
+$$
+
+Then take $n\to\infty$:
+
+- If $0\le\lambda<1$, then $\lambda^{n+1}\to0$, so
+  $$
+  \sum_{k=0}^{\infty}\lambda^k=\frac{1}{1-\lambda}.
+  $$
+  Hence
+  $$
+  E(X!)=\frac{e^{-\lambda}}{1-\lambda}.
+  $$
+
+- If $\lambda=1$, then
+  $$
+  \sum_{k=0}^{\infty}1^k=1+1+1+\cdots
+  $$
+  diverges, so $E(X!)=\infty$.
+
+- If $\lambda>1$, terms $\lambda^k$ do not go to $0$, so the series diverges and $E(X!)=\infty$.
+
+Edge case: when $\lambda=0$, $X=0$ almost surely, so $X!=0!=1$ and $E(X!)=1$ (finite).
 
 ### What I initially missed / corrected
 
-_Pending._
+- I originally treated $\sum_{k=0}^{\infty}\lambda^k$ like a finite sum too early.
+- The key fix was to work with partial sums $S_n=\sum_{k=0}^{n}\lambda^k$ first, then take the limit $n\to\infty$.
+- I also clarified that divergence at $\lambda=1$ should be shown directly from $1+1+1+\cdots$, not only from a denominator issue in the finite-sum formula.
+- Final condition: finite for $0\le\lambda<1$, infinite for $\lambda\ge1$.
 
 ### Book's solution (for comparison)
 
-_Pending._
+The book writes:
+
+$$
+E(X!)=e^{-\lambda}\sum_{k=0}^{\infty}\lambda^k=\frac{e^{-\lambda}}{1-\lambda},
+$$
+
+for $0<\lambda<1$, and states $E(X!)=\infty$ for $\lambda\ge1$.
+
+This matches the derivation above. I added the explicit edge case $\lambda=0$:
+$E(X!)=1$.
 
 ## Problem 2
 
