@@ -1,8 +1,9 @@
 # Week 4 — S2 (Stat110 Practice): LOTUS + Conditioning
 
 **Topics:** LOTUS, Normal expectation practice, conditional probability review  
-**Resources:**  
-- [Stat110 Strategic Practice and Homework 5](https://stat110.hsites.harvard.edu/sites/g/files/omnuum10111/files/stat110/files/strategic_practice_and_homework_5.pdf)  
+**Resources:**
+
+- [Stat110 Strategic Practice and Homework 5](https://stat110.hsites.harvard.edu/sites/g/files/omnuum10111/files/stat110/files/strategic_practice_and_homework_5.pdf)
 - [Stat110 Strategic Practice and Homework 3](https://stat110.hsites.harvard.edu/sites/g/files/omnuum10111/files/stat110/files/strategic_practice_and_homework_3.pdf)
 
 ---
@@ -52,18 +53,23 @@ $$
 Then take $n\to\infty$:
 
 - If $0\le\lambda<1$, then $\lambda^{n+1}\to0$, so
+
   $$
   \sum_{k=0}^{\infty}\lambda^k=\frac{1}{1-\lambda}.
   $$
+
   Hence
+
   $$
   E(X!)=\frac{e^{-\lambda}}{1-\lambda}.
   $$
 
 - If $\lambda=1$, then
+
   $$
   \sum_{k=0}^{\infty}1^k=1+1+1+\cdots
   $$
+
   diverges, so $E(X!)=\infty$.
 
 - If $\lambda>1$, terms $\lambda^k$ do not go to $0$, so the series diverges and $E(X!)=\infty$.
@@ -166,17 +172,54 @@ The book uses the same ideas: LOTUS, even symmetry, and a substitution to turn t
 **Statement.**  
 Let $Z \sim \mathcal{N}(0,1)$. Find $E(\Phi(Z))$ without using LOTUS, where $\Phi$ is the CDF of $Z$.
 
-### My attempt (to complete)
+### My attempt
 
-_Pending._
+Use the **Probability Integral Transform** (a.k.a. _Universality of the Uniform_).
+
+Let $X$ be a continuous r.v. with CDF $F$. Define $U=F(X)$. Claim: $U\sim \text{Unif}(0,1)$.
+
+Compute the CDF of $U$. For $0\le u\le 1$:
+
+$$
+F_U(u)=P(U\le u)
+=P(F(X)\le u)
+=P(X\le F^{-1}(u))
+=F(F^{-1}(u))
+=u.
+$$
+
+Thus $F_U(u)=u$ on $[0,1]$, so $U\sim \text{Unif}(0,1)$.
+
+Now apply it with $X=Z$ and $F=\Phi$. Since $Z$ is continuous,
+
+$$
+\Phi(Z)\sim \text{Unif}(0,1).
+$$
+
+Therefore,
+
+$$
+E(\Phi(Z))=E(U)=\frac{1}{2}.
+$$
 
 ### What I initially missed / corrected
 
-_Pending._
+- I first tried to treat $\Phi(Z)$ as if it were a normal random variable and use the standard normal PDF for it. But $X=\Phi(Z)$ is **not** normal: it takes values only in $[0,1]$.
+- The right viewpoint is that $\Phi(Z)$ is the **CDF-value** (percentile) of the draw $Z$ under its own distribution, and by the probability integral transform this must be Uniform.
 
 ### Book's solution (for comparison)
 
-_Pending._
+By Universality of the Uniform, for any continuous r.v. $X$ with CDF $F$, we have $F(X)\sim \text{Unif}(0,1)$. Taking $X=Z$ and $F=\Phi$ gives
+
+$$
+\Phi(Z)\sim \text{Unif}(0,1),
+$$
+
+so
+
+$$
+E(\Phi(Z))=\frac{1}{2}.
+$$
 
 ---
 
