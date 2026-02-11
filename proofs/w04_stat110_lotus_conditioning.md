@@ -242,15 +242,119 @@ To recap: there are three doors, behind one of which there is a car (which you w
 
 ### My attempt (to complete)
 
-_Pending._
+Let:
+
+- $C_j$: car is behind Door $j$.
+- $D_i$: Monty opens Door $i$.
+- $W$: always-switch strategy wins.
+
+We choose Door 1 first.
+
+Useful conditional probabilities:
+
+- If $C_1$: Monty chooses between Doors 2 and 3, so
+  $P(D_2\mid C_1)=p$, $P(D_3\mid C_1)=1-p$.
+- If $C_2$: Monty must open Door 3, so
+  $P(D_2\mid C_2)=0$, $P(D_3\mid C_2)=1$.
+- If $C_3$: Monty must open Door 2, so
+  $P(D_2\mid C_3)=1$, $P(D_3\mid C_3)=0$.
+
+Also, $P(C_1)=P(C_2)=P(C_3)=\frac{1}{3}$.
+
+For part (a), switching wins exactly when our first pick (Door 1) is wrong, i.e., when $C_2$ or $C_3$ happens:
+
+$$
+P(W)=P(C_2)+P(C_3)=\frac{1}{3}+\frac{1}{3}=\frac{2}{3}.
+$$
+
+For part (b), given Monty opens Door 2, switching means we move to Door 3, so we win iff $C_3$:
+
+$$
+P(W\mid D_2)=P(C_3\mid D_2)
+=\frac{P(D_2\mid C_3)P(C_3)}{P(D_2)}.
+$$
+
+By total probability:
+
+$$
+P(D_2)=P(D_2\mid C_1)P(C_1)+P(D_2\mid C_2)P(C_2)+P(D_2\mid C_3)P(C_3)
+=p\cdot\frac{1}{3}+0\cdot\frac{1}{3}+1\cdot\frac{1}{3}
+=\frac{1+p}{3}.
+$$
+
+Hence:
+
+$$
+P(W\mid D_2)=\frac{1\cdot\frac{1}{3}}{\frac{1+p}{3}}=\frac{1}{1+p}.
+$$
+
+For part (c), given Monty opens Door 3, switching means we move to Door 2, so we win iff $C_2$:
+
+$$
+P(W\mid D_3)=P(C_2\mid D_3)
+=\frac{P(D_3\mid C_2)P(C_2)}{P(D_3)}.
+$$
+
+And
+
+$$
+P(D_3)=P(D_3\mid C_1)P(C_1)+P(D_3\mid C_2)P(C_2)+P(D_3\mid C_3)P(C_3)
+=(1-p)\cdot\frac{1}{3}+1\cdot\frac{1}{3}+0\cdot\frac{1}{3}
+=\frac{2-p}{3}.
+$$
+
+Therefore:
+
+$$
+P(W\mid D_3)=\frac{1\cdot\frac{1}{3}}{\frac{2-p}{3}}=\frac{1}{2-p}.
+$$
 
 ### What I initially missed / corrected
 
-_Pending._
+- I initially treated $P(D_2)=p$ and $P(D_3)=1-p$ as unconditional probabilities.  
+  Correction: those are only true conditional on $C_1$.
+- The unconditional values are:
+  $$
+  P(D_2)=\frac{1+p}{3},\qquad P(D_3)=\frac{2-p}{3}.
+  $$
+- I also initially combined the conditional answers incorrectly for part (a).  
+  Correct unconditional switching success is always:
+  $$
+  P(W)=\frac{2}{3},
+  $$
+  independent of $p$.
 
 ### Book's solution (for comparison)
 
-_Pending._
+For part (a), the book uses the law of total probability:
+
+$$
+P(W)=P(W\mid C_1)P(C_1)+P(W\mid C_2)P(C_2)+P(W\mid C_3)P(C_3)
+$$
+
+$$
+=0\cdot\frac{1}{3}+1\cdot\frac{1}{3}+1\cdot\frac{1}{3}
+=\frac{2}{3}.
+$$
+
+For part (b), with $D_i=$ "Monty opens Door $i$", the book notes
+$P(W\mid D_2)=P(C_3\mid D_2)$ and applies Bayes + total probability:
+
+$$
+P(C_3\mid D_2)=\frac{P(D_2\mid C_3)P(C_3)}
+{P(D_2\mid C_1)P(C_1)+P(D_2\mid C_2)P(C_2)+P(D_2\mid C_3)P(C_3)}
+$$
+
+$$
+=\frac{1\cdot\frac{1}{3}}{p\cdot\frac{1}{3}+0\cdot\frac{1}{3}+1\cdot\frac{1}{3}}
+=\frac{1}{1+p}.
+$$
+
+For part (c), the book uses the symmetric argument from part (b), replacing $p$ by $1-p$:
+
+$$
+P(C_2\mid D_3)=\frac{1}{1+(1-p)}=\frac{1}{2-p}.
+$$
 
 ## Homework
 
