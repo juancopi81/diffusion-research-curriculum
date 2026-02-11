@@ -29,6 +29,8 @@ This creates:
 
 The `_solved` notebook is a direct file copy of the unsolved notebook at scaffold time.
 
+Important: this command only creates the baseline scaffold. For user requests like "create notebook for week N", treat the scaffold as step 1, then continue to fill a complete guided notebook (full markdown story + runnable code) with only selected TODO checkpoints left for the learner.
+
 ## Workflow
 1. Lock intent and metadata.
 Define `week`, `topic`, notebook `mode`, and learning goal.
@@ -40,6 +42,8 @@ Create `wNN_topic.ipynb` with TODO scaffolding, then copy it to `wNN_topic_solve
 3. Fill cells in small runnable steps.
 Use short markdown explanations and focused code cells.
 Keep TODO/checkpoint markers clear.
+By default, leave only a small set of meaningful TODOs (not every cell).
+Match the level of completeness used by existing weekly notebooks in `notebooks/` (for example, `w03_score_verification.ipynb`).
 
 4. Apply mode-specific patterns.
 For experiment flow, read `references/experiment-patterns.md`.
@@ -55,6 +59,13 @@ Use `references/quality-checklist.md` before delivery.
 - Preserve the unsolved notebook as baseline; do solution work in the `_solved` copy.
 - Prefer targeted edits over full rewrites.
 - If raw JSON edits are required, follow `references/notebook-structure.md`.
+
+## Delivery Default
+- If the user says "create notebook for week X" (without saying "scaffold only"), deliver a near-complete notebook:
+  - full narrative markdown from notes/proofs for that week,
+  - runnable setup, helper functions, and diagnostics,
+  - a few focused TODO/exercise cells for student work.
+- Only deliver the minimal template scaffold when the user explicitly asks for a scaffold/template.
 
 ## References
 - `references/experiment-patterns.md`
