@@ -35,6 +35,13 @@ uv run python <script.py>
 - Inside list items, keep equations inline when possible; for long/complex equations, place a standalone display block outside the list.
 - Keep `\begin{cases}` and `\begin{aligned}` in standalone display math blocks (not inline).
 
+## Source Attribution Rules
+
+- Do not label content as "book solution", "official solution", or equivalent unless the source was explicitly provided (image/text/link) or exists in this repo.
+- If no source is available, use labels like "Independent derivation" instead of source-attributed labels.
+- When only part of a source is available, clearly mark which subsection is source-verified and which subsection is inferred.
+- Use `Pending source` for unresolved source-backed sections rather than reconstructing them under a source label.
+
 ## Curriculum Phases
 
 1. **Phase 1 (Weeks 1-8)**: Probability core (Stat110) + minimal diffusion toys

@@ -43,6 +43,12 @@
 - Prefer small, derived datasets checked into version control; keep raw or bulky data in external storage and document access steps.
 - Add ignore rules for new tools that generate caches; keep the repo lightweight.
 
+## Source Fidelity (Proofs and References)
+- Do not claim, label, or imply "book's solution", "author's solution", or "official solution" unless the source text/image/link was explicitly provided in the current conversation or already exists in-repo.
+- If no source is available, label that section as an inferred derivation (for example: "Independent check" or "Reference derivation"), not as a source quote.
+- When a source is partially available (for example, only one page/screenshot), mark exactly which parts are source-verified and which parts are inferred.
+- If a source-backed section is still pending, leave it as `Pending source` instead of filling it with reconstructed text.
+
 ## Skills
 A skill is a set of local instructions to follow that is stored in a `SKILL.md` file.
 

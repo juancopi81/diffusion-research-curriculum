@@ -371,15 +371,160 @@ The patient gets a second, independent test done (with the same sensitivity and 
 
 ### My attempt (to complete)
 
-_Pending._
+For part (a), define:
+
+- prior odds: $\frac{P(H)}{1-P(H)}=\frac{P(H)}{P(H^c)}$
+- posterior odds: $\frac{P(H\mid D)}{1-P(H\mid D)}=\frac{P(H\mid D)}{P(H^c\mid D)}$
+- likelihood ratio: $\frac{P(D\mid H)}{P(D\mid H^c)}$
+
+Goal:
+
+$$
+\frac{P(H)}{P(H^c)}\cdot\frac{P(D\mid H)}{P(D\mid H^c)}
+=\frac{P(H\mid D)}{P(H^c\mid D)}.
+$$
+
+Using Bayes on both $H$ and $H^c$:
+
+$$
+P(H\mid D)=\frac{P(D\mid H)P(H)}{P(D)},
+\qquad
+P(H^c\mid D)=\frac{P(D\mid H^c)P(H^c)}{P(D)}.
+$$
+
+Take the ratio:
+
+$$
+\frac{P(H\mid D)}{P(H^c\mid D)}
+=
+\frac{\frac{P(D\mid H)P(H)}{P(D)}}{\frac{P(D\mid H^c)P(H^c)}{P(D)}}
+=
+\frac{P(H)}{P(H^c)}\cdot\frac{P(D\mid H)}{P(D\mid H^c)}.
+$$
+
+Therefore, posterior odds $=$ prior odds $\times$ likelihood ratio, as required.
+
+For part (b), let:
+
+- $H$: patient has disease, so $P(H)=0.01$, $P(H^c)=0.99$.
+- $D_1$: first test is positive.
+- $D_2$: second test is positive.
+
+Given sensitivity/specificity:
+
+$$
+P(D_i\mid H)=0.95,\qquad
+P(D_i\mid H^c)=0.05,\quad i\in\{1,2\}.
+$$
+
+Prior odds:
+
+$$
+\frac{P(H)}{P(H^c)}=\frac{0.01}{0.99}=\frac{1}{99}.
+$$
+
+For one positive test, likelihood ratio is:
+
+$$
+\frac{P(D_i\mid H)}{P(D_i\mid H^c)}=\frac{0.95}{0.05}=19.
+$$
+
+**One-step update (condition on both positives simultaneously).**  
+Using conditional independence of tests given disease status:
+
+$$
+\frac{P(D_1\cap D_2\mid H)}{P(D_1\cap D_2\mid H^c)}
+=\frac{0.95^2}{0.05^2}=361.
+$$
+
+So posterior odds are:
+
+$$
+\frac{P(H\mid D_1\cap D_2)}{P(H^c\mid D_1\cap D_2)}
+=\frac{1}{99}\cdot 361=\frac{361}{99}\approx 3.6464.
+$$
+
+Convert odds $O=\frac{p}{1-p}$ to probability $p=\frac{O}{1+O}$:
+
+$$
+P(H\mid D_1\cap D_2)
+=\frac{\frac{361}{99}}{1+\frac{361}{99}}
+=\frac{361}{460}
+\approx 0.7848.
+$$
+
+So the probability the patient has the disease after two positive tests is about $78.48\%$.
+
+**Two-step update (sequential Bayes updates).**
+
+After first positive:
+
+$$
+\text{odds}_1=\frac{1}{99}\cdot 19=\frac{19}{99}.
+$$
+
+After second positive:
+
+$$
+\text{odds}_2=\frac{19}{99}\cdot 19=\frac{361}{99}.
+$$
+
+This matches the one-step posterior odds, so
+
+$$
+P(H\mid D_1\cap D_2)=\frac{361}{460}\approx 0.7848.
+$$
 
 ### What I initially missed / corrected
 
-_Pending._
+- I initially had an algebra slip in part (a) when simplifying stacked fractions.
+- In part (b), the main bookkeeping point is that specificity $0.95$ implies
+  $P(\text{positive}\mid H^c)=0.05$ (false-positive rate), which goes in the denominator of the likelihood ratio.
+- I also clarified that odds $\frac{361}{99}\approx 3.6464$ must be converted to a probability:
+  $$
+  p=\frac{O}{1+O}.
+  $$
 
-### Book's solution (for comparison)
+### Reference solution (with source note)
 
-_Pending._
+Source note: part (b) below is verified from your provided screenshot on February 13, 2026. Part (a) below is an inferred standard derivation unless you share the corresponding page.
+
+For part (a), the standard target identity is:
+
+$$
+\frac{P(H\mid D)}{P(H^c\mid D)}
+=
+\frac{P(H)}{P(H^c)}\cdot\frac{P(D\mid H)}{P(D\mid H^c)}.
+$$
+
+Then, by Bayes' rule:
+
+$$
+P(H\mid D)=\frac{P(D\mid H)P(H)}{P(D)},
+\qquad
+P(H^c\mid D)=\frac{P(D\mid H^c)P(H^c)}{P(D)}.
+$$
+
+Dividing the first equation by the second immediately gives the target odds-form equation.
+
+For part (b), matching your provided screenshot:
+
+$$
+\text{prior odds}=\frac{0.01}{0.99}=\frac{1}{99},\qquad
+\text{LR for one positive}=\frac{0.95}{0.05}=19.
+$$
+
+Hence two independent positives multiply the odds by $19^2$:
+
+$$
+\text{posterior odds}=\frac{1}{99}\cdot 19^2=\frac{361}{99}.
+$$
+
+Convert to posterior probability:
+
+$$
+P(H\mid D_1\cap D_2)=\frac{361}{361+99}=\frac{361}{460}\approx 0.7848.
+$$
 
 ## Problem 4
 
