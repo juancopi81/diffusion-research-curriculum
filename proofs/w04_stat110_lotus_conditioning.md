@@ -535,14 +535,89 @@ Calvin and Hobbes play a match consisting of a series of games, where Calvin has
 
 (b) by interpreting the problem as a gambler's ruin problem.
 
-### My attempt (to complete)
+### My attempt
 
-_Pending._
+For part (a), use first-step analysis (conditioning on the first 2 games).
+
+Let:
+
+- $C$: Calvin wins the match.
+- $x=P(C)$ starting from a tied score (initially $0$-$0$).
+- $q=1-p$.
+
+Condition on outcomes of the first 2 games:
+
+- Calvin wins both (`WW`), probability $p^2$: match ends and Calvin wins.
+- Calvin loses both (`LL`), probability $q^2$: match ends and Calvin loses.
+- They split (`WL` or `LW`), probability $2pq$: score difference returns to $0$, so by independence and the memoryless reset of state, win probability is again $x$.
+
+So:
+
+$$
+x = 1\cdot p^2 + 0\cdot q^2 + x\cdot 2pq
+= p^2 + 2pq\,x.
+$$
+
+Rearrange:
+
+$$
+x(1-2pq)=p^2
+\quad\Rightarrow\quad
+x=\frac{p^2}{1-2pq}.
+$$
+
+Using $p+q=1$:
+
+$$
+1-2pq=p^2+q^2,
+$$
+
+so equivalent forms are:
+
+$$
+P(C)=x=\frac{p^2}{1-2pq}
+=\frac{p^2}{p^2+q^2}
+=\frac{p^2}{2p^2-2p+1}.
+$$
 
 ### What I initially missed / corrected
 
-_Pending._
+- The key step to justify clearly is the split case:
+  $$
+  P(C\mid WL\ \text{or}\ LW)=P(C),
+  $$
+  because after one win and one loss the process is back to a tied state.
+- The final answer can look different algebraically, but
+  $$
+  \frac{p^2}{1-2p(1-p)}=\frac{p^2}{p^2+(1-p)^2}
+  $$
+  is the same quantity.
 
 ### Book's solution (for comparison)
 
-_Pending._
+Source note: part (a) below is verified from your provided screenshot on February 16, 2026.
+
+For part (a), the book defines $X\sim\mathrm{Bin}(2,p)$ as Calvin's number of wins in the first 2 games, with $q=1-p$, and conditions on $X\in\{0,1,2\}$:
+
+$$
+P(C)=P(C\mid X=0)q^2+P(C\mid X=1)(2pq)+P(C\mid X=2)p^2.
+$$
+
+Then:
+
+$$
+P(C\mid X=0)=0,\quad P(C\mid X=2)=1,\quad P(C\mid X=1)=P(C),
+$$
+
+so:
+
+$$
+P(C)=2pq\,P(C)+p^2
+\quad\Rightarrow\quad
+P(C)=\frac{p^2}{1-2pq}
+=\frac{p^2}{p^2+q^2}.
+$$
+
+This matches the result from my first-step conditioning derivation.
+
+Part (b): _Pending._
