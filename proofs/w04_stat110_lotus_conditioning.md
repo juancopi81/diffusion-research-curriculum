@@ -83,7 +83,7 @@ Edge case: when $\lambda=0$, $X=0$ almost surely, so $X!=0!=1$ and $E(X!)=1$ (fi
 - I also clarified that divergence at $\lambda=1$ should be shown directly from $1+1+1+\cdots$, not only from a denominator issue in the finite-sum formula.
 - Final condition: finite for $0\le\lambda<1$, infinite for $\lambda\ge1$.
 
-### Book's solution (for comparison)
+### Book's solution for part (a) (for comparison)
 
 The book writes:
 
@@ -593,7 +593,7 @@ $$
   $$
   is the same quantity.
 
-### Book's solution (for comparison)
+### Book's solution for part (a) (for comparison)
 
 Source note: part (a) below is verified from your provided screenshot on February 16, 2026.
 
@@ -620,4 +620,55 @@ $$
 
 This matches the result from my first-step conditioning derivation.
 
-Part (b): _Pending._
+### My attempt for part (b) (gambler's ruin)
+
+For part (b), model the game as a random walk on score difference:
+
+$$
+D_n=(\#\text{Calvin wins up to }n)-(\#\text{Hobbes wins up to }n).
+$$
+
+Each game changes $D_n$ by $+1$ with probability $p$ and by $-1$ with probability $q=1-p$. The match ends when $D_n=+2$ (Calvin wins) or $D_n=-2$ (Calvin loses).
+
+Define:
+
+$$
+a_k=P(\text{hit }+2\text{ before }-2\mid D_0=k),\qquad k\in\{-2,-1,0,1,2\}.
+$$
+
+Boundary conditions are:
+
+$$
+a_{-2}=0,\qquad a_2=1.
+$$
+
+Shift states with $j=k+2$, so this becomes gambler's ruin on $\{0,1,2,3,4\}$ starting at $j=2$, with absorbing states $0$ and $4$. For $p\neq q$, ruin formula gives:
+
+$$
+P(\text{hit }4\text{ before }0\mid j=2)
+=\frac{1-(q/p)^2}{1-(q/p)^4}.
+$$
+
+So:
+
+$$
+P(C)=\frac{1-(q/p)^2}{1-(q/p)^4}
+=\frac{p^2}{p^2+q^2}.
+$$
+
+If $p=q=\tfrac12$, gambler's ruin gives $P(C)=\tfrac{2}{4}=\tfrac12$, consistent with $\frac{p^2}{p^2+q^2}$.
+
+### Book's solution for part (b) (for comparison)
+
+Source note: part (b) below is verified from your provided screenshot on February 17, 2026.
+
+The book interprets the game as gambler's ruin where each player starts with 2 units, so Calvin's win probability is:
+
+$$
+\frac{1-(q/p)^2}{1-(q/p)^4}
+=\frac{(p^2-q^2)/p^2}{(p^4-q^4)/p^4}
+=\frac{(p^2-q^2)/p^2}{(p^2-q^2)(p^2+q^2)/p^4}
+=\frac{p^2}{p^2+q^2},
+$$
+
+which agrees with part (a).
