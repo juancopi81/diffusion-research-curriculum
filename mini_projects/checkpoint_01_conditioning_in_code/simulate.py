@@ -135,10 +135,16 @@ def simulate_once(p: float, trials: int, seed: int) -> SimulationRow:
     count_d3 = int(np.sum(mask_d3))
 
     est_switch_win = float(np.mean(switch_win))
-    est_switch_win_given_d2 = float(np.mean(switch_win[mask_d2])) if count_d2 else float("nan")
-    est_switch_win_given_d3 = float(np.mean(switch_win[mask_d3])) if count_d3 else float("nan")
+    est_switch_win_given_d2 = (
+        float(np.mean(switch_win[mask_d2])) if count_d2 else float("nan")
+    )
+    est_switch_win_given_d3 = (
+        float(np.mean(switch_win[mask_d3])) if count_d3 else float("nan")
+    )
 
-    th_switch_win, th_switch_win_given_d2, th_switch_win_given_d3 = theoretical_probabilities(p)
+    th_switch_win, th_switch_win_given_d2, th_switch_win_given_d3 = (
+        theoretical_probabilities(p)
+    )
 
     return SimulationRow(
         p=p,
@@ -152,8 +158,12 @@ def simulate_once(p: float, trials: int, seed: int) -> SimulationRow:
         th_p_switch_win_given_d2=th_switch_win_given_d2,
         th_p_switch_win_given_d3=th_switch_win_given_d3,
         abs_err_switch_win=abs(est_switch_win - th_switch_win),
-        abs_err_switch_win_given_d2=abs(est_switch_win_given_d2 - th_switch_win_given_d2),
-        abs_err_switch_win_given_d3=abs(est_switch_win_given_d3 - th_switch_win_given_d3),
+        abs_err_switch_win_given_d2=abs(
+            est_switch_win_given_d2 - th_switch_win_given_d2
+        ),
+        abs_err_switch_win_given_d3=abs(
+            est_switch_win_given_d3 - th_switch_win_given_d3
+        ),
     )
 
 

@@ -49,7 +49,7 @@
 | ----------------------------------------------------- | ------ | ---------- | ------------------------------------------------ |
 | S1: Lecture 14 (LOTUS)                                | ✅     | 2026-02-02 | Notes in `notes/w04_stat101_normal_loc_scale.md` |
 | S1: Review Lectures 4–6 (conditioning)                | ✅     | 2026-02-02 | Completed review (no separate artifact)          |
-| S2: Mixed problems (Lecture 14 + conditioning review) | 🔄     |            | Plan: 2–3 Lecture 14 + 2–3 hard conditioning     |
+| S2: Mixed problems (Lecture 14 + conditioning review) | ✅     |            | Plan: 2–3 Lecture 14 + 2–3 hard conditioning     |
 | S3: `checkpoint_01_conditioning_in_code/`             | ⬜     |            |                                                  |
 | Diffusion: `w04_conditioning_in_diffusion.md`         | ⬜     |            |                                                  |
 
