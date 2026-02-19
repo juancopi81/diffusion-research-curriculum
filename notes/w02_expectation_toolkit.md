@@ -29,7 +29,7 @@ Adding a constant doesn't change variance; scaling by $a$ squares it.
 
 **Steps:**
 
-1. Define indicator $X_j = 1\{\text{event } j \text{ occurs}\}$
+1. Define indicator $X_j = 1\text{event } j \text{ occurs}$
 2. Write total as sum: $X = \sum_j X_j$
 3. Apply linearity: $E[X] = \sum_j E[X_j] = \sum_j P(\text{event } j)$
 
@@ -68,6 +68,7 @@ $$c = 0 \cdot p + (1 + c) \cdot q \implies c = \frac{q}{p}$$
 
 ## 3. Discrete Distributions Reference
 
+
 | Distribution         | Story                                                                                          | PMF                                                   | E[X]           |
 | -------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------- | -------------- |
 | **Bern(p)**          | Single trial, success (1) or failure (0)                                                       | $P(X=1)=p$, $P(X=0)=1-p$                              | $p$            |
@@ -77,6 +78,7 @@ $$c = 0 \cdot p + (1 + c) \cdot q \implies c = \frac{q}{p}$$
 | **FS(p)**            | # of trials until 1st success (incl.)                                                          | $p \cdot q^{k-1}$, $k=1,2,3,\ldots$                   | $\frac{1}{p}$  |
 | **NegBin(r,p)**      | # of failures before $r$-th success                                                            | $\binom{n+r-1}{r-1}p^r q^n$                           | $\frac{rq}{p}$ |
 | **Pois(λ)**          | # of rare events (limit of Bin(n,p) as n→∞, p→0, np→λ)                                         | $\frac{\lambda^k e^{-\lambda}}{k!}$, $k=0,1,2,\ldots$ | $\lambda$      |
+
 
 Where $q = 1 - p$ throughout.
 
@@ -94,3 +96,4 @@ $$\text{Var}(x_t \mid x_0) = \sigma^2(t)$$
 - Linearity: $E[x_0 + \sigma(t)\varepsilon \mid x_0] = x_0 + \sigma(t) E[\varepsilon]$
 - Independence: $\varepsilon$ independent of $x_0$, so $E[\varepsilon \mid x_0] = E[\varepsilon] = 0$
 - Variance scaling: $\text{Var}(\sigma(t)\varepsilon) = \sigma^2(t) \cdot \text{Var}(\varepsilon) = \sigma^2(t)$
+
