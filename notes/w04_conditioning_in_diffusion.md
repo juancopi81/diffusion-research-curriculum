@@ -32,27 +32,84 @@ $$
 
 with fixed $\alpha_t > 0$, $\sigma_t > 0$.
 
-### TODO 1.1
+### TODO 1.1 (independent derivation)
 
-Compute:
+From
 
-- $\mathbb{E}[x_t \mid x_0]$
-- $\mathrm{Var}(x_t \mid x_0)$
+$$
+x_t = \alpha_t x_0 + \sigma_t \epsilon,
+$$
 
-Write each in one line.
+with fixed $\alpha_t,\sigma_t$ and $\epsilon \perp x_0$:
 
-### TODO 1.2
+For $\mathbb{E}[x_t \mid x_0]$:
 
-Compute:
+$$
+\begin{aligned}
+\mathbb{E}[x_t \mid x_0]
+&= \mathbb{E}[\alpha_t x_0 + \sigma_t \epsilon \mid x_0] \\
+&= \mathbb{E}[\alpha_t x_0 \mid x_0] + \mathbb{E}[\sigma_t \epsilon \mid x_0] \quad \text{(linearity)} \\
+&= \alpha_t \mathbb{E}[x_0 \mid x_0] + \sigma_t \mathbb{E}[\epsilon \mid x_0] \quad \text{(constants out)} \\
+&= \alpha_t x_0 + \sigma_t \mathbb{E}[\epsilon] \quad \text{(independence)} \\
+&= \alpha_t x_0 \quad \text{(since } \mathbb{E}[\epsilon]=0 \text{).}
+\end{aligned}
+$$
 
-- $\mathbb{E}[x_t]$
-- $\mathrm{Var}(x_t)$
+For $\mathrm{Var}(x_t \mid x_0)$:
 
-Use LOTUS/linearity and independence explicitly in your steps.
+$$
+\begin{aligned}
+\mathrm{Var}(x_t \mid x_0)
+&= \mathrm{Var}(\alpha_t x_0 + \sigma_t \epsilon \mid x_0) \\
+&= \mathrm{Var}(\sigma_t \epsilon \mid x_0) \quad \text{(} \alpha_t x_0 \text{ is fixed given } x_0 \text{)} \\
+&= \sigma_t^2 \mathrm{Var}(\epsilon \mid x_0) \\
+&= \sigma_t^2 \mathrm{Var}(\epsilon) \quad \text{(independence)} \\
+&= \sigma_t^2 \quad \text{(since } \epsilon \sim \mathcal{N}(0,1) \text{).}
+\end{aligned}
+$$
+
+One-line results:
+
+- $\mathbb{E}[x_t \mid x_0] = \alpha_t x_0$
+- $\mathrm{Var}(x_t \mid x_0) = \sigma_t^2$
+
+### TODO 1.2 (independent derivation)
+
+For $\mathbb{E}[x_t]$ (using LOTUS):
+
+$$
+\begin{aligned}
+\mathbb{E}[x_t]
+&= \mathbb{E}\!\left[\mathbb{E}[x_t \mid x_0]\right] \\
+&= \mathbb{E}[\alpha_t x_0] \quad \text{(from TODO 1.1)} \\
+&= \alpha_t \mathbb{E}[x_0] \\
+&= \alpha_t \mu_0.
+\end{aligned}
+$$
+
+For $\mathrm{Var}(x_t)$ (linearity + independence):
+
+$$
+\begin{aligned}
+\mathrm{Var}(x_t)
+&= \mathrm{Var}(\alpha_t x_0 + \sigma_t \epsilon) \\
+&= \alpha_t^2 \mathrm{Var}(x_0) + \sigma_t^2 \mathrm{Var}(\epsilon)
++ 2\alpha_t \sigma_t \mathrm{Cov}(x_0,\epsilon) \\
+&= \alpha_t^2 s_0^2 + \sigma_t^2 \cdot 1 + 2\alpha_t \sigma_t \cdot 0 \quad \text{(independence)} \\
+&= \alpha_t^2 s_0^2 + \sigma_t^2.
+\end{aligned}
+$$
+
+One-line results:
+
+- $\mathbb{E}[x_t] = \alpha_t \mu_0$
+- $\mathrm{Var}(x_t) = \alpha_t^2 s_0^2 + \sigma_t^2$
 
 ### TODO 1.3 (quick interpretation)
 
-In 2-4 lines: explain how $\sigma_t$ changes uncertainty in $x_t$ when $x_0$ is fixed.
+When $x_0$ is fixed, randomness in $x_t=\alpha_t x_0+\sigma_t\epsilon$ comes only from $\epsilon$.  
+So $\sigma_t$ does not change the conditional mean $\mathbb{E}[x_t\mid x_0]=\alpha_t x_0$, it only changes spread.  
+Specifically, $\mathrm{Var}(x_t\mid x_0)=\sigma_t^2$: larger $\sigma_t$ means wider noise around $\alpha_t x_0$ (not exponential growth).
 
 ---
 
@@ -72,24 +129,186 @@ q(x_0) \propto \exp\!\left(-\frac{(x_0-\mu_0)^2}{2s_0^2}\right),
 q(x_t \mid x_0) \propto \exp\!\left(-\frac{(x_t-\alpha_t x_0)^2}{2\sigma_t^2}\right).
 $$
 
-### TODO 2.1
+### TODO 2.1 (complete derivation)
 
-Write $\log q(x_0 \mid x_t)$ up to additive constants and expand the quadratic terms in $x_0$.
-
-### TODO 2.2
-
-Complete the square and identify:
-
-- posterior variance: $v_t$  
-- posterior mean: $m_t(x_t)$
-
-Use the affine form
+Start from
 
 $$
-m_t(x_t)=A_t x_t + b_t
+q(x_0 \mid x_t) \propto q(x_t \mid x_0)\,q(x_0).
 $$
 
-and solve for $A_t$, $b_t$, and $v_t$.
+Take logs:
+
+$$
+\log q(x_0 \mid x_t)=\log q(x_t \mid x_0)+\log q(x_0)+C_0(x_t),
+$$
+
+where $C_0(x_t)$ collects terms independent of $x_0$.
+
+Substitute the Gaussian forms (dropping normalizing constants into $C_1(x_t)$):
+
+$$
+\log q(x_0 \mid x_t)
+=-\frac{(x_t-\alpha_t x_0)^2}{2\sigma_t^2}
+-\frac{(x_0-\mu_0)^2}{2s_0^2}
++C_1(x_t).
+$$
+
+Expand each square explicitly:
+
+$$
+(x_t-\alpha_t x_0)^2=x_t^2-2\alpha_t x_t x_0+\alpha_t^2 x_0^2,
+$$
+
+$$
+(x_0-\mu_0)^2=x_0^2-2\mu_0 x_0+\mu_0^2.
+$$
+
+Plug back in:
+
+$$
+\log q(x_0 \mid x_t)
+=-\frac{x_t^2-2\alpha_t x_t x_0+\alpha_t^2 x_0^2}{2\sigma_t^2}
+-\frac{x_0^2-2\mu_0 x_0+\mu_0^2}{2s_0^2}
++C_1(x_t).
+$$
+
+Distribute the minus signs term-by-term:
+
+$$
+\log q(x_0 \mid x_t)
+=-\frac{x_t^2}{2\sigma_t^2}
++\frac{\alpha_t x_t}{\sigma_t^2}x_0
+-\frac{\alpha_t^2}{2\sigma_t^2}x_0^2
+-\frac{1}{2s_0^2}x_0^2
++\frac{\mu_0}{s_0^2}x_0
+-\frac{\mu_0^2}{2s_0^2}
++C_1(x_t).
+$$
+
+Now collect by powers of $x_0$:
+
+$$
+\log q(x_0 \mid x_t)
+=-\frac12\left(\frac{\alpha_t^2}{\sigma_t^2}+\frac{1}{s_0^2}\right)x_0^2
++\left(\frac{\alpha_t x_t}{\sigma_t^2}+\frac{\mu_0}{s_0^2}\right)x_0
++C(x_t),
+$$
+
+where
+
+$$
+C(x_t)= -\frac{x_t^2}{2\sigma_t^2}-\frac{\mu_0^2}{2s_0^2}+C_1(x_t)
+$$
+
+contains all terms that do not depend on $x_0$.
+
+### TODO 2.2 (complete the square, step-by-step)
+
+Start from the quadratic form obtained in TODO 2.1:
+
+$$
+\log q(x_0 \mid x_t)
+=-\frac12\left(\frac{\alpha_t^2}{\sigma_t^2}+\frac{1}{s_0^2}\right)x_0^2
++\left(\frac{\alpha_t x_t}{\sigma_t^2}+\frac{\mu_0}{s_0^2}\right)x_0
++C(x_t).
+$$
+
+Define
+
+$$
+A:=\left(\frac{\alpha_t^2}{\sigma_t^2}+\frac{1}{s_0^2}\right),
+\qquad
+B:=\left(\frac{\alpha_t x_t}{\sigma_t^2}+\frac{\mu_0}{s_0^2}\right).
+$$
+
+Then
+
+$$
+\log q(x_0 \mid x_t)= -\frac12 A x_0^2 + Bx_0 + C(x_t)
+= -\frac12 A\left(x_0^2 - 2\frac{B}{A}x_0\right)+C(x_t).
+$$
+
+Now simplify $\frac{B}{A}$ explicitly:
+
+$$
+B=\frac{\alpha_t x_t s_0^2+\mu_0\sigma_t^2}{\sigma_t^2 s_0^2},
+\qquad
+A=\frac{\alpha_t^2 s_0^2+\sigma_t^2}{\sigma_t^2 s_0^2},
+$$
+
+so
+
+$$
+\frac{B}{A}
+=\frac{\alpha_t x_t s_0^2+\mu_0\sigma_t^2}{\alpha_t^2 s_0^2+\sigma_t^2}
+\,=: k_t(x_t).
+$$
+
+Substitute this back:
+
+$$
+\log q(x_0 \mid x_t)
+= -\frac12 A\left(x_0^2-2k_t(x_t)x_0\right)+C(x_t).
+$$
+
+Use $x_0^2-2k x_0=(x_0-k)^2-k^2$:
+
+$$
+\log q(x_0 \mid x_t)
+= -\frac12 A\left[(x_0-k_t(x_t))^2-k_t(x_t)^2\right]+C(x_t)
+$$
+
+$$
+= -\frac12 A(x_0-k_t(x_t))^2
++\frac12 A\,k_t(x_t)^2
++C(x_t).
+$$
+
+Absorb the $x_0$-independent terms into a new constant $C_1(x_t)$:
+
+$$
+\log q(x_0 \mid x_t)
+= -\frac12 A(x_0-k_t(x_t))^2 + C_1(x_t).
+$$
+
+Match with Gaussian log form
+
+$$
+\log q(x_0 \mid x_t)
+=-\frac{(x_0-m_t(x_t))^2}{2v_t}+C_2(x_t).
+$$
+
+Therefore:
+
+- posterior variance
+
+$$
+v_t=\frac{1}{A}
+=\frac{1}{\frac{\alpha_t^2}{\sigma_t^2}+\frac{1}{s_0^2}}
+=\frac{\sigma_t^2 s_0^2}{\alpha_t^2 s_0^2+\sigma_t^2}.
+$$
+
+- posterior mean
+
+$$
+m_t(x_t)=k_t(x_t)
+=\frac{\alpha_t s_0^2\,x_t+\mu_0\sigma_t^2}{\alpha_t^2 s_0^2+\sigma_t^2}.
+$$
+
+Write $m_t(x_t)$ in affine form:
+
+$$
+m_t(x_t)=A_t x_t+b_t,
+$$
+
+with
+
+$$
+A_t=\frac{\alpha_t s_0^2}{\alpha_t^2 s_0^2+\sigma_t^2},
+\qquad
+b_t=\frac{\mu_0\sigma_t^2}{\alpha_t^2 s_0^2+\sigma_t^2}.
+$$
 
 ### TODO 2.3 (sanity checks)
 
