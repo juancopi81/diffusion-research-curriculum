@@ -382,34 +382,40 @@ $$
 Now simplify term by term:
 
 - First term:
-$$
-\mathbb{E}\!\left[(x_0-m(x_t))^2\mid x_t\right]=\mathrm{Var}(x_0\mid x_t).
-$$
-Why: by definition,
-$$
-\mathrm{Var}(X\mid Y)=\mathbb{E}\!\left[(X-\mathbb{E}[X\mid Y])^2\mid Y\right].
-$$
-Here $X=x_0$ and $Y=x_t$, and $\mathbb{E}[x_0\mid x_t]=m(x_t)$.
+
+  $$
+  \mathbb{E}\!\left[(x_0-m(x_t))^2\mid x_t\right]=\mathrm{Var}(x_0\mid x_t).
+  $$
+
+  Why: by definition,
+
+  $$
+  \mathrm{Var}(X\mid Y)=\mathbb{E}\!\left[(X-\mathbb{E}[X\mid Y])^2\mid Y\right].
+  $$
+
+  Here $X=x_0$ and $Y=x_t$, and $\mathbb{E}[x_0\mid x_t]=m(x_t)$.
 
 - Cross term:
-$$
-\begin{aligned}
-\mathbb{E}\!\left[(x_0-m)(m-g)\mid x_t\right]
-&=(m-g)\,\mathbb{E}[x_0-m\mid x_t] \\
-&=(m-g)\,\big(\mathbb{E}[x_0\mid x_t]-m\big)=0.
-\end{aligned}
-$$
-Why this is zero:
+
+  $$
+  \begin{aligned}
+  \mathbb{E}\!\left[(x_0-m)(m-g)\mid x_t\right]
+  &=(m-g)\,\mathbb{E}[x_0-m\mid x_t] \\
+  &=(m-g)\,\big(\mathbb{E}[x_0\mid x_t]-m\big)=0.
+  \end{aligned}
+  $$
+
+  Why this is zero:
 
 - $(m-g)$ is a function of $x_t$ only, so under conditioning on $x_t$ it is a constant and can be factored out.
 - $\mathbb{E}[x_0-m\mid x_t]=0$ because $m(x_t)=\mathbb{E}[x_0\mid x_t]$.
 - Therefore the product is zero.
 
 - Last term (deterministic given $x_t$):
-$$
-\mathbb{E}\!\left[(m(x_t)-g(x_t))^2\mid x_t\right]=(m(x_t)-g(x_t))^2.
-$$
-Why: $(m(x_t)-g(x_t))^2$ depends only on $x_t$; once conditioned on $x_t$, it is non-random.
+  $$
+  \mathbb{E}\!\left[(m(x_t)-g(x_t))^2\mid x_t\right]=(m(x_t)-g(x_t))^2.
+  $$
+  Why: $(m(x_t)-g(x_t))^2$ depends only on $x_t$; once conditioned on $x_t$, it is non-random.
 
 So the conditional decomposition is
 
@@ -446,6 +452,7 @@ The first term does not depend on $g$. The second term is always $\ge 0$, and it
 $$
 g^\star(x_t)=m(x_t)=\mathbb{E}[x_0\mid x_t].
 $$
+
 Why: for any random variable $Z$, $Z^2\ge 0$, hence $\mathbb{E}[Z^2]\ge 0$. Here $Z=m(x_t)-g(x_t)$, so the minimum possible value is $0$, achieved when $g(x_t)=m(x_t)$ almost surely.
 
 Therefore, under MSE, the optimal denoiser is the posterior conditional mean.
@@ -462,7 +469,7 @@ This is why diffusion training can be interpreted as learning the best condition
 
 ## 4) Optional Code Check (No Closed-Form Answers Needed Here)
 
-Use `/Users/juanpineros/juancopi81/diffusion-research-curriculum/notebooks/w04_normal_loc_scale_solved.ipynb` as a starting reference.
+Use `/notebooks/w04_normal_loc_scale_solved.ipynb` as a starting reference.
 
 ### TODO 4.1
 
