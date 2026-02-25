@@ -19,9 +19,9 @@ It is divided into five phases:
 ## 🚀 Current Progress
 
 - **Phase:** 1 (Probability Core)
-- **Week:** 3 — Continuous Distributions + The Normal ✅
+- **Week:** 4 — Checkpoint 1 (LOTUS + Conditioning) 🔄
 - **Completed:** Weeks 1-3 (RVs, Expectation, Gaussian Properties, Score Function)
-- **Next Milestone:** Checkpoint 1 (Week 4) — Conditioning in Code
+- **Next Milestone:** Finish Week 4 checkpoint deliverables in code and notes
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 

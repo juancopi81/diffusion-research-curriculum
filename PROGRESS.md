@@ -25,13 +25,13 @@
 
 ### Week 2 — Expectation Mastery ✅
 
-| Task                                    | Status        | Date       | Notes                                             |
-| --------------------------------------- | ------------- | ---------- | ------------------------------------------------- | ---------- | ------------------------------------------------- |
-| S1: Lecture 9 (Expectation, Indicators) | ✅            | 2025-01-19 | CDF, linearity, indicators                        |
-| S1: Lecture 10 (Expectation Continued)  | ✅            | 2025-01-20 | Linearity proof, NegBin, St. Petersburg           |
-| S2: Problems (LOTUS, variance)          | ✅            | 2025-01-23 | 5 problems in `proofs/w02_stat110_expectation.md` |
-| S3: `w02_expectation_toolkit.md`        | ✅            | 2025-01-23 | Patterns + distributions reference                |
-| Diffusion: E[x_t                        | x_0], Var(x_t | x_0)       | ✅                                                | 2025-01-23 | Derived + verified in `w02_forward_moments.ipynb` |
+| Task                                            | Status | Date       | Notes                                             |
+| ----------------------------------------------- | ------ | ---------- | ------------------------------------------------- |
+| S1: Lecture 9 (Expectation, Indicators)         | ✅     | 2025-01-19 | CDF, linearity, indicators                        |
+| S1: Lecture 10 (Expectation Continued)          | ✅     | 2025-01-20 | Linearity proof, NegBin, St. Petersburg           |
+| S2: Problems (LOTUS, variance)                  | ✅     | 2025-01-23 | 5 problems in `proofs/w02_stat110_expectation.md` |
+| S3: `w02_expectation_toolkit.md`                | ✅     | 2025-01-23 | Patterns + distributions reference                |
+| Diffusion: $E[x_t \mid x_0], Var(x_t \mid x_0)$ | ✅     | 2025-01-23 | Derived + verified in `w02_forward_moments.ipynb` |
 
 ### Week 3 — Continuous Distributions + The Normal ✅
 
@@ -75,9 +75,9 @@
 ### Week 7 — Conditional Expectation + Inequalities
 
 | Task                                              | Status | Date | Notes |
-| ------------------------------------------------- | ------ | ---- | ----- | --- |
+| ------------------------------------------------- | ------ | ---- | ----- |
 | S1: Lecture 26 (Conditional Expectation)          | ⬜     |      |       |
-| S1: Lecture 27 (E[Y                               | X=x])  | ⬜   |       |     |
+| S1: Lecture 27 ($E[Y \mid X=x]$)                  | ⬜     |      |       |
 | S2: Problems (tower property)                     | ⬜     |      |       |
 | S3: `w07_conditional_expectation_in_diffusion.md` | ⬜     |      |       |
 

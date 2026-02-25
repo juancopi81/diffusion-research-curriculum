@@ -312,10 +312,31 @@ $$
 
 ### TODO 2.3 (sanity checks)
 
-Answer briefly:
+1. As $\sigma_t \to 0$:
 
-1. What should happen to $q(x_0 \mid x_t)$ as $\sigma_t \to 0$?
-2. What should happen as $\sigma_t \to \infty$?
+$$
+A_t=\frac{\alpha_t s_0^2}{\alpha_t^2 s_0^2+\sigma_t^2}\to \frac{1}{\alpha_t},\qquad
+b_t=\frac{\mu_0\sigma_t^2}{\alpha_t^2 s_0^2+\sigma_t^2}\to 0,\qquad
+v_t=\frac{\sigma_t^2 s_0^2}{\alpha_t^2 s_0^2+\sigma_t^2}\to 0.
+$$
+
+So $m_t(x_t)=A_t x_t+b_t \to x_t/\alpha_t$, and $q(x_0\mid x_t)$ collapses around one value (almost deterministic).
+Intuition (images): with almost no noise, the corrupted image still looks like the original image, so you can infer the clean image very confidently.
+
+2. As $\sigma_t \to \infty$:
+
+$$
+A_t\to 0,\qquad b_t\to \mu_0,\qquad v_t\to s_0^2.
+$$
+
+So $m_t(x_t)\to \mu_0$, and
+
+$$
+q(x_0\mid x_t)\to \mathcal{N}(\mu_0,s_0^2)=q(x_0).
+$$
+
+The posterior becomes the prior: $x_t$ no longer adds useful information.
+Intuition (images): if the observed image is mostly static, it does not tell you what the original image was, so you fall back to your general prior about likely images.
 
 ---
 
@@ -329,22 +350,113 @@ $$
 
 ### TODO 3.1
 
-Condition on $x_t$ and derive the decomposition that separates:
+Condition first on $x_t$:
 
-- an irreducible uncertainty term, and
-- a mismatch term involving $g(x_t)$.
+$$
+\mathcal{L}(g)=\mathbb{E}\!\left[\mathbb{E}\!\left[(x_0-g(x_t))^2\mid x_t\right]\right].
+$$
+
+Define the posterior mean
+
+$$
+m(x_t):=\mathbb{E}[x_0\mid x_t].
+$$
+
+Add and subtract $m(x_t)$ inside the square:
+
+$$
+x_0-g(x_t)=\big(x_0-m(x_t)\big)+\big(m(x_t)-g(x_t)\big).
+$$
+
+Then
+
+$$
+\begin{aligned}
+\mathbb{E}\!\left[(x_0-g(x_t))^2\mid x_t\right]
+&= \mathbb{E}\!\left[(x_0-m(x_t))^2\mid x_t\right] \\
+&\quad + 2\,\mathbb{E}\!\left[(x_0-m(x_t))(m(x_t)-g(x_t))\mid x_t\right] \\
+&\quad + \mathbb{E}\!\left[(m(x_t)-g(x_t))^2\mid x_t\right].
+\end{aligned}
+$$
+
+Now simplify term by term:
+
+- First term:
+$$
+\mathbb{E}\!\left[(x_0-m(x_t))^2\mid x_t\right]=\mathrm{Var}(x_0\mid x_t).
+$$
+Why: by definition,
+$$
+\mathrm{Var}(X\mid Y)=\mathbb{E}\!\left[(X-\mathbb{E}[X\mid Y])^2\mid Y\right].
+$$
+Here $X=x_0$ and $Y=x_t$, and $\mathbb{E}[x_0\mid x_t]=m(x_t)$.
+
+- Cross term:
+$$
+\begin{aligned}
+\mathbb{E}\!\left[(x_0-m)(m-g)\mid x_t\right]
+&=(m-g)\,\mathbb{E}[x_0-m\mid x_t] \\
+&=(m-g)\,\big(\mathbb{E}[x_0\mid x_t]-m\big)=0.
+\end{aligned}
+$$
+Why this is zero:
+
+- $(m-g)$ is a function of $x_t$ only, so under conditioning on $x_t$ it is a constant and can be factored out.
+- $\mathbb{E}[x_0-m\mid x_t]=0$ because $m(x_t)=\mathbb{E}[x_0\mid x_t]$.
+- Therefore the product is zero.
+
+- Last term (deterministic given $x_t$):
+$$
+\mathbb{E}\!\left[(m(x_t)-g(x_t))^2\mid x_t\right]=(m(x_t)-g(x_t))^2.
+$$
+Why: $(m(x_t)-g(x_t))^2$ depends only on $x_t$; once conditioned on $x_t$, it is non-random.
+
+So the conditional decomposition is
+
+$$
+\mathbb{E}\!\left[(x_0-g(x_t))^2\mid x_t\right]
+=\mathrm{Var}(x_0\mid x_t)+(m(x_t)-g(x_t))^2.
+$$
+
+Taking expectation over $x_t$:
+
+$$
+\mathcal{L}(g)
+=\mathbb{E}\!\left[\mathrm{Var}(x_0\mid x_t)\right]
++\mathbb{E}\!\left[(m(x_t)-g(x_t))^2\right].
+$$
+
+Interpretation:
+
+- $\mathbb{E}[\mathrm{Var}(x_0\mid x_t)]$ is irreducible uncertainty.
+- $\mathbb{E}[(m(x_t)-g(x_t))^2]$ is estimator mismatch.
 
 ### TODO 3.2
 
-From your decomposition, show which function $g^\star(x_t)$ minimizes $\mathcal{L}(g)$.
+From TODO 3.1:
+
+$$
+\mathcal{L}(g)
+=\mathbb{E}\!\left[\mathrm{Var}(x_0\mid x_t)\right]
++\mathbb{E}\!\left[(m(x_t)-g(x_t))^2\right].
+$$
+
+The first term does not depend on $g$. The second term is always $\ge 0$, and it is minimized when it is zero almost surely, i.e.,
+
+$$
+g^\star(x_t)=m(x_t)=\mathbb{E}[x_0\mid x_t].
+$$
+Why: for any random variable $Z$, $Z^2\ge 0$, hence $\mathbb{E}[Z^2]\ge 0$. Here $Z=m(x_t)-g(x_t)$, so the minimum possible value is $0$, achieved when $g(x_t)=m(x_t)$ almost surely.
+
+Therefore, under MSE, the optimal denoiser is the posterior conditional mean.
 
 ### TODO 3.3 (connection to diffusion training)
 
-Write 4-6 lines connecting your result to the sentence:
-
-`"Denoising is estimating a conditional expectation."`
-
-Do not use vague wording; name the random variables explicitly.
+In diffusion, we observe a noisy sample $x_t$ and want to recover the clean variable $x_0$.  
+If our prediction function is $g(x_t)$ and we train with squared loss $\mathbb{E}[(x_0-g(x_t))^2]$, the unique optimal target is $g^\star(x_t)=\mathbb{E}[x_0\mid x_t]$.  
+So denoising is not arbitrary inversion; it is estimation of a conditional expectation under the forward noising distribution $q(x_t\mid x_0)$.  
+As noise level changes with $t$, the conditional distribution $q(x_0\mid x_t)$ changes, and so does its mean.  
+This is why diffusion training can be interpreted as learning the best conditional estimator of the clean signal from noisy observations.
 
 ---
 
