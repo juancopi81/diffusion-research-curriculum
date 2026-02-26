@@ -3,11 +3,12 @@
 ## Current Status
 
 - **Phase:** 1 (Probability Core)
-- **Week:** 4 🔄
+- **Week:** 5 🔄
 - **Started:** 2025-01-14
 - **Week 1 Completed:** 2025-01-19
 - **Week 2 Completed:** 2025-01-23
 - **Week 3 Completed:** 2025-01-31
+- **Week 4 Completed:** 2026-02-26
 
 ---
 
@@ -43,15 +44,15 @@
 | S3: `w03_gaussian_properties.ipynb`   | ✅     | 2025-01-31 | 5 checkpoints: PDF, CDF, linear transform, sums, 68-95-99.7 |
 | Diffusion: `w03_score_of_gaussian.md` | ✅     | 2025-01-31 | Score derivation + verification notebook                    |
 
-### Week 4 (Checkpoint 1) — LOTUS + Conditioning Mastery
+### Week 4 (Checkpoint 1) — LOTUS + Conditioning Mastery ✅
 
 | Task                                                  | Status | Date       | Notes                                            |
 | ----------------------------------------------------- | ------ | ---------- | ------------------------------------------------ |
 | S1: Lecture 14 (LOTUS)                                | ✅     | 2026-02-02 | Notes in `notes/w04_stat101_normal_loc_scale.md` |
 | S1: Review Lectures 4–6 (conditioning)                | ✅     | 2026-02-02 | Completed review (no separate artifact)          |
-| S2: Mixed problems (Lecture 14 + conditioning review) | ✅     |            | Plan: 2–3 Lecture 14 + 2–3 hard conditioning     |
-| S3: `checkpoint_01_conditioning_in_code/`             | ⬜     |            |                                                  |
-| Diffusion: `w04_conditioning_in_diffusion.md`         | ⬜     |            |                                                  |
+| S2: Mixed problems (Lecture 14 + conditioning review) | ✅     | 2026-02-02 | Completed in `proofs/w04_stat110_lotus_conditioning.md` |
+| S3: `checkpoint_01_conditioning_in_code/`             | ✅     | 2026-02-26 | Completed analysis in `mini_projects/checkpoint_01_conditioning_in_code/analysis.md` |
+| Diffusion: `w04_conditioning_in_diffusion.md`         | ✅     | 2026-02-26 | Derivations, empirical check, and reflection completed |
 
 ### Week 5 — Joint Distributions + Covariance
 

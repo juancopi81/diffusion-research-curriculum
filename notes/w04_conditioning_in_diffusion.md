@@ -489,6 +489,8 @@ from simulated data and compare it qualitatively with your derived $m_t(x_t)=A_t
 
 Write 2-3 lines on whether the empirical trend agrees with your theory and why any mismatch appears.
 
+The empirical trend agrees with theory: the fitted linear predictor is almost identical to the derived posterior mean, and its error is near the Bayes floor in this fixed-$t$ Gaussian setup. In particular, $\mathrm{MSE}_{\text{theory}}=0.6721$ and $\mathrm{MSE}_{\text{fit}}=0.6721$, both close to the theoretical floor $v_t=0.6736$, while the naive constant baseline is much worse ($1.4373$). The small gaps (for example, $\hat{a}=0.6658$ vs $A_t=0.6653$) are expected from finite-sample Monte Carlo and minor numerical estimation noise, not from a mismatch in the model.
+
 ---
 
 ## 5) Reflection (Short)
@@ -501,12 +503,14 @@ Write one paragraph (5-8 lines):
 - What changed in your intuition about conditioning in diffusion?
 - One question you want to revisit in Week 5.
 
+The hardest step was the decomposition in TODO 3.1 for $\mathcal{L}(g)$, especially adding and subtracting $m(x_t)=\mathbb{E}[x_0\mid x_t]$ inside the square and showing why the cross term is zero. Once that clicked, my intuition changed from "denoising as inversion" to "denoising as conditional estimation." In particular, I now see clearly that the MSE-optimal denoiser is the posterior mean $\mathbb{E}[x_0\mid x_t]$, and the best possible error is limited by irreducible uncertainty $\mathbb{E}[\mathrm{Var}(x_0\mid x_t)]$. The close match between empirical and theoretical results in this notebook reinforced that interpretation in the Gaussian case. For Week 5, I want to revisit SNR and connect it more deeply to joint distributions/covariance so I can explain how information about $x_0$ degrades as noise increases.
+
 ---
 
 ## Completion Checklist
 
-- [ ] I derived Section 1 moments without skipping steps.
-- [ ] I derived $q(x_0 \mid x_t)$ and checked limiting behavior.
-- [ ] I proved (for myself) the optimal denoiser under MSE.
-- [ ] I added one short empirical check or clearly noted why I skipped it.
-- [ ] I wrote the reflection paragraph.
+- [x] I derived Section 1 moments without skipping steps.
+- [x] I derived $q(x_0 \mid x_t)$ and checked limiting behavior.
+- [x] I proved (for myself) the optimal denoiser under MSE.
+- [x] I added one short empirical check or clearly noted why I skipped it.
+- [x] I wrote the reflection paragraph.

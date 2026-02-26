@@ -19,9 +19,9 @@ It is divided into five phases:
 ## 🚀 Current Progress
 
 - **Phase:** 1 (Probability Core)
-- **Week:** 4 — Checkpoint 1 (LOTUS + Conditioning) 🔄
-- **Completed:** Weeks 1-3 (RVs, Expectation, Gaussian Properties, Score Function)
-- **Next Milestone:** Finish Week 4 checkpoint deliverables in code and notes
+- **Week:** 5 — Joint Distributions + Covariance 🔄
+- **Completed:** Weeks 1-4 (RVs, Expectation, Gaussian Properties, Score Function, Conditioning)
+- **Next Milestone:** Complete Week 5 core artifacts (`w05_joint_gaussians.ipynb` + 2D score vector field intuition)
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 
