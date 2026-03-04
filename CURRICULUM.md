@@ -15,68 +15,68 @@ Use these short tags throughout the plan.
 ### Probability + proofs (Phase 1 backbone)
 
 - **[Stat110-YT]** Stat110 full lecture playlist:  
-  https://www.youtube.com/playlist?list=PL2SOU6wwxB0uwwH80KTQ6ht66KWxbzTIo
+  [https://www.youtube.com/playlist?list=PL2SOU6wwxB0uwwH80KTQ6ht66KWxbzTIo](https://www.youtube.com/playlist?list=PL2SOU6wwxB0uwwH80KTQ6ht66KWxbzTIo)
 - **[Stat110-Practice]** Strategic Practice Problems + HW sets (contains problems + solutions):  
-  https://stat110.hsites.harvard.edu/strategic-practice-problems
+  [https://stat110.hsites.harvard.edu/strategic-practice-problems](https://stat110.hsites.harvard.edu/strategic-practice-problems)
 - **[Stat110-Text]** Stat110 online textbook (Blitzstein & Hwang):  
-  https://projects.iq.harvard.edu/stat110/book
+  [https://projects.iq.harvard.edu/stat110/book](https://projects.iq.harvard.edu/stat110/book)
 - **[BoP]** Book of Proof (Hammack, free PDF):  
-  https://richardhammack.github.io/BookOfProof/Main.pdf
+  [https://richardhammack.github.io/BookOfProof/Main.pdf](https://richardhammack.github.io/BookOfProof/Main.pdf)
 - **[MIT-6042]** Mathematics for Computer Science (MIT 6.042J OCW notes + assignments):
-  https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2005/  
-  Video playlist: https://www.youtube.com/playlist?list=PLB7540DEDD482705B
+  [https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2005/](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2005/)  
+  Video playlist: [https://www.youtube.com/playlist?list=PLB7540DEDD482705B](https://www.youtube.com/playlist?list=PLB7540DEDD482705B)
 
 ### Linear algebra + optimization (Phase 2 backbone)
 
 - **[MML-Book]** Mathematics for Machine Learning (free PDF):  
-  https://mml-book.github.io/book/mml-book.pdf
+  [https://mml-book.github.io/book/mml-book.pdf](https://mml-book.github.io/book/mml-book.pdf)
 - **[MIT-1806]** MIT 18.06 Linear Algebra (optional, for intuition/drills):  
-  https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/
+  [https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/](https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/)
 
 ### Deep generative models (VAE/Flows/Diffusion theory support)
 
 - **[CS236-Site]** Stanford CS236 course site + syllabus + slides/notes:  
-  https://deepgenerativemodels.github.io/  
-  Syllabus with topic-by-week: https://deepgenerativemodels.github.io/syllabus.html
+  [https://deepgenerativemodels.github.io/](https://deepgenerativemodels.github.io/)  
+  Syllabus with topic-by-week: [https://deepgenerativemodels.github.io/syllabus.html](https://deepgenerativemodels.github.io/syllabus.html)
 - **[CS236-YT]** Stanford CS236 YouTube playlist (2023):  
-  https://www.youtube.com/playlist?list=PLoROMvodv4rPOWA-omMM6STXaWW4FvJT8
+  [https://www.youtube.com/playlist?list=PLoROMvodv4rPOWA-omMM6STXaWW4FvJT8](https://www.youtube.com/playlist?list=PLoROMvodv4rPOWA-omMM6STXaWW4FvJT8)
 
 ### Diffusion / score resources (implementation + literacy)
 
 - **[HF-DiffCourse]** Hugging Face Diffusion Course (hands-on, free):  
-  https://huggingface.co/learn/diffusion-course
+  [https://huggingface.co/learn/diffusion-course](https://huggingface.co/learn/diffusion-course)
 - **[HF-AnnotatedDiff]** “Annotated Diffusion” blog (walkthrough + code):  
-  https://huggingface.co/blog/annotated-diffusion
+  [https://huggingface.co/blog/annotated-diffusion](https://huggingface.co/blog/annotated-diffusion)
 - **[Diffusers-Docs]** Hugging Face Diffusers docs:  
-  https://huggingface.co/docs/diffusers/index
+  [https://huggingface.co/docs/diffusers/index](https://huggingface.co/docs/diffusers/index)
 - **[Song-Tut]** Yang Song’s score-based tutorial hub:  
-  https://yang-song.net/blog/2021/score/
+  [https://yang-song.net/blog/2021/score/](https://yang-song.net/blog/2021/score/)
 - **[Weng]** Lilian Weng blog (useful for intuition + summaries):  
-  https://lilianweng.github.io/
+  [https://lilianweng.github.io/](https://lilianweng.github.io/)
 
 ### Flow matching / ODE/SDE view (Phase 4 backbone)
 
 - **[MIT-6S184]** MIT course “Flow Matching and Diffusion Models” (notes + lectures + labs):  
-  https://diffusion.csail.mit.edu/
+  [https://diffusion.csail.mit.edu/](https://diffusion.csail.mit.edu/)
 - **[MIT-6S184-Notes]** Direct lecture notes PDF:  
-  https://diffusion.csail.mit.edu/lecture-notes.pdf
+  [https://diffusion.csail.mit.edu/lecture-notes.pdf](https://diffusion.csail.mit.edu/lecture-notes.pdf)
 
 ### Core papers (open access)
 
-- **[DDPM]** Ho et al. “Denoising Diffusion Probabilistic Models”: https://arxiv.org/abs/2006.11239
-- **[DDIM]** Song et al. “Denoising Diffusion Implicit Models”: https://arxiv.org/abs/2010.02502
-- **[ScoreSDE]** Song et al. “Score-Based Generative Modeling through SDEs”: https://arxiv.org/abs/2011.13456
-- **[FlowMatching]** Lipman et al. “Flow Matching for Generative Modeling”: https://arxiv.org/abs/2210.02747
+- **[DDPM]** Ho et al. “Denoising Diffusion Probabilistic Models”: [https://arxiv.org/abs/2006.11239](https://arxiv.org/abs/2006.11239)
+- **[DDIM]** Song et al. “Denoising Diffusion Implicit Models”: [https://arxiv.org/abs/2010.02502](https://arxiv.org/abs/2010.02502)
+- **[ScoreSDE]** Song et al. “Score-Based Generative Modeling through SDEs”: [https://arxiv.org/abs/2011.13456](https://arxiv.org/abs/2011.13456)
+- **[FlowMatching]** Lipman et al. “Flow Matching for Generative Modeling”: [https://arxiv.org/abs/2210.02747](https://arxiv.org/abs/2210.02747)
 - **[RectifiedFlow]** (rectified flow line of work; pick a canonical arXiv paper you like and pin it here once chosen)
 
 ### SDE numerics (free references)
 
 - **[Higham-SDE]** Higham “An Algorithmic Introduction to Numerical Simulation of SDEs” (PDF):  
-  https://www.maths.ed.ac.uk/~dhigham/Publications/Papers/sdes.pdf
+  [https://www.maths.ed.ac.uk/~dhigham/Publications/Papers/sdes.pdf](https://www.maths.ed.ac.uk/~dhigham/Publications/Papers/sdes.pdf)
 - **[SarkkaSolin]** Särkkä & Solin “Applied Stochastic Differential Equations” (PDF/notes):  
-  https://users.aalto.fi/~asolin/sde-book/sde-book.pdf
+  [https://users.aalto.fi/~asolin/sde-book/sde-book.pdf](https://users.aalto.fi/~asolin/sde-book/sde-book.pdf)
 - **[MIT-18445]** MIT 18.445 Stochastic Processes (OCW):  
-  https://ocw.mit.edu/courses/18-445-introduction-to-stochastic-processes-spring-2015/
+  [https://ocw.mit.edu/courses/18-445-introduction-to-stochastic-processes-spring-2015/](https://ocw.mit.edu/courses/18-445-introduction-to-stochastic-processes-spring-2015/)
 
 > Rule: if a link breaks, replace it with an equivalent official mirror and update README (don’t stall the curriculum).
 
@@ -633,8 +633,8 @@ Write one post (Markdown in repo, or publish externally):
 
 Use these only as needed:
 
-- **[MIT-RealAnalysis]** MIT 18.100B Real Analysis (OCW): https://ocw.mit.edu/courses/18-100b-real-analysis-spring-2025/
-- **[Boyd-Book]** Convex Optimization (book): https://web.stanford.edu/~boyd/cvxbook/
+- **[MIT-RealAnalysis]** MIT 18.100B Real Analysis (OCW): [https://ocw.mit.edu/courses/18-100b-real-analysis-spring-2025/](https://ocw.mit.edu/courses/18-100b-real-analysis-spring-2025/)
+- **[Boyd-Book]** Convex Optimization (book): [https://web.stanford.edu/~boyd/cvxbook/](https://web.stanford.edu/~boyd/cvxbook/)
 - Full rigor SDE texts (only if you truly want) — otherwise rely on **[MIT-6S184]**, **[Higham-SDE]**, **[SarkkaSolin]**
 
 ---
