@@ -58,8 +58,8 @@
 
 | Task                                 | Status | Date | Notes |
 | ------------------------------------ | ------ | ---- | ----- |
-| S1: Lecture 19 (Joint distributions) | ⬜     |      |       |
-| S1: Lecture 21 (Covariance)          | ⬜     |      |       |
+| S1: Lecture 19 (Joint distributions) | ✅     | 2026-03-13 | Notes in `notes/w05_stat110_joint_conditional_marginal.md` |
+| S1: Lecture 21 (Covariance)          | ✅     | 2026-03-13 | Notes in `notes/w05_stat110_covariance_correlation.md` |
 | S2: Problems (joint, covariance)     | ⬜     |      |       |
 | S3: `w05_joint_gaussians.ipynb`      | ⬜     |      |       |
 | Diffusion: 2D score vector field     | ⬜     |      |       |
