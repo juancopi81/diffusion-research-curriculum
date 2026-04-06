@@ -295,6 +295,270 @@ $$
 1. Find the marginal CDF and marginal PDF of $M$, and the joint CDF and joint PDF of $L, M$.
 2. Find the conditional PDF of $M$ given $L$.
 
+### My attempt
+
+The easiest place to start is the maximum:
+
+$$
+M=\max(U_1,U_2,U_3).
+$$
+
+To get its CDF, write the event directly:
+
+$$
+F_M(m)=P(M\le m).
+$$
+
+But $M\le m$ means that **all three** uniforms are at most $m$, so
+
+$$
+P(M\le m)=P(U_1\le m,\;U_2\le m,\;U_3\le m).
+$$
+
+Since the $U_i$ are independent and each is $\mathrm{Unif}(0,1)$,
+
+$$
+P(U_i\le m)=m \qquad \text{for } 0\le m\le 1.
+$$
+
+Therefore,
+
+$$
+F_M(m)=
+\begin{cases}
+0, & m<0,\\[4pt]
+m^3, & 0\le m\le 1,\\[4pt]
+1, & m>1.
+\end{cases}
+$$
+
+Differentiating on the interior gives the marginal PDF of $M$:
+
+$$
+f_M(m)=
+\begin{cases}
+3m^2, & 0<m<1,\\[4pt]
+0, & \text{otherwise}.
+\end{cases}
+$$
+
+Now consider the joint CDF
+
+$$
+F_{L,M}(l,m)=P(L\le l,\;M\le m).
+$$
+
+On the main region $0\le l\le m\le 1$, it is convenient to subtract the complementary part inside $\{M\le m\}$:
+
+$$
+P(L\le l,\;M\le m)=P(M\le m)-P(L>l,\;M\le m).
+$$
+
+The event $L>l$ means all three uniforms are greater than $l$, while $M\le m$ means all three are at most $m$. So together this means all three fall in $(l,m]$, and hence
+
+$$
+P(L>l,\;M\le m)=P(l<U_1\le m,\;l<U_2\le m,\;l<U_3\le m)=(m-l)^3.
+$$
+
+Thus, for $0\le l\le m\le 1$,
+
+$$
+F_{L,M}(l,m)=m^3-(m-l)^3.
+$$
+
+To write the full joint CDF, we also need the other regions:
+
+$$
+F_{L,M}(l,m)=
+\begin{cases}
+0, & l<0 \text{ or } m<0,\\[4pt]
+m^3-(m-l)^3, & 0\le l\le m\le 1,\\[4pt]
+m^3, & 0\le m\le 1,\; l\ge m,\\[4pt]
+1-(1-l)^3, & m>1,\; 0\le l\le 1,\\[4pt]
+1, & l>1,\; m>1.
+\end{cases}
+$$
+
+The joint PDF comes from differentiating on the interior of the support:
+
+$$
+0<l<m<1.
+$$
+
+There,
+
+$$
+f_{L,M}(l,m)=\frac{\partial^2}{\partial l\,\partial m}\big[m^3-(m-l)^3\big]=6(m-l).
+$$
+
+So
+
+$$
+f_{L,M}(l,m)=
+\begin{cases}
+6(m-l), & 0<l<m<1,\\[4pt]
+0, & \text{otherwise}.
+\end{cases}
+$$
+
+For the conditional PDF of $M$ given $L$, first find the marginal PDF of $L$. Since
+
+$$
+P(L>l)=P(U_1>l,\;U_2>l,\;U_3>l)=(1-l)^3
+\qquad \text{for } 0\le l\le 1,
+$$
+
+we get
+
+$$
+F_L(l)=P(L\le l)=1-(1-l)^3,
+$$
+
+and hence
+
+$$
+f_L(l)=
+\begin{cases}
+3(1-l)^2, & 0<l<1,\\[4pt]
+0, & \text{otherwise}.
+\end{cases}
+$$
+
+Therefore,
+
+$$
+f_{M\mid L}(m\mid l)=\frac{f_{L,M}(l,m)}{f_L(l)}
+=\frac{6(m-l)}{3(1-l)^2}
+=\frac{2(m-l)}{(1-l)^2},
+$$
+
+for $0<l<1$ and $l<m<1$, and $0$ otherwise.
+
+### What I initially missed / corrected
+
+- For max/min problems, the first job is to translate the event correctly:
+  - $M\le m$ means **all three** $U_i$ are at most $m$.
+  - $L>l$ means **all three** $U_i$ are greater than $l$.
+
+- The CDF route is the cleanest starting point for extrema.
+  Trying to think about the density of $\max(U_1,U_2,U_3)$ directly is much harder than first writing $P(M\le m)$.
+
+- The pair $(L,M)$ does not live on the whole square $[0,1]^2$.
+  Its support is the triangular region
+
+  $$
+  0\le l\le m\le 1,
+  $$
+
+  because a minimum cannot exceed a maximum.
+
+- The formula
+
+  $$
+  m^3-(m-l)^3
+  $$
+
+  is only the joint CDF on the main region $0\le l\le m\le 1$.
+  Outside that region, the logic changes:
+  - if $l\ge m$, then $M\le m$ already forces $L\le l$;
+  - if $m>1$, then $M\le m$ is automatic;
+  - if $l<0$ or $m<0$, the event is impossible.
+
+- For the conditional density, use **density over density**:
+
+  $$
+  f_{M\mid L}(m\mid l)=\frac{f_{L,M}(l,m)}{f_L(l)}.
+  $$
+
+  The conditional PDF uses the joint PDF in the numerator, not the joint CDF.
+
+### Book's solution (for comparison)
+
+Source status: partial. The book excerpt you shared verifies the core formulas below.
+
+The book's solution follows the same event-translation strategy:
+
+- Since $M\le m$ means all three $U_j$ are at most $m$,
+
+  $$
+  F_M(m)=m^3
+  \qquad \text{for } 0\le m\le 1,
+  $$
+
+  so
+
+  $$
+  f_M(m)=3m^2.
+  $$
+
+- Since $L>l$ and $M\le m$ means all three $U_j$ fall between $l$ and $m$,
+
+  $$
+  P(L>l,\;M\le m)=(m-l)^3
+  \qquad \text{for } 0\le l\le m\le 1.
+  $$
+
+- Therefore,
+
+  $$
+  F_{L,M}(l,m)=P(L\le l,\;M\le m)=m^3-(m-l)^3
+  \qquad \text{for } 0\le l\le m\le 1,
+  $$
+
+  and differentiating gives
+
+  $$
+  f_{L,M}(l,m)=6(m-l)
+  \qquad \text{for } 0<l<m<1.
+  $$
+
+- For the conditional part, the marginal density of $L$ is
+
+  $$
+  f_L(l)=3(1-l)^2,
+  $$
+
+  so
+
+  $$
+  f_{M\mid L}(m\mid l)=\frac{2(m-l)}{(1-l)^2}
+  \qquad \text{for } 0<l<1,\; l<m<1.
+  $$
+
+### Memory card (quick review)
+
+- For a maximum:
+  $$
+  P(\max\le m)=P(\text{all are }\le m).
+  $$
+
+- For a minimum:
+  $$
+  P(\min>l)=P(\text{all are }>l).
+  $$
+
+- For i.i.d. $\mathrm{Unif}(0,1)$ variables, interval probabilities are lengths:
+  $$
+  P(l<U\le m)=m-l.
+  $$
+
+- The support of $(L,M)$ is
+  $$
+  0\le l\le m\le 1.
+  $$
+
+- Joint PDF:
+  $$
+  f_{L,M}(l,m)=6(m-l)
+  \quad \text{on } 0<l<m<1.
+  $$
+
+- Conditional PDF:
+  $$
+  f_{M\mid L}(m\mid l)=\frac{2(m-l)}{(1-l)^2}
+  \quad \text{for } 0<l<1,\; l<m<1.
+  $$
+
 ## Practice 7 — Problem 5
 
 **Prompt.**  
