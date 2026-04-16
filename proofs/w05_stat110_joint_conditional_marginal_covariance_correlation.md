@@ -528,26 +528,31 @@ The book's solution follows the same event-translation strategy:
 ### Memory card (quick review)
 
 - For a maximum:
+
   $$
   P(\max\le m)=P(\text{all are }\le m).
   $$
 
 - For a minimum:
+
   $$
   P(\min>l)=P(\text{all are }>l).
   $$
 
 - For i.i.d. $\mathrm{Unif}(0,1)$ variables, interval probabilities are lengths:
+
   $$
   P(l<U\le m)=m-l.
   $$
 
 - The support of $(L,M)$ is
+
   $$
   0\le l\le m\le 1.
   $$
 
 - Joint PDF:
+
   $$
   f_{L,M}(l,m)=6(m-l)
   \quad \text{on } 0<l<m<1.
@@ -573,6 +578,419 @@ $$
 be the number of eggs that hatch, let $X$ be the number of chicks that survive, and let $Y$ be the number of chicks that hatch but do not survive, so that $X+Y=N$.
 
 Find the marginal PMF of $X$, and the joint PMF of $X$ and $Y$. Are they independent?
+
+### My attempt
+
+For the marginal PMF of $X$, I condition on the number of eggs that hatch.
+
+We are given
+
+$$
+N\sim \mathrm{Bin}(n,p),
+$$
+
+and once $N=k$ eggs have hatched, each of those $k$ chicks survives independently with probability $s$. Therefore,
+
+$$
+X\mid N=k \sim \mathrm{Bin}(k,s).
+$$
+
+So for any integer $i$ with $0\le i\le n$,
+
+$$
+P(X=i)=\sum_{k=i}^n P(X=i\mid N=k)\,P(N=k).
+$$
+
+Using the two binomial PMFs,
+
+$$
+P(X=i\mid N=k)=\binom{k}{i}s^i(1-s)^{k-i},
+\qquad
+P(N=k)=\binom{n}{k}p^k(1-p)^{n-k},
+$$
+
+we get
+
+$$
+P(X=i)=\sum_{k=i}^n \binom{k}{i}s^i(1-s)^{k-i}\binom{n}{k}p^k(1-p)^{n-k}.
+$$
+
+Now use the combinatorial identity
+
+$$
+\binom{n}{k}\binom{k}{i}=\binom{n}{i}\binom{n-i}{k-i}.
+$$
+
+Then
+
+$$
+P(X=i)
+=
+\sum_{k=i}^n
+\binom{n}{i}\binom{n-i}{k-i}s^i(1-s)^{k-i}p^k(1-p)^{n-k}.
+$$
+
+Factor out the terms that do not depend on $k$:
+
+$$
+P(X=i)
+=
+\binom{n}{i}s^ip^i
+\sum_{k=i}^n
+\binom{n-i}{k-i}(1-s)^{k-i}p^{k-i}(1-p)^{n-k}.
+$$
+
+Let $j=k-i$. Then as $k$ goes from $i$ to $n$, $j$ goes from $0$ to $n-i$. Also,
+
+$$
+n-k=n-i-j.
+$$
+
+So
+
+$$
+P(X=i)
+=
+\binom{n}{i}(ps)^i
+\sum_{j=0}^{n-i}
+\binom{n-i}{j}[p(1-s)]^j(1-p)^{n-i-j}.
+$$
+
+This sum is a binomial expansion:
+
+$$
+\sum_{j=0}^{n-i}
+\binom{n-i}{j}[p(1-s)]^j(1-p)^{n-i-j}
+=
+\big(p(1-s)+(1-p)\big)^{n-i}
+=
+(1-ps)^{n-i}.
+$$
+
+Therefore,
+
+$$
+P(X=i)=\binom{n}{i}(ps)^i(1-ps)^{n-i},
+\qquad i=0,1,\dots,n.
+$$
+
+So the marginal distribution of $X$ is
+
+$$
+X\sim \mathrm{Bin}(n,ps).
+$$
+
+This also makes sense from a story proof: each egg independently produces a surviving chick with probability
+
+$$
+p\cdot s=ps,
+$$
+
+so $X$ is just the number of successes in $n$ independent Bernoulli trials with success probability $ps$.
+
+For the joint PMF of $X$ and $Y$, note that if $X=i$ and $Y=j$, then necessarily
+
+$$
+N=X+Y=i+j.
+$$
+
+So only the value $N=i+j$ contributes, and for integers $i,j\ge 0$ with $i+j\le n$,
+
+$$
+P(X=i,Y=j)=P(X=i,Y=j\mid N=i+j)\,P(N=i+j).
+$$
+
+Now
+
+$$
+P(N=i+j)=\binom{n}{i+j}p^{i+j}(1-p)^{n-i-j}.
+$$
+
+Also, given that exactly $i+j$ eggs hatched, we want exactly $i$ of those chicks to survive and $j$ to not survive. Since each hatched chick survives independently with probability $s$,
+
+$$
+P(X=i,Y=j\mid N=i+j)=\binom{i+j}{i}s^i(1-s)^j.
+$$
+
+Hence
+
+$$
+P(X=i,Y=j)
+=
+\binom{i+j}{i}s^i(1-s)^j
+\binom{n}{i+j}p^{i+j}(1-p)^{n-i-j}.
+$$
+
+Using
+
+$$
+\binom{n}{i+j}\binom{i+j}{i}
+=
+\frac{n!}{i!\,j!\,(n-i-j)!},
+$$
+
+we obtain
+
+$$
+P(X=i,Y=j)
+=
+\frac{n!}{i!\,j!\,(n-i-j)!}\,
+p^{i+j}(1-p)^{n-i-j}s^i(1-s)^j.
+$$
+
+Now regroup the powers:
+
+$$
+p^{i+j}s^i(1-s)^j
+=
+(ps)^i\big(p(1-s)\big)^j.
+$$
+
+So the joint PMF is
+
+$$
+P(X=i,Y=j)
+=
+\frac{n!}{i!\,j!\,(n-i-j)!}\,
+(ps)^i\big(p(1-s)\big)^j(1-p)^{n-i-j},
+$$
+
+for
+
+$$
+i\ge 0,\qquad j\ge 0,\qquad i+j\le n,
+$$
+
+and $0$ otherwise.
+
+This has the Multinomial form. If we let
+
+$$
+Z=n-X-Y
+$$
+
+be the number of eggs that do not hatch, then each egg independently falls into one of three categories:
+
+- hatch and survive, with probability $ps$,
+- hatch and do not survive, with probability $p(1-s)$,
+- do not hatch, with probability $1-p$.
+
+Therefore,
+
+$$
+(X,Y,Z)\sim \mathrm{Multinomial}\bigl(n;\,ps,\;p(1-s),\;1-p\bigr).
+$$
+
+Finally, $X$ and $Y$ are **not independent**.
+
+A very clean way to see this is to look at an extreme case: if $X=n$, then every egg produced a surviving chick, so necessarily
+
+$$
+Y=0.
+$$
+
+Thus
+
+$$
+P(Y=0\mid X=n)=1.
+$$
+
+But in general,
+
+$$
+P(Y=0)<1,
+$$
+
+so $X$ and $Y$ cannot be independent.
+
+Equivalently, the support of $(X,Y)$ is
+
+$$
+\{(i,j): i\ge 0,\ j\ge 0,\ i+j\le n\},
+$$
+
+which already shows that the pair cannot behave like two independent binomial counts on all of $\{0,\dots,n\}^2$.
+
+### What I initially missed / corrected
+
+- For the marginal of $X$, the right conditioning idea is
+
+  $$
+  P(X=i)=\sum_{k=i}^n P(X=i\mid N=k)P(N=k).
+  $$
+
+  The conditional distribution is
+
+  $$
+  X\mid N=k\sim \mathrm{Bin}(k,s),
+  $$
+
+  not $\mathrm{Bin}(n,s)$.
+
+- The key combinatorial identity is
+
+  $$
+  \binom{n}{k}\binom{k}{i}=\binom{n}{i}\binom{n-i}{k-i}.
+  $$
+
+  After the change of variable $j=k-i$, the sum becomes a binomial expansion.
+
+- For the joint PMF, the important observation is that if $X=i$ and $Y=j$, then automatically
+
+  $$
+  N=i+j.
+  $$
+
+  So only one conditioning term survives.
+
+- Given $N=i+j$, the event $\{X=i,Y=j\}$ is the same as saying that among the $i+j$ hatched chicks, exactly $i$ survive and $j$ do not. That is why
+
+  $$
+  P(X=i,Y=j\mid N=i+j)=\binom{i+j}{i}s^i(1-s)^j.
+  $$
+
+- Once the joint PMF is simplified, the pattern is clearly Multinomial with three categories:
+  survive, hatch-but-don't-survive, and don't-hatch.
+
+- For independence, the cleanest argument is the extreme case:
+  if $X=n$, then $Y=0$ for sure, so $X$ and $Y$ cannot be independent.
+
+### Book's solution (for comparison)
+
+The book first notes that marginally
+
+$$
+X\sim \mathrm{Bin}(n,ps),
+$$
+
+which matches the result above.
+
+For the dependence question, it uses the same extreme-case idea: if
+
+$$
+X=n,
+$$
+
+then necessarily
+
+$$
+Y=0,
+$$
+
+so
+
+$$
+P(Y=0\mid X=n)=1,
+$$
+
+while
+
+$$
+P(Y=0)<1.
+$$
+
+Hence $X$ and $Y$ are not independent.
+
+For the joint PMF, the book conditions on $N$ and observes that for nonnegative integers $i,j$ with $i+j\le n$,
+
+$$
+P(X=i,Y=j)=P(X=i,Y=j\mid N=i+j)\,P(N=i+j).
+$$
+
+Then it writes
+
+$$
+P(X=i,Y=j\mid N=i+j)=\binom{i+j}{i}s^i(1-s)^j
+$$
+
+and
+
+$$
+P(N=i+j)=\binom{n}{i+j}p^{i+j}(1-p)^{n-i-j},
+$$
+
+so
+
+$$
+P(X=i,Y=j)
+=
+\binom{i+j}{i}\binom{n}{i+j}s^i(1-s)^j p^{i+j}(1-p)^{n-i-j}.
+$$
+
+Simplifying gives
+
+$$
+P(X=i,Y=j)
+=
+\frac{n!}{i!\,j!\,(n-i-j)!}(ps)^i\bigl(p(1-s)\bigr)^j(1-p)^{n-i-j}.
+$$
+
+Finally, if $Z$ is the number of eggs that do not hatch, then the book recognizes that
+
+$$
+(X,Y,Z)\sim \mathrm{Multinomial}\bigl(n;\,ps,\;p(1-s),\;1-p\bigr),
+$$
+
+which matches the derivation above.
+
+### Memory card (quick review)
+
+- If each egg must both **hatch** and then **survive**, the overall success probability is
+
+  $$
+  ps.
+  $$
+
+- Therefore,
+
+  $$
+  X\sim \mathrm{Bin}(n,ps).
+  $$
+
+- Conditioning idea for the marginal:
+
+  $$
+  P(X=i)=\sum_{k=i}^n P(X=i\mid N=k)P(N=k),
+  \qquad
+  X\mid N=k\sim \mathrm{Bin}(k,s).
+  $$
+
+- Joint PMF:
+
+  $$
+  P(X=i,Y=j)
+  =
+  \frac{n!}{i!\,j!\,(n-i-j)!}(ps)^i\bigl(p(1-s)\bigr)^j(1-p)^{n-i-j},
+  $$
+
+  for
+
+  $$
+  i\ge 0,\quad j\ge 0,\quad i+j\le n.
+  $$
+
+- Multinomial viewpoint:
+  each egg independently falls into one of three categories:
+
+  $$
+  ps,\qquad p(1-s),\qquad 1-p.
+  $$
+
+- So
+
+  $$
+  (X,Y,n-X-Y)\sim \mathrm{Multinomial}\bigl(n;\,ps,\;p(1-s),\;1-p\bigr).
+  $$
+
+- $X$ and $Y$ are **not independent**.
+  A quick check:
+  $$
+  X=n \implies Y=0,
+  $$
+  so
+  $$
+  P(Y=0\mid X=n)=1 \neq P(Y=0).
+  $$
 
 ---
 
