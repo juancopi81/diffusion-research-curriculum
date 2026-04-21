@@ -1004,6 +1004,230 @@ Two fair six-sided dice are rolled, one green and one orange, with outcomes $X$ 
 1. Compute the covariance of $X+Y$ and $X-Y$.
 2. Are $X+Y$ and $X-Y$ independent? Show that they are, or that they are not.
 
+### My attempt
+
+For part (a), I used bilinearity of covariance:
+
+$$
+\mathrm{Cov}(X+Y,\;X-Y)
+=\mathrm{Cov}(X,X)+\mathrm{Cov}(X,-Y)+\mathrm{Cov}(Y,X)+\mathrm{Cov}(Y,-Y).
+$$
+
+Now simplify each term:
+
+$$
+\mathrm{Cov}(X,X)=\mathrm{Var}(X),
+\qquad
+\mathrm{Cov}(Y,-Y)=-\mathrm{Cov}(Y,Y)=-\mathrm{Var}(Y),
+$$
+
+and also
+
+$$
+\mathrm{Cov}(X,-Y)=-\mathrm{Cov}(X,Y).
+$$
+
+So
+
+$$
+\mathrm{Cov}(X+Y,\;X-Y)
+=\mathrm{Var}(X)-\mathrm{Cov}(X,Y)+\mathrm{Cov}(Y,X)-\mathrm{Var}(Y).
+$$
+
+Since covariance is symmetric,
+
+$$
+\mathrm{Cov}(Y,X)=\mathrm{Cov}(X,Y),
+$$
+
+the middle terms cancel, and I get
+
+$$
+\mathrm{Cov}(X+Y,\;X-Y)=\mathrm{Var}(X)-\mathrm{Var}(Y).
+$$
+
+Because $X$ and $Y$ are outcomes of fair dice, they have the same distribution, so
+
+$$
+\mathrm{Var}(X)=\mathrm{Var}(Y).
+$$
+
+Therefore,
+
+$$
+\mathrm{Cov}(X+Y,\;X-Y)=0.
+$$
+
+For part (b), let
+
+$$
+U=X+Y, \qquad V=X-Y.
+$$
+
+If $U$ and $V$ were independent, then for all possible values $u,v$ we would need
+
+$$
+P(U=u,\;V=v)=P(U=u)\,P(V=v).
+$$
+
+I used a counterexample. Take
+
+$$
+U=12,\qquad V=3.
+$$
+
+This is impossible, because $U=12$ means
+
+$$
+X=6,\qquad Y=6,
+$$
+
+so then
+
+$$
+V=X-Y=0,
+$$
+
+not $3$. Hence
+
+$$
+P(U=12,\;V=3)=0.
+$$
+
+But both marginal events are possible:
+
+$$
+P(U=12)>0
+\qquad\text{and}\qquad
+P(V=3)>0.
+$$
+
+So
+
+$$
+P(U=12,\;V=3)\ne P(U=12)\,P(V=3),
+$$
+
+which shows that $U$ and $V$ are not independent.
+
+Therefore, $X+Y$ and $X-Y$ are not independent.
+
+### What I initially missed / corrected
+
+- For part (a), the clean way is to use **bilinearity of covariance** and keep the minus signs attached carefully:
+
+  $$
+  \mathrm{Cov}(X,-Y)=-\mathrm{Cov}(X,Y),\qquad
+  \mathrm{Cov}(Y,-Y)=-\mathrm{Var}(Y).
+  $$
+
+- The symmetry property
+
+  $$
+  \mathrm{Cov}(Y,X)=\mathrm{Cov}(X,Y)
+  $$
+
+  is what makes the middle terms cancel.
+
+- For part (b), I first tried to use covariance / expected value to test independence.
+  But the lecture fact only goes one way:
+
+  $$
+  \text{independent} \implies \text{covariance } 0,
+  $$
+
+  not the reverse.
+
+- So the right setup for part (b) is to use the **definition of independence** for random variables:
+
+  $$
+  P(U=u,\;V=v)=P(U=u)P(V=v).
+  $$
+
+  To disprove independence, it is enough to find one pair $(u,v)$ where this fails.
+
+- A very convenient trick is to choose an **impossible pair** like $(U,V)=(12,3)$:
+  the joint probability is $0$, while each marginal probability is positive.
+
+### Book's solution (for comparison)
+
+Source status: verified. The user provided the book excerpt for this problem.
+
+For part (a), the book writes
+
+$$
+\mathrm{Cov}(X+Y,\;X-Y)
+=\mathrm{Cov}(X,X)-\mathrm{Cov}(X,Y)+\mathrm{Cov}(Y,X)-\mathrm{Cov}(Y,Y)=0.
+$$
+
+This is the same covariance expansion as above, just written in a more compressed form.
+
+For part (b), the book uses an extreme conditional example:
+if
+
+$$
+X+Y=12,
+$$
+
+then necessarily
+
+$$
+X=Y=6,
+$$
+
+so
+
+$$
+X-Y=0.
+$$
+
+Therefore,
+
+$$
+P(X-Y=0\mid X+Y=12)=1\ne P(X-Y=0),
+$$
+
+which shows that $X+Y$ and $X-Y$ are not independent.
+
+It also notes a parity check:
+$X+Y$ and $X-Y$ must always have the same parity, since
+
+$$
+(X+Y)-(X-Y)=2Y,
+$$
+
+which is always even.
+
+### Memory card (quick review)
+
+- Bilinearity:
+
+  $$
+  \mathrm{Cov}(A+B,\;C+D)
+  =
+  \mathrm{Cov}(A,C)+\mathrm{Cov}(A,D)+\mathrm{Cov}(B,C)+\mathrm{Cov}(B,D).
+  $$
+
+- Pull out constants:
+
+  $$
+  \mathrm{Cov}(A,\;cB)=c\,\mathrm{Cov}(A,B).
+  $$
+
+- Symmetry:
+
+  $$
+  \mathrm{Cov}(A,B)=\mathrm{Cov}(B,A).
+  $$
+
+- Zero covariance does **not** prove independence.
+
+- To disprove independence, it is enough to find one pair of values where
+
+  $$
+  P(U=u,\;V=v)\ne P(U=u)P(V=v).
+  $$
+
 ## Practice 8 — Problem 2
 
 **Prompt.**  
