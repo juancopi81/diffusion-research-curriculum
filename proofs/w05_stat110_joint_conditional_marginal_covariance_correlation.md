@@ -1239,6 +1239,366 @@ $$
 
 Find the correlation between $N$ and $X$. Simplify your final answer to a function of $p$.
 
+### My attempt
+
+Start from
+
+$$
+\mathrm{Corr}(N,X)=\frac{\mathrm{Cov}(N,X)}{\mathrm{SD}(N)\mathrm{SD}(X)}.
+$$
+
+So I first compute the covariance.
+
+By definition,
+
+$$
+\mathrm{Cov}(N,X)=E[NX]-E[N]E[X].
+$$
+
+Since
+
+$$
+N \sim \mathrm{Pois}(\lambda),
+$$
+
+we know
+
+$$
+E[N]=\lambda,
+\qquad
+\mathrm{Var}(N)=\lambda,
+\qquad
+\mathrm{SD}(N)=\sqrt{\lambda}.
+$$
+
+Now compute $E[X]$ using total expectation:
+
+$$
+E[X]=E(E[X \mid N]).
+$$
+
+Because
+
+$$
+X \mid N \sim \mathrm{Bin}(N,p),
+$$
+
+we have
+
+$$
+E[X \mid N]=Np.
+$$
+
+Therefore,
+
+$$
+E[X]=E[Np]=pE[N]=\lambda p.
+$$
+
+Next, compute $E[NX]$ by conditioning on $N$ again:
+
+$$
+E[NX]=E(E[NX \mid N]).
+$$
+
+Given $N$, the quantity $N$ is fixed, so
+
+$$
+E[NX \mid N]=N E[X \mid N]=N(Np)=N^2p.
+$$
+
+Hence
+
+$$
+E[NX]=pE[N^2].
+$$
+
+Now use
+
+$$
+\mathrm{Var}(N)=E[N^2]-(E[N])^2,
+$$
+
+so
+
+$$
+E[N^2]=\mathrm{Var}(N)+(E[N])^2=\lambda+\lambda^2.
+$$
+
+Thus
+
+$$
+E[NX]=p(\lambda+\lambda^2).
+$$
+
+Plugging into the covariance formula,
+
+$$
+\mathrm{Cov}(N,X)=p(\lambda+\lambda^2)-(\lambda)(\lambda p)=\lambda p.
+$$
+
+Now I compute $\mathrm{Var}(X)$ using total variance:
+
+$$
+\mathrm{Var}(X)=E[\mathrm{Var}(X \mid N)] + \mathrm{Var}(E[X \mid N]).
+$$
+
+Again, since
+
+$$
+X \mid N \sim \mathrm{Bin}(N,p),
+$$
+
+we know
+
+$$
+\mathrm{Var}(X \mid N)=Np(1-p),
+\qquad
+E[X \mid N]=Np.
+$$
+
+Therefore,
+
+$$
+E[\mathrm{Var}(X \mid N)]=E[Np(1-p)]=p(1-p)E[N]=\lambda p(1-p),
+$$
+
+and
+
+$$
+\mathrm{Var}(E[X \mid N])=\mathrm{Var}(Np)=p^2 \mathrm{Var}(N)=p^2 \lambda.
+$$
+
+So
+
+$$
+\mathrm{Var}(X)=\lambda p(1-p)+p^2\lambda=\lambda p.
+$$
+
+Hence
+
+$$
+\mathrm{SD}(X)=\sqrt{\lambda p}.
+$$
+
+Finally,
+
+$$
+\mathrm{Corr}(N,X)=\frac{\mathrm{Cov}(N,X)}{\mathrm{SD}(N)\mathrm{SD}(X)}=\frac{\lambda p}{\sqrt{\lambda}\sqrt{\lambda p}}=\frac{\lambda p}{\lambda\sqrt{p}}=\sqrt{p}.
+$$
+
+So the final answer is
+
+$$
+\mathrm{Corr}(N,X)=\sqrt{p}.
+$$
+
+### What I initially missed / corrected
+
+- I started correctly from
+
+  $$
+  \mathrm{Corr}(N,X)=\frac{\mathrm{Cov}(N,X)}{\mathrm{SD}(N)\mathrm{SD}(X)},
+  $$
+
+  but it helped to split the problem into smaller parts:
+
+  $$
+  E[X], \qquad E[NX], \qquad \mathrm{Var}(X).
+  $$
+
+- For
+
+  $$
+  E[X]=E(E[X \mid N]),
+  $$
+
+  I had to remember that after writing
+
+  $$
+  E[X \mid N]=Np,
+  $$
+
+  the quantity $Np$ is still random because it depends on $N$.
+
+- In the $E[NX]$ step, the key move was
+
+  $$
+  E[NX]=E(E[NX \mid N]).
+  $$
+
+  Given $N$, the factor $N$ is fixed, so
+
+  $$
+  E[NX \mid N]=N E[X \mid N].
+  $$
+
+- My main correction was with variance scaling. The correct rule is
+
+  $$
+  \mathrm{Var}(cY)=c^2 \mathrm{Var}(Y),
+  $$
+
+  so here
+
+  $$
+  \mathrm{Var}(Np)=p^2 \mathrm{Var}(N),
+  $$
+
+  not $p \mathrm{Var}(N)$.
+
+- It was useful to keep the distinction clear:
+
+  $$
+  E[cY]=cE[Y],
+  \qquad
+  \mathrm{Var}(cY)=c^2 \mathrm{Var}(Y).
+  $$
+
+- Once I found
+
+  $$
+  \mathrm{Var}(X)=\lambda p,
+  $$
+
+  the denominator simplified cleanly and the $\lambda$ canceled.
+
+### Book's solution (for comparison)
+
+The book uses the Poisson splitting idea.
+
+Let
+
+$$
+Y=N-X
+$$
+
+be the number of eggs that do not hatch. Then
+
+$$
+N=X+Y.
+$$
+
+By Poisson thinning,
+
+$$
+X \sim \mathrm{Pois}(\lambda p),
+\qquad
+Y \sim \mathrm{Pois}(\lambda(1-p)),
+$$
+
+and $X$ and $Y$ are independent.
+
+Therefore,
+
+$$
+\mathrm{Cov}(N,X)=\mathrm{Cov}(X+Y,X)=\mathrm{Cov}(X,X)+\mathrm{Cov}(Y,X).
+$$
+
+Since $X$ and $Y$ are independent,
+
+$$
+\mathrm{Cov}(Y,X)=0,
+$$
+
+so
+
+$$
+\mathrm{Cov}(N,X)=\mathrm{Var}(X)=\lambda p.
+$$
+
+Also,
+
+$$
+\mathrm{SD}(N)=\sqrt{\lambda},
+\qquad
+\mathrm{SD}(X)=\sqrt{\lambda p}.
+$$
+
+Hence
+
+$$
+\mathrm{Corr}(N,X)=\frac{\lambda p}{\sqrt{\lambda}\sqrt{\lambda p}}=\sqrt{p}.
+$$
+
+This is shorter than the conditioning route, but it uses the extra thinning fact.
+
+### Memory card (quick review)
+
+- Start from
+
+  $$
+  \mathrm{Corr}(N,X)=\frac{\mathrm{Cov}(N,X)}{\mathrm{SD}(N)\mathrm{SD}(X)}.
+  $$
+
+- Since
+
+  $$
+  N \sim \mathrm{Pois}(\lambda),
+  $$
+
+  we know
+
+  $$
+  E[N]=\lambda,
+  \qquad
+  \mathrm{Var}(N)=\lambda.
+  $$
+
+- If
+
+  $$
+  X \mid N \sim \mathrm{Bin}(N,p),
+  $$
+
+  then
+
+  $$
+  E[X \mid N]=Np,
+  \qquad
+  \mathrm{Var}(X \mid N)=Np(1-p).
+  $$
+
+- Total expectation:
+
+  $$
+  E[X]=E(E[X \mid N])=\lambda p.
+  $$
+
+- Total variance:
+
+  $$
+  \mathrm{Var}(X)=E[\mathrm{Var}(X \mid N)] + \mathrm{Var}(E[X \mid N]).
+  $$
+
+- Be careful with constants:
+
+  $$
+  E[cY]=cE[Y],
+  \qquad
+  \mathrm{Var}(cY)=c^2 \mathrm{Var}(Y).
+  $$
+
+- In this problem,
+
+  $$
+  \mathrm{Cov}(N,X)=\lambda p,
+  \qquad
+  \mathrm{Var}(X)=\lambda p.
+  $$
+
+- Therefore,
+
+  $$
+  \mathrm{Corr}(N,X)=\sqrt{p}.
+  $$
+
+- Intuition:
+
+  $X$ is the thinned part of $N$. If $p=1$, then $X=N$ and the correlation is $1$. If $p$ is small, $X$ is only a small noisy fraction of $N$, so the correlation is smaller. The final answer depends only on $p$, not on $\lambda$.
+
+---
+
 ## Practice 8 — Problem 4
 
 **Prompt.**  
