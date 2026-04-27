@@ -1609,3 +1609,330 @@ Use indicator random variables to show that
 $$
 \mathrm{Cov}(X_i,X_j)=-n p_i p_j \qquad \text{for } i\ne j.
 $$
+
+### My attempt
+
+For each trial or object, define the indicator
+
+$$
+I_{t,r}=
+\begin{cases}
+1, & \text{if trial } t \text{ lands in category } r,\\[4pt]
+0, & \text{otherwise}.
+\end{cases}
+$$
+
+Then $X_i$ counts how many of the $n$ trials landed in category $i$, so
+
+$$
+X_i=\sum_{t=1}^n I_{t,i}.
+$$
+
+Similarly,
+
+$$
+X_j=\sum_{s=1}^n I_{s,j}.
+$$
+
+Now use bilinearity of covariance:
+
+$$
+\mathrm{Cov}(X_i,X_j)
+=
+\mathrm{Cov}\left(\sum_{t=1}^n I_{t,i},\sum_{s=1}^n I_{s,j}\right).
+$$
+
+Therefore,
+
+$$
+\mathrm{Cov}(X_i,X_j)
+=
+\sum_{t=1}^n\sum_{s=1}^n
+\mathrm{Cov}(I_{t,i},I_{s,j}).
+$$
+
+Now split the double sum into two cases.
+
+First, suppose
+
+$$
+t\ne s.
+$$
+
+Then the indicators refer to different trials. Since different trials are independent,
+
+$$
+I_{t,i} \text{ and } I_{s,j}
+$$
+
+are independent, so
+
+$$
+\mathrm{Cov}(I_{t,i},I_{s,j})=0.
+$$
+
+Now suppose
+
+$$
+t=s.
+$$
+
+Then both indicators refer to the same trial. Since
+
+$$
+i\ne j,
+$$
+
+the same trial cannot land in both category $i$ and category $j$. Therefore,
+
+$$
+I_{t,i}I_{t,j}=0.
+$$
+
+So
+
+$$
+E[I_{t,i}I_{t,j}]=0.
+$$
+
+Also,
+
+$$
+E[I_{t,i}]=p_i
+$$
+
+and
+
+$$
+E[I_{t,j}]=p_j.
+$$
+
+Thus,
+
+$$
+\mathrm{Cov}(I_{t,i},I_{t,j})
+=
+E[I_{t,i}I_{t,j}]-E[I_{t,i}]E[I_{t,j}].
+$$
+
+So
+
+$$
+\mathrm{Cov}(I_{t,i},I_{t,j})
+=
+0-p_ip_j
+=
+-p_ip_j.
+$$
+
+Only the same-trial terms contribute to the covariance. There are $n$ of those terms, one for each trial, so
+
+$$
+\mathrm{Cov}(X_i,X_j)
+=
+\sum_{t=1}^n \mathrm{Cov}(I_{t,i},I_{t,j}).
+$$
+
+Therefore,
+
+$$
+\mathrm{Cov}(X_i,X_j)
+=
+\sum_{t=1}^n (-p_ip_j)
+=
+-np_ip_j.
+$$
+
+So for $i\ne j$,
+
+$$
+\mathrm{Cov}(X_i,X_j)=-np_ip_j.
+$$
+
+### What I initially missed / corrected
+
+The main subtlety is that the double sum
+
+$$
+\sum_{t=1}^n\sum_{s=1}^n
+$$
+
+contains $n^2$ terms, not just $n$ terms.
+
+The terms with
+
+$$
+t\ne s
+$$
+
+compare different trials, so their covariance is $0$ by independence.
+
+The terms with
+
+$$
+t=s
+$$
+
+compare two categories within the same trial. These are not independent, because one trial cannot be in two different categories at once.
+
+For the same trial,
+
+$$
+I_{t,i}I_{t,j}=0
+$$
+
+because $i\ne j$.
+
+This is why
+
+$$
+\mathrm{Cov}(I_{t,i},I_{t,j})=-p_ip_j.
+$$
+
+Then there are exactly $n$ same-trial terms, so the final answer is
+
+$$
+-np_ip_j.
+$$
+
+### Book's solution (for comparison)
+
+The book first proves the result for $X_1$ and $X_2$.
+
+It defines $I_i$ as the indicator that object $i$ is in category $1$, and $J_j$ as the indicator that object $j$ is in category $2$. Then
+
+$$
+X_1=\sum_{i=1}^n I_i
+$$
+
+and
+
+$$
+X_2=\sum_{j=1}^n J_j.
+$$
+
+Therefore,
+
+$$
+\mathrm{Cov}(X_1,X_2)
+=
+\mathrm{Cov}\left(\sum_{i=1}^n I_i,\sum_{j=1}^n J_j\right)
+=
+\sum_{i,j}\mathrm{Cov}(I_i,J_j).
+$$
+
+When
+
+$$
+i\ne j,
+$$
+
+the indicators refer to different objects, so the covariance is $0$.
+
+When
+
+$$
+i=j,
+$$
+
+the indicators refer to the same object. The same object cannot be in both category $1$ and category $2$, so
+
+$$
+I_iJ_i=0.
+$$
+
+Thus,
+
+$$
+\mathrm{Cov}(I_i,J_i)
+=
+E[I_iJ_i]-E[I_i]E[J_i]
+=
+0-p_1p_2
+=
+-p_1p_2.
+$$
+
+There are $n$ such same-object terms, so
+
+$$
+\mathrm{Cov}(X_1,X_2)
+=
+\sum_{i=1}^n \mathrm{Cov}(I_i,J_i)
+=
+n(-p_1p_2)
+=
+-np_1p_2.
+$$
+
+By the same argument, replacing categories $1$ and $2$ by any two different categories $i$ and $j$ gives
+
+$$
+\mathrm{Cov}(X_i,X_j)=-np_ip_j
+\qquad \text{for } i\ne j.
+$$
+
+### Memory card (quick review)
+
+For a Multinomial random vector,
+
+$$
+(X_1,\dots,X_k)\sim \mathrm{Multinomial}(n;p_1,\dots,p_k),
+$$
+
+each $X_i$ counts how many trials landed in category $i$.
+
+Write the count as a sum of indicators:
+
+$$
+X_i=\sum_{t=1}^n I_{t,i}.
+$$
+
+For two different categories,
+
+$$
+X_j=\sum_{s=1}^n I_{s,j}.
+$$
+
+Then
+
+$$
+\mathrm{Cov}(X_i,X_j)
+=
+\sum_{t=1}^n\sum_{s=1}^n
+\mathrm{Cov}(I_{t,i},I_{s,j}).
+$$
+
+Different trials are independent:
+
+$$
+t\ne s
+\implies
+\mathrm{Cov}(I_{t,i},I_{s,j})=0.
+$$
+
+Same trial, different categories are mutually exclusive:
+
+$$
+t=s,\quad i\ne j
+\implies
+I_{t,i}I_{t,j}=0.
+$$
+
+So
+
+$$
+\mathrm{Cov}(I_{t,i},I_{t,j})
+=
+0-p_ip_j
+=
+-p_ip_j.
+$$
+
+There are $n$ same-trial terms, hence
+
+$$
+\mathrm{Cov}(X_i,X_j)=-np_ip_j.
+$$
+
+The intuition is negative dependence: if one trial lands in category $i$, that same trial cannot land in category $j$.
