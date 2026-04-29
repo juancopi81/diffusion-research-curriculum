@@ -60,9 +60,9 @@
 | ------------------------------------ | ------ | ---- | ----- |
 | S1: Lecture 19 (Joint distributions) | ✅     | 2026-03-13 | Notes in `notes/w05_stat110_joint_conditional_marginal.md` |
 | S1: Lecture 21 (Covariance)          | ✅     | 2026-03-13 | Notes in `notes/w05_stat110_covariance_correlation.md` |
-| S2: Problems (joint, covariance)     | ⬜     |      |       |
-| S3: `w05_joint_gaussians.ipynb`      | ⬜     |      |       |
-| Diffusion: 2D score vector field     | ⬜     |      |       |
+| S2: Problems (joint, covariance)     | ✅     | 2026-04-28 | Completed in `proofs/w05_stat110_joint_conditional_marginal_covariance_correlation.md` |
+| S3: `w05_joint_gaussians.ipynb`      | ✅     | 2026-04-28 | TODO baseline plus identical `_solved` copy |
+| Diffusion: 2D score vector field     | ⬜     |      | Starter in `notes/w05_2d_gaussian_score.md` + `notebooks/w05_2d_gaussian_score_field.ipynb` |
 
 ### Week 6 — Transformations + KL Divergence
 
