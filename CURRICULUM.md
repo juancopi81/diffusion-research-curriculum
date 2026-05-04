@@ -264,6 +264,7 @@ Diffusion contact (45–60 min):
   - Visualize conditional slices
   - Compute conditional mean analytically, verify empirically
   - Show: conditional of joint Gaussian is Gaussian
+  - Optional visual supplement: `notebooks/w05_bivariate_gaussian_explorer.html` for interactive covariance, correlation, and conditional-slice intuition
 
 Diffusion contact (45–60 min):
 

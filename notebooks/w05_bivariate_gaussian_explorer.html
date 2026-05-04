@@ -1,0 +1,520 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Bivariate Gaussian Explorer v2</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    :root {
+      --bg: #f7f7f9;
+      --panel: #ffffff;
+      --border: #d8d8df;
+      --muted: #555;
+      --accent: #1f4db8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: #111;
+    }
+    .page {
+      display: flex;
+      gap: 16px;
+      padding: 16px;
+      align-items: flex-start;
+    }
+    .sidebar {
+      width: 350px;
+      min-width: 350px;
+      position: sticky;
+      top: 16px;
+      align-self: flex-start;
+    }
+    .main {
+      flex: 1;
+      min-width: 760px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-size: 1.55rem;
+      margin: 0 0 8px 0;
+    }
+    h2 {
+      font-size: 1.15rem;
+      margin: 0 0 10px 0;
+    }
+    p {
+      margin: 6px 0 0 0;
+      color: #222;
+      line-height: 1.4;
+    }
+    .small {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .control label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .control-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .control-row input[type=range] {
+      flex: 1;
+    }
+    .value-box {
+      width: 74px;
+      text-align: right;
+      padding: 4px 6px;
+      background: #f2f3f6;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-variant-numeric: tabular-nums;
+    }
+    .toggle {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 8px 0;
+    }
+    .toggle label {
+      font-weight: 600;
+      margin: 0;
+    }
+    .plot-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 14px;
+    }
+    .plot-box {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 10px 2px 10px;
+      margin-bottom: 14px;
+    }
+    .plot-title {
+      font-weight: 700;
+      margin: 2px 0 6px 4px;
+    }
+    .summary-line {
+      margin: 5px 0;
+    }
+    .warning {
+      color: #b00020;
+      font-weight: 700;
+    }
+    code {
+      background: #f2f3f6;
+      border-radius: 6px;
+      padding: 2px 5px;
+    }
+    @media (max-width: 1200px) {
+      .page {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        min-width: 0;
+        position: static;
+      }
+      .main {
+        width: 100%;
+        min-width: 0;
+      }
+      .plot-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <aside class="sidebar">
+      <div class="card">
+        <h1>Bivariate Gaussian Explorer</h1>
+        <p class="small">
+          Move the sliders and rotate the surface. Hover any plot to inspect coordinates and densities.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>Parameters</h2>
+        <div class="controls">
+          <div class="control">
+            <label for="meanX">Mean of X (μx)</label>
+            <div class="control-row">
+              <input id="meanX" type="range" min="-3" max="3" step="0.1" value="0">
+              <div class="value-box" id="meanXVal">0.00</div>
+            </div>
+          </div>
+
+          <div class="control">
+            <label for="meanY">Mean of Y (μy)</label>
+            <div class="control-row">
+              <input id="meanY" type="range" min="-3" max="3" step="0.1" value="0">
+              <div class="value-box" id="meanYVal">0.00</div>
+            </div>
+          </div>
+
+          <div class="control">
+            <label for="varX">Variance of X</label>
+            <div class="control-row">
+              <input id="varX" type="range" min="0.2" max="4.0" step="0.1" value="1.0">
+              <div class="value-box" id="varXVal">1.00</div>
+            </div>
+          </div>
+
+          <div class="control">
+            <label for="varY">Variance of Y</label>
+            <div class="control-row">
+              <input id="varY" type="range" min="0.2" max="4.0" step="0.1" value="1.0">
+              <div class="value-box" id="varYVal">1.00</div>
+            </div>
+          </div>
+
+          <div class="control">
+            <label for="covXY">Covariance Cov(X,Y)</label>
+            <div class="control-row">
+              <input id="covXY" type="range" min="-2.0" max="2.0" step="0.05" value="0.00">
+              <div class="value-box" id="covXYVal">0.00</div>
+            </div>
+            <div class="small" id="covBoundText">Valid range currently: [−1.00, 1.00]</div>
+          </div>
+
+          <div class="control">
+            <label for="xSlice">Slice location x_slice</label>
+            <div class="control-row">
+              <input id="xSlice" type="range" min="-6" max="6" step="0.1" value="0">
+              <div class="value-box" id="xSliceVal">0.00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>View options</h2>
+        <div class="toggle">
+          <input id="lockXY" type="checkbox" checked>
+          <label for="lockXY">
+            Lock X/Y axes to a fixed range
+            <div class="small">Good for comparing shapes across parameter changes.</div>
+          </label>
+        </div>
+        <div class="toggle">
+          <input id="lockZ" type="checkbox">
+          <label for="lockZ">
+            Lock Z axis in the 3D plot
+            <div class="small">Keeps the PDF height scale fixed instead of auto-scaling.</div>
+          </label>
+        </div>
+        <div class="toggle">
+          <input id="lockSliceY" type="checkbox">
+          <label for="lockSliceY">
+            Lock vertical scale of the conditional density plot
+            <div class="small">Useful when comparing how peaked the slice becomes.</div>
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Current summary</h2>
+        <div id="warning" class="small"></div>
+        <div id="summary" class="small"></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="card">
+        <p>
+          <b>Interpretation:</b> the 3D chart shows the joint PDF \(f(x,y)\). The contour plot shows the same PDF from above.
+          The black vertical line marks the slice at <code>X = x_slice</code>. The bottom chart shows the conditional density
+          \(Y \mid X = x_{slice}\).
+        </p>
+      </div>
+
+      <div class="plot-grid">
+        <div class="plot-box">
+          <div class="plot-title">3D PDF surface</div>
+          <div id="surfacePlot" style="width: 100%; height: 480px;"></div>
+        </div>
+        <div class="plot-box">
+          <div class="plot-title">Top-down contour view</div>
+          <div id="contourPlot" style="width: 100%; height: 480px;"></div>
+        </div>
+      </div>
+
+      <div class="plot-box">
+        <div class="plot-title">Conditional slice: Y | X = x_slice</div>
+        <div id="slicePlot" style="width: 100%; height: 340px;"></div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const meanXSlider = document.getElementById('meanX');
+    const meanYSlider = document.getElementById('meanY');
+    const varXSlider = document.getElementById('varX');
+    const varYSlider = document.getElementById('varY');
+    const covSlider = document.getElementById('covXY');
+    const xSliceSlider = document.getElementById('xSlice');
+
+    const meanXVal = document.getElementById('meanXVal');
+    const meanYVal = document.getElementById('meanYVal');
+    const varXVal = document.getElementById('varXVal');
+    const varYVal = document.getElementById('varYVal');
+    const covVal = document.getElementById('covXYVal');
+    const xSliceVal = document.getElementById('xSliceVal');
+
+    const lockXY = document.getElementById('lockXY');
+    const lockZ = document.getElementById('lockZ');
+    const lockSliceY = document.getElementById('lockSliceY');
+
+    const covBoundText = document.getElementById('covBoundText');
+    const warningBox = document.getElementById('warning');
+    const summaryBox = document.getElementById('summary');
+
+    function fmt(x) {
+      return Number(x).toFixed(2);
+    }
+
+    function linspace(start, stop, n) {
+      const arr = [];
+      if (n === 1) return [start];
+      const step = (stop - start) / (n - 1);
+      for (let i = 0; i < n; i++) arr.push(start + step * i);
+      return arr;
+    }
+
+    function clampCov(vx, vy, cov) {
+      const maxAbsCov = 0.95 * Math.sqrt(vx * vy);
+      return Math.max(-maxAbsCov, Math.min(maxAbsCov, cov));
+    }
+
+    function gaussianPDF(x, y, mx, my, vx, vy, cov) {
+      const dx = x - mx;
+      const dy = y - my;
+      const det = vx * vy - cov * cov;
+      const inv00 = vy / det;
+      const inv01 = -cov / det;
+      const inv11 = vx / det;
+      const quad = inv00 * dx * dx + 2 * inv01 * dx * dy + inv11 * dy * dy;
+      return Math.exp(-0.5 * quad) / (2 * Math.PI * Math.sqrt(det));
+    }
+
+    function conditionalParams(xSlice, mx, my, vx, vy, cov) {
+      const condMean = my + (cov / vx) * (xSlice - mx);
+      const condVar = vy - (cov * cov) / vx;
+      return { condMean, condVar };
+    }
+
+    function normalPDF1D(y, mean, variance) {
+      return Math.exp(-0.5 * ((y - mean) ** 2) / variance) / Math.sqrt(2 * Math.PI * variance);
+    }
+
+    function computeRanges(mx, my, vx, vy, fixedXY) {
+      if (fixedXY) {
+        return { xMin: -6, xMax: 6, yMin: -6, yMax: 6 };
+      }
+      const sx = Math.sqrt(vx);
+      const sy = Math.sqrt(vy);
+      const xPad = Math.max(2.2, 4.5 * sx);
+      const yPad = Math.max(2.2, 4.5 * sy);
+      return {
+        xMin: mx - xPad,
+        xMax: mx + xPad,
+        yMin: my - yPad,
+        yMax: my + yPad
+      };
+    }
+
+    function updateDisplays(mx, my, vx, vy, cov, xSlice, wasClamped) {
+      meanXVal.textContent = fmt(mx);
+      meanYVal.textContent = fmt(my);
+      varXVal.textContent = fmt(vx);
+      varYVal.textContent = fmt(vy);
+      covVal.textContent = fmt(cov);
+      xSliceVal.textContent = fmt(xSlice);
+
+      const maxAbsCov = Math.sqrt(vx * vy);
+      covBoundText.textContent = `Valid range currently: [${fmt(-maxAbsCov)}, ${fmt(maxAbsCov)}]`;
+
+      if (wasClamped) {
+        warningBox.innerHTML = `<span class="warning">Covariance was clamped</span> to keep the covariance matrix valid.`;
+      } else {
+        warningBox.textContent = '';
+      }
+
+      const rho = cov / Math.sqrt(vx * vy);
+      const det = vx * vy - cov * cov;
+      const { condMean, condVar } = conditionalParams(xSlice, mx, my, vx, vy, cov);
+
+      summaryBox.innerHTML = `
+        <div class="summary-line"><b>Mean vector:</b> μ = [${fmt(mx)}, ${fmt(my)}]</div>
+        <div class="summary-line"><b>Covariance matrix:</b> Σ = [[${fmt(vx)}, ${fmt(cov)}], [${fmt(cov)}, ${fmt(vy)}]]</div>
+        <div class="summary-line"><b>Correlation:</b> ρ = ${fmt(rho)}</div>
+        <div class="summary-line"><b>det(Σ):</b> ${fmt(det)}</div>
+        <div class="summary-line"><b>E[Y | X = ${fmt(xSlice)}]:</b> ${fmt(condMean)}</div>
+        <div class="summary-line"><b>Var(Y | X = ${fmt(xSlice)}):</b> ${fmt(condVar)}</div>
+      `;
+    }
+
+    function render() {
+      const mx = parseFloat(meanXSlider.value);
+      const my = parseFloat(meanYSlider.value);
+      const vx = parseFloat(varXSlider.value);
+      const vy = parseFloat(varYSlider.value);
+      const covRaw = parseFloat(covSlider.value);
+      const xSlice = parseFloat(xSliceSlider.value);
+
+      const cov = clampCov(vx, vy, covRaw);
+      const wasClamped = Math.abs(cov - covRaw) > 1e-10;
+      if (wasClamped) covSlider.value = cov.toFixed(2);
+
+      updateDisplays(mx, my, vx, vy, cov, xSlice, wasClamped);
+
+      const ranges = computeRanges(mx, my, vx, vy, lockXY.checked);
+      const xGrid = linspace(ranges.xMin, ranges.xMax, 65);
+      const yGrid = linspace(ranges.yMin, ranges.yMax, 65);
+
+      const zSurface = [];
+      let zMax = 0;
+      for (let j = 0; j < yGrid.length; j++) {
+        const y = yGrid[j];
+        const row = [];
+        for (let i = 0; i < xGrid.length; i++) {
+          const x = xGrid[i];
+          const z = gaussianPDF(x, y, mx, my, vx, vy, cov);
+          row.push(z);
+          if (z > zMax) zMax = z;
+        }
+        zSurface.push(row);
+      }
+
+      const ySlice = linspace(ranges.yMin, ranges.yMax, 240);
+      const zSliceSurface = ySlice.map(y => gaussianPDF(xSlice, y, mx, my, vx, vy, cov));
+      const xSliceLine = ySlice.map(() => xSlice);
+      const zBase = ySlice.map(() => 0);
+
+      const surfaceData = [
+        {
+          type: 'surface',
+          x: xGrid,
+          y: yGrid,
+          z: zSurface,
+          hovertemplate: 'x=%{x:.2f}<br>y=%{y:.2f}<br>pdf=%{z:.5f}<extra></extra>'
+        },
+        {
+          type: 'scatter3d',
+          mode: 'lines',
+          x: xSliceLine,
+          y: ySlice,
+          z: zSliceSurface,
+          line: { width: 6, color: 'black' },
+          hovertemplate: 'slice at x=%{x:.2f}<br>y=%{y:.2f}<br>pdf=%{z:.5f}<extra></extra>',
+          showlegend: false
+        },
+        {
+          type: 'scatter3d',
+          mode: 'lines',
+          x: xSliceLine,
+          y: ySlice,
+          z: zBase,
+          line: { width: 4, dash: 'dash', color: 'black' },
+          hovertemplate: 'x=%{x:.2f}<br>y=%{y:.2f}<extra></extra>',
+          showlegend: false
+        }
+      ];
+
+      const surfaceLayout = {
+        margin: { l: 0, r: 0, t: 0, b: 0 },
+        scene: {
+          xaxis: lockXY.checked ? { title: 'x', range: [ranges.xMin, ranges.xMax] } : { title: 'x' },
+          yaxis: lockXY.checked ? { title: 'y', range: [ranges.yMin, ranges.yMax] } : { title: 'y' },
+          zaxis: lockZ.checked ? { title: 'PDF(x,y)', range: [0, Math.max(0.5, zMax)] } : { title: 'PDF(x,y)' },
+          camera: { eye: { x: 1.38, y: 1.38, z: 0.92 } }
+        },
+        showlegend: false
+      };
+
+      Plotly.react('surfacePlot', surfaceData, surfaceLayout, {responsive: true});
+
+      const contourData = [
+        {
+          type: 'contour',
+          x: xGrid,
+          y: yGrid,
+          z: zSurface,
+          contours: { coloring: 'lines' },
+          hovertemplate: 'x=%{x:.2f}<br>y=%{y:.2f}<br>pdf=%{z:.5f}<extra></extra>'
+        },
+        {
+          type: 'scatter',
+          mode: 'lines',
+          x: [xSlice, xSlice],
+          y: [ranges.yMin, ranges.yMax],
+          line: { width: 3, color: 'black', dash: 'dash' },
+          hovertemplate: 'slice at x=%{x:.2f}<extra></extra>',
+          showlegend: false
+        }
+      ];
+
+      const contourLayout = {
+        margin: { l: 55, r: 20, t: 0, b: 50 },
+        xaxis: lockXY.checked ? { title: 'x', range: [ranges.xMin, ranges.xMax] } : { title: 'x' },
+        yaxis: lockXY.checked ? { title: 'y', range: [ranges.yMin, ranges.yMax], scaleanchor: 'x', scaleratio: 1 } : { title: 'y', scaleanchor: 'x', scaleratio: 1 }
+      };
+
+      Plotly.react('contourPlot', contourData, contourLayout, {responsive: true});
+
+      const { condMean, condVar } = conditionalParams(xSlice, mx, my, vx, vy, cov);
+      const condYs = linspace(ranges.yMin, ranges.yMax, 260);
+      const condDensity = condYs.map(y => normalPDF1D(y, condMean, condVar));
+      const condMax = Math.max(...condDensity);
+
+      const sliceData = [
+        {
+          type: 'scatter',
+          mode: 'lines',
+          x: condYs,
+          y: condDensity,
+          hovertemplate: 'y=%{x:.2f}<br>density=%{y:.5f}<extra></extra>',
+          showlegend: false
+        }
+      ];
+
+      const sliceLayout = {
+        margin: { l: 60, r: 20, t: 0, b: 50 },
+        xaxis: lockXY.checked ? { title: 'y', range: [ranges.yMin, ranges.yMax] } : { title: 'y' },
+        yaxis: lockSliceY.checked ? { title: `density of Y | X = ${fmt(xSlice)}`, range: [0, Math.max(0.5, condMax)] } : { title: `density of Y | X = ${fmt(xSlice)}` }
+      };
+
+      Plotly.react('slicePlot', sliceData, sliceLayout, {responsive: true});
+    }
+
+    [meanXSlider, meanYSlider, varXSlider, varYSlider, covSlider, xSliceSlider, lockXY, lockZ, lockSliceY].forEach(el => {
+      el.addEventListener('input', render);
+      el.addEventListener('change', render);
+    });
+
+    render();
+  </script>
+</body>
+</html>
