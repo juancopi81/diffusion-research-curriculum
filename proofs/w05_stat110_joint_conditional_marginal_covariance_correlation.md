@@ -180,9 +180,11 @@ and $f_X(x)=0$ otherwise.
   f_{X,Y,Z}\to f_{X,Y}\to f_X.
   $$
 
-### Book's solution (for comparison)
+### Reference derivation (pending source)
 
-The book gives:
+Source status: pending. The exact book excerpt for this comparison is not present in-repo/current context.
+
+A compact derivation gives:
 
 $$
 f_{X,Y,Z}(x,y,z)=
@@ -855,9 +857,11 @@ which already shows that the pair cannot behave like two independent binomial co
 - For independence, the cleanest argument is the extreme case:
   if $X=n$, then $Y=0$ for sure, so $X$ and $Y$ cannot be independent.
 
-### Book's solution (for comparison)
+### Reference derivation (pending source)
 
-The book first notes that marginally
+Source status: pending. The exact book excerpt for this comparison is not present in-repo/current context.
+
+A compact derivation first notes that marginally
 
 $$
 X\sim \mathrm{Bin}(n,ps),
@@ -865,7 +869,7 @@ $$
 
 which matches the result above.
 
-For the dependence question, it uses the same extreme-case idea: if
+For the dependence question, use the same extreme-case idea: if
 
 $$
 X=n,
@@ -891,7 +895,7 @@ $$
 
 Hence $X$ and $Y$ are not independent.
 
-For the joint PMF, the book conditions on $N$ and observes that for nonnegative integers $i,j$ with $i+j\le n$,
+For the joint PMF, condition on $N$ and observe that for nonnegative integers $i,j$ with $i+j\le n$,
 
 $$
 P(X=i,Y=j)=P(X=i,Y=j\mid N=i+j)\,P(N=i+j).
@@ -925,7 +929,7 @@ P(X=i,Y=j)
 \frac{n!}{i!\,j!\,(n-i-j)!}(ps)^i\bigl(p(1-s)\bigr)^j(1-p)^{n-i-j}.
 $$
 
-Finally, if $Z$ is the number of eggs that do not hatch, then the book recognizes that
+Finally, if $Z$ is the number of eggs that do not hatch, then
 
 $$
 (X,Y,Z)\sim \mathrm{Multinomial}\bigl(n;\,ps,\;p(1-s),\;1-p\bigr),
@@ -1463,9 +1467,11 @@ $$
 
   the denominator simplified cleanly and the $\lambda$ canceled.
 
-### Book's solution (for comparison)
+### Reference derivation (pending source)
 
-The book uses the Poisson splitting idea.
+Source status: pending. The exact book excerpt for this comparison is not present in-repo/current context.
+
+A compact derivation uses the Poisson splitting idea.
 
 Let
 
@@ -1795,9 +1801,11 @@ $$
 -np_ip_j.
 $$
 
-### Book's solution (for comparison)
+### Reference derivation (pending source)
 
-The book first proves the result for $X_1$ and $X_2$.
+Source status: pending. The exact book excerpt for this comparison is not present in-repo/current context.
+
+A compact derivation first proves the result for $X_1$ and $X_2$.
 
 It defines $I_i$ as the indicator that object $i$ is in category $1$, and $J_j$ as the indicator that object $j$ is in category $2$. Then
 
