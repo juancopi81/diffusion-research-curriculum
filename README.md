@@ -1,8 +1,10 @@
-# Diffusion Research Curriculum
+# Diffusion from First Principles
 
-**Diffusion from First Principles — a working research notebook.**
+**A working research notebook for rebuilding diffusion models from probability foundations.**
 
-A 12-month path from probability foundations to diffusion, score-based models, SDEs, and flow matching, with proofs, notebooks, and implementations.
+A 12-month personal research notebook from probability foundations to diffusion, score-based models, SDEs, and flow matching, with proofs, notebooks, and implementations.
+
+This is a personal learning and research project.
 
 ## 📍 The Curriculum
 
