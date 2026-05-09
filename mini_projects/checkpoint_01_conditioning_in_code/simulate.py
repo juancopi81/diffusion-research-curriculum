@@ -254,15 +254,10 @@ def main() -> None:
         write_csv(rows, out_path)
         print(f"Wrote CSV to: {out_path}")
 
-    # TODO (learning extension 1):
-    # Add the "always stay" strategy and compare it against "always switch."
-    #
-    # TODO (learning extension 2):
-    # Add 95% confidence intervals for each estimated probability.
-    #
-    # TODO (learning extension 3):
-    # Run repeated experiments (same p, same trials, different seeds) and
-    # summarize the distribution of Monte Carlo error.
+    # Possible extensions:
+    # - Add the "always stay" strategy and compare it against "always switch."
+    # - Add 95% confidence intervals for each estimated probability.
+    # - Run repeated experiments with different seeds and summarize error.
 
 
 if __name__ == "__main__":

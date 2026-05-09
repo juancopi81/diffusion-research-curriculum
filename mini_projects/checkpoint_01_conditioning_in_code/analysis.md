@@ -1,5 +1,11 @@
 # Checkpoint 01 (Week 4 S3): Conditioning in Code
 
+## Portfolio Summary
+
+This checkpoint shows how conditioning changes a probability problem. In a biased Monty Hall variant, the unconditional switch win rate remains $2/3$, but the conditional win rate depends on which door Monty opens.
+
+**What I learned:** Conditioning is not just filtering data after the fact. It changes the probability model by using the observed event as evidence.
+
 ## Problem Choice
 
 This project uses the **Monty Hall with biased host choice** problem:
@@ -160,13 +166,13 @@ $$
 
 `simulate.py` and `results.ipynb` estimate the same three probabilities by Monte Carlo.
 
-You should verify:
+The code verifies:
 
 1. Empirical estimates approach theory as trials increase.
 2. Conditional estimates depend on $p$ in the expected direction.
 3. Unconditional estimate stays near $\frac{2}{3}$ regardless of $p$.
 
-Completed summary:
+Summary:
 - Monte Carlo matches theory closely across the grid $p\in\{0.5,0.7,0.9,1.0\}$ with $200{,}000$ trials per value. In all cases, the unconditional estimate stayed near $\frac{2}{3}$ (absolute errors about $2\times 10^{-4}$ to $8\times 10^{-4}$), while the conditional estimates followed the expected trend: $P(W\mid D_2)$ decreased as $p$ increased and $P(W\mid D_3)$ increased as $p$ increased, reaching $P(W\mid D_3)=1$ at $p=1$. Small differences from theory are consistent with finite-sample Monte Carlo noise.
 
 ---
