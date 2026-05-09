@@ -32,7 +32,7 @@ $$
 
 with fixed $\alpha_t > 0$, $\sigma_t > 0$.
 
-### TODO 1.1 (independent derivation)
+### Checkpoint 1.1 (independent derivation)
 
 From
 
@@ -73,7 +73,7 @@ One-line results:
 - $\mathbb{E}[x_t \mid x_0] = \alpha_t x_0$
 - $\mathrm{Var}(x_t \mid x_0) = \sigma_t^2$
 
-### TODO 1.2 (independent derivation)
+### Checkpoint 1.2 (independent derivation)
 
 For $\mathbb{E}[x_t]$ (using LOTUS):
 
@@ -81,7 +81,7 @@ $$
 \begin{aligned}
 \mathbb{E}[x_t]
 &= \mathbb{E}\!\left[\mathbb{E}[x_t \mid x_0]\right] \\
-&= \mathbb{E}[\alpha_t x_0] \quad \text{(from TODO 1.1)} \\
+&= \mathbb{E}[\alpha_t x_0] \quad \text{(from Checkpoint 1.1)} \\
 &= \alpha_t \mathbb{E}[x_0] \\
 &= \alpha_t \mu_0.
 \end{aligned}
@@ -105,7 +105,7 @@ One-line results:
 - $\mathbb{E}[x_t] = \alpha_t \mu_0$
 - $\mathrm{Var}(x_t) = \alpha_t^2 s_0^2 + \sigma_t^2$
 
-### TODO 1.3 (quick interpretation)
+### Checkpoint 1.3 (quick interpretation)
 
 When $x_0$ is fixed, randomness in $x_t=\alpha_t x_0+\sigma_t\epsilon$ comes only from $\epsilon$.  
 So $\sigma_t$ does not change the conditional mean $\mathbb{E}[x_t\mid x_0]=\alpha_t x_0$, it only changes spread.  
@@ -129,7 +129,7 @@ q(x_0) \propto \exp\!\left(-\frac{(x_0-\mu_0)^2}{2s_0^2}\right),
 q(x_t \mid x_0) \propto \exp\!\left(-\frac{(x_t-\alpha_t x_0)^2}{2\sigma_t^2}\right).
 $$
 
-### TODO 2.1 (complete derivation)
+### Checkpoint 2.1 (complete derivation)
 
 Start from
 
@@ -203,9 +203,9 @@ $$
 
 contains all terms that do not depend on $x_0$.
 
-### TODO 2.2 (complete the square, step-by-step)
+### Checkpoint 2.2 (complete the square, step-by-step)
 
-Start from the quadratic form obtained in TODO 2.1:
+Start from the quadratic form obtained in Checkpoint 2.1:
 
 $$
 \log q(x_0 \mid x_t)
@@ -310,7 +310,7 @@ A_t=\frac{\alpha_t s_0^2}{\alpha_t^2 s_0^2+\sigma_t^2},
 b_t=\frac{\mu_0\sigma_t^2}{\alpha_t^2 s_0^2+\sigma_t^2}.
 $$
 
-### TODO 2.3 (sanity checks)
+### Checkpoint 2.3 (sanity checks)
 
 1. As $\sigma_t \to 0$:
 
@@ -348,7 +348,7 @@ $$
 \mathcal{L}(g)=\mathbb{E}\left[(x_0-g(x_t))^2\right].
 $$
 
-### TODO 3.1
+### Checkpoint 3.1
 
 Condition first on $x_t$:
 
@@ -437,9 +437,9 @@ Interpretation:
 - $\mathbb{E}[\mathrm{Var}(x_0\mid x_t)]$ is irreducible uncertainty.
 - $\mathbb{E}[(m(x_t)-g(x_t))^2]$ is estimator mismatch.
 
-### TODO 3.2
+### Checkpoint 3.2
 
-From TODO 3.1:
+From Checkpoint 3.1:
 
 $$
 \mathcal{L}(g)
@@ -457,7 +457,7 @@ Why: for any random variable $Z$, $Z^2\ge 0$, hence $\mathbb{E}[Z^2]\ge 0$. Here
 
 Therefore, under MSE, the optimal denoiser is the posterior conditional mean.
 
-### TODO 3.3 (connection to diffusion training)
+### Checkpoint 3.3 (connection to diffusion training)
 
 In diffusion, we observe a noisy sample $x_t$ and want to recover the clean variable $x_0$.  
 If our prediction function is $g(x_t)$ and we train with squared loss $\mathbb{E}[(x_0-g(x_t))^2]$, the unique optimal target is $g^\star(x_t)=\mathbb{E}[x_0\mid x_t]$.  
@@ -471,11 +471,11 @@ This is why diffusion training can be interpreted as learning the best condition
 
 Use `/notebooks/w04_normal_loc_scale_solved.ipynb` as a starting reference.
 
-### TODO 4.1
+### Checkpoint 4.1
 
 Simulate pairs $(x_0, x_t)$ from the setup in Section 1.
 
-### TODO 4.2
+### Checkpoint 4.2
 
 Estimate a linear predictor
 
@@ -485,7 +485,7 @@ $$
 
 from simulated data and compare it qualitatively with your derived $m_t(x_t)=A_t x_t + b_t$.
 
-### TODO 4.3
+### Checkpoint 4.3
 
 Write 2-3 lines on whether the empirical trend agrees with your theory and why any mismatch appears.
 
@@ -495,7 +495,7 @@ The empirical trend agrees with theory: the fitted linear predictor is almost id
 
 ## 5) Reflection (Short)
 
-### TODO 5.1
+### Checkpoint 5.1
 
 Write one paragraph (5-8 lines):
 
@@ -503,7 +503,7 @@ Write one paragraph (5-8 lines):
 - What changed in your intuition about conditioning in diffusion?
 - One question you want to revisit in Week 5.
 
-The hardest step was the decomposition in TODO 3.1 for $\mathcal{L}(g)$, especially adding and subtracting $m(x_t)=\mathbb{E}[x_0\mid x_t]$ inside the square and showing why the cross term is zero. Once that clicked, my intuition changed from "denoising as inversion" to "denoising as conditional estimation." In particular, I now see clearly that the MSE-optimal denoiser is the posterior mean $\mathbb{E}[x_0\mid x_t]$, and the best possible error is limited by irreducible uncertainty $\mathbb{E}[\mathrm{Var}(x_0\mid x_t)]$. The close match between empirical and theoretical results in this notebook reinforced that interpretation in the Gaussian case. For Week 5, I want to revisit SNR and connect it more deeply to joint distributions/covariance so I can explain how information about $x_0$ degrades as noise increases.
+The hardest step was the decomposition in Checkpoint 3.1 for $\mathcal{L}(g)$, especially adding and subtracting $m(x_t)=\mathbb{E}[x_0\mid x_t]$ inside the square and showing why the cross term is zero. Once that clicked, my intuition changed from "denoising as inversion" to "denoising as conditional estimation." In particular, I now see clearly that the MSE-optimal denoiser is the posterior mean $\mathbb{E}[x_0\mid x_t]$, and the best possible error is limited by irreducible uncertainty $\mathbb{E}[\mathrm{Var}(x_0\mid x_t)]$. The close match between empirical and theoretical results in this notebook reinforced that interpretation in the Gaussian case. For Week 5, I want to revisit SNR and connect it more deeply to joint distributions/covariance so I can explain how information about $x_0$ degrades as noise increases.
 
 ---
 

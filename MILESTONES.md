@@ -42,4 +42,4 @@ A milestone is link-ready when it has:
 - Runnable code or notebook.
 - One clean visual artifact.
 - A one-sentence "what I learned" statement.
-- No unresolved TODO wording in public-facing files.
+- No unresolved open-work wording in public-facing files.
