@@ -69,7 +69,7 @@
 
 | Task                                 | Status | Date | Notes |
 | ------------------------------------ | ------ | ---- | ----- |
-| S1: Lecture 22 (Transformations)     | ⬜     |      |       |
+| S1: Lecture 22 (Transformations)     | ✅     | 2026-05-11 | Notes in `notes/w06_stat110_transformations_convolutions.md` |
 | S2: Problems (change of variables)   | ⬜     |      |       |
 | S3: `w06_kl_gaussians.ipynb`         | ⬜     |      |       |
 | Diffusion: `w06_where_kl_appears.md` | ⬜     |      |       |
