@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lognormal PDF Comparison</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --grid: #334155;
+      --blue: #60a5fa;
+      --orange: #fb923c;
+      --green: #34d399;
+    }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 330px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid #1f2937;
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    svg {
+      width: 100%;
+      height: 560px;
+      display: block;
+      background: #020617;
+      border-radius: 14px;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      color: var(--text);
+      font-weight: 650;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .legend {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 99px;
+      display: inline-block;
+    }
+
+    .math {
+      background: #020617;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 12px;
+      color: #d1d5db;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      overflow-x: auto;
+    }
+
+    .insight {
+      border-left: 4px solid var(--green);
+      padding-left: 12px;
+      margin-top: 16px;
+      color: #d1d5db;
+    }
+
+    .tooltip {
+      position: fixed;
+      pointer-events: none;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid #334155;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 13px;
+      display: none;
+      z-index: 10;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      svg {
+        height: 460px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Comparing the two lognormal PDFs</h1>
+    <p>
+      Lecture example: <strong>Y = e<sup>Z</sup></strong>. Problem example: <strong>W = e<sup>Z+1</sup></strong>.
+      The sliders recalculate the PDFs directly from the change-of-variables formula.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <svg id="plot" viewBox="0 0 900 560" role="img" aria-label="PDF comparison plot"></svg>
+        <div class="legend">
+          <div class="legend-item"><span class="swatch" style="background: var(--blue)"></span> Notes: Y = e^Z</div>
+          <div class="legend-item"><span class="swatch" style="background: var(--orange)"></span> Problem: W = e^(Z + shift)</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <label for="shift">Shift inside exponent: <span id="shiftValue">1.00</span></label>
+        <input id="shift" type="range" min="-2" max="2" step="0.05" value="1" />
+        <div class="row"><span>-2</span><span>0</span><span>2</span></div>
+
+        <label for="xmax">Visible x-axis max: <span id="xmaxValue">12</span></label>
+        <input id="xmax" type="range" min="4" max="30" step="1" value="12" />
+
+        <label for="marker">Move a point on the x-axis: <span id="markerValue">2.00</span></label>
+        <input id="marker" type="range" min="0.05" max="12" step="0.05" value="2" />
+
+        <div class="math" id="formulaBox"></div>
+
+        <div class="insight" id="insightBox"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tooltip" id="tooltip"></div>
+
+  <script>
+    const svg = document.getElementById("plot");
+    const shiftInput = document.getElementById("shift");
+    const xmaxInput = document.getElementById("xmax");
+    const markerInput = document.getElementById("marker");
+    const shiftValue = document.getElementById("shiftValue");
+    const xmaxValue = document.getElementById("xmaxValue");
+    const markerValue = document.getElementById("markerValue");
+    const formulaBox = document.getElementById("formulaBox");
+    const insightBox = document.getElementById("insightBox");
+    const tooltip = document.getElementById("tooltip");
+
+    const W = 900, H = 560;
+    const margin = { left: 70, right: 30, top: 30, bottom: 62 };
+    const innerW = W - margin.left - margin.right;
+    const innerH = H - margin.top - margin.bottom;
+
+    function normalPdf(z) {
+      return Math.exp(-0.5 * z * z) / Math.sqrt(2 * Math.PI);
+    }
+
+    // General version: X = exp(Z + a), Z ~ N(0, 1)
+    // z = log(x) - a, dz/dx = 1/x
+    function transformedPdf(x, a) {
+      if (x <= 0) return 0;
+      const z = Math.log(x) - a;
+      return normalPdf(z) * (1 / x);
+    }
+
+    function makePoints(a, xmax, n = 800) {
+      const xmin = 0.001;
+      const pts = [];
+      for (let i = 0; i <= n; i++) {
+        const x = xmin + (xmax - xmin) * i / n;
+        pts.push({ x, y: transformedPdf(x, a) });
+      }
+      return pts;
+    }
+
+    function pathFromPoints(points, xScale, yScale) {
+      return points.map((p, i) => `${i === 0 ? "M" : "L"}${xScale(p.x).toFixed(2)},${yScale(p.y).toFixed(2)}`).join(" ");
+    }
+
+    function el(name, attrs = {}, text = null) {
+      const node = document.createElementNS("http://www.w3.org/2000/svg", name);
+      for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+      if (text !== null) node.textContent = text;
+      return node;
+    }
+
+    function fmt(n, digits = 4) {
+      return Number(n).toFixed(digits);
+    }
+
+    function render() {
+      const a = parseFloat(shiftInput.value);
+      const xmax = parseFloat(xmaxInput.value);
+      const marker = Math.min(parseFloat(markerInput.value), xmax);
+      markerInput.max = xmax;
+
+      shiftValue.textContent = a.toFixed(2);
+      xmaxValue.textContent = xmax.toFixed(0);
+      markerValue.textContent = marker.toFixed(2);
+
+      const lecture = makePoints(0, xmax);
+      const problem = makePoints(a, xmax);
+      const all = lecture.concat(problem);
+      const ymax = Math.max(...all.map(p => p.y)) * 1.08;
+
+      const xScale = x => margin.left + (x / xmax) * innerW;
+      const yScale = y => margin.top + innerH - (y / ymax) * innerH;
+
+      svg.innerHTML = "";
+
+      // grid and axes
+      for (let i = 0; i <= 6; i++) {
+        const x = margin.left + i * innerW / 6;
+        const val = xmax * i / 6;
+        svg.appendChild(el("line", { x1: x, y1: margin.top, x2: x, y2: margin.top + innerH, stroke: "#1e293b", "stroke-width": 1 }));
+        svg.appendChild(el("text", { x, y: H - 25, fill: "#94a3b8", "font-size": 13, "text-anchor": "middle" }, val.toFixed(1)));
+      }
+
+      for (let i = 0; i <= 5; i++) {
+        const y = margin.top + i * innerH / 5;
+        const val = ymax * (1 - i / 5);
+        svg.appendChild(el("line", { x1: margin.left, y1: y, x2: margin.left + innerW, y2: y, stroke: "#1e293b", "stroke-width": 1 }));
+        svg.appendChild(el("text", { x: margin.left - 12, y: y + 4, fill: "#94a3b8", "font-size": 13, "text-anchor": "end" }, val.toFixed(3)));
+      }
+
+      svg.appendChild(el("line", { x1: margin.left, y1: margin.top + innerH, x2: margin.left + innerW, y2: margin.top + innerH, stroke: "#94a3b8", "stroke-width": 1.5 }));
+      svg.appendChild(el("line", { x1: margin.left, y1: margin.top, x2: margin.left, y2: margin.top + innerH, stroke: "#94a3b8", "stroke-width": 1.5 }));
+      svg.appendChild(el("text", { x: margin.left + innerW / 2, y: H - 8, fill: "#cbd5e1", "font-size": 15, "text-anchor": "middle" }, "value: y or w"));
+      svg.appendChild(el("text", { x: 20, y: margin.top + innerH / 2, fill: "#cbd5e1", "font-size": 15, "text-anchor": "middle", transform: `rotate(-90 20 ${margin.top + innerH / 2})` }, "density"));
+
+      const lecturePath = el("path", {
+        d: pathFromPoints(lecture, xScale, yScale),
+        fill: "none",
+        stroke: "#60a5fa",
+        "stroke-width": 3,
+        "stroke-linejoin": "round",
+        "stroke-linecap": "round"
+      });
+      svg.appendChild(lecturePath);
+
+      const problemPath = el("path", {
+        d: pathFromPoints(problem, xScale, yScale),
+        fill: "none",
+        stroke: "#fb923c",
+        "stroke-width": 3,
+        "stroke-linejoin": "round",
+        "stroke-linecap": "round"
+      });
+      svg.appendChild(problemPath);
+
+      // marker
+      const yLecture = transformedPdf(marker, 0);
+      const yProblem = transformedPdf(marker, a);
+      const mx = xScale(marker);
+      svg.appendChild(el("line", { x1: mx, y1: margin.top, x2: mx, y2: margin.top + innerH, stroke: "#64748b", "stroke-width": 1.5, "stroke-dasharray": "5 6" }));
+      svg.appendChild(el("circle", { cx: mx, cy: yScale(yLecture), r: 5, fill: "#60a5fa" }));
+      svg.appendChild(el("circle", { cx: mx, cy: yScale(yProblem), r: 5, fill: "#fb923c" }));
+      svg.appendChild(el("text", { x: mx + 8, y: Math.min(yScale(Math.max(yLecture, yProblem)) - 10, margin.top + innerH - 15), fill: "#e5e7eb", "font-size": 13 }, `x=${marker.toFixed(2)}`));
+
+      // modes calculated from formula: mode = exp(mu - sigma^2), sigma=1
+      const lectureMode = Math.exp(0 - 1);
+      const problemMode = Math.exp(a - 1);
+      if (lectureMode < xmax) {
+        svg.appendChild(el("line", { x1: xScale(lectureMode), y1: margin.top + innerH, x2: xScale(lectureMode), y2: yScale(transformedPdf(lectureMode, 0)), stroke: "#60a5fa", "stroke-width": 1, "stroke-dasharray": "3 5" }));
+      }
+      if (problemMode < xmax) {
+        svg.appendChild(el("line", { x1: xScale(problemMode), y1: margin.top + innerH, x2: xScale(problemMode), y2: yScale(transformedPdf(problemMode, a)), stroke: "#fb923c", "stroke-width": 1, "stroke-dasharray": "3 5" }));
+      }
+
+      // transparent hover layer
+      const hover = el("rect", { x: margin.left, y: margin.top, width: innerW, height: innerH, fill: "transparent" });
+      hover.addEventListener("mousemove", (ev) => {
+        const rect = svg.getBoundingClientRect();
+        const localX = (ev.clientX - rect.left) * (W / rect.width);
+        const xVal = Math.max(0.001, Math.min(xmax, ((localX - margin.left) / innerW) * xmax));
+        tooltip.style.display = "block";
+        tooltip.style.left = `${ev.clientX + 14}px`;
+        tooltip.style.top = `${ev.clientY + 14}px`;
+        tooltip.innerHTML = `
+          <strong>x = ${xVal.toFixed(3)}</strong><br>
+          notes density: ${transformedPdf(xVal, 0).toFixed(5)}<br>
+          shifted density: ${transformedPdf(xVal, a).toFixed(5)}<br>
+          log x: ${Math.log(xVal).toFixed(3)}
+        `;
+      });
+      hover.addEventListener("mouseleave", () => tooltip.style.display = "none");
+      svg.appendChild(hover);
+
+      formulaBox.innerHTML = `
+        Notes:<br>
+        z = log(x)<br>
+        f_Y(x) = φ(log(x)) · 1/x<br><br>
+        Problem with shift a = ${a.toFixed(2)}:<br>
+        z = log(x) - a<br>
+        f_W(x) = φ(log(x) - a) · 1/x<br><br>
+        At x = ${marker.toFixed(2)}:<br>
+        f_Y(x) = ${fmt(yLecture)}<br>
+        f_W(x) = ${fmt(yProblem)}
+      `;
+
+      const factor = Math.exp(a);
+      insightBox.innerHTML = `
+        Intuition: adding <strong>${a.toFixed(2)}</strong> inside the exponent multiplies the original variable by
+        <strong>e<sup>${a.toFixed(2)}</sup> ≈ ${factor.toFixed(3)}</strong>.
+        So the orange curve is mostly a horizontal stretching/compressing of the blue curve, not a simple vertical shift.
+      `;
+    }
+
+    [shiftInput, xmaxInput, markerInput].forEach(input => input.addEventListener("input", render));
+    render();
+  </script>
+</body>
+</html>
