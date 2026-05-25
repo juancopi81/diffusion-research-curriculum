@@ -448,6 +448,320 @@ $$
 
 a result obtained in class using the law of total probability.
 
+### My attempt
+
+I want the PDF of the sum
+
+$$
+T=X+Y.
+$$
+
+The problem asks for the joint PDF of $T$ and $X$, so I keep $X$ as the second coordinate and transform from the old variables $(X,Y)$ to the new variables $(T,X)$.
+
+For concreteness, I can look at the new-coordinate point
+
+$$
+(T,X)=(10,10).
+$$
+
+This combines two constraints:
+
+$$
+T=10
+\qquad\text{and}\qquad
+X=10.
+$$
+
+The constraint $T=10$ means
+
+$$
+x+y=10,
+$$
+
+which is a diagonal line in the old $(x,y)$-plane. The constraint $X=10$ is a vertical line:
+
+```text
+y
+|
+10 +\
+   | \
+   |  \
+   |   \    t = x + y = 10
+   |    \
+   |     \
+ 0 +------*---------- x
+          10
+          x = 10
+```
+
+The intersection is the old point
+
+$$
+(X,Y)=(10,0),
+$$
+
+since $10=10+0$.
+
+Let
+
+$$
+\vec A=(T,X)
+\qquad\text{and}\qquad
+\vec B=(X,Y).
+$$
+
+In lowercase variables, this transformation is
+
+$$
+t=x+y,
+\qquad
+x=x.
+$$
+
+Now invert it. If the new coordinates are $(t,x)$, then the old $X$-coordinate is still $x$, and the old $Y$-coordinate is
+
+$$
+y=t-x.
+$$
+
+So the inverse map is
+
+$$
+(\text{old }x,\text{old }y)=(x,t-x).
+$$
+
+The transformation formula says
+
+$$
+f_{\vec A}(\vec a)
+=
+f_{\vec B}(\vec b)
+\left|
+\det\left(\frac{\partial \vec b}{\partial \vec a}\right)
+\right|.
+$$
+
+Equivalently, I can compute the forward Jacobian. Since $\vec A=(T,X)$ and $\vec B=(X,Y)$,
+
+$$
+\frac{\partial \vec A}{\partial \vec B}
+=
+\begin{pmatrix}
+\frac{\partial t}{\partial x} & \frac{\partial t}{\partial y}\\
+\frac{\partial x}{\partial x} & \frac{\partial x}{\partial y}
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & 1\\
+1 & 0
+\end{pmatrix},
+\qquad
+\det=-1.
+$$
+
+Thus the absolute determinant is $1$, so the transformation does not add any area-scaling factor.
+
+Since $X$ and $Y$ are independent,
+
+$$
+f_{\vec B}(x,y)=f_{X,Y}(x,y)=f_X(x)f_Y(y).
+$$
+
+Substitute the inverse point $(x,t-x)$:
+
+$$
+f_{\vec B}(x,t-x)
+=f_X(x)f_Y(t-x).
+$$
+
+Therefore, the joint PDF of $T$ and $X$ is
+
+$$
+\boxed{
+f_{T,X}(t,x)=f_X(x)f_Y(t-x).
+}
+$$
+
+Finally, marginalize over $X$ to get the PDF of $T$:
+
+$$
+\begin{aligned}
+f_T(t)
+&=\int_{-\infty}^{\infty} f_{T,X}(t,x)\,dx\\
+&=\int_{-\infty}^{\infty} f_X(x)f_Y(t-x)\,dx.
+\end{aligned}
+$$
+
+Thus
+
+$$
+\boxed{
+f_T(t)=\int_{-\infty}^{\infty} f_X(x)f_Y(t-x)\,dx.
+}
+$$
+
+This is the convolution formula for the PDF of a sum of independent continuous random variables.
+
+### What I initially missed / corrected
+
+- The main idea was right: keep one old variable, solve for the other old variable, use independence, then integrate out the kept variable.
+- The sketch uses both constraints from the new-coordinate point $(T,X)=(10,10)$:
+  the diagonal line is $T=10$, i.e. $x+y=10$, and the vertical line is $X=10$.
+  Their intersection maps back to the old point $(X,Y)=(10,0)$.
+- The gotcha is to keep the old point and the new point separate. If the old point were $(X,Y)=(10,10)$, then the new point would be $(T,X)=(20,10)$, not $(10,10)$.
+- The move is not "replace $X$ by $Y$." The move is: keep $X=x$ and recover the old $Y$ from $T=t$, giving $Y=t-x$.
+- I originally wrote the new vector as $\vec A=(X,T)$. That is valid, but then the joint density is naturally $f_{X,T}(x,t)$. Since the problem asks for the joint PDF of $T$ and $X$, I rewrote the final version as $\vec A=(T,X)$ and $f_{T,X}(t,x)$.
+- The book uses $(T,W)$ with $W=X$. That is the same idea, but the extra name $W$ avoids using $X$ as both an old variable and a new coordinate.
+- The marginal PDF of $T$ is $f_T(t)$, not a two-variable density. The variable $x$ is integrated out.
+- "Summing over all possible $x$" is conceptually right, but since $X$ is continuous, the precise operation is integrating over $x$.
+- If $X$ or $Y$ has restricted support, the same integral over $(-\infty,\infty)$ still works because the PDFs are $0$ outside their supports.
+
+### Book's solution (for comparison)
+
+Source status: verified. The user provided the book excerpt for this problem.
+
+The book uses the same transformation:
+
+$$
+t=x+y,
+\qquad
+w=x.
+$$
+
+For the random variables, this means
+
+$$
+T=X+Y,
+\qquad
+W=X.
+$$
+
+The forward Jacobian is
+
+$$
+\frac{\partial(t,w)}{\partial(x,y)}
+=
+\begin{pmatrix}
+1 & 1\\
+1 & 0
+\end{pmatrix},
+$$
+
+whose absolute determinant is $1$. Therefore no extra scale factor appears when changing variables.
+
+Using the inverse transformation
+
+$$
+x=w,
+\qquad
+y=t-w,
+$$
+
+the joint PDF of $(T,W)$ is
+
+$$
+f_{T,W}(t,w)
+=f_X(w)f_Y(t-w).
+$$
+
+Then the marginal PDF of $T$ is found by integrating out $W$:
+
+$$
+\begin{aligned}
+f_T(t)
+&=\int_{-\infty}^{\infty} f_{T,W}(t,w)\,dw\\
+&=\int_{-\infty}^{\infty} f_X(w)f_Y(t-w)\,dw.
+\end{aligned}
+$$
+
+Renaming the dummy integration variable from $w$ to $x$ gives
+
+$$
+f_T(t)
+=\int_{-\infty}^{\infty} f_X(x)f_Y(t-x)\,dx.
+$$
+
+So the handwritten solution and the book solution agree. The book's notation is cleaner because it names the carried-along copy of $X$ as $W$, which makes the transformation from old variables $(X,Y)$ to new variables $(T,W)$ explicit.
+
+### Intuition
+
+Take a tiny rectangle around a point $(t,x)$ in the new coordinates $(T,X)$. This means
+
+$$
+T\approx t,
+\qquad
+X\approx x.
+$$
+
+Geometrically, we are looking at all outcomes where $T$ is very close to $t$ and $X$ is very close to $x$.
+
+Now translate that tiny rectangle back into the old $(X,Y)$-coordinates. Since
+
+$$
+T=X+Y,
+$$
+
+knowing $T=t$ and $X=x$ forces
+
+$$
+Y=t-x.
+$$
+
+So the new point
+
+$$
+(T,X)=(t,x)
+$$
+
+comes from the old point
+
+$$
+(X,Y)=(x,t-x).
+$$
+
+That is the conceptual bridge: probability mass near $(T,X)=(t,x)$ comes from probability mass near $(X,Y)=(x,t-x)$.
+
+Because $X$ and $Y$ are independent, the old joint density is
+
+$$
+f_{X,Y}(x,y)=f_X(x)f_Y(y).
+$$
+
+So at the recovered old point $(x,t-x)$, the density is
+
+$$
+f_X(x)f_Y(t-x).
+$$
+
+The Jacobian checks whether the transformation stretches or shrinks tiny areas. Here the absolute determinant is $1$, so tiny areas in $(T,X)$-space correspond to same-size tiny areas in $(X,Y)$-space. No extra scaling factor is needed.
+
+Therefore
+
+$$
+f_{T,X}(t,x)=f_X(x)f_Y(t-x).
+$$
+
+Finally, to get only the density of $T$, forget the value of $X$ by integrating over every possible $x$:
+
+$$
+f_T(t)=\int_{-\infty}^{\infty} f_X(x)f_Y(t-x)\,dx.
+$$
+
+This is why convolution looks like "sliding" one density against the other.
+
+### Memory card (quick review)
+
+- To find the PDF of $T=X+Y$, keep one old variable as a second coordinate.
+- Use $W=X$, so the new variables are $(T,W)$.
+- The inverse transformation is $x=w,\ y=t-w$.
+- The Jacobian absolute determinant is $1$.
+- Therefore $f_{T,W}(t,w)=f_X(w)f_Y(t-w)$.
+- Integrating out $w$ gives the convolution formula.
+
+$$
+f_T(t)=\int_{-\infty}^{\infty} f_X(w)f_Y(t-w)\,dw.
+$$
+
 ---
 
 ## Stat 110 Homework 8
