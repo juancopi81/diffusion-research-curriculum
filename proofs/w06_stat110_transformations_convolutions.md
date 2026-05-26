@@ -789,6 +789,429 @@ is the squared distance from the origin and $\theta$ is the angle (in $[0,2\pi)$
 
 (c) What is the joint PDF of $(R,\theta)$ when $X$ and $Y$ are i.i.d. $N(0,1)$?
 
+### Part (a)
+
+Intuitively, $R$ and $\theta$ should be independent because the joint PDF only depends on the distance from the origin. If I fix a radius $r$, then every point on the circle with that radius has the same density. So after knowing the distance from the origin, no angle is favored over another angle.
+
+Let
+
+$$
+d=\sqrt{x^2+y^2}
+$$
+
+be the distance from the origin. Since the joint density is
+
+$$
+f_{X,Y}(x,y)=g(x^2+y^2),
+$$
+
+the density depends only on $d^2$, not on the angle.
+
+Now use polar coordinates:
+
+$$
+X=R\cos\theta,
+\qquad
+Y=R\sin\theta.
+$$
+
+So the transformation is from the new system $(R,\theta)$ to the old system $(X,Y)$:
+
+$$
+(r,\theta)\mapsto (x,y)=(r\cos\theta,r\sin\theta).
+$$
+
+The change-of-variables formula I am using is:
+
+$$
+f_{R,\theta}(r,\theta)
+=f_{X,Y}(x(r,\theta),y(r,\theta))
+\left|\det\left(\frac{\partial(x,y)}{\partial(r,\theta)}\right)\right|.
+$$
+
+In words: evaluate the old joint PDF at the old point that corresponds to the new point, then multiply by the absolute value of the Jacobian determinant.
+
+First evaluate the old joint density at the transformed point:
+
+$$
+\begin{aligned}
+f_{X,Y}(r\cos\theta,r\sin\theta)
+&=g\left((r\cos\theta)^2+(r\sin\theta)^2\right)\\
+&=g\left(r^2\cos^2\theta+r^2\sin^2\theta\right)\\
+&=g(r^2).
+\end{aligned}
+$$
+
+Now compute the Jacobian:
+
+$$
+\frac{\partial(x,y)}{\partial(r,\theta)}
+=
+\begin{pmatrix}
+\cos\theta & -r\sin\theta\\
+\sin\theta & r\cos\theta
+\end{pmatrix}.
+$$
+
+The determinant is
+
+$$
+\begin{aligned}
+\det\left(\frac{\partial(x,y)}{\partial(r,\theta)}\right)
+&=r\cos^2\theta+r\sin^2\theta\\
+&=r.
+\end{aligned}
+$$
+
+Therefore,
+
+$$
+\left|\det\left(\frac{\partial(x,y)}{\partial(r,\theta)}\right)\right|=r.
+$$
+
+So the joint PDF of $(R,\theta)$ is
+
+$$
+\boxed{
+f_{R,\theta}(r,\theta)=r g(r^2),
+\qquad r\ge 0,\ 0\le \theta<2\pi.
+}
+$$
+
+To see the independence from the joint PDF, find the marginal PDFs. For $\theta$,
+
+$$
+f_\theta(\theta)
+=\int_0^\infty f_{R,\theta}(r,\theta)\,dr
+=\int_0^\infty r g(r^2)\,dr.
+$$
+
+This does not depend on $\theta$. Since $\theta$ ranges from $0$ to $2\pi$, this constant must be
+
+$$
+f_\theta(\theta)=\frac{1}{2\pi}.
+$$
+
+For $R$,
+
+$$
+\begin{aligned}
+f_R(r)
+&=\int_0^{2\pi} f_{R,\theta}(r,\theta)\,d\theta\\
+&=\int_0^{2\pi} r g(r^2)\,d\theta\\
+&=2\pi r g(r^2).
+\end{aligned}
+$$
+
+Then
+
+$$
+f_R(r)f_\theta(\theta)
+=\left(2\pi r g(r^2)\right)\left(\frac{1}{2\pi}\right)
+=r g(r^2)
+=f_{R,\theta}(r,\theta).
+$$
+
+Thus $R$ and $\theta$ are independent.
+
+### What I initially missed / corrected
+
+- The intuition should not say that all distances from the origin are equally likely. The corrected idea is: given a fixed distance from the origin, all angles are equally likely.
+- The density is $g(x^2+y^2)$, so after setting $d=\sqrt{x^2+y^2}$, it is better to say the density is $g(d^2)$.
+- I originally treated the Jacobian as if the final factor were $1/r$. Since the transformation used here is from $(r,\theta)$ to $(x,y)$, the needed area-scaling factor is
+
+$$
+\left|\det\left(\frac{\partial(x,y)}{\partial(r,\theta)}\right)\right|=r.
+$$
+
+- If I instead use
+
+$$
+\left|\det\left(\frac{\partial(r,\theta)}{\partial(x,y)}\right)\right|=\frac{1}{r},
+$$
+
+then I must divide by that inverse Jacobian, which again gives the factor $r$.
+
+### Part (b)
+
+Since a point is chosen uniformly in the unit disc, the density must be constant inside the disc and $0$ outside:
+
+$$
+f_{X,Y}(x,y)=
+\begin{cases}
+c, & x^2+y^2\le 1,\\
+0, & \text{otherwise.}
+\end{cases}
+$$
+
+Total probability must be $1$, so
+
+$$
+c\cdot \text{Area(unit disc)}=1.
+$$
+
+The area of the unit disc is
+
+$$
+\pi r^2=\pi,
+$$
+
+so
+
+$$
+c=\frac{1}{\pi}.
+$$
+
+Therefore,
+
+$$
+f_{X,Y}(x,y)=
+\begin{cases}
+\frac{1}{\pi}, & x^2+y^2\le 1,\\
+0, & \text{otherwise.}
+\end{cases}
+$$
+
+From the last part,
+
+$$
+f_{R,\theta}(r,\theta)=r g(r^2).
+$$
+
+In this case,
+
+$$
+g(r^2)=\frac{1}{\pi}
+$$
+
+when the point is inside the unit disc. In polar coordinates,
+
+$$
+x^2+y^2\le 1
+\quad\Longleftrightarrow\quad
+r^2\le 1
+\quad\Longleftrightarrow\quad
+0\le r\le 1.
+$$
+
+So the joint PDF is
+
+$$
+\boxed{
+f_{R,\theta}(r,\theta)=\frac{r}{\pi},
+\qquad 0\le r\le 1,\ 0\le \theta<2\pi.
+}
+$$
+
+It is $0$ outside this range.
+
+### Part (c)
+
+Since $X$ and $Y$ are i.i.d. $N(0,1)$,
+
+$$
+f_X(x)=\frac{1}{\sqrt{2\pi}}e^{-x^2/2},
+\qquad
+f_Y(y)=\frac{1}{\sqrt{2\pi}}e^{-y^2/2},
+$$
+
+for
+
+$$
+-\infty<x<\infty,
+\qquad
+-\infty<y<\infty.
+$$
+
+Since $X$ and $Y$ are independent,
+
+$$
+\begin{aligned}
+f_{X,Y}(x,y)
+&=f_X(x)f_Y(y)\\
+&=\frac{1}{2\pi}e^{-x^2/2}e^{-y^2/2}\\
+&=\frac{1}{2\pi}e^{-(x^2+y^2)/2}.
+\end{aligned}
+$$
+
+So in the notation from the problem,
+
+$$
+g(r^2)=\frac{1}{2\pi}e^{-r^2/2}.
+$$
+
+From the last part,
+
+$$
+f_{R,\theta}(r,\theta)=r g(r^2).
+$$
+
+Therefore,
+
+$$
+\boxed{
+f_{R,\theta}(r,\theta)=\frac{r}{2\pi}e^{-r^2/2},
+\qquad 0\le r<\infty,\ 0\le \theta<2\pi.
+}
+$$
+
+### Book's solution (for comparison)
+
+Source status: verified. The user provided the book excerpt for this problem.
+
+The book uses the same polar-coordinate change of variables. Its intuition for part (a) is that the joint density of $(X,Y)$ depends only on distance from the origin, not on angle. So after knowing $R$, there is no extra information about $\theta$.
+
+The book writes the angle variable as $t$. Since the absolute Jacobian is $r$,
+
+$$
+f_{R,\theta}(r,t)
+=f_{X,Y}(x,y)r
+=r g(r^2),
+$$
+
+for
+
+$$
+r\ge 0,
+\qquad
+t\in[0,2\pi).
+$$
+
+This factors into a function of $r$ times a constant function of $t$, so $R$ and $\theta$ are independent, with
+
+$$
+\theta\sim \text{Unif}(0,2\pi).
+$$
+
+For part (b), the book uses
+
+$$
+f_{X,Y}(x,y)=\frac{1}{\pi}
+$$
+
+inside the unit disc. Therefore,
+
+$$
+f_{R,\theta}(r,t)=\frac{r}{\pi},
+\qquad 0\le r\le 1,\ t\in[0,2\pi),
+$$
+
+and the density is $0$ otherwise. The book also identifies the marginal PDFs:
+
+$$
+f_R(r)=2r,
+\qquad 0\le r\le 1,
+$$
+
+and
+
+$$
+f_\theta(t)=\frac{1}{2\pi},
+\qquad 0\le t<2\pi.
+$$
+
+For part (c), the book uses
+
+$$
+f_{X,Y}(x,y)=\frac{1}{2\pi}e^{-(x^2+y^2)/2},
+$$
+
+so
+
+$$
+g(r^2)=\frac{1}{2\pi}e^{-r^2/2}.
+$$
+
+Thus,
+
+$$
+f_{R,\theta}(r,t)=\frac{1}{2\pi}r e^{-r^2/2},
+\qquad r\ge 0,\ t\in[0,2\pi).
+$$
+
+This again shows independence, with marginal PDFs
+
+$$
+f_R(r)=r e^{-r^2/2},
+\qquad r\ge 0,
+$$
+
+and
+
+$$
+f_\theta(t)=\frac{1}{2\pi},
+\qquad 0\le t<2\pi.
+$$
+
+The book notes that this distribution of $R$ is called Weibull; equivalently, $R$ has the same distribution as $W^{1/2}$ for $W\sim \text{Expo}(1/2)$.
+
+### Intuition
+
+The main idea is that polar coordinates separate direction from distance.
+
+The original density has the form
+
+$$
+f_{X,Y}(x,y)=g(x^2+y^2),
+$$
+
+so it only cares about the squared distance from the origin. All points on the same circle have the same density.
+
+The Jacobian adds the area effect. A thin polar rectangle with radius near $r$ covers area proportional to $r$, so the joint density in polar coordinates becomes
+
+$$
+f_{R,\theta}(r,\theta)=r g(r^2).
+$$
+
+The important feature is that this expression has no real dependence on $\theta$. The angle is uniform, and the radius carries all the radial information.
+
+This also explains why, for a point uniform in the unit disc, $R$ is not uniform on $[0,1]$. Larger radii have larger circles and therefore more area nearby, giving
+
+$$
+f_R(r)=2r,
+\qquad 0\le r\le 1.
+$$
+
+For the standard Normal case, the radius has density
+
+$$
+f_R(r)=r e^{-r^2/2},
+\qquad r\ge 0.
+$$
+
+So $R^2$ has an exponential distribution with rate $1/2$.
+
+### Memory card (quick review)
+
+- If $f_{X,Y}(x,y)=g(x^2+y^2)$, use polar coordinates.
+- The polar-coordinate Jacobian contributes the factor $r$.
+- Therefore
+
+  $$
+  f_{R,\theta}(r,\theta)=r g(r^2),
+  \qquad r\ge 0,\ 0\le \theta<2\pi.
+  $$
+
+- Since this does not depend on $\theta$, the angle is uniform:
+
+  $$
+  f_\theta(\theta)=\frac{1}{2\pi}.
+  $$
+
+- Uniform in the unit disc:
+
+  $$
+  f_{R,\theta}(r,\theta)=\frac{r}{\pi},
+  \qquad 0\le r\le 1,\ 0\le \theta<2\pi.
+  $$
+
+- Independent standard Normals:
+
+  $$
+  f_{R,\theta}(r,\theta)=\frac{r}{2\pi}e^{-r^2/2},
+  \qquad r\ge 0,\ 0\le \theta<2\pi.
+  $$
+
 ---
 
 ## Homework 8 — Problem 5
