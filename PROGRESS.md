@@ -69,8 +69,8 @@
 
 | Task                                 | Status | Date | Notes |
 | ------------------------------------ | ------ | ---- | ----- |
-| S1: Lecture 22 (Transformations)     | ✅     | 2026-05-11 | Notes in `notes/w06_stat110_transformations_convolutions.md` |
-| S2: Problems (change of variables)   | ⬜     |      |       |
+| S1: Lecture 22 (Transformations)     | ✅     | 2026-05-11 | Notes in `notes/w06_stat110_transformations_convolutions.md`; intuition artifact in `notebooks/w06_change_of_variables_intuition_artifact.html` |
+| S2: Problems (change of variables)   | ✅     | 2026-05-27 | Completed in `proofs/w06_stat110_transformations_convolutions.md`; source-verified book comparisons, intuition notes, and memory cards included |
 | S3: `w06_kl_gaussians.ipynb`         | ⬜     |      |       |
 | Diffusion: `w06_where_kl_appears.md` | ⬜     |      |       |
 

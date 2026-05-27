@@ -1228,3 +1228,350 @@ Evaluate Jacobno's argument, while getting the PDF of $T$ (as an integral) in 2 
 (a) using the continuous law of total probability to get the CDF, and then taking the derivative (you can assume that swapping the derivative and integral is valid);
 
 (b) by taking the log of both sides of $T=XY$ and doing a convolution (and then converting back to get the PDF of $T$).
+
+### Part (a) — CDF/LOTP derivation
+
+Independent derivation.
+
+Since $X$ and $Y$ are positive, $T=XY$ is also positive. Therefore, for $t\le 0$,
+
+$$
+F_T(t)=0.
+$$
+
+For $t>0$, use the continuous law of total probability by conditioning on $X$:
+
+$$
+\begin{aligned}
+F_T(t)
+&=\mathbb{P}(T\le t)\\
+&=\mathbb{P}(XY\le t)\\
+&=\int_0^\infty \mathbb{P}(XY\le t\mid X=x)f_X(x)\,dx.
+\end{aligned}
+$$
+
+Given $X=x$, with $x>0$, the inequality $XY\le t$ becomes $xY\le t$, or equivalently $Y\le t/x$. Using independence,
+
+$$
+\mathbb{P}(XY\le t\mid X=x)
+=\mathbb{P}(Y\le t/x)
+=F_Y(t/x).
+$$
+
+So
+
+$$
+F_T(t)
+=\int_0^\infty F_Y(t/x)f_X(x)\,dx.
+$$
+
+Differentiate with respect to $t$:
+
+$$
+\begin{aligned}
+f_T(t)
+&=\frac{d}{dt}F_T(t)\\
+&=\int_0^\infty \frac{d}{dt}F_Y(t/x)f_X(x)\,dx\\
+&=\int_0^\infty f_Y(t/x)\frac{1}{x}f_X(x)\,dx,
+\qquad t>0.
+\end{aligned}
+$$
+
+Thus,
+
+$$
+\boxed{
+f_T(t)
+=
+\int_0^\infty f_X(x)f_Y(t/x)\frac{1}{x}\,dx,
+\qquad t>0.
+}
+$$
+
+For $t\le 0$, $f_T(t)=0$. Jacobno's proposed integral is missing the factor $1/x$, so the argument is generally not correct. In change-of-variables language, the missing factor is the Jacobian term from $y=t/x$:
+
+$$
+\left|\frac{dy}{dt}\right|=\frac{1}{x}.
+$$
+
+### Part (b) — Log transform/convolution derivation
+
+Independent derivation.
+
+Since $X$ and $Y$ are positive, taking logs is valid. Let
+
+$$
+A=\log T,
+\qquad
+B=\log X,
+\qquad
+C=\log Y.
+$$
+
+Since $T=XY$,
+
+$$
+A=\log T=\log X+\log Y=B+C.
+$$
+
+Also, since $X$ and $Y$ are independent, $B$ and $C$ are independent. Therefore, the PDF of $A$ is the convolution
+
+$$
+f_A(a)
+=
+\int_{-\infty}^{\infty} f_C(a-b)f_B(b)\,db.
+$$
+
+Now convert the log-transformed densities back to the original variables. Since $a=\log t$, we have $t=e^a$ and
+
+$$
+\frac{dt}{da}=e^a=t.
+$$
+
+Thus,
+
+$$
+f_A(a)=f_T(e^a)e^a,
+$$
+
+so at $a=\log t$,
+
+$$
+f_A(\log t)=f_T(t)t.
+$$
+
+Similarly, if $b=\log x$, then $x=e^b$ and
+
+$$
+f_B(b)=f_X(e^b)e^b=f_X(x)x.
+$$
+
+Also,
+
+$$
+db=d(\log x)=\frac{1}{x}\,dx.
+$$
+
+For the remaining term,
+
+$$
+a-b=\log t-\log x=\log(t/x),
+$$
+
+so
+
+$$
+\begin{aligned}
+f_C(a-b)
+&=f_C(\log(t/x))\\
+&=f_Y(t/x)\frac{t}{x}.
+\end{aligned}
+$$
+
+Substitute these into the convolution formula:
+
+$$
+\begin{aligned}
+f_T(t)t
+&=
+\int_0^\infty
+f_Y(t/x)\frac{t}{x}
+f_X(x)x
+\frac{1}{x}\,dx\\
+&=
+\int_0^\infty
+f_Y(t/x)f_X(x)\frac{t}{x}\,dx.
+\end{aligned}
+$$
+
+Cancel $t$ from both sides:
+
+$$
+\boxed{
+f_T(t)
+=
+\int_0^\infty f_X(x)f_Y(t/x)\frac{1}{x}\,dx,
+\qquad t>0.
+}
+$$
+
+This agrees with part (a). The log-convolution route also shows why Jacobno's argument needs the Jacobian factor $1/x$.
+
+### Book's solution (for comparison)
+
+Source status: verified. The user provided the book excerpt for this problem.
+
+The book's solution agrees with both derivations above. For part (a), it conditions on $X$ and uses the continuous law of total probability:
+
+$$
+\mathbb{P}(T\le t)
+=
+\int_0^\infty
+\mathbb{P}(XY\le t\mid X=x)f_X(x)\,dx.
+$$
+
+Since $x>0$, the event $XY\le t$ becomes $Y\le t/x$ after conditioning on $X=x$. Using independence, this gives
+
+$$
+\mathbb{P}(T\le t)
+=
+\int_0^\infty F_Y(t/x)f_X(x)\,dx.
+$$
+
+Differentiating with respect to $t$ gives
+
+$$
+f_T(t)
+=
+\int_0^\infty f_X(x)f_Y(t/x)\frac{dx}{x},
+\qquad t>0.
+$$
+
+The book emphasizes that this is not Jacobno's formula: there is an extra $x$ in the denominator. Conceptually, Jacobno is treating point densities as if they were probabilities and is ignoring the Jacobian term.
+
+For part (b), the book uses different letters:
+
+$$
+Z=\log T,
+\qquad
+W=\log X,
+\qquad
+V=\log Y.
+$$
+
+Then
+
+$$
+Z=W+V,
+$$
+
+so
+
+$$
+f_Z(z)
+=
+\int_{-\infty}^{\infty} f_W(w)f_V(z-w)\,dw.
+$$
+
+The log-transform densities are
+
+$$
+f_W(w)=f_X(e^w)e^w,
+\qquad
+f_V(v)=f_Y(e^v)e^v.
+$$
+
+Therefore,
+
+$$
+\begin{aligned}
+f_Z(z)
+&=
+\int_{-\infty}^{\infty}
+f_X(e^w)e^w
+f_Y(e^{z-w})e^{z-w}\,dw\\
+&=
+e^z
+\int_{-\infty}^{\infty}
+f_X(e^w)f_Y(e^{z-w})\,dw.
+\end{aligned}
+$$
+
+Transforming back from $Z=\log T$ gives
+
+$$
+f_T(t)
+=
+f_Z(\log t)\frac{1}{t}.
+$$
+
+Using $x=e^w$, so $dw=dx/x$, this becomes
+
+$$
+f_T(t)
+=
+\int_0^\infty f_X(x)f_Y(t/x)\frac{dx}{x},
+\qquad t>0.
+$$
+
+This matches part (a), and again shows that Jacobno is missing the denominator factor $x$.
+
+### Intuition
+
+The product case looks similar to convolution, but the geometry is different.
+
+For a sum,
+
+$$
+T=X+Y,
+$$
+
+fixing $X=x$ forces
+
+$$
+Y=t-x.
+$$
+
+As $t$ changes by a small amount, $t-x$ changes by the same small amount, so no extra scale factor appears.
+
+For a product,
+
+$$
+T=XY,
+$$
+
+fixing $X=x$ forces
+
+$$
+Y=t/x.
+$$
+
+Now a small change in $t$ produces a smaller or larger change in the required value of $Y$ depending on $x$:
+
+$$
+\frac{d}{dt}(t/x)=\frac{1}{x}.
+$$
+
+That derivative is the Jacobian factor. It converts density in the $Y$-coordinate into density in the $T$-coordinate after conditioning on $X=x$.
+
+This is the issue in Jacobno's argument. The expression
+
+$$
+f_X(x)f_Y(t/x)
+$$
+
+identifies the two density factors at the relevant point, but it does not account for how much $Y$ changes when $T$ changes. The missing scale factor is
+
+$$
+\frac{1}{x}.
+$$
+
+The log method gives the same intuition another way: products become sums after taking logs, but both the log transform and the transform back to $T$ carry Jacobian factors. After simplifying, the same denominator $x$ remains.
+
+### Memory card (quick review)
+
+- For independent positive $X,Y$ and $T=XY$, the support is positive.
+- For $t>0$,
+
+  $$
+  F_T(t)
+  =
+  \int_0^\infty F_Y(t/x)f_X(x)\,dx.
+  $$
+
+- Differentiating gives
+
+  $$
+  f_T(t)
+  =
+  \int_0^\infty f_X(x)f_Y(t/x)\frac{dx}{x}.
+  $$
+
+- Jacobno's formula is missing the Jacobian factor:
+
+  $$
+  \left|\frac{d}{dt}(t/x)\right|=\frac{1}{x}.
+  $$
+
+- Log method: let $Z=\log T$, $W=\log X$, and $V=\log Y$. Then $Z=W+V$, so use convolution in log-space.
+- Transform back with $f_T(t)=f_Z(\log t)/t$ and substitute $x=e^w$ to recover the same formula.

@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Change of Variables Intuition</title>
+<style>
+  :root {
+    --bg: #f7f7fb;
+    --panel: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --accent2: #dc2626;
+    --green: #047857;
+    --line: #d1d5db;
+    --soft: #f8fafc;
+    --soft-blue: #eff6ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+  }
+  .wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  h1 { margin: 0 0 8px; font-size: 28px; }
+  .subtitle {
+    color: var(--muted);
+    margin-bottom: 16px;
+    line-height: 1.45;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 16px;
+  }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .controls h2, .panel h2 {
+    margin: 0 0 12px;
+    font-size: 20px;
+  }
+  .control-group {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eef2f7;
+  }
+  .control-group:last-child { border-bottom: 0; }
+  .label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .label-row label {
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .value {
+    font-size: 13px;
+    color: var(--muted);
+    min-width: 64px;
+    text-align: right;
+  }
+  input[type="range"] { width: 100%; }
+  select, button {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: white;
+    font-size: 14px;
+  }
+  button {
+    cursor: pointer;
+    background: var(--soft);
+    font-weight: 600;
+  }
+  canvas {
+    width: 100%;
+    height: 360px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: white;
+  }
+  .viz-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .canvas-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .small {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .scenario {
+    font-size: 14px;
+    line-height: 1.45;
+    background: #fafafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 10px;
+  }
+  .math {
+    margin-top: 12px;
+    background: #111827;
+    color: #e5e7eb;
+    border-radius: 12px;
+    padding: 12px;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.55;
+    overflow-x: auto;
+    white-space: pre-wrap;
+  }
+  .callout {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 12px;
+    background: var(--soft-blue);
+    border: 1px solid #bfdbfe;
+    line-height: 1.45;
+    font-size: 14px;
+  }
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(130px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .metric {
+    padding: 10px;
+    background: var(--soft);
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+  }
+  .metric .k {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .metric .v {
+    font-size: 17px;
+    font-weight: 700;
+  }
+  .legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .legend span::before {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 10px;
+    margin-right: 6px;
+    vertical-align: middle;
+    border-radius: 3px;
+    background: #000;
+  }
+  .legend .old::before { background: rgba(37,99,235,0.26); border: 1px solid #2563eb; }
+  .legend .new::before { background: rgba(220,38,38,0.22); border: 1px solid #dc2626; }
+  .legend .point::before { background: #111827; border-radius: 50%; }
+  .hidden { display: none; }
+  @media (max-width: 1100px) {
+    .layout { grid-template-columns: 1fr; }
+    .viz-grid { grid-template-columns: 1fr; }
+    .metrics { grid-template-columns: repeat(2, minmax(130px, 1fr)); }
+  }
+  @media (max-width: 650px) {
+    .metrics { grid-template-columns: 1fr; }
+    canvas { height: 300px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Change of Variables: Where Did the Probability Come From?</h1>
+  <div class="subtitle">
+    Pick a transformation. The highlighted event is the same probability in two coordinate systems.
+    The inverse tells us where the event came from; the Jacobian tells us how much length or area was stretched.
+  </div>
+
+  <div class="layout">
+    <div class="panel controls">
+      <h2>Controls</h2>
+
+      <div class="control-group">
+        <div class="label-row">
+          <label for="caseSelect">Transformation</label>
+        </div>
+        <select id="caseSelect">
+          <option value="shift">1) Shift: Y = X + a</option>
+          <option value="scale">2) Scale: Y = aX</option>
+          <option value="exp">3) Exponential: Y = e^Z</option>
+          <option value="polar">4) Polar: (X,Y) -> (R, theta)</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <div class="scenario" id="scenarioBox"></div>
+      </div>
+
+      <div class="control-group" id="paramGroup">
+        <div class="label-row">
+          <label id="paramLabel" for="paramSlider">a</label>
+          <span class="value" id="paramVal">1.00</span>
+        </div>
+        <input id="paramSlider" type="range" min="-3" max="3" value="1" step="0.05" />
+      </div>
+
+      <div class="control-group">
+        <div class="label-row">
+          <label id="valueLabel" for="valueSlider">New coordinate y</label>
+          <span class="value" id="valueVal">1.00</span>
+        </div>
+        <input id="valueSlider" type="range" min="-4" max="4" value="1" step="0.02" />
+
+        <div class="label-row" style="margin-top:10px;">
+          <label id="widthLabel" for="widthSlider">Event half-width</label>
+          <span class="value" id="widthVal">0.25</span>
+        </div>
+        <input id="widthSlider" type="range" min="0.05" max="0.60" value="0.25" step="0.01" />
+      </div>
+
+      <div class="control-group hidden" id="thetaGroup">
+        <div class="label-row">
+          <label for="thetaSlider">Angle theta</label>
+          <span class="value" id="thetaVal">0.80</span>
+        </div>
+        <input id="thetaSlider" type="range" min="0.25" max="6.03" value="0.80" step="0.01" />
+
+        <div class="label-row" style="margin-top:10px;">
+          <label for="thetaWidthSlider">Angle half-width</label>
+          <span class="value" id="thetaWidthVal">0.18</span>
+        </div>
+        <input id="thetaWidthSlider" type="range" min="0.05" max="0.40" value="0.18" step="0.01" />
+      </div>
+
+      <div class="control-group">
+        <button id="resetBtn">Reset this example</button>
+      </div>
+
+      <div class="footer-note small">
+        The pictures use small event windows so the local density formula is visually meaningful.
+        For nonlinear transformations, the two highlighted windows are exact corresponding events,
+        while the density formula is the local approximation that becomes exact in the limit.
+      </div>
+    </div>
+
+    <div>
+      <div class="panel">
+        <h2>Same Event, Two Coordinate Systems</h2>
+        <div class="legend">
+          <span class="old">Source event</span>
+          <span class="new">Transformed event</span>
+          <span class="point">Current point</span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+            <div class="k" id="sourceMetricLabel">Source point</div>
+            <div class="v" id="sourceMetric">0.00</div>
+          </div>
+          <div class="metric">
+            <div class="k" id="targetMetricLabel">New point</div>
+            <div class="v" id="targetMetric">0.00</div>
+          </div>
+          <div class="metric">
+            <div class="k">Jacobian factor</div>
+            <div class="v" id="jacMetric">1.00</div>
+          </div>
+          <div class="metric">
+            <div class="k">Same probability</div>
+            <div class="v" id="probMetric">0.0000</div>
+          </div>
+        </div>
+        <div class="callout" id="calloutBox"></div>
+        <div class="math" id="formulaBox"></div>
+      </div>
+
+      <div class="viz-grid" style="margin-top:16px;">
+        <div class="panel canvas-box">
+          <h2 id="oldTitle">Old coordinate</h2>
+          <canvas id="oldCanvas" width="620" height="360"></canvas>
+          <div class="small" id="oldCaption"></div>
+        </div>
+        <div class="panel canvas-box">
+          <h2 id="newTitle">New coordinate</h2>
+          <canvas id="newCanvas" width="620" height="360"></canvas>
+          <div class="small" id="newCaption"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const els = {
+  caseSelect: document.getElementById("caseSelect"),
+  paramGroup: document.getElementById("paramGroup"),
+  paramLabel: document.getElementById("paramLabel"),
+  paramSlider: document.getElementById("paramSlider"),
+  paramVal: document.getElementById("paramVal"),
+  valueLabel: document.getElementById("valueLabel"),
+  valueSlider: document.getElementById("valueSlider"),
+  valueVal: document.getElementById("valueVal"),
+  widthLabel: document.getElementById("widthLabel"),
+  widthSlider: document.getElementById("widthSlider"),
+  widthVal: document.getElementById("widthVal"),
+  thetaGroup: document.getElementById("thetaGroup"),
+  thetaSlider: document.getElementById("thetaSlider"),
+  thetaVal: document.getElementById("thetaVal"),
+  thetaWidthSlider: document.getElementById("thetaWidthSlider"),
+  thetaWidthVal: document.getElementById("thetaWidthVal"),
+  resetBtn: document.getElementById("resetBtn"),
+  scenarioBox: document.getElementById("scenarioBox"),
+  sourceMetricLabel: document.getElementById("sourceMetricLabel"),
+  sourceMetric: document.getElementById("sourceMetric"),
+  targetMetricLabel: document.getElementById("targetMetricLabel"),
+  targetMetric: document.getElementById("targetMetric"),
+  jacMetric: document.getElementById("jacMetric"),
+  probMetric: document.getElementById("probMetric"),
+  calloutBox: document.getElementById("calloutBox"),
+  formulaBox: document.getElementById("formulaBox"),
+  oldTitle: document.getElementById("oldTitle"),
+  newTitle: document.getElementById("newTitle"),
+  oldCanvas: document.getElementById("oldCanvas"),
+  newCanvas: document.getElementById("newCanvas"),
+  oldCaption: document.getElementById("oldCaption"),
+  newCaption: document.getElementById("newCaption"),
+};
+
+const presets = {
+  shift: { a: 1, y: 1.4, h: 0.25 },
+  scale: { a: 2, y: 1.8, h: 0.25 },
+  exp: { y: 2.0, h: 0.20 },
+  polar: { r: 0.65, h: 0.08, theta: 0.85, thetaH: 0.18 },
+};
+
+function fmt(x, digits = 3) {
+  return Number(x).toFixed(digits);
+}
+
+function clamp(x, lo, hi) {
+  return Math.max(lo, Math.min(hi, x));
+}
+
+function normalPdf(x) {
+  return Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI);
+}
+
+function erf(x) {
+  const sign = x >= 0 ? 1 : -1;
+  const ax = Math.abs(x);
+  const a1 = 0.254829592;
+  const a2 = -0.284496736;
+  const a3 = 1.421413741;
+  const a4 = -1.453152027;
+  const a5 = 1.061405429;
+  const p = 0.3275911;
+  const t = 1 / (1 + p * ax);
+  const y = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-ax * ax);
+  return sign * y;
+}
+
+function normalCdf(x) {
+  return 0.5 * (1 + erf(x / Math.sqrt(2)));
+}
+
+function setupCase() {
+  const c = els.caseSelect.value;
+  if (c === "shift") {
+    els.paramGroup.classList.remove("hidden");
+    els.thetaGroup.classList.add("hidden");
+    els.paramLabel.textContent = "Shift a";
+    els.paramSlider.min = "-3";
+    els.paramSlider.max = "3";
+    els.paramSlider.step = "0.05";
+    els.valueLabel.textContent = "New coordinate y";
+    els.valueSlider.min = "-4";
+    els.valueSlider.max = "4";
+    els.valueSlider.step = "0.02";
+    els.widthLabel.textContent = "Event half-width in y";
+    els.widthSlider.min = "0.05";
+    els.widthSlider.max = "0.60";
+  } else if (c === "scale") {
+    els.paramGroup.classList.remove("hidden");
+    els.thetaGroup.classList.add("hidden");
+    els.paramLabel.textContent = "Scale a";
+    els.paramSlider.min = "0.5";
+    els.paramSlider.max = "3.5";
+    els.paramSlider.step = "0.05";
+    els.valueLabel.textContent = "New coordinate y";
+    els.valueSlider.min = "-5";
+    els.valueSlider.max = "5";
+    els.valueSlider.step = "0.02";
+    els.widthLabel.textContent = "Event half-width in y";
+    els.widthSlider.min = "0.05";
+    els.widthSlider.max = "0.70";
+  } else if (c === "exp") {
+    els.paramGroup.classList.add("hidden");
+    els.thetaGroup.classList.add("hidden");
+    els.valueLabel.textContent = "New coordinate y";
+    els.valueSlider.min = "0.10";
+    els.valueSlider.max = "7.00";
+    els.valueSlider.step = "0.01";
+    els.widthLabel.textContent = "Event half-width in y";
+    els.widthSlider.min = "0.03";
+    els.widthSlider.max = "0.50";
+  } else {
+    els.paramGroup.classList.add("hidden");
+    els.thetaGroup.classList.remove("hidden");
+    els.valueLabel.textContent = "Radius r";
+    els.valueSlider.min = "0.08";
+    els.valueSlider.max = "0.92";
+    els.valueSlider.step = "0.01";
+    els.widthLabel.textContent = "Radius half-width";
+    els.widthSlider.min = "0.03";
+    els.widthSlider.max = "0.15";
+  }
+}
+
+function resetCase() {
+  const c = els.caseSelect.value;
+  const p = presets[c];
+  if (p.a !== undefined) els.paramSlider.value = p.a;
+  if (p.y !== undefined) els.valueSlider.value = p.y;
+  if (p.r !== undefined) els.valueSlider.value = p.r;
+  els.widthSlider.value = p.h;
+  if (p.theta !== undefined) els.thetaSlider.value = p.theta;
+  if (p.thetaH !== undefined) els.thetaWidthSlider.value = p.thetaH;
+}
+
+function getCaseInfo() {
+  const c = els.caseSelect.value;
+  const y = parseFloat(els.valueSlider.value);
+  const h = parseFloat(els.widthSlider.value);
+  const a = parseFloat(els.paramSlider.value);
+  if (c === "shift") {
+    return {
+      key: c,
+      oldName: "X",
+      newName: "Y",
+      oldDomain: [-4, 4],
+      newDomain: [-5, 5],
+      y,
+      h,
+      a,
+      oldPdf: normalPdf,
+      inverse: yy => yy - a,
+      jac: () => 1,
+      newPdf: yy => normalPdf(yy - a),
+      scenario: "<b>Shift:</b> the density moves left or right. The Jacobian is 1, so no height change comes from stretching.",
+      formula: yy => [
+        "Y = X + a",
+        "x = y - a",
+        "f_Y(y) = f_X(y - a) * |dx/dy|",
+        "       = f_X(y - a) * 1"
+      ],
+    };
+  }
+  if (c === "scale") {
+    return {
+      key: c,
+      oldName: "X",
+      newName: "Y",
+      oldDomain: [-4, 4],
+      newDomain: [-7, 7],
+      y,
+      h,
+      a,
+      oldPdf: normalPdf,
+      inverse: yy => yy / a,
+      jac: () => 1 / a,
+      newPdf: yy => normalPdf(yy / a) / a,
+      scenario: "<b>Scale:</b> the source point moves to y/a, and the density height is divided by a because lengths are stretched by a.",
+      formula: yy => [
+        "Y = aX",
+        "x = y / a",
+        "f_Y(y) = f_X(y/a) * |dx/dy|",
+        "       = f_X(y/a) * (1/a)"
+      ],
+    };
+  }
+  return {
+    key: c,
+    oldName: "Z",
+    newName: "Y",
+    oldDomain: [-4, 4],
+    newDomain: [0, 7],
+    y: Math.max(0.05, y),
+    h,
+    oldPdf: normalPdf,
+    inverse: yy => Math.log(yy),
+    jac: yy => 1 / yy,
+    newPdf: yy => yy > 0 ? normalPdf(Math.log(yy)) / yy : 0,
+    scenario: "<b>Exponential:</b> equal-width windows in y do not come from equal-width windows in z. The stretching grows as y grows.",
+    formula: yy => [
+      "Y = e^Z",
+      "z = log(y)",
+      "f_Y(y) = f_Z(log y) * |dz/dy|",
+      "       = f_Z(log y) * (1/y)"
+    ],
+  };
+}
+
+function bandFor1D(info) {
+  const lo = Math.max(info.newDomain[0] + 1e-6, info.y - info.h);
+  const hi = Math.min(info.newDomain[1], info.y + info.h);
+  const xLo = info.inverse(lo);
+  const xHi = info.inverse(hi);
+  return {
+    newLo: lo,
+    newHi: hi,
+    oldLo: Math.min(xLo, xHi),
+    oldHi: Math.max(xLo, xHi),
+    source: info.inverse(info.y),
+    jac: info.jac(info.y),
+    oldDensity: info.oldPdf(info.inverse(info.y)),
+    newDensity: info.newPdf(info.y),
+    probability: normalCdf(Math.max(xLo, xHi)) - normalCdf(Math.min(xLo, xHi)),
+  };
+}
+
+function makeMapper(domainX, domainY, w, h, pad) {
+  const [xmin, xmax] = domainX;
+  const [ymin, ymax] = domainY;
+  return {
+    x: x => pad.left + ((x - xmin) / (xmax - xmin)) * (w - pad.left - pad.right),
+    y: y => h - pad.bottom - ((y - ymin) / (ymax - ymin)) * (h - pad.top - pad.bottom),
+  };
+}
+
+function setupCanvas(canvas) {
+  const ctx = canvas.getContext("2d");
+  const ratio = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = Math.round(rect.width * ratio);
+  canvas.height = Math.round(rect.height * ratio);
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  return { ctx, w: rect.width, h: rect.height };
+}
+
+function drawAxes(ctx, w, h, pad, xLabel, yLabel) {
+  ctx.strokeStyle = "#9ca3af";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(pad.left, h - pad.bottom);
+  ctx.lineTo(w - pad.right, h - pad.bottom);
+  ctx.moveTo(pad.left, pad.top);
+  ctx.lineTo(pad.left, h - pad.bottom);
+  ctx.stroke();
+  ctx.fillStyle = "#6b7280";
+  ctx.font = "12px Arial";
+  ctx.fillText(xLabel, w - pad.right - 18, h - pad.bottom + 24);
+  ctx.save();
+  ctx.translate(pad.left - 36, pad.top + 36);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText(yLabel, 0, 0);
+  ctx.restore();
+}
+
+function draw1DPdf(canvas, options) {
+  const { ctx, w, h } = setupCanvas(canvas);
+  ctx.clearRect(0, 0, w, h);
+  const pad = { left: 52, right: 18, top: 24, bottom: 42 };
+  const n = 500;
+  const pts = [];
+  const [xmin, xmax] = options.domain;
+  for (let i = 0; i <= n; i++) {
+    const x = xmin + (xmax - xmin) * i / n;
+    pts.push({ x, y: options.pdf(x) });
+  }
+  const ymax = Math.max(0.02, ...pts.map(p => p.y)) * 1.12;
+  const map = makeMapper([xmin, xmax], [0, ymax], w, h, pad);
+
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, w, h);
+  drawAxes(ctx, w, h, pad, options.xLabel, "density");
+
+  const bandLo = clamp(options.bandLo, xmin, xmax);
+  const bandHi = clamp(options.bandHi, xmin, xmax);
+  const bandPts = pts.filter(p => p.x >= bandLo && p.x <= bandHi);
+  if (bandPts.length > 1) {
+    ctx.beginPath();
+    ctx.moveTo(map.x(bandLo), map.y(0));
+    bandPts.forEach(p => ctx.lineTo(map.x(p.x), map.y(p.y)));
+    ctx.lineTo(map.x(bandHi), map.y(0));
+    ctx.closePath();
+    ctx.fillStyle = options.fill;
+    ctx.fill();
+  }
+
+  ctx.beginPath();
+  pts.forEach((p, i) => {
+    if (i === 0) ctx.moveTo(map.x(p.x), map.y(p.y));
+    else ctx.lineTo(map.x(p.x), map.y(p.y));
+  });
+  ctx.strokeStyle = options.color;
+  ctx.lineWidth = 2.4;
+  ctx.stroke();
+
+  const cx = clamp(options.center, xmin, xmax);
+  ctx.strokeStyle = "#111827";
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([5, 5]);
+  ctx.beginPath();
+  ctx.moveTo(map.x(cx), map.y(0));
+  ctx.lineTo(map.x(cx), map.y(options.pdf(cx)));
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.fillStyle = "#111827";
+  ctx.beginPath();
+  ctx.arc(map.x(cx), map.y(options.pdf(cx)), 4.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = "#1f2937";
+  ctx.font = "13px Arial";
+  ctx.fillText(options.centerLabel, map.x(cx) + 8, map.y(options.pdf(cx)) - 8);
+}
+
+function render1D() {
+  const info = getCaseInfo();
+  const band = bandFor1D(info);
+  const oldLabel = `${info.oldName} = ${fmt(band.source, 2)}`;
+  const newLabel = `${info.newName} = ${fmt(info.y, 2)}`;
+
+  els.scenarioBox.innerHTML = info.scenario;
+  els.oldTitle.textContent = `Old coordinate: ${info.oldName}`;
+  els.newTitle.textContent = `New coordinate: ${info.newName}`;
+  els.sourceMetricLabel.textContent = `Source ${info.oldName}`;
+  els.targetMetricLabel.textContent = `New ${info.newName}`;
+  els.sourceMetric.textContent = fmt(band.source, 3);
+  els.targetMetric.textContent = fmt(info.y, 3);
+  els.jacMetric.textContent = fmt(band.jac, 3);
+  els.probMetric.textContent = fmt(band.probability, 4);
+
+  els.calloutBox.innerHTML =
+    `The event <b>${info.newName} in [${fmt(band.newLo, 2)}, ${fmt(band.newHi, 2)}]</b> is the same event as ` +
+    `<b>${info.oldName} in [${fmt(band.oldLo, 2)}, ${fmt(band.oldHi, 2)}]</b>. The probability is the same, but the density height changes when the interval length changes.`;
+
+  const lines = info.formula(info.y);
+  lines.push("");
+  lines.push(`At ${info.newName.toLowerCase()} = ${fmt(info.y, 3)}:`);
+  lines.push(`${info.oldName.toLowerCase()} = inverse(${fmt(info.y, 3)}) = ${fmt(band.source, 3)}`);
+  lines.push(`old density = ${fmt(band.oldDensity, 4)}`);
+  lines.push(`Jacobian factor = ${fmt(band.jac, 4)}`);
+  lines.push(`new density = ${fmt(band.newDensity, 4)}`);
+  els.formulaBox.textContent = lines.join("\n");
+
+  draw1DPdf(els.oldCanvas, {
+    domain: info.oldDomain,
+    pdf: info.oldPdf,
+    bandLo: band.oldLo,
+    bandHi: band.oldHi,
+    center: band.source,
+    centerLabel: oldLabel,
+    xLabel: info.oldName.toLowerCase(),
+    color: "#2563eb",
+    fill: "rgba(37,99,235,0.24)",
+  });
+  draw1DPdf(els.newCanvas, {
+    domain: info.newDomain,
+    pdf: info.newPdf,
+    bandLo: band.newLo,
+    bandHi: band.newHi,
+    center: info.y,
+    centerLabel: newLabel,
+    xLabel: info.newName.toLowerCase(),
+    color: "#dc2626",
+    fill: "rgba(220,38,38,0.20)",
+  });
+
+  els.oldCaption.innerHTML = `The source window is found by applying the inverse transform to the new window.`;
+  els.newCaption.innerHTML = `This is the transformed density. Its highlighted probability matches the old window.`;
+}
+
+function polarToCanvas(map, r, theta) {
+  return map(r * Math.cos(theta), r * Math.sin(theta));
+}
+
+function drawPolarCartesian(canvas, state) {
+  const { ctx, w, h } = setupCanvas(canvas);
+  ctx.clearRect(0, 0, w, h);
+  const pad = 35;
+  const size = Math.min(w, h) - 2 * pad;
+  const cx = w * 0.5;
+  const cy = h * 0.52;
+  const scale = size / 2;
+  const map = (x, y) => [cx + x * scale, cy - y * scale];
+  const [ox, oy] = map(0, 0);
+
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, w, h);
+
+  ctx.strokeStyle = "#e5e7eb";
+  ctx.lineWidth = 1;
+  for (let v = -1; v <= 1.001; v += 0.25) {
+    const [x1, y1] = map(-1, v);
+    const [x2, y2] = map(1, v);
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    const [x3, y3] = map(v, -1);
+    const [x4, y4] = map(v, 1);
+    ctx.beginPath(); ctx.moveTo(x3, y3); ctx.lineTo(x4, y4); ctx.stroke();
+  }
+
+  ctx.strokeStyle = "#9ca3af";
+  ctx.beginPath();
+  ctx.moveTo(cx - scale, oy); ctx.lineTo(cx + scale, oy);
+  ctx.moveTo(ox, cy - scale); ctx.lineTo(ox, cy + scale);
+  ctx.stroke();
+
+  ctx.strokeStyle = "#1f2937";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(cx, cy, scale, 0, Math.PI * 2);
+  ctx.stroke();
+
+  const rLo = Math.max(0, state.r - state.h);
+  const rHi = Math.min(1, state.r + state.h);
+  const tLo = state.theta - state.thetaH;
+  const tHi = state.theta + state.thetaH;
+
+  ctx.beginPath();
+  let first = true;
+  for (let t = tLo; t <= tHi + 1e-6; t += (tHi - tLo) / 80) {
+    const [x, y] = polarToCanvas(map, rHi, t);
+    if (first) { ctx.moveTo(x, y); first = false; }
+    else ctx.lineTo(x, y);
+  }
+  for (let t = tHi; t >= tLo - 1e-6; t -= (tHi - tLo) / 80) {
+    const [x, y] = polarToCanvas(map, rLo, t);
+    ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.fillStyle = "rgba(37,99,235,0.26)";
+  ctx.fill();
+  ctx.strokeStyle = "#2563eb";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  const [px, py] = polarToCanvas(map, state.r, state.theta);
+  ctx.fillStyle = "#111827";
+  ctx.beginPath();
+  ctx.arc(px, py, 5, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.strokeStyle = "#111827";
+  ctx.setLineDash([5, 5]);
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(px, py);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.fillStyle = "#1f2937";
+  ctx.font = "13px Arial";
+  ctx.fillText(`r = ${fmt(state.r, 2)}`, px + 8, py - 8);
+  ctx.fillStyle = "#6b7280";
+  ctx.fillText("unit disc in (x,y)", 18, 24);
+}
+
+function drawPolarCoordinate(canvas, state) {
+  const { ctx, w, h } = setupCanvas(canvas);
+  ctx.clearRect(0, 0, w, h);
+  const pad = { left: 52, right: 22, top: 24, bottom: 42 };
+  const map = makeMapper([0, Math.PI * 2], [0, 1], w, h, pad);
+
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, w, h);
+  drawAxes(ctx, w, h, pad, "theta", "r");
+
+  ctx.strokeStyle = "#e5e7eb";
+  ctx.lineWidth = 1;
+  for (let i = 1; i <= 4; i++) {
+    const r = i / 4;
+    ctx.beginPath();
+    ctx.moveTo(map.x(0), map.y(r));
+    ctx.lineTo(map.x(Math.PI * 2), map.y(r));
+    ctx.stroke();
+  }
+  for (let i = 1; i <= 4; i++) {
+    const t = i * Math.PI / 2;
+    ctx.beginPath();
+    ctx.moveTo(map.x(t), map.y(0));
+    ctx.lineTo(map.x(t), map.y(1));
+    ctx.stroke();
+  }
+
+  const rLo = Math.max(0, state.r - state.h);
+  const rHi = Math.min(1, state.r + state.h);
+  const tLo = state.theta - state.thetaH;
+  const tHi = state.theta + state.thetaH;
+  ctx.fillStyle = "rgba(220,38,38,0.20)";
+  ctx.fillRect(map.x(tLo), map.y(rHi), map.x(tHi) - map.x(tLo), map.y(rLo) - map.y(rHi));
+  ctx.strokeStyle = "#dc2626";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(map.x(tLo), map.y(rHi), map.x(tHi) - map.x(tLo), map.y(rLo) - map.y(rHi));
+
+  ctx.fillStyle = "#111827";
+  ctx.beginPath();
+  ctx.arc(map.x(state.theta), map.y(state.r), 5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#1f2937";
+  ctx.font = "13px Arial";
+  ctx.fillText(`(${fmt(state.r, 2)}, ${fmt(state.theta, 2)})`, map.x(state.theta) + 8, map.y(state.r) - 8);
+
+  ctx.fillStyle = "#6b7280";
+  ctx.fillText("coordinate rectangle in (r, theta)", 18, 24);
+  ctx.fillText("pi", map.x(Math.PI) - 7, h - 16);
+  ctx.fillText("2pi", map.x(Math.PI * 2) - 22, h - 16);
+}
+
+function renderPolar() {
+  const r = parseFloat(els.valueSlider.value);
+  const h = parseFloat(els.widthSlider.value);
+  const theta = parseFloat(els.thetaSlider.value);
+  const thetaH = parseFloat(els.thetaWidthSlider.value);
+  const state = { r, h, theta, thetaH };
+  const rLo = Math.max(0, r - h);
+  const rHi = Math.min(1, r + h);
+  const tLo = theta - thetaH;
+  const tHi = theta + thetaH;
+  const dr = rHi - rLo;
+  const dt = tHi - tLo;
+  const physicalArea = 0.5 * (rHi * rHi - rLo * rLo) * dt;
+  const coordArea = dr * dt;
+  const probability = physicalArea / Math.PI;
+  const localJac = r;
+  const oldDensity = 1 / Math.PI;
+  const newDensity = r / Math.PI;
+
+  els.scenarioBox.innerHTML =
+    "<b>Polar:</b> the same small rectangle in (r, theta) becomes a curved wedge in the plane. Farther from the origin, the wedge covers more physical area.";
+  els.oldTitle.textContent = "Old coordinates: (x, y)";
+  els.newTitle.textContent = "New coordinates: (r, theta)";
+  els.sourceMetricLabel.textContent = "Old point";
+  els.targetMetricLabel.textContent = "New point";
+  els.sourceMetric.textContent = `(${fmt(r * Math.cos(theta), 2)}, ${fmt(r * Math.sin(theta), 2)})`;
+  els.targetMetric.textContent = `(${fmt(r, 2)}, ${fmt(theta, 2)})`;
+  els.jacMetric.textContent = fmt(localJac, 3);
+  els.probMetric.textContent = fmt(probability, 4);
+  els.calloutBox.innerHTML =
+    `The rectangle <b>r in [${fmt(rLo, 2)}, ${fmt(rHi, 2)}]</b>, <b>theta in [${fmt(tLo, 2)}, ${fmt(tHi, 2)}]</b> maps to the blue wedge in the unit disc. ` +
+    `The event probability is the same; the polar density includes the extra factor r because wedge area grows with radius.`;
+  els.formulaBox.textContent = [
+    "(x, y) = (r cos(theta), r sin(theta))",
+    "f_{R,theta}(r,theta) = f_{X,Y}(r cos(theta), r sin(theta)) * r",
+    "",
+    "Uniform unit disc:",
+    "f_{X,Y}(x,y) = 1/pi",
+    `f_{R,theta}(r,theta) = r/pi = ${fmt(newDensity, 4)}`,
+    "",
+    `physical wedge area ~= ${fmt(physicalArea, 4)}`,
+    `coordinate rectangle area = ${fmt(coordArea, 4)}`
+  ].join("\n");
+
+  drawPolarCartesian(els.oldCanvas, state);
+  drawPolarCoordinate(els.newCanvas, state);
+  els.oldCaption.innerHTML = `The old event is a physical wedge inside the unit disc. Its probability is area divided by pi.`;
+  els.newCaption.innerHTML = `The new event is a plain rectangle in (r, theta)-coordinates, but its density is r/pi, not 1/pi.`;
+}
+
+function render() {
+  const c = els.caseSelect.value;
+  setupCase();
+  els.paramVal.textContent = fmt(parseFloat(els.paramSlider.value), 2);
+  els.valueVal.textContent = fmt(parseFloat(els.valueSlider.value), 2);
+  els.widthVal.textContent = fmt(parseFloat(els.widthSlider.value), 2);
+  els.thetaVal.textContent = fmt(parseFloat(els.thetaSlider.value), 2);
+  els.thetaWidthVal.textContent = fmt(parseFloat(els.thetaWidthSlider.value), 2);
+  if (c === "polar") renderPolar();
+  else render1D();
+}
+
+els.caseSelect.addEventListener("change", () => {
+  setupCase();
+  resetCase();
+  render();
+});
+[
+  els.paramSlider,
+  els.valueSlider,
+  els.widthSlider,
+  els.thetaSlider,
+  els.thetaWidthSlider,
+].forEach(el => el.addEventListener("input", render));
+els.resetBtn.addEventListener("click", () => {
+  resetCase();
+  render();
+});
+window.addEventListener("resize", render);
+
+setupCase();
+resetCase();
+render();
+</script>
+</body>
+</html>

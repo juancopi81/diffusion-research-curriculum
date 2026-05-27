@@ -5,6 +5,7 @@ Goal: become a strong “paper-reading + implementation” researcher/practition
 - just-enough math foundations (probability + linear algebra + SDE intuition)
 - continuous contact with diffusion concepts from Week 1
 - steady artifacts (notes + proofs + code) that compound
+- a recurring **Nano-Diffusion / Nano-Flow** research spine where each implementation improves the same small system
 
 ---
 
@@ -106,6 +107,35 @@ So you are ready to continue with:
 3. **Math is “just in time”**: learn enough to understand a derivation you need _now_.
 4. **Checkpoints matter more than coverage**: you can skip/trim content if artifacts keep moving.
 5. **One canonical repo** where everything lives.
+6. **One cumulative implementation spine**: when an artifact touches diffusion, score models, samplers, or flow matching, prefer extending the Nano-Diffusion/Nano-Flow spine over starting disconnected experiments.
+
+---
+
+## Nano-Diffusion / Nano-Flow spine
+
+This curriculum has one recurring implementation leit motif:
+
+> Build a tiny, readable, end-to-end diffusion/flow research system over time, in the spirit of a "nano" project: minimal code, reproducible runs, clear metrics, and short written results.
+
+The spine evolves in stages:
+
+- **Nano-Diffusion v0:** 2D blobs, forward noising, analytic scores, and toy score/noise prediction.
+- **Nano-Diffusion v1:** tiny MNIST DDPM with one clean training loop, one sampling loop, fixed seeds, and sample grids.
+- **Nano-Diffusion v2:** DDIM, schedule sweeps, guidance, and controlled ablations on top of the same baseline.
+- **Nano-Flow v0:** flow matching on the same toy distributions used by Nano-Diffusion.
+- **Nano-Flow v1:** small image-level flow matching compared against the diffusion baseline.
+
+Start in notebooks while the idea is still exploratory. Once code is reused across weeks, graduate it into `mini_projects/nano_diffusion/` with shared modules, configs, experiment outputs, and a local `README.md`. Nano-Flow can begin inside the same project as a comparison track, then split only if it becomes cleaner.
+
+Every serious run should leave a small result record:
+
+- question or hypothesis
+- config, seed, data, model size, schedule, sampler
+- metrics: loss curve, analytic-target MSE when available, sampling steps/NFE, wall-clock time, sample grid or vector field
+- failure notes
+- one-paragraph conclusion and the next experiment
+
+This spine does not replace proofs or paper reading. It is the implementation thread where each week's math gets tested against code.
 
 ---
 
@@ -132,6 +162,7 @@ Choose ONE:
 **Non-negotiable inside S3 (every week):**
 
 - 45–60 min “Diffusion contact” (toy implementation / derivation / small reading)
+- If the contact is implementation-heavy, connect it to Nano-Diffusion/Nano-Flow or record why it remains standalone.
 
 ---
 
@@ -141,6 +172,7 @@ Choose ONE:
 - `proofs/` (clean solutions to selected problems)
 - `notebooks/` (runnable experiments)
 - `mini_projects/` (monthly checkpoints)
+- `mini_projects/nano_diffusion/` (cumulative Nano-Diffusion/Nano-Flow code, configs, experiment logs, and reports once reuse begins)
 - `papers/` (one-page summaries + “key derivation” per paper)
 - `README.md` (links to milestones + how to run notebooks)
 
@@ -150,8 +182,8 @@ Choose ONE:
 
 - **Phase 1 (Weeks 1–8): Probability core + minimal diffusion toys**
 - **Phase 2 (Weeks 9–16): Linear algebra refresh + generative modeling basics (VAE/flows)**
-- **Phase 3 (Weeks 17–28): Diffusion in depth (DDPM/DDIM/CFG), solid implementation baseline**
-- **Phase 4 (Weeks 29–40): SDE/ODE view + flow matching, connect the theories**
+- **Phase 3 (Weeks 17–28): Diffusion in depth (DDPM/DDIM/CFG), Nano-Diffusion baseline + ablations**
+- **Phase 4 (Weeks 29–40): SDE/ODE view + Nano-Flow, compare the theories in code**
 - **Phase 5 (Weeks 41–52): Paper pass + reproduction + portfolio (blog + OSS)**
 
 ---
@@ -324,6 +356,10 @@ Diffusion contact (integrated into S3):
     - Or score `∇ log p_t(x)`
   - Plot learned vector field vs true (for Gaussian or MoG)
   - Write `report.md` (1–2 pages: setup, results, what broke, what you learned)
+  - Treat this as **Nano-Diffusion v0**:
+    - same 2D data generator used in earlier noising/score notebooks
+    - fixed seed + tiny config block
+    - metrics: denoising/score MSE, vector-field error where analytic score is known, runtime, and one failure note
 
 Diffusion contact (integrated into S3):
 
@@ -436,24 +472,29 @@ Diffusion contact:
 - S3: `notebooks/w16_train_tiny_ddpm_mnist.ipynb`
   - tiny UNet/MLP denoiser, low-res MNIST, few epochs
   - save sample grid per epoch
+  - Treat this as the first image-level **Nano-Diffusion v1** run:
+    - record config, seed, beta schedule, model size, training loss, sample grid, runtime
+    - identify which code should graduate from notebook cells into `mini_projects/nano_diffusion/`
 
 ---
 
 # Phase 3 — Diffusion in depth (DDPM/DDIM/CFG) (Weeks 17–28)
 
-**Phase goal:** build a clean, reproducible diffusion baseline and learn the “engineering moves”
-(schedules, EMA, sampling variants, conditioning, evaluation).
+**Phase goal:** build **Nano-Diffusion** into a clean, reproducible baseline and learn the “engineering moves”
+(schedules, EMA, sampling variants, conditioning, evaluation) by improving the same small system.
 
 ### Weeks 17–18 — DDPM from scratch (clean baseline)
 
 - S1:
   - Read **[DDPM]** (focus on algorithm + objective)
   - Follow implementation guidance in **[HF-DiffCourse]** / **[HF-AnnotatedDiff]**
-- S3 Artifact: `mini_projects/ddpm_baseline_mnist/`
-  - reproducible training loop
+- S3 Artifact: `mini_projects/nano_diffusion/`
+  - graduate reusable Week 16 code into a small shared project
+  - reproducible DDPM training loop
   - config file for schedules + model size
   - EMA, logging, sample snapshots
   - `README.md` with exact “run this” commands
+  - `experiments/ddpm_baseline_mnist/` records for each run: config, metrics, samples, notes
 
 ### Weeks 19–20 — Sampling methods (DDPM sampler + DDIM)
 
@@ -462,6 +503,9 @@ Diffusion contact:
   - implement DDIM sampler + `eta` control
   - notebook: `notebooks/w20_ddpm_vs_ddim_steps.ipynb`
     - compare sample quality vs #steps at fixed compute
+  - Add this as **Nano-Diffusion v2**:
+    - same trained checkpoint when possible
+    - compare DDPM vs DDIM by sampling steps/NFE, runtime, loss-independent visual quality, and failure modes
 
 ### Weeks 21–22 — Guidance & conditioning (CFG in a small setting)
 
@@ -480,12 +524,13 @@ Run 2–3 controlled changes (one at a time):
 - loss weighting
 - steps / DDIM eta
 
-Artifact: `mini_projects/checkpoint_04_ablations/`
+Artifact: `mini_projects/nano_diffusion/reports/checkpoint_04_ablations.md`
 
 - “mini-paper” report (2–4 pages):
   - setup
   - results (tables/figures)
   - conclusions (what mattered, what didn’t)
+  - Use Nano-Diffusion experiment logs as the source of truth; the report should summarize the strongest controlled comparisons rather than re-run everything ad hoc.
 
 ### Weeks 25–26 — Architecture literacy (U-Net, attention, conditioning)
 
@@ -514,7 +559,7 @@ Artifact: `mini_projects/checkpoint_04_ablations/`
 # Phase 4 — SDE/ODE view + Flow Matching (Weeks 29–40)
 
 **Phase goal:** read modern score-SDE / probability-flow ODE / flow-matching papers comfortably
-and connect the theories to code you already have.
+and connect the theories to the Nano-Diffusion code you already have.
 
 ### Weeks 29–30 — Brownian motion + Itô intuition (light, practical)
 
@@ -553,6 +598,9 @@ and connect the theories to code you already have.
     - sampling speed
     - failure cases
   - write 1 page: `notes/w36_diffusion_vs_flowmatching.md`
+  - Treat this as **Nano-Flow v0**:
+    - reuse the same 2D distributions from Nano-Diffusion v0
+    - compare learned vector fields, sampling trajectories, runtime, and failure cases under matched model size where possible
 
 ### Weeks 37–38 — Flow matching on images (small)
 
@@ -561,6 +609,8 @@ and connect the theories to code you already have.
   - minimal flow-matching model on MNIST
   - `notebooks/w38_flow_matching_mnist.ipynb`
   - log samples + stability notes
+  - Treat this as **Nano-Flow v1**:
+    - compare against the Nano-Diffusion MNIST baseline using the same data preprocessing, seed discipline, sample-grid format, runtime logging, and model-size notes
 
 ### Weeks 39–40 (Checkpoint 5) — Bridge report
 
@@ -601,11 +651,13 @@ Pick ONE target you can finish:
 
 - a clean DDPM/DDIM baseline with strong ablations
 - OR a flow-matching baseline with comparisons
+- OR a unified Nano-Diffusion vs Nano-Flow report if both baselines are stable enough
 
 Artifact:
 
 - `mini_projects/reproduction_target/`
 - “mini-paper” report + reproducible code + configs + results
+  - Prefer reusing `mini_projects/nano_diffusion/` as the codebase and making the reproduction target a polished report layer over the strongest runs.
 
 ### Weeks 49–50 — Write a technical blog post
 
@@ -647,15 +699,18 @@ Every 4 weeks you have:
 - ≥1 checkpoint project in `mini_projects/`
 - ≥4 weekly artifacts (notes/proofs/notebooks)
 - one “diffusion contact” improvement per week (even tiny)
+- at least one Nano-Diffusion/Nano-Flow run record whenever the period includes implementation work
 
 By Month 6 you should be able to:
 
 - implement DDPM/DDIM on MNIST cleanly
 - explain the training loss and sampling loop clearly
 - derive basic score identities for Gaussians and noisy variables
+- compare two Nano-Diffusion runs using the same metrics and config discipline
 
 By Month 12 you should be able to:
 
 - read diffusion/flow-matching papers without “drowning”
 - reproduce at least one baseline + ablation report
 - communicate the ideas (blog/notes) with your own derivations
+- show a coherent Nano-Diffusion/Nano-Flow project history: what improved, what failed, and which metrics justify the conclusions

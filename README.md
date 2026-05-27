@@ -24,7 +24,7 @@ It is divided into five phases:
 
 - **Phase:** 1 (Probability Core)
 - **Week:** 6 — Transformations + KL Divergence 🔄
-- **Completed:** Weeks 1-5 (through joint distributions, covariance, conditional Gaussians, and 2D Gaussian scores)
+- **Completed:** Weeks 1-5, plus Week 6 S1-S2 (transformations, convolutions, Jacobians, and change-of-variables problems)
 - **Next Milestone:** Complete Week 6 core artifacts (`w06_kl_gaussians.ipynb` + KL intuition note)
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
