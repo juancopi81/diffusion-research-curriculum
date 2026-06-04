@@ -71,8 +71,8 @@
 | ------------------------------------ | ------ | ---- | ----- |
 | S1: Lecture 22 (Transformations)     | ✅     | 2026-05-11 | Notes in `notes/w06_stat110_transformations_convolutions.md`; intuition artifact in `notebooks/w06_change_of_variables_intuition_artifact.html` |
 | S2: Problems (change of variables)   | ✅     | 2026-05-27 | Completed in `proofs/w06_stat110_transformations_convolutions.md`; source-verified book comparisons, intuition notes, and memory cards included |
-| S3: `w06_kl_gaussians.ipynb`         | ⬜     |      |       |
-| Diffusion: `w06_where_kl_appears.md` | ⬜     |      |       |
+| S3: `w06_kl_gaussians.ipynb`         | ✅     | 2026-06-02 | Solved notebook completed and executed; analytic KL, Monte Carlo estimate, histogram estimate, sensitivity plot, and reflection included |
+| Diffusion: `w06_where_kl_appears.md` | ✅     | 2026-06-02 | Completed one-page bridge note connecting KL, variational objectives, transformations, and diffusion/flow distribution matching |
 
 ### Week 7 — Conditional Expectation + Inequalities
 
