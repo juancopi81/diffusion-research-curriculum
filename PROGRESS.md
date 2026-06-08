@@ -3,13 +3,14 @@
 ## Current Status
 
 - **Phase:** 1 (Probability Core)
-- **Week:** 6 🔄
+- **Week:** 7 🔄
 - **Started:** 2025-01-14
 - **Week 1 Completed:** 2025-01-19
 - **Week 2 Completed:** 2025-01-23
 - **Week 3 Completed:** 2025-01-31
 - **Week 4 Completed:** 2026-02-26
 - **Week 5 Completed:** 2026-05-07
+- **Week 6 Completed:** 2026-06-02
 
 ---
 
@@ -78,8 +79,8 @@
 
 | Task                                              | Status | Date | Notes |
 | ------------------------------------------------- | ------ | ---- | ----- |
-| S1: Lecture 26 (Conditional Expectation)          | ⬜     |      |       |
-| S1: Lecture 27 ($E[Y \mid X=x]$)                  | ⬜     |      |       |
+| S1: Lecture 26 (Conditional Expectation)          | ✅     | 2026-06-08 | Notes in `notes/w07_stat110_conditional_expectation.md`; includes the Lecture 25 preview |
+| S1: Lecture 27 ($E[Y \mid X=x]$)                  | ✅     | 2026-06-08 | Notes in `notes/w07_stat110_conditional_expectation_given_rv.md` |
 | S2: Problems (tower property)                     | ⬜     |      |       |
 | S3: `w07_conditional_expectation_in_diffusion.md` | ⬜     |      |       |
 
