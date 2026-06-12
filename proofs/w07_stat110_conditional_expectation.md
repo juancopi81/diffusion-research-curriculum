@@ -170,6 +170,211 @@ You are given an amazing opportunity to bid on a mystery box containing a myster
 
 You can choose to bid any amount $b$, in millions of dollars. You have the chance to get the prize for considerably less than it is worth, but you could also lose money if you bid too much. Specifically, if $b < \frac{2}{3}V$, then the bid is rejected and nothing is gained or lost. If $b \ge \frac{2}{3}V$, then the bid is accepted and your net payoff is $V-b$, since you pay $b$ to get a prize worth $V$. What is your optimal bid $b$ to maximize the expected payoff?
 
+### My solution
+
+Let $V\sim \mathrm{Unif}(0,1)$ be the amount of the mystery prize, and let $b$ be the bid amount. Both $V$ and $b$ are measured in millions of dollars.
+
+If $b<\frac{2}{3}V$, the payoff is $0$. If $b\ge \frac{2}{3}V$, the payoff is $V-b$. We want to maximize the expected payoff.
+
+Let $O$ be the payoff, and let
+
+$$
+I=\left\{b\ge \frac{2}{3}V\right\}.
+$$
+
+Then
+
+$$
+\mathbb{E}(O)
+=\mathbb{E}(O\mid I)\mathbb{P}(I)
+ +\mathbb{E}(O\mid I^c)\mathbb{P}(I^c).
+$$
+
+We know that $\mathbb{E}(O\mid I^c)=0$, so
+
+$$
+\mathbb{E}(O)
+=\mathbb{E}\left(O\mid b\ge \frac{2}{3}V\right)
+ \mathbb{P}\left(b\ge \frac{2}{3}V\right).
+$$
+
+Given $I$, the payoff is $O=V-b$. Therefore
+
+$$
+\begin{aligned}
+\mathbb{E}\left(O\mid b\ge \frac{2}{3}V\right)
+&=\mathbb{E}\left(V-b\mid b\ge \frac{2}{3}V\right)\\
+&=\mathbb{E}\left(V\mid b\ge \frac{2}{3}V\right)-b\\
+&=\mathbb{E}\left(V\mid V\le \frac{3}{2}b\right)-b.
+\end{aligned}
+$$
+
+For $0<b\le \frac{2}{3}$, the cutoff $\frac{3}{2}b$ is inside the support of $V$. Since $V$ is uniform, conditioning on $V\le \frac{3}{2}b$ makes $V$ uniform on $\left[0,\frac{3}{2}b\right]$. Thus the conditional expected value is the midpoint:
+
+$$
+\mathbb{E}\left(V\mid V\le \frac{3}{2}b\right)
+=\frac{3}{4}b.
+$$
+
+Also,
+
+$$
+\mathbb{P}\left(b\ge \frac{2}{3}V\right)
+=\mathbb{P}\left(V\le \frac{3}{2}b\right)
+=\frac{3}{2}b.
+$$
+
+Then
+
+$$
+\begin{aligned}
+\mathbb{E}(O)
+&=\left(\frac{3}{4}b-b\right)\frac{3}{2}b\\
+&=\left(-\frac{1}{4}b\right)\frac{3}{2}b\\
+&=-\frac{3}{8}b^2.
+\end{aligned}
+$$
+
+For this case we needed $\frac{3}{2}b\le 1$, so $b\le \frac{2}{3}$.
+
+If $b>\frac{2}{3}$, the bid is always accepted, so
+
+$$
+\mathbb{E}(O)=\mathbb{E}(V-b)=\frac{1}{2}-b,
+$$
+
+which is negative. Therefore every positive bid has negative expected payoff, while $b=0$ gives expected payoff $0$. The best bid is therefore
+
+$$
+\boxed{0}.
+$$
+
+### What I initially missed / corrected
+
+The main idea is right: condition on whether the bid is accepted. The key translation is
+
+$$
+b\ge \frac{2}{3}V
+\quad\Longleftrightarrow\quad
+V\le \frac{3}{2}b.
+$$
+
+This means that acceptance gives information about $V$: if the bid is accepted, then the true value is not uniformly distributed on all of $[0,1]$ anymore. It is restricted to the lower interval $\left[0,\frac{3}{2}b\right]$ when $b\le \frac{2}{3}$.
+
+Also, $b$ is fixed by us, not random. So inside the conditional expectation,
+
+$$
+\mathbb{E}\left(V-b\mid b\ge \frac{2}{3}V\right)
+=\mathbb{E}\left(V\mid b\ge \frac{2}{3}V\right)-b.
+$$
+
+Finally, the case $b>\frac{2}{3}$ must be handled separately because then $\frac{3}{2}b>1$, so the event $V\le \frac{3}{2}b$ always happens.
+
+### Book's solution (for comparison)
+
+Source status: verified. The user provided the book excerpt for this problem.
+
+The book uses the same conditioning idea, with $b\ge 0$ chosen before seeing the unknown prize value $V$. The rejected-bid term contributes $0$, so the expected payoff is
+
+$$
+\mathbb{E}\left(V-b\mid b\ge \frac{2}{3}V\right)
+\mathbb{P}\left(b\ge \frac{2}{3}V\right).
+$$
+
+Since $b\ge \frac{2}{3}V$ is equivalent to $V\le \frac{3}{2}b$, this becomes
+
+$$
+\left(
+\mathbb{E}\left(V\mid V\le \frac{3}{2}b\right)-b
+\right)
+\mathbb{P}\left(V\le \frac{3}{2}b\right).
+$$
+
+For $b\ge \frac{2}{3}$, the bid is accepted with probability $1$, but the average payoff is
+
+$$
+\mathbb{E}(V-b)=\frac{1}{2}-b<0.
+$$
+
+So it is enough to consider $0<b<\frac{2}{3}$, then handle $b=0$ directly. In that positive-bid range,
+
+$$
+V\mid V\le \frac{3}{2}b
+\sim
+\mathrm{Unif}\left(0,\frac{3}{2}b\right),
+$$
+
+and therefore
+
+$$
+\begin{aligned}
+\left(
+\mathbb{E}\left(V\mid V\le \frac{3}{2}b\right)-b
+\right)
+\mathbb{P}\left(V\le \frac{3}{2}b\right)
+&=
+\left(\frac{3}{4}b-b\right)\frac{3}{2}b\\
+&=-\frac{3}{8}b^2.
+\end{aligned}
+$$
+
+This is negative for every $b>0$. If $b=0$, the payoff is $0$ with probability $1$, so the expected payoff is $0$. Thus the optimal bid is
+
+$$
+\boxed{0}.
+$$
+
+The important warning in the book's solution is that we must condition on all available information. Knowing that the bid was accepted is information about the prize value; it tells us that $V$ is probably low relative to the bid.
+
+### Intuition
+
+This is a winner's-curse calculation. A positive bid is accepted only when the hidden value is small enough. So acceptance is not just good news that we got the prize; it is also bad news about how much the prize is worth.
+
+For a bid $b\le \frac{2}{3}$, acceptance means $V\le \frac{3}{2}b$. The conditional average value is therefore only $\frac{3}{4}b$, which is less than the price $b$. So conditional on acceptance, we lose on average:
+
+$$
+\frac{3}{4}b-b=-\frac{1}{4}b.
+$$
+
+Multiplying by the probability of acceptance gives the expected payoff
+
+$$
+-\frac{3}{8}b^2.
+$$
+
+So the only way not to lose in expectation is to bid $0$.
+
+### Memory card (quick review)
+
+- Accepted bid event:
+
+  $$
+  b\ge \frac{2}{3}V
+  \quad\Longleftrightarrow\quad
+  V\le \frac{3}{2}b.
+  $$
+
+- For $0<b\le \frac{2}{3}$:
+
+  $$
+  V\mid V\le \frac{3}{2}b
+  \sim
+  \mathrm{Unif}\left(0,\frac{3}{2}b\right).
+  $$
+
+- Expected payoff:
+
+  $$
+  \mathbb{E}(O)
+  =
+  \left(\frac{3}{4}b-b\right)\frac{3}{2}b
+  =
+  -\frac{3}{8}b^2.
+  $$
+
+- For $b>\frac{2}{3}$, the bid is always accepted and $\mathbb{E}(O)=\frac{1}{2}-b<0$.
+- Therefore the optimal bid is $0$.
+
 ---
 
 ## Homework 9 Problem 6
