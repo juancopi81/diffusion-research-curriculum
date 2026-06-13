@@ -388,6 +388,330 @@ A coin with probability $p$ of Heads is flipped repeatedly. For Parts (a) and (b
 
 (c) Now suppose that $p$ is unknown, and that we use a $\mathrm{Beta}(a,b)$ prior to reflect our uncertainty about $p$, where $a$ and $b$ are known constants and are greater than $2$. In terms of $a$ and $b$, find the corresponding answers to (a) and (b) in this setting.
 
+### My solution
+
+Let $W_{HT}$ be the number of flips until the pattern $HT$ is observed.
+
+For part (a), wait until the first Heads, then wait until the first Tails after that Heads. Since the coin has probability $p$ of Heads and $1-p$ of Tails,
+
+$$
+\mathbb{E}(W_{HT})
+=
+\frac{1}{p}
++\frac{1}{1-p}.
+$$
+
+Therefore
+
+$$
+\boxed{
+\mathbb{E}(W_{HT})
+=
+\frac{1}{p}
++\frac{1}{1-p}
+=
+\frac{1}{p(1-p)}.
+}
+$$
+
+For part (b), let $e=\mathbb{E}(W_{HH})$, where $W_{HH}$ is the number of flips until the pattern $HH$ is observed.
+
+Condition on the first toss. If the first toss is Tails, then we used one toss and restart. If the first toss is Heads, condition on the second toss: a second Heads finishes the pattern in $2$ tosses, while a second Tails uses $2$ tosses and restarts. Thus
+
+$$
+e
+=
+(1-p)(1+e)
++p\left(p\cdot 2+(1-p)(2+e)\right).
+$$
+
+Solving,
+
+$$
+\begin{aligned}
+e
+&=(1-p)(1+e)+p\left(2p+(1-p)(2+e)\right)\\
+&=1+p+(1-p^2)e.
+\end{aligned}
+$$
+
+So
+
+$$
+p^2e=1+p,
+$$
+
+and therefore
+
+$$
+\boxed{
+\mathbb{E}(W_{HH})
+=
+\frac{1+p}{p^2}
+=
+\frac{1}{p}+\frac{1}{p^2}.
+}
+$$
+
+For part (c), now treat the coin probability itself as random:
+
+$$
+P\sim \mathrm{Beta}(a,b),
+\qquad a,b>2.
+$$
+
+Conditioning on $P=p$ lets us reuse parts (a) and (b):
+
+$$
+\mathbb{E}(W_{HT}\mid P=p)
+=
+\frac{1}{p}
++\frac{1}{1-p},
+$$
+
+and
+
+$$
+\mathbb{E}(W_{HH}\mid P=p)
+=
+\frac{1}{p}
++\frac{1}{p^2}.
+$$
+
+By the tower property,
+
+$$
+\mathbb{E}(W_{HT})
+=
+\mathbb{E}\left(\frac{1}{P}\right)
++\mathbb{E}\left(\frac{1}{1-P}\right),
+$$
+
+and
+
+$$
+\mathbb{E}(W_{HH})
+=
+\mathbb{E}\left(\frac{1}{P}\right)
++\mathbb{E}\left(\frac{1}{P^2}\right).
+$$
+
+For $P\sim \mathrm{Beta}(a,b)$, the density is
+
+$$
+f(p)
+=
+\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}
+p^{a-1}(1-p)^{b-1},
+\qquad 0<p<1.
+$$
+
+Using LOTUS,
+
+$$
+\begin{aligned}
+\mathbb{E}\left(\frac{1}{P}\right)
+&=
+\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}
+\int_0^1 p^{a-2}(1-p)^{b-1}\,dp\\
+&=
+\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}
+\frac{\Gamma(a-1)\Gamma(b)}{\Gamma(a+b-1)}\\
+&=
+\frac{a+b-1}{a-1}.
+\end{aligned}
+$$
+
+Similarly,
+
+$$
+\mathbb{E}\left(\frac{1}{1-P}\right)
+=
+\frac{a+b-1}{b-1},
+$$
+
+and
+
+$$
+\begin{aligned}
+\mathbb{E}\left(\frac{1}{P^2}\right)
+&=
+\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}
+\int_0^1 p^{a-3}(1-p)^{b-1}\,dp\\
+&=
+\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}
+\frac{\Gamma(a-2)\Gamma(b)}{\Gamma(a+b-2)}\\
+&=
+\frac{(a+b-1)(a+b-2)}{(a-1)(a-2)}.
+\end{aligned}
+$$
+
+Therefore, when $p$ is unknown and $P\sim \mathrm{Beta}(a,b)$,
+
+$$
+\boxed{
+\mathbb{E}(W_{HT})
+=
+\frac{a+b-1}{a-1}
++\frac{a+b-1}{b-1}.
+}
+$$
+
+And
+
+$$
+\boxed{
+\mathbb{E}(W_{HH})
+=
+\frac{a+b-1}{a-1}
++\frac{(a+b-1)(a+b-2)}{(a-1)(a-2)}.
+}
+$$
+
+### What I initially missed / corrected
+
+For part (c), the unknown probability should not be replaced by its prior mean. The formulas from parts (a) and (b) are nonlinear in $p$, so in general
+
+$$
+f(\mathbb{E}(P))\ne \mathbb{E}(f(P)).
+$$
+
+The right move is to condition on $P$, use the known-$p$ result inside the conditional expectation, and then average over the Beta prior with the tower property.
+
+The condition $a,b>2$ is also not accidental. It guarantees the inverse moments used above are finite, especially
+
+$$
+\mathbb{E}\left(\frac{1}{P^2}\right).
+$$
+
+### Book's solution (for comparison)
+
+Source status: verified. The user provided the book excerpt for this problem.
+
+Let $Y$ be the waiting time for $HT$, and let $X$ be the waiting time for $HH$.
+
+For known $p$, the book gives
+
+$$
+\mathbb{E}(Y\mid p)
+=
+\frac{1}{p}
++\frac{1}{1-p},
+$$
+
+and
+
+$$
+\mathbb{E}(X\mid p)
+=
+\frac{1}{p}
++\frac{1}{p^2}.
+$$
+
+For the Beta-prior case, the book applies the tower property:
+
+$$
+\mathbb{E}(Y)
+=
+\mathbb{E}\left(\frac{1}{P}\right)
++\mathbb{E}\left(\frac{1}{1-P}\right),
+$$
+
+and
+
+$$
+\mathbb{E}(X)
+=
+\mathbb{E}\left(\frac{1}{P}\right)
++\mathbb{E}\left(\frac{1}{P^2}\right).
+$$
+
+The needed inverse moments are
+
+$$
+\mathbb{E}\left(\frac{1}{P}\right)
+=
+\frac{a+b-1}{a-1},
+\qquad
+\mathbb{E}\left(\frac{1}{1-P}\right)
+=
+\frac{a+b-1}{b-1},
+$$
+
+and
+
+$$
+\mathbb{E}\left(\frac{1}{P^2}\right)
+=
+\frac{(a+b-1)(a+b-2)}{(a-1)(a-2)}.
+$$
+
+Thus
+
+$$
+\boxed{
+\mathbb{E}(Y)
+=
+\frac{a+b-1}{a-1}
++\frac{a+b-1}{b-1},
+}
+$$
+
+and
+
+$$
+\boxed{
+\mathbb{E}(X)
+=
+\frac{a+b-1}{a-1}
++\frac{(a+b-1)(a+b-2)}{(a-1)(a-2)}.
+}
+$$
+
+### Intuition
+
+Part (a) works by splitting the task into two waiting times: wait for the first Heads, then wait for the first Tails after that.
+
+Part (b) is larger than the corresponding $HT$ wait because a Tails after one Heads destroys the partial progress toward $HH$. For a fair coin, the result becomes
+
+$$
+\frac{1}{1/2}+\frac{1}{(1/2)^2}=6,
+$$
+
+which is larger than the expected waiting time $4$ for $HT$.
+
+Part (c) is a tower-property problem. Once we condition on $P=p$, the coin has a known bias and parts (a) and (b) apply. Only after that do we average over the uncertainty in $P$.
+
+### Memory card (quick review)
+
+- Known $p$, waiting for $HT$:
+
+  $$
+  \mathbb{E}(W_{HT})
+  =
+  \frac{1}{p}
+  +\frac{1}{1-p}.
+  $$
+
+- Known $p$, waiting for $HH$:
+
+  $$
+  \mathbb{E}(W_{HH})
+  =
+  \frac{1}{p}
+  +\frac{1}{p^2}.
+  $$
+
+- Unknown $p$ with $P\sim \mathrm{Beta}(a,b)$:
+
+  $$
+  \mathbb{E}(W)
+  =
+  \mathbb{E}(\mathbb{E}(W\mid P)).
+  $$
+
+- Do not plug in $\mathbb{E}(P)=\frac{a}{a+b}$ for nonlinear waiting-time formulas.
+
 ---
 
 ## Homework 9 Problem 7
