@@ -720,3 +720,250 @@ Part (c) is a tower-property problem. Once we condition on $P=p$, the coin has a
 Consider a group of $n$ roommate pairs at Harvard, so there are $2n$ students. Each of these $2n$ students independently decides randomly whether to take Stat 110, with probability $p$ of "success," where "success" is defined as taking Stat 110.
 
 Let $N$ be the number of students among these $2n$ who take Stat 110, and let $X$ be the number of roommate pairs where both roommates in the pair take Stat 110. Find $\mathbb{E}(X)$ and $\mathbb{E}(X \mid N)$.
+
+### My solution
+
+Let $I_j$ be the indicator for the event that both students in roommate pair $j$ take Stat 110:
+
+$$
+I_j=
+\begin{cases}
+1, & \text{if both students in roommate pair } j \text{ take Stat 110},\\
+0, & \text{otherwise}.
+\end{cases}
+$$
+
+Then
+
+$$
+X=\sum_{j=1}^{n} I_j.
+$$
+
+For a fixed roommate pair, the two students decide independently whether to take Stat 110, each with probability $p$. Therefore
+
+$$
+\mathbb{E}(I_j)
+=
+\mathbb{P}(I_j=1)
+=p^2.
+$$
+
+By linearity of expectation,
+
+$$
+\mathbb{E}(X)
+=
+\sum_{j=1}^{n}\mathbb{E}(I_j)
+=
+\boxed{np^2}.
+$$
+
+Now condition on $N$, the total number of students among the $2n$ who take Stat 110. Given $N$, the particular set of students who take Stat 110 is uniformly distributed over all subsets of size $N$.
+
+For a fixed roommate pair, say pair $1$,
+
+$$
+\mathbb{E}(I_1\mid N)
+=
+\mathbb{P}(I_1=1\mid N).
+$$
+
+Given that $N$ students take Stat 110, the probability that the first student in the pair is one of them is
+
+$$
+\frac{N}{2n}.
+$$
+
+After that student is included, the probability that their roommate is also included is
+
+$$
+\frac{N-1}{2n-1}.
+$$
+
+So
+
+$$
+\mathbb{E}(I_1\mid N)
+=
+\frac{N}{2n}\frac{N-1}{2n-1}.
+$$
+
+By conditional linearity of expectation and symmetry,
+
+$$
+\begin{aligned}
+\mathbb{E}(X\mid N)
+&=
+\sum_{j=1}^{n}\mathbb{E}(I_j\mid N)\\
+&=
+n\mathbb{E}(I_1\mid N)\\
+&=
+n\frac{N}{2n}\frac{N-1}{2n-1}\\
+&=
+\boxed{\frac{N(N-1)}{2(2n-1)}}.
+\end{aligned}
+$$
+
+### What I initially missed / corrected
+
+The mistake was taking one expectation too many.
+
+First, if $N=k$ is fixed, then
+
+$$
+\mathbb{E}(X\mid N=k)
+=
+\frac{k(k-1)}{2(2n-1)}.
+$$
+
+To turn this into $\mathbb{E}(X\mid N)$, replace the fixed value $k$ by the random variable $N$:
+
+$$
+\mathbb{E}(X\mid N)
+=
+\frac{N(N-1)}{2(2n-1)}.
+$$
+
+This is already a random variable. Taking expectation again gives
+
+$$
+\mathbb{E}\left(\mathbb{E}(X\mid N)\right)
+=
+\mathbb{E}\left(\frac{N(N-1)}{2(2n-1)}\right),
+$$
+
+which is a different question. By the tower property, it must equal $\mathbb{E}(X)$.
+
+Indeed, since $N\sim \mathrm{Bin}(2n,p)$,
+
+$$
+\mathbb{E}(N(N-1))
+=
+(2n)(2n-1)p^2.
+$$
+
+So
+
+$$
+\mathbb{E}\left(\frac{N(N-1)}{2(2n-1)}\right)
+=
+\frac{(2n)(2n-1)p^2}{2(2n-1)}
+=
+np^2
+=
+\mathbb{E}(X).
+$$
+
+### Book's solution (for comparison)
+
+Source status: verified. The user provided the book excerpt for this problem.
+
+The book uses the same indicator setup. Let $I_j$ be the indicator that both students in roommate pair $j$ take Stat 110. Then
+
+$$
+X=\sum_{j=1}^{n} I_j.
+$$
+
+Since each roommate pair has two independent students, the expected value of each indicator is $p^2$, so
+
+$$
+\mathbb{E}(X)=np^2.
+$$
+
+For the conditional expectation, the book uses symmetry:
+
+$$
+\mathbb{E}(X\mid N)
+=
+n\mathbb{E}(I_1\mid N).
+$$
+
+Given $N$, the probability that a particular student takes Stat 110 is $\frac{N}{2n}$, and then the probability that their roommate also takes Stat 110 is $\frac{N-1}{2n-1}$. Therefore
+
+$$
+\mathbb{E}(I_1\mid N)
+=
+\frac{N}{2n}\frac{N-1}{2n-1}.
+$$
+
+Thus
+
+$$
+\boxed{
+\mathbb{E}(X\mid N)
+=
+n\frac{N}{2n}\frac{N-1}{2n-1}
+=
+\frac{N(N-1)}{2(2n-1)}.
+}
+$$
+
+Equivalently, given $N$, the number of students in the first roommate pair who take Stat 110 has a Hypergeometric distribution. So
+
+$$
+\mathbb{E}(I_1\mid N)
+=
+\mathbb{P}(\text{both students in pair } 1 \text{ take Stat 110}\mid N)
+=
+\frac{\binom{N}{2}}{\binom{2n}{2}}.
+$$
+
+This gives the same result.
+
+Historical note from the book: an equivalent problem was first solved in the 1760s by Daniel Bernoulli, nephew of Jacob Bernoulli, for whom the Bernoulli distribution is named.
+
+### Intuition
+
+Before conditioning, each pair independently has probability $p^2$ of having both roommates take Stat 110. That gives $\mathbb{E}(X)=np^2$.
+
+After conditioning on $N$, the value of $p$ no longer matters directly. We already know exactly how many students take Stat 110; the only remaining randomness is where those $N$ students are located among the $2n$ roommate slots.
+
+So the question becomes: if $N$ marked students are randomly placed among $2n$ student positions, how many roommate pairs get two marked students?
+
+For one pair, the chance of two marked students is
+
+$$
+\frac{N}{2n}\frac{N-1}{2n-1}.
+$$
+
+Multiplying by the $n$ roommate pairs gives
+
+$$
+\mathbb{E}(X\mid N)
+=
+\frac{N(N-1)}{2(2n-1)}.
+$$
+
+### Memory card (quick review)
+
+- Indicator setup:
+
+  $$
+  X=\sum_{j=1}^{n}I_j.
+  $$
+
+- Unconditional expectation:
+
+  $$
+  \mathbb{E}(X)=np^2.
+  $$
+
+- Conditional on $N$, the $p$ disappears because the total number of Stat 110 students is already known.
+
+- For one fixed pair:
+
+  $$
+  \mathbb{E}(I_1\mid N)
+  =
+  \frac{N}{2n}\frac{N-1}{2n-1}.
+  $$
+
+- Therefore:
+
+  $$
+  \mathbb{E}(X\mid N)
+  =
+  \frac{N(N-1)}{2(2n-1)}.
+  $$
+
+- Do not replace $N(N-1)$ by $\mathbb{E}(N(N-1))$ unless the goal is to average again and recover $\mathbb{E}(X)$.

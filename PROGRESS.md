@@ -81,7 +81,7 @@
 | ------------------------------------------------- | ------ | ---- | ----- |
 | S1: Lecture 26 (Conditional Expectation)          | ✅     | 2026-06-08 | Notes in `notes/w07_stat110_conditional_expectation.md`; includes the Lecture 25 preview |
 | S1: Lecture 27 ($E[Y \mid X=x]$)                  | ✅     | 2026-06-08 | Notes in `notes/w07_stat110_conditional_expectation_given_rv.md` |
-| S2: Problems (tower property)                     | ⬜     |      |       |
+| S2: Problems (tower property)                     | ✅     | 2026-06-16 | Completed in `proofs/w07_stat110_conditional_expectation.md`; 4 selected problems with source-verified book comparisons, correction notes, intuition notes, and memory cards |
 | S3: `w07_conditional_expectation_in_diffusion.md` | ⬜     |      |       |
 
 ### Week 8 (Checkpoint 2) — CLT + Toy Score Matching
