@@ -359,9 +359,15 @@ Your notes:
 
 ### Checkpoint 5.2
 
-Guided derivation of the identity.
+Guided derivation of the identity. The main question is:
 
-Start from the marginal noisy density:
+$$
+\text{Why is the score of } p_t(x_t)
+\text{ related to an average over } x_0?
+$$
+
+Start from the marginal noisy density. This density averages over all possible
+clean values $x_0$ that could have produced the observed noisy value $x_t$:
 
 $$
 p_t(x_t)
@@ -369,23 +375,104 @@ p_t(x_t)
 \int p(x_t \mid x_0)p_{\text{data}}(x_0)\,dx_0.
 $$
 
-Differentiate the log-density:
+Differentiate the log-density using the vector version of $d\log f/dx=f'/f$:
 
 $$
 \nabla_{x_t}\log p_t(x_t)
 =
-\frac{\nabla_{x_t}p_t(x_t)}{p_t(x_t)}.
+\frac{1}{p_t(x_t)}\nabla_{x_t}p_t(x_t).
 $$
 
-For the Gaussian corruption density,
+Now substitute the definition of $p_t(x_t)$:
 
 $$
-\nabla_{x_t}\log p(x_t \mid x_0)
+\nabla_{x_t}\log p_t(x_t)
 =
--\frac{x_t-\alpha_t x_0}{\sigma_t^2}.
+\frac{1}{p_t(x_t)}
+\nabla_{x_t}
+\int p(x_t \mid x_0)p_{\text{data}}(x_0)\,dx_0.
 $$
 
-The useful identity is:
+Under the usual regularity assumptions, move the derivative inside the
+integral. The data density $p_{\text{data}}(x_0)$ does not depend on $x_t$, so
+it behaves like a constant:
+
+$$
+\begin{aligned}
+\nabla_{x_t}\log p_t(x_t)
+&=
+\frac{1}{p_t(x_t)}
+\int
+\nabla_{x_t}
+\left[
+p(x_t \mid x_0)p_{\text{data}}(x_0)
+\right]\,dx_0 \\
+&=
+\frac{1}{p_t(x_t)}
+\int
+\nabla_{x_t}p(x_t \mid x_0)
+p_{\text{data}}(x_0)\,dx_0.
+\end{aligned}
+$$
+
+Use the log-derivative identity $\nabla p=p\nabla\log p$ on the conditional
+density:
+
+$$
+\nabla_{x_t}p(x_t \mid x_0)
+=
+p(x_t \mid x_0)\nabla_{x_t}\log p(x_t \mid x_0).
+$$
+
+Substitute that into the integral:
+
+$$
+\nabla_{x_t}\log p_t(x_t)
+=
+\frac{1}{p_t(x_t)}
+\int
+p(x_t \mid x_0)
+\nabla_{x_t}\log p(x_t \mid x_0)
+p_{\text{data}}(x_0)\,dx_0.
+$$
+
+Move the normalizing factor inside:
+
+$$
+\nabla_{x_t}\log p_t(x_t)
+=
+\int
+\nabla_{x_t}\log p(x_t \mid x_0)
+\frac{
+p(x_t \mid x_0)p_{\text{data}}(x_0)
+}{
+p_t(x_t)
+}\,dx_0.
+$$
+
+The fraction is Bayes' rule:
+
+$$
+p(x_0 \mid x_t)
+=
+\frac{
+p(x_t \mid x_0)p_{\text{data}}(x_0)
+}{
+p_t(x_t)
+}.
+$$
+
+So the marginal score becomes:
+
+$$
+\nabla_{x_t}\log p_t(x_t)
+=
+\int
+\nabla_{x_t}\log p(x_t \mid x_0)
+p(x_0 \mid x_t)\,dx_0.
+$$
+
+By the definition of conditional expectation:
 
 $$
 \nabla_{x_t}\log p_t(x_t)
@@ -396,7 +483,27 @@ $$
 \right].
 $$
 
-Now substitute the Gaussian score:
+In words: the score of the marginal noisy density is the posterior average of
+the conditional scores. The possible clean values $x_0$ are weighted by how
+plausible they are after observing $x_t$.
+
+Now use the Gaussian corruption model:
+
+$$
+p(x_t \mid x_0)
+=
+\mathcal{N}(\alpha_t x_0,\sigma_t^2 I).
+$$
+
+Its conditional score is:
+
+$$
+\nabla_{x_t}\log p(x_t \mid x_0)
+=
+-\frac{x_t-\alpha_t x_0}{\sigma_t^2}.
+$$
+
+Substitute the Gaussian score into the posterior-average identity:
 
 $$
 \begin{aligned}
@@ -407,23 +514,23 @@ $$
 \mid x_t
 \right] \\
 &=
-\frac{1}{\sigma_t^2}
-\mathbb{E}\left[-x_t+\alpha_t x_0 \mid x_t\right]
+-\frac{1}{\sigma_t^2}
+\mathbb{E}\left[x_t-\alpha_t x_0 \mid x_t\right]
 \quad \text{(pull out fixed } \sigma_t^2 \text{)} \\
 &=
-\frac{1}{\sigma_t^2}
+-\frac{1}{\sigma_t^2}
 \left(
-\mathbb{E}[-x_t \mid x_t]
-+ \mathbb{E}[\alpha_t x_0 \mid x_t]
+\mathbb{E}[x_t \mid x_t]
+- \alpha_t\mathbb{E}[x_0 \mid x_t]
 \right)
-\quad \text{(linearity)} \\
+\quad \text{(linearity, and } \alpha_t \text{ is fixed)} \\
 &=
-\frac{1}{\sigma_t^2}
+-\frac{1}{\sigma_t^2}
 \left(
--x_t
-+ \alpha_t\mathbb{E}[x_0 \mid x_t]
+x_t
+- \alpha_t\mathbb{E}[x_0 \mid x_t]
 \right)
-\quad \text{(} x_t \text{ is fixed given } x_t \text{, and } \alpha_t \text{ is fixed)} \\
+\quad \text{(given } x_t\text{, }x_t\text{ is fixed)} \\
 &=
 \frac{\alpha_t\mathbb{E}[x_0 \mid x_t]-x_t}{\sigma_t^2}.
 \end{aligned}
@@ -439,7 +546,13 @@ $$
 
 Your notes on the key step:
 
-- The key steps are to pull out deterministic quantities such as $\sigma_t^2$ and $\alpha_t$, treat $x_t$ as fixed because we are conditioning on $x_t$, and then use linearity of conditional expectation. The only remaining uncertain term is $x_0$, which becomes $\mathbb{E}[x_0 \mid x_t]$.
+- The key step is not just algebra. First we prove that the marginal score
+  $\nabla_{x_t}\log p_t(x_t)$ is the posterior average of the conditional
+  scores $\nabla_{x_t}\log p(x_t \mid x_0)$. Only after that are we allowed to
+  substitute the Gaussian conditional score and simplify with linearity.
+- In the final simplification, $x_t$ is fixed because we are conditioning on
+  $x_t$. The only remaining uncertain term is $x_0$, which becomes
+  $\mathbb{E}[x_0 \mid x_t]$.
 
 ### Checkpoint 5.3
 
