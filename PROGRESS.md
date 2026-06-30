@@ -3,7 +3,7 @@
 ## Current Status
 
 - **Phase:** 1 (Probability Core)
-- **Week:** 7 🔄
+- **Week:** 8 🔄
 - **Started:** 2025-01-14
 - **Week 1 Completed:** 2025-01-19
 - **Week 2 Completed:** 2025-01-23
@@ -11,6 +11,7 @@
 - **Week 4 Completed:** 2026-02-26
 - **Week 5 Completed:** 2026-05-07
 - **Week 6 Completed:** 2026-06-02
+- **Week 7 Completed:** 2026-06-23
 
 ---
 
@@ -88,9 +89,9 @@
 
 | Task                                    | Status | Date | Notes |
 | --------------------------------------- | ------ | ---- | ----- |
-| S1: Lecture 28 (Inequalities)           | ⬜     |      |       |
-| S1: Lecture 29 (LLN, CLT)               | ⬜     |      |       |
-| S1: Lecture 30 (MV Normal, skim)        | ⬜     |      |       |
+| S1: Lecture 28 (Inequalities)           | ✅     | 2026-06-24 | Notes in `notes/w08_stat110_inequalities.md` |
+| S1: Lecture 29 (LLN, CLT)               | ✅     | 2026-06-29 | Notes in `notes/w08_stat110_lln_clt.md` |
+| S1: Lecture 30 (MV Normal, skim)        | ✅     | 2026-06-30 | Notes in `notes/w08_stat110_chi_square_student_t_mvn.md` |
 | S2: Mini-exam (6 problems)              | ⬜     |      |       |
 | S3: `checkpoint_02_toy_score_matching/` | ⬜     |      |       |
 

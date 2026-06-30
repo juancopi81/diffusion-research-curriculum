@@ -23,9 +23,9 @@ It is divided into five phases:
 ## 🚀 Current Progress
 
 - **Phase:** 1 (Probability Core)
-- **Week:** 7 - Conditional Expectation + Inequalities 🔄
-- **Completed:** Weeks 1-6, plus Week 7 lecture notes started
-- **Next Milestone:** Complete tower-property practice and the conditional-expectation diffusion bridge
+- **Week:** 8 - CLT + Toy Score Matching 🔄
+- **Completed:** Weeks 1-7, plus Week 8 Lectures 28-30 notes
+- **Next Milestone:** Start the Week 8 mini-exam and Checkpoint 2 planning
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 
