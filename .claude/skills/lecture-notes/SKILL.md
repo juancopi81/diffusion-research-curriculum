@@ -38,6 +38,10 @@ Do not attempt to invoke the prompt as an MCP tool.
 4. Read one existing notes file (e.g. `notes/w08_stat110_chi_square_student_t_mvn.md`)
    to calibrate structure and voice, and follow the repo's
    "Markdown LaTeX Style (GitHub-safe)" rules in CLAUDE.md/AGENTS.md.
+5. Call `list_videos` and check whether this lecture is already indexed (match
+   by source filename / lecture topic). If a `ready` match exists, skip
+   Steps 1–3 and go straight to Step 4 with that `video_id` — a notes re-run
+   costs ~6–16 units, while re-indexing costs ~500.
 
 ## Step 1 — Get the video locally (skip if a local file was provided)
 
@@ -60,7 +64,10 @@ from cloud IPs AND doesn't retain a source video, which downgrades frames to
    to the presigned URL.
 3. `upload_video(action="complete", video_id=..., filename=...)`.
 
-Videos up to 90 minutes and 8 GiB are accepted.
+The presigned PUT is idempotent: uploading the same bytes to the same URL
+twice is harmless, so if an upload's outcome is unclear, re-run it rather
+than guessing. The URL expires (~15 minutes); if expired, restart from
+`action="start"`. Videos up to 90 minutes and 8 GiB are accepted.
 
 ## Step 3 — Poll patiently
 
