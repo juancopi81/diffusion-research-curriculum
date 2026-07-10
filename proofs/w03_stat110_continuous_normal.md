@@ -1,7 +1,12 @@
 # Week 3 — S2 (Stat110 Practice): Continuous Distributions & the Normal
 
 **Topics:** PDF/CDF relationships, computing probabilities by integration, Normal distribution properties, standardization
-**Resource:** [Stat110-Practice] + [Stat110-Text]
+
+**Sources:**
+
+- [Stat 110 source catalog](../sources/stat110/strategic-practice/)
+- [Strategic Practice and Homework 5 — official PDF](https://stat110.hsites.harvard.edu/sites/g/files/omnuum10111/files/stat110/files/strategic_practice_and_homework_5.pdf)
+- [Introduction to Probability — official book site](https://probabilitybook.net/)
 
 ---
 

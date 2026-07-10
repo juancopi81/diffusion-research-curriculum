@@ -1,7 +1,12 @@
 # Week 1 — S2 (Stat110 Practice): Discrete RVs, Conditioning, Binomial
 
 **Topics:** Bernoulli trials, Binomial RVs, conditioning, independence, (Hypergeometric via conditioning)
-**Resource:** [Stat110-Text] + [Stat110-Practice]
+
+**Sources:**
+
+- [Stat 110 source catalog](../sources/stat110/strategic-practice/)
+- [Strategic Practice and Homework 3 — official PDF](https://stat110.hsites.harvard.edu/sites/g/files/omnuum10111/files/stat110/files/strategic_practice_and_homework_3.pdf)
+- [Introduction to Probability — official book site](https://probabilitybook.net/)
 
 ---
 

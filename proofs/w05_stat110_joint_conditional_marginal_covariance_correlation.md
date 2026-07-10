@@ -1,10 +1,11 @@
 # Week 5 — S2 (Stat110 Practice): Joint/Conditional/Marginal + Covariance/Correlation
 
 **Topics:** joint distributions, marginal distributions, conditional distributions, independence, covariance, correlation  
-**Resources:**
+**Sources:**
 
-- [Stat110 Strategic Practice and Homework 7](https://stat110.hsites.harvard.edu/sites/g/files/omnuum10111/files/stat110/files/strategic_practice_and_homework_7.pdf)
-- [Stat110 Strategic Practice and Homework 8](https://stat110.hsites.harvard.edu/sites/g/files/omnuum10111/files/stat110/files/strategic_practice_and_homework_8.pdf)
+- [Stat 110 source catalog](../sources/stat110/strategic-practice/)
+- [Strategic Practice and Homework 7 — official PDF](https://stat110.hsites.harvard.edu/sites/g/files/omnuum10111/files/stat110/files/strategic_practice_and_homework_7.pdf)
+- [Strategic Practice and Homework 8 — official PDF](https://stat110.hsites.harvard.edu/sites/g/files/omnuum10111/files/stat110/files/strategic_practice_and_homework_8.pdf)
 
 ---
 

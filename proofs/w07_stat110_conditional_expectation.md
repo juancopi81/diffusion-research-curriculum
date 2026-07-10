@@ -1,5 +1,12 @@
 # Week 7 — S2 (Stat110 Practice): Conditional Expectation
 
+**Sources:**
+
+- [Stat 110 source catalog](../sources/stat110/strategic-practice/)
+- [Strategic Practice and Homework 9 — official PDF](https://stat110.hsites.harvard.edu/sites/g/files/omnuum10111/files/stat110/files/strategic_practice_and_homework_9.pdf)
+
+---
+
 ## Strategic Practice 9 — Conditional Expectation Problem 1
 
 **Prompt.**

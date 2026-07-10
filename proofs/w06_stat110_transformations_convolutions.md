@@ -2,10 +2,11 @@
 
 **Topics:** transformations, Jacobians, convolutions, polar coordinates, Gaussian geometry
 
-**Resources:**
+**Sources:**
 
 - [Week 6 Lecture 22 notes](../notes/w06_stat110_transformations_convolutions.md)
-- `/Users/juanpineros/Downloads/strategic_practice_and_homework_8.pdf`
+- [Stat 110 source catalog](../sources/stat110/strategic-practice/)
+- [Strategic Practice and Homework 8 — official PDF](https://stat110.hsites.harvard.edu/sites/g/files/omnuum10111/files/stat110/files/strategic_practice_and_homework_8.pdf)
 
 ---
 

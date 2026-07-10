@@ -2,8 +2,9 @@
 
 **Sources:**
 
-- `/Users/juanpineros/Downloads/strategic_practice_and_homework_10.pdf`
-- `/Users/juanpineros/Downloads/strategic_practice_and_homework_11.pdf`
+- [Stat 110 source catalog](../sources/stat110/strategic-practice/)
+- [Strategic Practice and Homework 10 — official PDF](https://stat110.hsites.harvard.edu/sites/g/files/omnuum10111/files/stat110/files/strategic_practice_and_homework_10.pdf)
+- [Strategic Practice and Homework 11 — official PDF](https://stat110.hsites.harvard.edu/sites/g/files/omnuum10111/files/stat110/files/strategic_practice_and_homework_11.pdf)
 
 ---
 

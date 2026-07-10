@@ -1,5 +1,12 @@
 # Distributions & Expected Values (Discrete RVs) — Strategic Practice (Lec 9–10)
 
+**Sources:**
+
+- [Stat 110 source catalog](../sources/stat110/strategic-practice/)
+- [Strategic Practice and Homework 4 — official PDF](https://stat110.hsites.harvard.edu/sites/g/files/omnuum10111/files/stat110/files/strategic_practice_and_homework_4.pdf)
+
+---
+
 ## 1. Distributions and Expected Values for Discrete Random Variables
 
 ## Problem 1
