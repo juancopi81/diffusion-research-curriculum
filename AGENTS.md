@@ -53,4 +53,5 @@
 A skill is a set of local instructions to follow that is stored in a `SKILL.md` file.
 
 ### Available repo skills
+- `lecture-notes`: Turn a lecture video from YouTube or a local file into structured Markdown study notes using Video Moment Finder transcripts and blackboard frames, with curriculum-versus-enrichment naming and safe upload/cleanup guidance. (file: `.agents/skills/lecture-notes/SKILL.md`)
 - `weekly-diffusion-notebook`: Create or refactor weekly unsolved/solved notebook pairs in `notebooks/` using this repo's `wNN_topic` conventions, reproducibility defaults, and experiment/tutorial templates; scaffold `wNN_topic.ipynb` first and create `wNN_topic_solved.ipynb` as an exact copy for solution work. (file: `.agents/skills/weekly-diffusion-notebook/SKILL.md`)

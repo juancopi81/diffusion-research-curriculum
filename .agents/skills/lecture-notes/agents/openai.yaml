@@ -1,0 +1,4 @@
+interface:
+  display_name: "Lecture Notes"
+  short_description: "Create source-grounded notes from lecture videos"
+  default_prompt: "Use $lecture-notes to turn this lecture video into structured Markdown study notes."
