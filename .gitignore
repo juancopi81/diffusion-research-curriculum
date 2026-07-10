@@ -16,3 +16,6 @@ wheels/
 scratch/
 
 .DS_Store
+
+# Local third-party source documents (catalogs remain tracked)
+/sources/stat110/strategic-practice/pdfs/*.pdf

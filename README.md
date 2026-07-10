@@ -64,3 +64,4 @@ uv run jupyter lab
 - `proofs/`: Clean, written solutions to Strategic Practice Problems.
 - `mini_projects/`: Code and reports for monthly milestones.
 - `papers/`: Summaries and key derivations from core research papers.
+- `sources/`: Provenance catalogs and local, potentially gitignored copies of third-party references.

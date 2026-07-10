@@ -6,6 +6,7 @@
 - `proofs/`: Written solutions that mirror the week numbers in `notes/`.
 - `mini_projects/`: Placeholder for monthly milestone code and reports; keep each project in its own subfolder.
 - `papers/`: Paper summaries and derivations; align filenames with the paper name.
+- `sources/`: Catalogs and local copies of third-party source material. Read the nearest `README.md` before using a source; copyrighted binaries may be intentionally gitignored.
 - `pyproject.toml`/`uv.lock`: Python 3.11+ environment managed by `uv`.
 
 ## Setup, Build, and Run
@@ -48,6 +49,8 @@
 - If no source is available, label that section as an inferred derivation (for example: "Independent check" or "Reference derivation"), not as a source quote.
 - When a source is partially available (for example, only one page/screenshot), mark exactly which parts are source-verified and which parts are inferred.
 - If a source-backed section is still pending, leave it as `Pending source` instead of filling it with reconstructed text.
+- Treat `sources/` as an immutable reference layer: do not edit third-party originals. Record provenance, official URLs, and redistribution status in the nearest source catalog.
+- A source file being present locally does not mean it may be committed or redistributed. Preserve the existing `.gitignore` boundary unless permission or a compatible license is documented.
 
 ## Skills
 A skill is a set of local instructions to follow that is stored in a `SKILL.md` file.

@@ -26,6 +26,7 @@ uv run python <script.py>
 - `proofs/` - Clean solutions to selected problems
 - `mini_projects/` - Monthly checkpoint projects with reports
 - `papers/` - Paper summaries and key derivations
+- `sources/` - Provenance catalogs and local copies of third-party references; read the nearest `README.md` before using them
 
 ## Markdown LaTeX Style (GitHub-safe)
 
@@ -41,6 +42,8 @@ uv run python <script.py>
 - If no source is available, use labels like "Independent derivation" instead of source-attributed labels.
 - When only part of a source is available, clearly mark which subsection is source-verified and which subsection is inferred.
 - Use `Pending source` for unresolved source-backed sections rather than reconstructing them under a source label.
+- Treat files below `sources/` as immutable third-party originals and record provenance in the nearest source catalog.
+- Do not commit gitignored source binaries unless a compatible redistribution license or explicit permission is documented.
 
 ## Curriculum Phases
 
