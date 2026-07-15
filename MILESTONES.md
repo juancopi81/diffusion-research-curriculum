@@ -19,6 +19,7 @@ This page is the portfolio index for the curriculum. It links the artifacts that
 | [`notebooks/w05_joint_gaussians_solved.ipynb`](notebooks/w05_joint_gaussians_solved.ipynb) | Notebook | Complete | Shows that conditional slices of a joint Gaussian are Gaussian and can be checked empirically. |
 | [`notes/w05_2d_gaussian_score.md`](notes/w05_2d_gaussian_score.md) + [`notebooks/w05_2d_gaussian_score_field_solved.ipynb`](notebooks/w05_2d_gaussian_score_field_solved.ipynb) | Derivation + notebook | Complete | Shows that a 2D score is a vector field shaped by the precision matrix. |
 | [`notebooks/w06_kl_gaussians_solved.ipynb`](notebooks/w06_kl_gaussians_solved.ipynb) + [`notes/w06_where_kl_appears.md`](notes/w06_where_kl_appears.md) | Notebook + bridge note | Complete | Derives KL for 1D Gaussians, checks empirical estimates, and connects KL to distribution matching in diffusion/flow models. |
+| [`notes/w07_conditional_expectation_in_diffusion.md`](notes/w07_conditional_expectation_in_diffusion.md) | Diffusion bridge note | Complete | Connects MSE-optimal denoising and conditional expectation to the Gaussian score identity. |
 
 ## Planned Portfolio Milestones
 
@@ -26,7 +27,6 @@ These are not complete yet. They are the next pieces that should become public-f
 
 | Planned milestone | Target location | Goal |
 | --- | --- | --- |
-| Conditioning in diffusion | `notes/w07_conditional_expectation_in_diffusion.md` | Explain why denoising can be framed as conditional expectation. |
 | Toy score matching in 2D | `mini_projects/checkpoint_02_toy_score_matching/` | Train a small model to learn a 2D score field and compare it to the analytic score. |
 | DDPM from scratch | `mini_projects/ddpm_baseline_mnist/` | Build and sample from a minimal DDPM implementation. |
 | DDIM sampler comparison | `mini_projects/ddim_sampler_comparison/` | Compare deterministic and stochastic samplers on a controlled setup. |

@@ -92,7 +92,7 @@
 | S1: Lecture 28 (Inequalities)           | ✅     | 2026-06-24 | Notes in `notes/w08_stat110_inequalities.md` |
 | S1: Lecture 29 (LLN, CLT)               | ✅     | 2026-06-29 | Notes in `notes/w08_stat110_lln_clt.md` |
 | S1: Lecture 30 (MV Normal, skim)        | ✅     | 2026-06-30 | Notes in `notes/w08_stat110_chi_square_student_t_mvn.md` |
-| S2: Mini-exam (6 problems)              | ⬜     |      |       |
+| S2: Mini-exam (6 problems)              | ✅     | 2026-07-15 | Completed in two sittings; reviewed solutions in `proofs/phase1_exam/w08_phase1_mini_exam.md` |
 | S3: `checkpoint_02_toy_score_matching/` | ⬜     |      |       |
 
 ---

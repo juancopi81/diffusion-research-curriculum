@@ -24,8 +24,8 @@ It is divided into five phases:
 
 - **Phase:** 1 (Probability Core)
 - **Week:** 8 - CLT + Toy Score Matching 🔄
-- **Completed:** Weeks 1-7, plus Week 8 Lectures 28-30 notes
-- **Next Milestone:** Start the Week 8 mini-exam and Checkpoint 2 planning
+- **Completed:** Weeks 1-7, plus Week 8 S1 and S2
+- **Next Milestone:** Build the Week 8 Checkpoint 2 toy score-matching project
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 
