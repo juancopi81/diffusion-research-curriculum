@@ -18,8 +18,8 @@ scratch/
 .DS_Store
 
 # Generated toy score-matching experiment artifacts
-/mini_projects/checkpoint_02_toy_score_matching/checkpoints/*.pt
-/mini_projects/checkpoint_02_toy_score_matching/results/*.csv
+/mini_projects/checkpoint_02_toy_score_matching/checkpoints/
+/mini_projects/checkpoint_02_toy_score_matching/results/
 
 # Local third-party source documents (catalogs remain tracked)
 /sources/stat110/strategic-practice/pdfs/*.pdf

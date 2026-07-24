@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 from time import perf_counter, time
 from types import SimpleNamespace
@@ -7,9 +7,8 @@ from types import SimpleNamespace
 import numpy as np
 import pandas as pd
 import torch
-import torch.nn as nn
-import torch.optim as optim
 from sklearn.datasets import make_blobs
+from torch import nn, optim
 
 from mini_projects.checkpoint_02_toy_score_matching.model import BlobsMLP
 
@@ -28,7 +27,7 @@ TRAIN_CONFIG = {
     "dataset_features": 2,
     "mlp_blocks": 2,
     "internal_neurons": 32,
-    "objective": "x0",  # or "score"
+    "objective": "score",  # or "x0"
     "learning_rate": 0.1,
 }
 
@@ -62,7 +61,7 @@ def train() -> None:
     """Train the MLP on one fixed-noise denoising or score objective."""
     # Record the start time and create a readable, unique run identifier.
     start_time = perf_counter()
-    human_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    human_timestamp = datetime.now(UTC).strftime("%Y%m%d_%H%M%S")
     unique_timestamp = time()
     experiment_id = f"toy_score_matching_exp_{human_timestamp}_{unique_timestamp}"
 
@@ -111,6 +110,11 @@ def train() -> None:
         val_target = val_x0
     elif TRAIN_CONFIG["objective"] == "score":
         val_target = -(val_xt - val_x0) / FORWARD_SIGMA**2
+    else:
+        raise ValueError(
+            f"Unsupported objective: {TRAIN_CONFIG['objective']!r}. "
+            "Expected 'x0' or 'score'."
+        )
 
     iteration = 0
     while True:
