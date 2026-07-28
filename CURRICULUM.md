@@ -33,6 +33,8 @@ Use these short tags throughout the plan.
   [https://mml-book.github.io/book/mml-book.pdf](https://mml-book.github.io/book/mml-book.pdf)
 - **[MIT-1806]** MIT 18.06 Linear Algebra (optional, for intuition/drills):  
   [https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/](https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/)
+- **[Adam]** Kingma & Ba, “Adam: A Method for Stochastic Optimization”:
+  [https://arxiv.org/abs/1412.6980](https://arxiv.org/abs/1412.6980)
 
 ### Deep generative models (VAE/Flows/Diffusion theory support)
 
@@ -46,6 +48,8 @@ Use these short tags throughout the plan.
 
 - **[HF-DiffCourse]** Hugging Face Diffusion Course (hands-on, free):  
   [https://huggingface.co/learn/diffusion-course](https://huggingface.co/learn/diffusion-course)
+- **[HF-DiffCourse-Code]** Source notebooks for the Hugging Face Diffusion Course:
+  [https://github.com/huggingface/diffusion-models-class](https://github.com/huggingface/diffusion-models-class)
 - **[HF-AnnotatedDiff]** “Annotated Diffusion” blog (walkthrough + code):  
   [https://huggingface.co/blog/annotated-diffusion](https://huggingface.co/blog/annotated-diffusion)
 - **[Diffusers-Docs]** Hugging Face Diffusers docs:  
@@ -372,109 +376,215 @@ Diffusion contact (integrated into S3):
 **Phase goal:** get comfortable with multivariate Gaussians, SVD intuition, change of variables,
 and basic deep generative modeling primitives.
 
+Each week should form a learning chain:
+
+> S1 introduces and consolidates the theory → S2 practices the exact derivations or
+> calculations needed → S3 turns them into a runnable experiment → diffusion contact
+> explains where the same idea appears in diffusion models.
+
 ### Week 9 — Linear algebra essentials (MML)
 
-- S1: **[MML-Book]** Ch. 2–3 (vectors/matrices, eigen/SVD)
-- S2: MML exercises: projections + SVD/PCA intuition
+- S1:
+  - **[MML-Book]** selected Ch. 2–3 (vectors, linear maps, geometry, projections)
+  - Ch. 4 §§4.2, 4.4–4.6 (eigenvalues, SVD, matrix approximation)
+  - consolidate the durable ideas in `notes/w09_mml_linear_algebra.md`
+- S2: solve MML Exercises 2.10(a), 2.17, 3.6, and 4.9 in
+  `proofs/w09_mml_linear_algebra.md`
+  - the kernel/image parts of Exercise 2.17 are optional
+  - Exercise 4.10 is an optional low-rank-approximation extension
 - S3: `notebooks/w09_pca_svd.ipynb`
+  - use MML Ch. 10 §§10.1–10.4 as a targeted PCA reference, not another full reading assignment
   - PCA on synthetic data (2D → 1D)
-  - show reconstruction error vs #components
+  - project, reconstruct, and compare reconstruction error for one vs two components
 
 Diffusion contact:
 
-- `notes/w09_linear_algebra_in_unets.md`: 1 page (convolutions, attention, residuals = linear ops + nonlinearity).
+- `notes/w09_linear_algebra_in_unets.md`: 1 page connecting matrix operations,
+  projections, low-rank structure, convolutions, attention, and residual transformations.
+
+Learning chain: linear maps and projections → small calculations by hand → PCA as
+projection/reconstruction → linear operations and compressed representations in diffusion models.
 
 ### Week 10 — Multivariate Gaussian + score (core)
 
 - S1:
-  - **[MML-Book]** probability chapter sections on Gaussians
+  - **[MML-Book]** §§5.2 and 5.5 (gradients and useful identities)
+  - **[MML-Book]** §6.5, especially §§6.5.1, 6.5.3, and 6.5.4
+    (Gaussian conditionals, linear transformations, and sampling)
   - Optional: refresh with Stat110 continuous/joint
+  - consolidate in `notes/w10_mml_multivariate_gaussian.md`
 - S2:
-  - Derive score for multivariate Gaussian
-  - Derive conditional of a joint Gaussian (block matrix formula)
+  - derive the score of a multivariate Gaussian
+  - derive the conditional of a joint Gaussian using the block-matrix formula
+  - work one concrete 2D numerical example
+  - write the derivations in `proofs/w10_multivariate_gaussian_score.md`
 - S3: `notebooks/w10_mv_gaussian_score.ipynb`
   - sample, compute analytic score, visualize in 2D
-  - verify conditional mean vs empirical
+  - verify the analytic score numerically
+  - verify conditional mean and covariance against empirical samples
 
 Diffusion contact:
 
 - Add “Gaussian identities” cheat-sheet in `notes/gaussian_identities.md` (this becomes a living doc).
 
+Learning chain: Gaussian matrix identities → score and conditioning derivations →
+numerical verification → the Gaussian kernels used in forward noising and denoising.
+
 ### Week 11 — VAE foundations (theory + minimal code)
 
-- S1 (Theory): Stanford CS236 **VAE lectures** (typically Lectures 5–6) via **[CS236-YT]** + slides on **[CS236-Site]**
-- S2 (Derivation): ELBO for a simple latent variable model
-  - Write the derivation in `notes/w11_elbo_derivation.md`
-- S3 (Code): `notebooks/w11_minimal_vae_mnist.ipynb`
+- S1:
+  - use the named **VAE** lectures/slides in the Fall 2023 **[CS236-Site]**
+    syllabus rather than relying on playlist numbers
+  - Optional bridge: **[MML-Book]** §10.7 (latent-variable perspective on PCA)
+  - consolidate in `notes/w11_cs236_vae.md`
+- S2:
+  - derive the ELBO for a simple Gaussian latent-variable model
+  - identify the reconstruction and KL terms
+  - derive the reparameterized sample used by the training code
+  - write `notes/w11_elbo_derivation.md`
+- S3: `notebooks/w11_minimal_vae_mnist.ipynb`
   - minimal VAE on MNIST (small model, few epochs)
-  - log recon samples + latent traversal
+  - log reconstruction samples, KL/reconstruction losses, and a latent traversal
 
 Diffusion contact:
 
-- `notes/w11_why_latent_diffusion.md`: 1 page on why diffusion often goes “latent”.
+- `notes/w11_why_latent_diffusion.md`: 1 page on representation compression,
+  reconstruction tradeoffs, and why diffusion is often performed in a learned latent space.
+
+Learning chain: latent-variable model and ELBO → derive the trainable loss →
+implement encoding/decoding → understand the compression stage used by latent diffusion.
 
 ### Week 12 — Normalizing flows (RealNVP on 2D)
 
-- S1: Stanford CS236 **Normalizing Flows lectures** (typically Lectures 7–8) via **[CS236-YT]**
-- S2: practice change-of-variables theorem
-  - write 3 examples by hand (1D monotone transform, affine, simple coupling)
+- S1:
+  - use the named **Normalizing Flows** lectures/slides in the Fall 2023
+    **[CS236-Site]** syllabus
+  - **[MML-Book]** §5.3 (Jacobians) and §6.7 (change of variables)
+  - consolidate in `notes/w12_cs236_normalizing_flows.md`
+- S2:
+  - practice three change-of-variables examples: 1D monotone, multivariate affine,
+    and a simple coupling transform
+  - for the coupling transform, identify the triangular Jacobian and log-determinant
+  - write `proofs/w12_change_of_variables_flows.md`
 - S3: `notebooks/w12_realnvp_2d_blobs.ipynb`
   - implement RealNVP on 2D blobs
-  - report NLL curve + samples
+  - report NLL curve, transformed samples, and one failure case
 
 Diffusion contact:
 
-- `notes/w12_flows_vs_diffusion.md`: compare “likelihood via invertibility” vs “likelihood-free score field”.
+- `notes/w12_flows_vs_diffusion.md`: compare exact likelihood through invertibility
+  with score/noise-prediction training and iterative sampling.
+
+Learning chain: Jacobians and change of variables → coupling-layer log-determinant
+by hand → RealNVP likelihood in code → contrast invertible flows with diffusion training.
 
 ### Week 13 — Optimization basics (just enough)
 
-- S1: **[MML-Book]** Chapter 7 (Continuous Optimization: GD, constraints, convexity)
-- S2: implement GD + Adam from scratch on a toy objective
+- S1:
+  - **[MML-Book]** §7.1 only (gradient descent, step size, momentum, SGD)
+  - **[Adam]** Algorithm 1 for Adam; constrained and convex optimization are deferred
+  - consolidate in `notes/w13_optimization.md`
+- S2:
+  - derive the GD, momentum, and Adam update rules
+  - compute the first two updates by hand on a small objective
+  - write `proofs/w13_optimizer_updates.md`
 - S3: `notebooks/w13_optimizers_sanity.ipynb`
+  - implement GD, momentum, and Adam from scratch on the same toy objective
   - compare GD vs momentum vs Adam
   - show failure modes (too large LR, exploding gradients)
 
 Diffusion contact:
 
-- add one stabilization trick to your diffusion toy training loop (EMA, grad clipping, LR warmup) and document it.
+- run one controlled stabilization experiment on the Week 8 toy score training loop
+  (EMA, gradient clipping, or LR warmup) and document it in
+  `notes/w13_training_stability_for_diffusion.md`.
+
+Learning chain: optimizer updates → manual steps → controlled implementation →
+one isolated training-stability change in the existing diffusion toy.
 
 ### Week 14 (Checkpoint 3) — Generative modeling toolkit consolidation
 
-- S1: review notes (Weeks 9–13)
-- S2: mixed set (ELBO, KL, change of variables, Gaussians)
+- S1: review Weeks 9–13 by comparing, for each model, its representation,
+  objective, sampling procedure, and characteristic failure mode
+- S2: solve a bounded four-problem mixed set:
+  - multivariate Gaussian score/conditioning
+  - ELBO/KL
+  - flow change of variables and log-determinant
+  - optimizer stability
 - S3: `mini_projects/checkpoint_03_generative_toolkit_report/`
-  - `report.md` (1–2 pages):
+  - `report.md` (2–3 pages):
     - VAE: what objective, what failure mode
     - Flow: what objective, what failure mode
     - Score toy: what objective, what failure mode
-  - include 2–3 plots per model
+  - reuse the strongest 1–2 existing diagnostic plots per model; do not retrain
+    models only to create the report
+
+Diffusion contact:
+
+- The checkpoint comparison itself is the diffusion contact: explain what the
+  score model shares with, and does differently from, the VAE and flow.
+
+Learning chain: retrieve the core theory → solve mixed distinctions →
+synthesize existing experiments → state which toolkit applies to diffusion and why.
 
 ### Week 15 — Bridge to diffusion math (forward process)
 
 - S1:
-  - **[HF-AnnotatedDiff]** (focus on forward process + training objective)
-  - Optional: Stanford CS236 diffusion lecture(s) (typically Lecture 16) **[CS236-YT]**
-- S2: derive forward noising equations (discrete time)
-  - write: `notes/w15_forward_process_discrete.md`
+  - **[HF-AnnotatedDiff]** forward-process sections
+  - **[HF-DiffCourse]** Unit 1 “Diffusion Models from Scratch,” specifically
+    the DDPM comparison’s corruption-process section
+  - treat the notebook’s initial uniform-corruption example as intuition, not as canonical DDPM
+  - Optional: the named **Score Based Diffusion Models** material in **[CS236-Site]**
+- S2:
+  - derive \(q(x_t \mid x_{t-1})\)
+  - derive the closed form \(q(x_t \mid x_0)\)
+  - identify the signal and noise coefficients, mean, and variance
+  - consolidate the reading and derivations in `notes/w15_forward_process_discrete.md`
 - S3: `notebooks/w15_forward_diffusion_mnist.ipynb`
-  - implement forward diffusion on MNIST (no training yet)
-  - visualize x_t across timesteps, schedules
+  - implement canonical Gaussian forward diffusion on MNIST (no training yet)
+  - compare two beta schedules
+  - visualize \(x_t\), signal decay, and variance growth across timesteps
+  - empirically verify the derived mean/variance at selected timesteps
 
 Diffusion contact:
 
-- implement 2 beta schedules and show their effect (variance growth, signal decay).
+- Connect the discrete schedule to the single-noise-level forward processes from
+  Weeks 1 and 8; the whole week is direct diffusion preparation.
+
+Learning chain: canonical forward-process notation → derive one-step and
+closed-form noising → verify both in code → understand the inputs Week 16 will train on.
 
 ### Week 16 — First full toy diffusion training (small)
 
-- S1: **[HF-DiffCourse]** units on training (noise prediction / denoising objective)
-- S2: derive equivalence (high-level) of predicting noise vs predicting score
-  - `notes/w16_noise_vs_score.md`
+- S1:
+  - **[HF-DiffCourse]** Unit 1 sections on the training objective, timestep
+    conditioning, and sampling
+  - use **[HF-DiffCourse-Code]** as a reference, adapting it to the current
+    project environment rather than copying installation cells
+  - consolidate in `notes/w16_hf_ddpm_training.md`
+- S2:
+  - derive the fixed-timestep relationships among \(x_0\)-prediction,
+    noise prediction, and score prediction
+  - explain why the model must receive the timestep/noise level
+  - write `notes/w16_prediction_parameterizations.md`
 - S3: `notebooks/w16_train_tiny_ddpm_mnist.ipynb`
-  - tiny UNet/MLP denoiser, low-res MNIST, few epochs
+  - train a tiny timestep-conditioned convolutional denoiser on low-res MNIST
+    for a few epochs using the noise-prediction objective
+  - implement the reverse sampling loop; training without sampling is incomplete
   - save sample grid per epoch
+  - keep the architecture intentionally small; deeper U-Net/attention study remains in Weeks 25–26
   - Treat this as the first image-level **Nano-Diffusion v1** run:
     - record config, seed, beta schedule, model size, training loss, sample grid, runtime
     - identify which code should graduate from notebook cells into `mini_projects/nano_diffusion/`
+
+Diffusion contact:
+
+- The entire training-and-sampling run is diffusion contact and is the prototype
+  that becomes the clean DDPM baseline in Weeks 17–18.
+
+Learning chain: DDPM objective and sampler → connect prediction parameterizations
+algebraically → train a timestep-conditioned model and sample → graduate the working
+pieces into Nano-Diffusion.
 
 ---
 

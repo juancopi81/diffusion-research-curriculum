@@ -17,5 +17,5 @@ material used by notes, proofs, notebooks, and paper summaries.
 
 ## Collections
 
+- [Mathematics for Machine Learning](./mml/)
 - [Stat 110 Strategic Practice and Homework](./stat110/strategic-practice/)
-

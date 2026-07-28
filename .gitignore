@@ -22,4 +22,5 @@ scratch/
 /mini_projects/checkpoint_02_toy_score_matching/results/
 
 # Local third-party source documents (catalogs remain tracked)
+/sources/mml/pdfs/*.pdf
 /sources/stat110/strategic-practice/pdfs/*.pdf
