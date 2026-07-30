@@ -153,6 +153,403 @@ An inconsistent system may instead require an approximate least-squares
 solution. For very large solvable systems, iterative methods can avoid
 the cost of direct Gaussian elimination.
 
+## 2.4 Vector Spaces
+
+### Groups and Vector-Space Axioms
+
+A group is a set together with an operation that satisfies closure,
+associativity, the existence of a neutral element, and the existence of an
+inverse for every element. An Abelian group additionally requires the
+operation to be commutative.
+
+For a real vector space $V$, vector addition must make $V$ an Abelian
+group. This provides the zero vector, additive inverses, associativity, and
+commutativity.
+
+Scalar multiplication maps a real scalar and a vector back into the vector
+space. It must satisfy
+
+$$
+\lambda(\psi x)=(\lambda\psi)x,
+\qquad
+1x=x.
+$$
+
+Scalar multiplication and vector addition must also satisfy both
+distributive laws:
+
+$$
+\lambda(x+y)=\lambda x+\lambda y,
+$$
+
+and
+
+$$
+(\lambda+\psi)x=\lambda x+\psi x.
+$$
+
+Closure guarantees that adding vectors or scaling a vector does not leave
+the vector space. Ordinary vector-vector multiplication is not one of the
+operations required by the vector-space definition.
+
+### Products Between Column Vectors
+
+If $a,b\in\mathbb{R}^{n\times1}$ are column vectors, the product $ab$ is
+not defined under standard matrix multiplication because the neighboring
+dimensions do not match.
+
+The inner product is
+
+$$
+a^\top b:
+\qquad
+(1\times n)(n\times1)
+\longrightarrow
+1\times1.
+$$
+
+It produces a scalar. The outer product is
+
+$$
+ab^\top:
+\qquad
+(n\times1)(1\times n)
+\longrightarrow
+n\times n.
+$$
+
+It produces a matrix.
+
+### Vector Subspaces
+
+A subset $U$ of a vector space $V$ is a vector subspace when it contains
+the zero vector and is closed under addition and scalar multiplication:
+
+$$
+0\in U,
+\qquad
+x+y\in U,
+\qquad
+\lambda x\in U
+$$
+
+for all $x,y\in U$ and all real scalars $\lambda$. The remaining
+vector-space properties are inherited from $V$.
+
+The solution set of a homogeneous system is a subspace. If $Ax=0$ and
+$Ay=0$, then
+
+$$
+A(x+y)=Ax+Ay=0
+$$
+
+and
+
+$$
+A(\lambda x)=\lambda Ax=0.
+$$
+
+The zero vector is also a solution. Intuitively, this subspace contains all
+directions that $A$ sends to zero; it will later be called the kernel or
+null space.
+
+By contrast, the solution set of $Ax=b$ with $b\neq0$ is generally not a
+subspace because it does not contain the zero vector. When nonempty, it is
+a shifted or affine set.
+
+## 2.5 Linear Independence
+
+### Linear Combinations
+
+Given vectors $x_1,\ldots,x_k\in V$, a linear combination is any vector
+of the form
+
+$$
+\lambda_1x_1+\lambda_2x_2+\cdots+\lambda_kx_k,
+$$
+
+where the coefficients are real scalars. The zero vector always has the
+trivial representation
+
+$$
+0x_1+\cdots+0x_k=0.
+$$
+
+### Independence and Redundancy
+
+The vectors are linearly independent when the equation
+
+$$
+\lambda_1x_1+\cdots+\lambda_kx_k=0
+$$
+
+has only the trivial solution. They are linearly dependent when there is
+a solution in which at least one coefficient is nonzero.
+
+Dependence concerns redundancy among whole vectors, not among their
+individual components. If one coefficient is nonzero, the equation can
+be rearranged to express the corresponding vector as a linear combination
+of the others.
+
+### Testing Independence with Row Reduction
+
+Place the vectors into a matrix as columns:
+
+$$
+A=[x_1\ \cdots\ x_k].
+$$
+
+Then
+
+$$
+A\lambda
+=
+\lambda_1x_1+\cdots+\lambda_kx_k.
+$$
+
+Testing linear independence is therefore equivalent to solving the
+homogeneous system
+
+$$
+A\lambda=0.
+$$
+
+If every column is a pivot column, there are no free coefficients and the
+only solution is the trivial one. The original vectors are then linearly
+independent.
+
+A non-pivot column indicates redundancy. Its position identifies an
+original vector that can be expressed as a linear combination of the
+original vectors associated with pivot columns.
+
+### Number of Available Directions
+
+If $x_1,\ldots,x_m$ are all linear combinations of only $k$ linearly
+independent vectors, they must be linearly dependent whenever $m>k$.
+There are more vectors than available independent directions.
+
+For a matrix with $r$ rows and $c$ columns, the columns live in
+$\mathbb{R}^r$. Therefore, if $c>r$, the columns must be linearly
+dependent because row reduction can produce at most $r$ pivots.
+
+The converse is not true. Having no more vectors than available dimensions
+does not guarantee independence. Two identical columns, for example, are
+dependent even when the matrix has enough rows.
+
+## 2.6 Basis and Rank
+
+### Span, Basis, and Coordinates
+
+The span of a set of vectors contains every linear combination that can be
+constructed from those vectors. A generating set for a vector space spans
+the entire space.
+
+A basis is a linearly independent generating set. These two properties play
+different roles:
+
+- Spanning guarantees that every vector has a representation.
+- Linear independence guarantees that the representation is unique.
+
+If a vector had two representations in the same basis,
+
+$$
+x=\alpha_1b_1+\cdots+\alpha_nb_n
+$$
+
+and
+
+$$
+x=\beta_1b_1+\cdots+\beta_nb_n,
+$$
+
+then subtracting the two equations would give
+
+$$
+0=(\alpha_1-\beta_1)b_1+\cdots+(\alpha_n-\beta_n)b_n.
+$$
+
+Linear independence forces every coefficient difference to be zero.
+
+Every basis of a finite-dimensional vector space contains the same number
+of vectors. This number is the dimension of the space. Dimension measures
+the number of independent directions, not the number of components written
+inside one vector.
+
+### Rank and Pivot Columns
+
+The rank of a matrix is the number of linearly independent columns. It is
+also equal to the number of linearly independent rows and to the number of
+pivots:
+
+$$
+\operatorname{rank}(A)
+=
+\dim(\operatorname{Col}(A)).
+$$
+
+If row reduction identifies pivot columns 1, 2, and 4, then the corresponding
+columns of the original matrix form a basis for its column space. The rank
+and the dimension of that column space are both three.
+
+The pivot positions come from the row-reduced matrix, but the basis vectors
+must be selected from the original matrix. Row operations preserve dependency
+relationships and rank, but they transform the actual columns and may change
+the column space.
+
+A rank-three matrix has a three-dimensional column space. That space equals
+all of $\mathbb{R}^3$ only when its columns live in $\mathbb{R}^3$; in a
+larger ambient space it is a three-dimensional subspace.
+
+## 2.7 Linear Mappings
+
+### Preserving Vector-Space Structure
+
+A mapping $\Phi:V\to W$ is linear when it preserves vector addition and
+scalar multiplication:
+
+$$
+\Phi(\lambda x+\psi y)
+=
+\lambda\Phi(x)+\psi\Phi(y).
+$$
+
+Every linear mapping preserves the origin. For example,
+
+$$
+\Phi(0)=\Phi(0+0)=\Phi(0)+\Phi(0)
+$$
+
+implies that $\Phi(0)=0$. Consequently, a mapping of the form
+
+$$
+T(x)=Ax+c,
+\qquad
+c\neq0,
+$$
+
+is affine rather than linear because $T(0)=c$. A neural-network layer with
+a bias is therefore mathematically affine even though software libraries
+often call it a linear layer.
+
+### Coordinates Relative to a Basis
+
+Let an ordered basis be collected into a basis matrix:
+
+$$
+B=[b_1\ \cdots\ b_n].
+$$
+
+If $[x]_B$ is the coordinate vector of $x$ relative to this basis, then
+
+$$
+x_{\mathrm{standard}}=B[x]_B.
+$$
+
+The matrix $B$ converts basis coordinates into standard coordinates by
+forming the corresponding linear combination of the basis vectors. Its
+inverse performs the reverse conversion:
+
+$$
+[x]_B=B^{-1}x_{\mathrm{standard}}.
+$$
+
+The geometric vector does not change during a coordinate conversion; only
+its numerical representation changes.
+
+### Matrices of Linear Mappings
+
+Suppose $L$ is the standard-coordinate matrix of a linear mapping $\Phi$.
+If the input is described relative to $B$, then
+
+$$
+[\Phi(x)]_{\mathrm{standard}}
+=
+LB[x]_B.
+$$
+
+The product
+
+$$
+A_\Phi=LB
+$$
+
+is the matrix of $\Phi$ for inputs expressed in basis $B$ and outputs
+expressed in the standard basis. Its columns are
+
+$$
+A_\Phi
+=
+[\Phi(b_1)\ \cdots\ \Phi(b_n)].
+$$
+
+This works because linearity gives
+
+$$
+\Phi(\alpha_1b_1+\cdots+\alpha_nb_n)
+=
+\alpha_1\Phi(b_1)+\cdots+\alpha_n\Phi(b_n).
+$$
+
+If the output should instead be expressed relative to another basis $C$,
+then
+
+$$
+[\Phi(x)]_C
+=
+C^{-1}LB[x]_B.
+$$
+
+Reading from right to left, $B$ converts the input to standard coordinates,
+$L$ applies the mapping, and $C^{-1}$ converts the result to output-basis
+coordinates. Matrix multiplication therefore represents composition of
+compatible linear mappings. A coordinate change describes the same vector,
+whereas $\Phi$ generally changes the vector itself.
+
+### Image, Kernel, and Rank-Nullity
+
+For a linear mapping $\Phi:V\to W$, the image is the set of reachable
+outputs:
+
+$$
+\operatorname{Im}(\Phi)
+=
+\{\Phi(x):x\in V\}.
+$$
+
+For a matrix mapping $x\mapsto Ax$, the image is the column space of $A$,
+and its dimension is the rank.
+
+The kernel is the set of inputs that are collapsed to zero:
+
+$$
+\ker(\Phi)
+=
+\{x\in V:\Phi(x)=0\}.
+$$
+
+The rank-nullity theorem divides the dimensions of the domain into
+directions that remain independent in the output and directions that are
+sent to zero:
+
+$$
+\dim(\ker(\Phi))
++
+\dim(\operatorname{Im}(\Phi))
+=
+\dim(V).
+$$
+
+The domain and codomain must not be confused. For a rank-two mapping from
+$\mathbb{R}^4$ to $\mathbb{R}^3$, the image is a two-dimensional plane in
+the codomain, while the kernel is a two-dimensional subspace of the domain.
+The remaining codomain direction is unreachable; it does not belong to the
+kernel.
+
+A linear mapping is injective exactly when its kernel contains only zero.
+It is surjective exactly when its image equals the entire codomain. Thus, the
+rank-two mapping from $\mathbb{R}^4$ to $\mathbb{R}^3$ is neither injective
+nor surjective.
+
 ## Main Takeaways
 
 - Matrix dimensions determine which operations are valid.
@@ -162,9 +559,32 @@ the cost of direct Gaussian elimination.
 - REF exposes pivots and free variables; RREF makes them easier to read.
 - Approximation and computational scale are different reasons for using
   methods beyond direct elimination.
+- A vector space combines an Abelian addition operation with compatible
+  scalar multiplication.
+- A subspace must contain zero and remain closed under addition and scaling.
+- Linear independence means that the zero vector has only the trivial
+  coefficient representation.
+- Pivot positions identify independent original columns; non-pivot positions
+  identify redundancy.
+- More vectors than available directions guarantees dependence, but having
+  fewer vectors does not guarantee independence.
+- A basis spans the space without redundant vectors, which makes every
+  coordinate representation exist and be unique.
+- Rank is the dimension of the column space and can be found from pivot
+  positions, but column-space bases use the original matrix columns.
+- Basis matrices change coordinate descriptions; transformation matrices
+  apply linear mappings.
+- Matrix products compose coordinate conversions and linear mappings from
+  right to left.
+- Rank-nullity uses the dimension of the domain, while the image lives in
+  the codomain.
 
 ## Questions to Revisit
 
 - Apply the minus-1 trick to a concrete homogeneous system.
 - Develop intuition for pseudoinverses and least squares later in the curriculum.
 - Compare direct and iterative numerical methods when they become relevant.
+- Practice subspace, basis, rank, and linear-mapping concepts with the selected
+  Week 9 exercises.
+- Revisit the full symbolic basis-change derivation only if later
+  eigendecomposition or PCA work requires it.
