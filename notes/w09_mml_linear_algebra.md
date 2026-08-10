@@ -550,6 +550,345 @@ It is surjective exactly when its image equals the entire codomain. Thus, the
 rank-two mapping from $\mathbb{R}^4$ to $\mathbb{R}^3$ is neither injective
 nor surjective.
 
+## 3.1 Norms
+
+A norm assigns a nonnegative length to each vector. It is absolutely
+homogeneous, satisfies the triangle inequality, and is zero only for the
+zero vector:
+
+$$
+\|\lambda x\|=|\lambda|\|x\|,
+$$
+
+$$
+\|x+y\|\leq\|x\|+\|y\|,
+$$
+
+and
+
+$$
+\|x\|\geq0,
+\qquad
+\|x\|=0\Longleftrightarrow x=0.
+$$
+
+The Euclidean norm and Manhattan norm are
+
+$$
+\|x\|_2
+=
+\sqrt{\sum_i x_i^2}
+$$
+
+and
+
+$$
+\|x\|_1
+=
+\sum_i |x_i|,
+$$
+
+respectively. The Euclidean norm is induced by the dot product, whereas the
+Manhattan norm is not induced by an inner product.
+
+## 3.2 Inner Products
+
+An inner product maps two vectors to a scalar and provides information about
+their alignment. For the standard dot product,
+
+$$
+\langle x,y\rangle
+=
+x^\top y
+=
+\sum_i x_i y_i.
+$$
+
+It is related to lengths and angles by
+
+$$
+x^\top y
+=
+\|x\|\|y\|\cos\theta.
+$$
+
+The dot product is positive for vectors pointing generally in the same
+direction, zero for orthogonal vectors, and negative for vectors pointing
+generally in opposite directions.
+
+The scalar projection of $x$ onto the direction of a nonzero vector $y$ is
+
+$$
+\frac{x^\top y}{\|y\|},
+$$
+
+whereas the complete projected vector is
+
+$$
+\frac{x^\top y}{\|y\|^2}y.
+$$
+
+## 3.3 Lengths and Distances
+
+An inner product induces a norm:
+
+$$
+\|x\|
+=
+\sqrt{\langle x,x\rangle}.
+$$
+
+The corresponding distance between two vectors is the norm of their
+difference:
+
+$$
+d(x,y)
+=
+\|x-y\|
+=
+\sqrt{\langle x-y,x-y\rangle}.
+$$
+
+A norm is sufficient to define distance; not every norm must come from an
+inner product.
+
+## 3.4 Angles and Orthogonality
+
+Two vectors are orthogonal when their inner product is zero. They are
+orthonormal when they are additionally unit vectors.
+
+If the columns of a square matrix $Q$ form an orthonormal basis, then
+
+$$
+Q^\top Q
+=
+QQ^\top
+=
+I,
+$$
+
+so
+
+$$
+Q^{-1}=Q^\top.
+$$
+
+Multiplication by an orthogonal matrix preserves inner products and
+therefore preserves lengths, distances, and angles.
+
+## 3.5 Orthonormal Bases
+
+An orthonormal basis has no redundant directions, its directions are
+mutually orthogonal, and every basis vector has unit length. Coordinates in
+an orthonormal basis can be obtained directly with inner products rather
+than by solving a general linear system.
+
+If the orthonormal basis vectors are the columns of $B$, then
+
+$$
+B^\top B=I.
+$$
+
+For a square basis matrix, the coordinates of $x$ are therefore
+
+$$
+[x]_B=B^\top x.
+$$
+
+## 3.6 Orthogonal Complements
+
+For a subspace $U$ of a finite-dimensional inner-product space $V$, the
+orthogonal complement contains all vectors orthogonal to every vector in
+$U$:
+
+$$
+U^\perp
+=
+\{r\in V:\langle r,u\rangle=0
+\text{ for every }u\in U\}.
+$$
+
+Every vector has a unique decomposition
+
+$$
+x=u+r,
+$$
+
+where
+
+$$
+u\in U
+$$
+
+and
+
+$$
+r\in U^\perp.
+$$
+
+Most vectors are neither in $U$ nor in $U^\perp$; they are sums of
+components from both subspaces.
+
+## 3.8 Orthogonal Projections
+
+### Projection onto a Line
+
+Let a line be spanned by a nonzero vector $b$. A projection onto that line
+must have the form
+
+$$
+p=\lambda b.
+$$
+
+The residual must be orthogonal to the line:
+
+$$
+b^\top(x-\lambda b)=0.
+$$
+
+Solving for the coordinate and projected vector gives
+
+$$
+\lambda
+=
+\frac{b^\top x}{b^\top b}
+=
+\frac{b^\top x}{\|b\|^2}
+$$
+
+and
+
+$$
+p
+=
+\frac{b^\top x}{\|b\|^2}b.
+$$
+
+When $b$ is a unit vector, these simplify to
+
+$$
+\lambda=b^\top x
+$$
+
+and
+
+$$
+p=(b^\top x)b.
+$$
+
+The coordinate $\lambda$ is a scalar, while $p$ is the complete projected
+vector in the original ambient space.
+
+### The Closest-Point Interpretation
+
+Let $p$ be the orthogonal projection of $x$ onto $U$, and let
+
+$$
+r=x-p.
+$$
+
+For any other $u\in U$, both $p$ and $u$ belong to $U$, so $p-u\in U$.
+Since $r\in U^\perp$, the vectors $r$ and $p-u$ are orthogonal. Therefore,
+
+$$
+x-u
+=
+r+(p-u),
+$$
+
+and the Pythagorean theorem gives
+
+$$
+\|x-u\|^2
+=
+\|r\|^2+\|p-u\|^2
+\geq
+\|r\|^2
+=
+\|x-p\|^2.
+$$
+
+Equality holds only when $u=p$. Thus, the orthogonal projection is the
+unique closest point in $U$ to $x$. The residual $r$ is the reconstruction
+error.
+
+### Projection onto a General Subspace
+
+Let the linearly independent columns of $B$ form a basis for $U$. Write the
+projection as
+
+$$
+p=B\lambda.
+$$
+
+Requiring the residual to be orthogonal to every column of $B$ produces the
+normal equations:
+
+$$
+B^\top(x-B\lambda)=0,
+$$
+
+so
+
+$$
+B^\top B\lambda=B^\top x.
+$$
+
+Since $B$ has linearly independent columns,
+
+$$
+\lambda
+=
+(B^\top B)^{-1}B^\top x.
+$$
+
+The projected vector and projection matrix are therefore
+
+$$
+p
+=
+B(B^\top B)^{-1}B^\top x
+$$
+
+and
+
+$$
+P
+=
+B(B^\top B)^{-1}B^\top.
+$$
+
+If the columns of $B$ are orthonormal, then
+
+$$
+P=BB^\top.
+$$
+
+An orthogonal projection matrix is symmetric and idempotent:
+
+$$
+P^\top=P,
+\qquad
+P^2=P.
+$$
+
+Idempotence means that projecting an already projected vector changes
+nothing. If $x\in U$, then $Px=x$; the matrix acts as the identity on $U$,
+but it is not the identity on the entire ambient space unless $U=V$. If
+$x\in U^\perp$, then $Px=0$.
+
+### Connection to PCA
+
+PCA finds orthonormal directions using the variation of an entire centered
+dataset. The leading principal components are the directions along which
+the projected data have the greatest variance.
+
+Keeping the first $k$ principal components projects every observation onto
+the same $k$-dimensional subspace. This is not a per-observation selection
+of whichever projections happen to have the greatest length. Equivalently,
+the PCA subspace minimizes the total squared reconstruction error over the
+dataset.
+
 ## Main Takeaways
 
 - Matrix dimensions determine which operations are valid.
@@ -578,6 +917,14 @@ nor surjective.
   right to left.
 - Rank-nullity uses the dimension of the domain, while the image lives in
   the codomain.
+- Inner products induce Euclidean geometry by defining lengths, distances,
+  angles, and orthogonality.
+- Orthonormal bases simplify coordinates, inverses, and projection formulas.
+- Every vector decomposes uniquely into a subspace component and an
+  orthogonal residual.
+- An orthogonal projection is the unique closest point in a subspace.
+- PCA chooses a shared low-dimensional subspace that preserves dataset-wide
+  variation and minimizes reconstruction error.
 
 ## Questions to Revisit
 
@@ -588,3 +935,5 @@ nor surjective.
   Week 9 exercises.
 - Revisit the full symbolic basis-change derivation only if later
   eigendecomposition or PCA work requires it.
+- Derive the projection formulas again during the selected geometry exercise
+  instead of memorizing them without the orthogonality argument.
