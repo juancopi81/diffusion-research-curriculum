@@ -3,6 +3,8 @@
 **Lecture 31:** [Markov Chains](https://www.youtube.com/watch?v=8AJPs3gvNlY&list=PL2SOU6wwxB0uwwH80KTQ6ht66KWxbzTIo&index=31)  
 **Course:** Statistics 110 (Harvard) - Prof. Joe Blitzstein
 
+**Related enrichment:** [MIT 18.06 Lecture 24 - Markov Matrices; Fourier Series](./mit1806_enrichment_l24_markov_matrices_fourier_series.md) gives the complementary column-stochastic and eigenvalue viewpoint.
+
 **Source status:** Synthesized from the full lecture video (audio transcript + blackboard frames, retrieved via Video Moment Finder), not from a written solution set. The board work (state diagram, transition matrix, stationary-distribution equation) is source-verified against captured frames; the surrounding prose is a paraphrased summary of the lecture, not a transcript reproduction.
 
 ---
