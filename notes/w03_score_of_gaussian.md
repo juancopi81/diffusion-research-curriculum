@@ -121,15 +121,41 @@ $$s(x) = -\frac{x - \mu}{\sigma^2}$$
 In general, we don't know $p(x)$, so we can't compute the score analytically. Instead:
 
 - A neural network learns to approximate $s_\theta(x) \approx \nabla_x \log p(x)$
-- This is exactly what the **denoising score matching** objective does
+- Denoising score matching supplies a learnable conditional-score target
+  without requiring the marginal score as a pointwise label
 
 ### Preview: Denoising Score Matching
 
-The key insight (due to Vincent, 2011) is that we can learn the score by **denoising**:
+For Gaussian corruption $\tilde{x}=x+\sigma\epsilon$, Vincent (2011) uses the
+conditional corruption score
 
-$$\mathcal{L} = \mathbb{E}_{x \sim p_{\text{data}}, \epsilon \sim N(0, I)} \left[ \| s_\theta(x + \sigma\epsilon) - (-\epsilon/\sigma) \|^2 \right]$$
+$$
+\nabla_{\tilde{x}}\log q_\sigma(\tilde{x}\mid x)
+=
+\frac{x-\tilde{x}}{\sigma^2}
+=
+-\frac{\epsilon}{\sigma}
+$$
 
-This connects to our derivation: the score of a Gaussian centered at $x$ is $-\epsilon/\sigma$!
+as the regression target:
+
+$$
+\mathcal{L}
+=
+\mathbb{E}_{x \sim p_{\text{data}},\,\epsilon \sim \mathcal{N}(0,I)}
+\left[
+\left\|s_\theta(x+\sigma\epsilon)+\frac{\epsilon}{\sigma}\right\|^2
+\right].
+$$
+
+The paper proves that this conditional-target objective is equivalent, up to
+terms independent of the model parameters, to matching the score of the
+Gaussian-smoothed empirical density $q_\sigma$. Its further equivalence to a
+denoising reconstruction loss uses the particular tied-weight autoencoder and
+energy function defined in the paper; it is not a claim about every network
+architecture. See the
+[source catalog](../sources/vincent_2011_score_matching/) for the reading map
+and scope boundaries.
 
 ---
 

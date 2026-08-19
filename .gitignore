@@ -24,3 +24,5 @@ scratch/
 # Local third-party source documents (catalogs remain tracked)
 /sources/mml/pdfs/*.pdf
 /sources/stat110/strategic-practice/pdfs/*.pdf
+/sources/vincent_2011_score_matching/pdfs/*.pdf
+/sources/geometric_deep_learning/pdfs/*.pdf

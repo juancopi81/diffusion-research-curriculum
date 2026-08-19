@@ -46,6 +46,12 @@ Use these short tags throughout the plan.
 
 ### Diffusion / score resources (implementation + literacy)
 
+- **[Vincent-DSM]** Vincent, *A Connection Between Score Matching and
+  Denoising Autoencoders* (conditional-score target and precise equivalence
+  boundary): [source catalog](./sources/vincent_2011_score_matching/)
+- **[StepByStep-Diffusion]** Nakkiran et al., *Step-by-Step Diffusion: An
+  Elementary Tutorial* (v2, probability-first DDPM/DDIM/flow-matching bridge):
+  [https://arxiv.org/abs/2406.08929v2](https://arxiv.org/abs/2406.08929v2)
 - **[HF-DiffCourse]** Hugging Face Diffusion Course (hands-on, free):  
   [https://huggingface.co/learn/diffusion-course](https://huggingface.co/learn/diffusion-course)
 - **[HF-DiffCourse-Code]** Source notebooks for the Hugging Face Diffusion Course:
@@ -364,6 +370,10 @@ Diffusion contact (integrated into S3):
     - same 2D data generator used in earlier noising/score notebooks
     - fixed seed + tiny config block
     - metrics: denoising/score MSE, vector-field error where analytic score is known, runtime, and one failure note
+    - source check, integrated into the report rather than added as a separate
+      assignment: **[Vincent-DSM]** Sections 3-5, especially equations
+      (8)-(15); state what score is matched and where the paper's
+      architecture-specific denoising-autoencoder equivalence stops
 
 Diffusion contact (integrated into S3):
 

@@ -6,6 +6,8 @@ Press in 2020.
 
 - Official companion site: [Mathematics for Machine Learning](https://mml-book.github.io/)
 - Official PDF: [mml-book.pdf](https://mml-book.github.io/book/mml-book.pdf)
+- Topics: `linear_algebra`, `matrix_decompositions`,
+  `multivariate_calculus`, `probability`, `optimization`
 - Local study copy: [`pdfs/mml-book.pdf`](./pdfs/mml-book.pdf)
 - Local PDF metadata: 417 pages, generated January 15, 2024
 - Redistribution status: the PDF permits personal viewing and downloading but

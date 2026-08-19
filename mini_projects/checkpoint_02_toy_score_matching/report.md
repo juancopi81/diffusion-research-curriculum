@@ -89,6 +89,20 @@ between the model score and the exact noisy-mixture score on held-out
 validation samples. Both objectives are therefore evaluated in the same score
 space.
 
+### Source Boundary
+
+The direct-score target $-\epsilon/\sigma$ is the Gaussian conditional-score
+target used by [Vincent (2011)](../../sources/vincent_2011_score_matching/).
+The paper proves that regression against this conditional target is equivalent
+to matching the score of the Gaussian-smoothed empirical density. Its further
+equivalence to a reconstruction objective uses a particular tied-weight
+denoising autoencoder and associated energy function.
+
+This checkpoint instead compares two generic MLP parameterizations under a
+short shared training budget. The paper therefore supports the interpretation
+of the target, but it does not predict that these two runs should optimize
+identically or explain the observed difference in their validation score MSE.
+
 ## Visual Evidence
 
 | **True Analytical Vector Field**                                            | **$x_0$ Objective**                                                                                  | **Score Objective**                                                                                      |

@@ -889,6 +889,344 @@ of whichever projections happen to have the greatest length. Equivalently,
 the PCA subspace minimizes the total squared reconstruction error over the
 dataset.
 
+## 4.2 Eigenvalues and Eigenvectors
+
+### Invariant Directions
+
+For a square matrix $A$, a nonzero vector $v$ is an eigenvector with
+eigenvalue $\lambda$ when
+
+$$
+Av=\lambda v.
+$$
+
+The line spanned by $v$ is an invariant direction: applying $A$ keeps the
+result on that same line. The eigenvalue describes the action along the
+line. Its absolute value gives the scaling factor, while its sign determines
+whether the orientation is preserved or reversed.
+
+- A value greater than one stretches the vector.
+- A value between zero and one shrinks the vector.
+- A negative value reverses orientation as well as scaling by its absolute
+  value.
+- A zero value collapses the eigenvector to the origin.
+
+If zero is an eigenvalue, then there is a nonzero vector $v$ such that
+
+$$
+Av=0.
+$$
+
+The kernel is therefore nontrivial, so a square matrix with eigenvalue zero
+is singular.
+
+Eigenvectors are not unique. If $v$ is an eigenvector, then every nonzero
+multiple of it is also an eigenvector with the same eigenvalue:
+
+$$
+A(cv)=cAv=c\lambda v=\lambda(cv).
+$$
+
+### Eigenspaces
+
+The eigenspace associated with $\lambda$ is
+
+$$
+E_\lambda
+=
+\ker(A-\lambda I).
+$$
+
+It contains every vector whose direction is scaled by $\lambda$, together
+with the zero vector. The zero vector belongs because an eigenspace is a
+subspace, although zero itself is not called an eigenvector.
+
+If eigenvectors $p_1$ and $p_2$ satisfy
+
+$$
+Ap_1=\lambda_1p_1
+$$
+
+and
+
+$$
+Ap_2=\lambda_2p_2,
+$$
+
+then linearity gives
+
+$$
+A(\alpha p_1+\beta p_2)
+=
+\alpha\lambda_1p_1+\beta\lambda_2p_2.
+$$
+
+Thus, when a vector is expressed using eigenvector directions, the
+transformation acts independently on each component.
+
+## 4.4 Eigendecomposition and Diagonalization
+
+### Diagonalization in an Eigenvector Basis
+
+Collect eigenvectors into the columns of $P$ and their corresponding
+eigenvalues along the diagonal of $D$:
+
+$$
+P=[p_1\ \cdots\ p_n].
+$$
+
+Then
+
+$$
+AP
+=
+[Ap_1\ \cdots\ Ap_n]
+$$
+
+and
+
+$$
+PD
+=
+[\lambda_1p_1\ \cdots\ \lambda_np_n].
+$$
+
+The eigenvalue equations therefore imply
+
+$$
+AP=PD.
+$$
+
+If the eigenvectors are linearly independent, they form a basis and $P$ is
+invertible. Multiplying on the appropriate side gives
+
+$$
+D=P^{-1}AP
+$$
+
+and
+
+$$
+A=PDP^{-1}.
+$$
+
+Reading the second expression from right to left, $P^{-1}$ converts standard
+coordinates into eigenbasis coordinates, $D$ independently scales those
+coordinates by the eigenvalues, and $P$ converts the result back to standard
+coordinates. Diagonalization therefore describes the same linear mapping in
+a basis where its action is only independent scaling along coordinate axes.
+
+### When Diagonalization Exists
+
+A square matrix is diagonalizable exactly when it has enough linearly
+independent eigenvectors to form a basis. Distinct eigenvalues guarantee
+linearly independent eigenvectors, but distinct eigenvalues are not
+necessary. For example, the identity matrix has one repeated eigenvalue and
+still has a full basis of eigenvectors.
+
+A matrix that does not have enough independent eigenvectors is defective
+and cannot be diagonalized in this form.
+
+Every real symmetric matrix has an orthonormal basis of eigenvectors. In
+that case, $P$ is orthogonal, so
+
+$$
+P^{-1}=P^\top,
+$$
+
+and the decomposition simplifies to
+
+$$
+A=PDP^\top.
+$$
+
+### Matrix Powers
+
+Diagonalization makes repeated application of a transformation easier. The
+neighboring inverse factors cancel:
+
+$$
+A^k
+=
+(PDP^{-1})^k
+=
+PD^kP^{-1}.
+$$
+
+Since $D$ is diagonal, computing $D^k$ only requires raising each eigenvalue
+to the power $k$. Geometrically, repeated applications of $A$ repeatedly
+scale each eigenvector component by its eigenvalue.
+
+## 4.5 Singular Value Decomposition
+
+### Full SVD and Its Geometry
+
+Every matrix $A\in\mathbb{R}^{m\times n}$ has a singular value
+decomposition
+
+$$
+A=U\Sigma V^\top,
+$$
+
+where
+
+$$
+U\in\mathbb{R}^{m\times m},
+\qquad
+\Sigma\in\mathbb{R}^{m\times n},
+\qquad
+V\in\mathbb{R}^{n\times n}.
+$$
+
+The matrices $U$ and $V$ are orthogonal. Their columns are the left- and
+right-singular vectors, respectively. The rectangular matrix $\Sigma$ has
+nonnegative singular values on its diagonal and zeros elsewhere.
+
+Applied to a vector $x\in\mathbb{R}^n$, the factors act from right to left:
+
+$$
+x
+\longmapsto
+V^\top x
+\longmapsto
+\Sigma V^\top x
+\longmapsto
+U\Sigma V^\top x.
+$$
+
+First, $V^\top$ expresses the input in the orthonormal basis of
+right-singular vectors. Next, $\Sigma$ scales those coordinates by the
+singular values and maps from $\mathbb{R}^n$ to $\mathbb{R}^m$, adding or
+removing dimensions when necessary. Finally, $U$ expresses the result in
+the standard basis of the codomain.
+
+Unlike eigendecomposition, SVD can describe rectangular transformations
+between different vector spaces. It exists for every matrix, including
+rank-deficient matrices.
+
+### Singular Vectors and Eigenvectors
+
+For corresponding right- and left-singular vectors,
+
+$$
+Av_i=\sigma_i u_i.
+$$
+
+Thus, $A$ maps the input direction $v_i$ to the output direction $u_i$ and
+scales it by $\sigma_i$. Transposing the SVD also gives
+
+$$
+A^\top u_i=\sigma_i v_i.
+$$
+
+Combining these equations yields
+
+$$
+A^\top A v_i=\sigma_i^2v_i
+$$
+
+and
+
+$$
+AA^\top u_i=\sigma_i^2u_i.
+$$
+
+Therefore, the right-singular vectors are eigenvectors of $A^\top A$, the
+left-singular vectors are eigenvectors of $AA^\top$, and their corresponding
+nonzero eigenvalues are the squared singular values.
+
+For every $x$,
+
+$$
+x^\top A^\top Ax
+=
+\lVert Ax\rVert^2
+\geq 0.
+$$
+
+Hence, $A^\top A$ is positive semidefinite. Its eigenvalues are
+nonnegative, and the singular values are defined by
+
+$$
+\sigma_i=\sqrt{\lambda_i}\geq 0.
+$$
+
+### Rank, Kernel, and Stretching
+
+The rank of $A$ equals the number of nonzero singular values. If
+$\operatorname{rank}(A)=r$, then
+
+$$
+\sigma_1\geq\sigma_2\geq\cdots\geq\sigma_r>0,
+$$
+
+with all remaining singular values equal to zero. When $\sigma_i=0$,
+
+$$
+Av_i=0,
+$$
+
+so $v_i$ belongs to the kernel. The right-singular vectors associated with
+zero singular values span the kernel, whose dimension is $n-r$.
+
+The first right-singular vector $v_1$ identifies a direction of maximum
+stretching, and the largest singular value is the spectral norm:
+
+$$
+\lVert A\rVert_2=\sigma_1.
+$$
+
+Larger singular values indicate directions along which the matrix acts more
+strongly. This is a statement about the magnitude of the transformation;
+semantic importance depends on what the matrix represents.
+
+## 4.6 Matrix Approximation
+
+### Rank-One Components and Truncated SVD
+
+The SVD can be written as a sum of rank-one outer products:
+
+$$
+A
+=
+\sum_{i=1}^{r}\sigma_i u_i v_i^\top.
+$$
+
+Each matrix $u_i v_i^\top$ has rank one because every one of its columns is
+a scalar multiple of $u_i$. Keeping only the first $k$ terms gives the
+rank-$k$ approximation
+
+$$
+\widehat A^{(k)}
+=
+\sum_{i=1}^{k}\sigma_i u_i v_i^\top.
+$$
+
+This truncated SVD preserves the direction pairs along which $A$ acts most
+strongly and discards components associated with smaller singular values.
+
+### Optimal Approximation
+
+The Eckart-Young theorem states that $\widehat A^{(k)}$ is the best rank-$k$
+approximation to $A$ under the spectral norm. No other rank-$k$ matrix has
+a smaller spectral-norm error, and
+
+$$
+\left\lVert A-\widehat A^{(k)}\right\rVert_2
+=
+\sigma_{k+1}.
+$$
+
+If $\sigma_{k+1}$ is small, the first $k$ components capture most of the
+matrix's action under this norm. Truncation trades exact detail for a more
+compact representation that can reduce storage and the cost of later matrix
+operations.
+
+For a centered data matrix, PCA uses the leading singular directions to
+define a lower-dimensional subspace. The leading right-singular vectors
+form the projection directions; the truncated matrix is the resulting
+low-rank reconstruction, not itself the projection matrix.
+
 ## Main Takeaways
 
 - Matrix dimensions determine which operations are valid.
@@ -925,6 +1263,22 @@ dataset.
 - An orthogonal projection is the unique closest point in a subspace.
 - PCA chooses a shared low-dimensional subspace that preserves dataset-wide
   variation and minimizes reconstruction error.
+- Eigenvectors identify invariant lines, and eigenvalues describe the scaling
+  and possible orientation reversal along those lines.
+- In an eigenvector basis, a diagonalizable transformation acts independently
+  on each coordinate.
+- Distinct eigenvalues are sufficient but not necessary for diagonalization;
+  the actual requirement is a full basis of eigenvectors.
+- Real symmetric matrices admit an orthonormal eigenbasis and therefore an
+  orthogonal eigendecomposition.
+- SVD extends the geometric idea of basis change and scaling to every matrix,
+  including rectangular and rank-deficient transformations.
+- Singular values quantify the strength of a matrix along paired input and
+  output directions; the number of nonzero singular values equals the rank.
+- Truncated SVD keeps the strongest rank-one components and gives the optimal
+  rank-$k$ approximation under the spectral norm.
+- PCA will use leading singular directions as a lower-dimensional projection
+  basis and reconstruct data from the retained components.
 
 ## Questions to Revisit
 

@@ -6,6 +6,8 @@ solutions, a homework assignment, and homework solutions.
 
 - Official collection: [Strategic Practice and Homework Problems](https://stat110.hsites.harvard.edu/strategic-practice-problems)
 - Document date: Fall 2011
+- Topics: `probability`, `conditioning`, `random_variables`,
+  `expectation`, `limit_theorems`
 - Local study copies: [`pdfs/`](./pdfs/)
 - Redistribution status: no Creative Commons or other redistribution license
   was found on the collection page or in the documents during the July 10,
@@ -36,4 +38,3 @@ Link to this catalog when provenance matters. Link directly to a local PDF only
 when the artifact is intended for local use, since the ignored PDF links will
 not resolve on public GitHub. Public-facing documents should also retain the
 official Harvard URL.
-
