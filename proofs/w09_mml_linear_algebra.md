@@ -971,6 +971,303 @@ entire $5\times5$ projection matrix while producing the same result.
 
 ---
 
+## Curriculum exercise - Exercise 3.6
+
+**Status:** Reviewed and correct; geometric interpretation clarified.
+
+**Prompt.**
+Consider $\mathbb{R}^3$ with the inner product
+
+$$
+\langle x,y\rangle_G
+=
+x^\top
+\begin{bmatrix}
+2&1&0\\
+1&2&-1\\
+0&-1&2
+\end{bmatrix}
+y.
+$$
+
+Let $e_1,e_2,e_3$ be the standard basis vectors in $\mathbb{R}^3$, and let
+
+$$
+U=\operatorname{span}\{e_1,e_3\}.
+$$
+
+1. Determine the orthogonal projection $\pi_U(e_2)$.
+2. Compute the distance $d(e_2,U)$.
+3. Draw the standard basis vectors and $\pi_U(e_2)$.
+
+### My solution
+
+Let
+
+$$
+G=
+\begin{bmatrix}
+2&1&0\\
+1&2&-1\\
+0&-1&2
+\end{bmatrix},
+\qquad
+x=e_2=
+\begin{bmatrix}
+0\\
+1\\
+0
+\end{bmatrix}.
+$$
+
+#### Part A: Projection
+
+Put the basis vectors of $U$ in the columns of the matrix
+
+$$
+B=
+\begin{bmatrix}
+1&0\\
+0&0\\
+0&1
+\end{bmatrix}.
+$$
+
+The projected vector has the form
+
+$$
+p=Bc,
+$$
+
+and the error is
+
+$$
+r=x-p=x-Bc.
+$$
+
+We want the error to be orthogonal to $U$ under the given inner product, so
+
+$$
+B^\top G(x-Bc)=0.
+$$
+
+Therefore,
+
+$$
+B^\top Gx-B^\top GBc=0,
+$$
+
+which gives
+
+$$
+B^\top GBc=B^\top Gx.
+$$
+
+Thus,
+
+$$
+c=(B^\top GB)^{-1}B^\top Gx,
+$$
+
+and the projection matrix for this inner product is
+
+$$
+P_G=B(B^\top GB)^{-1}B^\top G.
+$$
+
+First,
+
+$$
+B^\top GB
+=
+\begin{bmatrix}
+1&0&0\\
+0&0&1
+\end{bmatrix}
+\begin{bmatrix}
+2&1&0\\
+1&2&-1\\
+0&-1&2
+\end{bmatrix}
+\begin{bmatrix}
+1&0\\
+0&0\\
+0&1
+\end{bmatrix}
+=
+\begin{bmatrix}
+2&0\\
+0&2
+\end{bmatrix}.
+$$
+
+Hence,
+
+$$
+(B^\top GB)^{-1}
+=
+\begin{bmatrix}
+\frac12&0\\
+0&\frac12
+\end{bmatrix}.
+$$
+
+Also,
+
+$$
+B^\top G
+=
+\begin{bmatrix}
+2&1&0\\
+0&-1&2
+\end{bmatrix}.
+$$
+
+Therefore,
+
+$$
+(B^\top GB)^{-1}B^\top G
+=
+\begin{bmatrix}
+1&\frac12&0\\
+0&-\frac12&1
+\end{bmatrix},
+$$
+
+and
+
+$$
+P_G
+=
+B(B^\top GB)^{-1}B^\top G
+=
+\begin{bmatrix}
+1&\frac12&0\\
+0&0&0\\
+0&-\frac12&1
+\end{bmatrix}.
+$$
+
+Applying this matrix to $e_2$ gives
+
+$$
+\boxed{
+\pi_U(e_2)
+=P_Ge_2
+=
+\begin{bmatrix}
+\frac12\\
+0\\
+-\frac12
+\end{bmatrix}
+}.
+$$
+
+#### Part B: Distance
+
+The residual is
+
+$$
+r
+=e_2-\pi_U(e_2)
+=
+\begin{bmatrix}
+-\frac12\\
+1\\
+\frac12
+\end{bmatrix}.
+$$
+
+The distance is the norm induced by the given inner product:
+
+$$
+d(e_2,U)
+=\|r\|_G
+=\sqrt{r^\top Gr}.
+$$
+
+Now,
+
+$$
+Gr
+=
+\begin{bmatrix}
+2&1&0\\
+1&2&-1\\
+0&-1&2
+\end{bmatrix}
+\begin{bmatrix}
+-\frac12\\
+1\\
+\frac12
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\
+1\\
+0
+\end{bmatrix}.
+$$
+
+Therefore,
+
+$$
+r^\top Gr
+=
+\begin{bmatrix}
+-\frac12&1&\frac12
+\end{bmatrix}
+\begin{bmatrix}
+0\\
+1\\
+0
+\end{bmatrix}
+=1,
+$$
+
+so
+
+$$
+\boxed{d(e_2,U)=1}.
+$$
+
+#### Part C: Sketch
+
+Since
+
+$$
+\pi_U(e_2)=\frac12e_1-\frac12e_3,
+$$
+
+the projected vector lies in the plane $U=\operatorname{span}\{e_1,e_3\}$.
+
+![Handwritten sketch for Exercise 3.6](../notes/figures/w09_exercise_3_6_sketch.png)
+
+### What I clarified after review
+
+The derivation and arithmetic were correct. Because orthogonality is defined by
+$\langle x,y\rangle_G=x^\top Gy$, the Euclidean projection formula must be
+replaced by
+
+$$
+P_G=B(B^\top GB)^{-1}B^\top G.
+$$
+
+As a direct check, the residual satisfies
+
+$$
+B^\top Gr=0,
+$$
+
+so it is orthogonal to both $e_1$ and $e_3$ under the given inner product.
+
+The sketch is schematic. A right angle drawn using ordinary page geometry
+represents the Euclidean inner product, whereas the orthogonality here is
+defined by $G$. The algebraic condition $B^\top Gr=0$ is the relevant
+orthogonality check.
+
+---
+
 ## Additional geometry exercise - Exercise 3.8
 
 **Status:** Reviewed and correct.
@@ -1107,3 +1404,479 @@ $$
 
 No arithmetic correction was needed. I simplified the projection notation by
 using the fact that $c_1$ is already a unit vector.
+
+---
+
+## Curriculum exercise - Exercise 4.9
+
+**Status:** Reviewed and corrected; one sign error in the second left singular
+vector.
+
+**Prompt.**
+Find the singular value decomposition of
+
+$$
+A=
+\begin{bmatrix}
+2&2\\
+-1&1
+\end{bmatrix}.
+$$
+
+### My solution
+
+Start by computing
+
+$$
+A^\top A
+=
+\begin{bmatrix}
+2&-1\\
+2&1
+\end{bmatrix}
+\begin{bmatrix}
+2&2\\
+-1&1
+\end{bmatrix}
+=
+\begin{bmatrix}
+5&3\\
+3&5
+\end{bmatrix}.
+$$
+
+The eigenvalues of $A^\top A$ satisfy
+
+$$
+\det(A^\top A-\lambda I)=0.
+$$
+
+Therefore,
+
+$$
+\begin{aligned}
+\det
+\begin{bmatrix}
+5-\lambda&3\\
+3&5-\lambda
+\end{bmatrix}
+&=(5-\lambda)^2-9\\
+&=\lambda^2-10\lambda+16\\
+&=(\lambda-8)(\lambda-2).
+\end{aligned}
+$$
+
+Hence,
+
+$$
+\lambda_1=8,
+\qquad
+\lambda_2=2.
+$$
+
+As a check,
+
+$$
+\operatorname{tr}(A^\top A)=10=\lambda_1+\lambda_2
+$$
+
+and
+
+$$
+\det(A^\top A)=16=\lambda_1\lambda_2.
+$$
+
+For $\lambda_1=8$,
+
+$$
+(A^\top A-8I)v_1=0
+$$
+
+gives a unit eigenvector
+
+$$
+v_1
+=
+\frac{1}{\sqrt2}
+\begin{bmatrix}
+1\\
+1
+\end{bmatrix}.
+$$
+
+For $\lambda_2=2$,
+
+$$
+(A^\top A-2I)v_2=0
+$$
+
+gives
+
+$$
+v_2
+=
+\frac{1}{\sqrt2}
+\begin{bmatrix}
+1\\
+-1
+\end{bmatrix}.
+$$
+
+Thus, the matrix of right singular vectors is
+
+$$
+V
+=
+\begin{bmatrix}
+\frac{1}{\sqrt2}&\frac{1}{\sqrt2}\\
+\frac{1}{\sqrt2}&-\frac{1}{\sqrt2}
+\end{bmatrix}.
+$$
+
+The singular values are the square roots of the eigenvalues of $A^\top A$:
+
+$$
+\sigma_1=\sqrt8=2\sqrt2,
+\qquad
+\sigma_2=\sqrt2.
+$$
+
+Therefore,
+
+$$
+\Sigma
+=
+\begin{bmatrix}
+2\sqrt2&0\\
+0&\sqrt2
+\end{bmatrix}.
+$$
+
+Using
+
+$$
+AV=U\Sigma,
+$$
+
+we obtain
+
+$$
+AV
+=
+\begin{bmatrix}
+2&2\\
+-1&1
+\end{bmatrix}
+\begin{bmatrix}
+\frac{1}{\sqrt2}&\frac{1}{\sqrt2}\\
+\frac{1}{\sqrt2}&-\frac{1}{\sqrt2}
+\end{bmatrix}
+=
+\begin{bmatrix}
+2\sqrt2&0\\
+0&-\sqrt2
+\end{bmatrix}.
+$$
+
+Hence,
+
+$$
+\begin{aligned}
+U
+&=AV\Sigma^{-1}\\
+&=
+\begin{bmatrix}
+2\sqrt2&0\\
+0&-\sqrt2
+\end{bmatrix}
+\begin{bmatrix}
+\frac{1}{2\sqrt2}&0\\
+0&\frac{1}{\sqrt2}
+\end{bmatrix}\\
+&=
+\begin{bmatrix}
+1&0\\
+0&-1
+\end{bmatrix}.
+\end{aligned}
+$$
+
+Therefore, one singular value decomposition of $A$ is
+
+$$
+\boxed{
+A
+=
+\begin{bmatrix}
+1&0\\
+0&-1
+\end{bmatrix}
+\begin{bmatrix}
+2\sqrt2&0\\
+0&\sqrt2
+\end{bmatrix}
+\begin{bmatrix}
+\frac{1}{\sqrt2}&\frac{1}{\sqrt2}\\
+\frac{1}{\sqrt2}&-\frac{1}{\sqrt2}
+\end{bmatrix}
+}.
+$$
+
+Here the last factor is $V^\top$. In this case $V^\top=V$ because $V$ is
+symmetric.
+
+Multiplying the factors confirms that
+
+$$
+\begin{aligned}
+U\Sigma V^\top
+&=
+\begin{bmatrix}
+2\sqrt2&0\\
+0&-\sqrt2
+\end{bmatrix}
+\begin{bmatrix}
+\frac{1}{\sqrt2}&\frac{1}{\sqrt2}\\
+\frac{1}{\sqrt2}&-\frac{1}{\sqrt2}
+\end{bmatrix}\\
+&=
+\begin{bmatrix}
+2&2\\
+-1&1
+\end{bmatrix}
+=A.
+\end{aligned}
+$$
+
+### What I corrected after review
+
+The eigenvalues, singular values, and right singular vectors were correct. The
+sign error occurred when computing the second column of $AV$. With
+
+$$
+v_2=\frac{1}{\sqrt2}
+\begin{bmatrix}
+1\\
+-1
+\end{bmatrix},
+$$
+
+we have
+
+$$
+Av_2
+=
+\begin{bmatrix}
+0\\
+-\sqrt2
+\end{bmatrix},
+$$
+
+so
+
+$$
+u_2=\frac{Av_2}{\sigma_2}
+=
+\begin{bmatrix}
+0\\
+-1
+\end{bmatrix}.
+$$
+
+Thus $U=\operatorname{diag}(1,-1)$ for the chosen $V$. The signs of matching
+singular-vector pairs are not unique: choosing $-v_2$ instead would give
+$u_2=(0,1)^\top$ and an equally valid SVD.
+
+---
+
+## Optional low-rank extension - Exercise 4.10
+
+**Status:** Reviewed and correct; characteristic-polynomial notation clarified.
+
+**Prompt.** Find the rank-1 approximation of
+
+$$
+A=
+\begin{bmatrix}
+3&2&2\\
+2&3&-2
+\end{bmatrix}.
+$$
+
+### My solution
+
+First, compute
+
+$$
+A^\top A
+=
+\begin{bmatrix}
+3&2\\
+2&3\\
+2&-2
+\end{bmatrix}
+\begin{bmatrix}
+3&2&2\\
+2&3&-2
+\end{bmatrix}
+=
+\begin{bmatrix}
+13&12&2\\
+12&13&-2\\
+2&-2&8
+\end{bmatrix}.
+$$
+
+Using the convention
+
+$$
+p(\lambda)=\det(\lambda I-A^\top A),
+$$
+
+the characteristic polynomial is
+
+$$
+p(\lambda)
+=\lambda^3-\operatorname{tr}(A^\top A)\lambda^2
++(C_{11}+C_{22}+C_{33})\lambda
+-\det(A^\top A),
+$$
+
+where $C_{11}$, $C_{22}$, and $C_{33}$ are the principal $2\times2$
+minors. Here,
+
+$$
+\operatorname{tr}(A^\top A)=13+13+8=34.
+$$
+
+Also, $\det(A^\top A)=0$ because $A$ is a $2\times3$ matrix, so
+$\operatorname{rank}(A^\top A)\leq 2$. The principal minors are
+
+$$
+\begin{aligned}
+C_{11}&=(13)(8)-(-2)(-2)=100,\\
+C_{22}&=(13)(8)-(2)(2)=100,\\
+C_{33}&=(13)(13)-(12)(12)=25.
+\end{aligned}
+$$
+
+Therefore,
+
+$$
+\begin{aligned}
+p(\lambda)
+&=\lambda^3-34\lambda^2+225\lambda\\
+&=\lambda(\lambda^2-34\lambda+225)\\
+&=\lambda(\lambda-9)(\lambda-25).
+\end{aligned}
+$$
+
+Thus, the eigenvalues of $A^\top A$ are
+
+$$
+\lambda_1=25,
+\qquad
+\lambda_2=9,
+\qquad
+\lambda_3=0.
+$$
+
+For the largest eigenvalue, $\lambda_1=25$,
+
+$$
+(A^\top A-25I)v_1=0.
+$$
+
+One corresponding unit eigenvector is
+
+$$
+v_1=\frac{1}{\sqrt2}
+\begin{bmatrix}
+1\\
+1\\
+0
+\end{bmatrix}.
+$$
+
+The largest singular value is
+
+$$
+\sigma_1=\sqrt{\lambda_1}=5.
+$$
+
+The corresponding left singular vector is
+
+$$
+\begin{aligned}
+u_1
+&=\frac{Av_1}{\sigma_1}\\
+&=\frac{1}{5\sqrt2}
+\begin{bmatrix}
+3&2&2\\
+2&3&-2
+\end{bmatrix}
+\begin{bmatrix}
+1\\
+1\\
+0
+\end{bmatrix}\\
+&=\frac{1}{5\sqrt2}
+\begin{bmatrix}
+5\\
+5
+\end{bmatrix}
+=\frac{1}{\sqrt2}
+\begin{bmatrix}
+1\\
+1
+\end{bmatrix}.
+\end{aligned}
+$$
+
+Keeping only this leading singular triplet gives the rank-1 approximation
+
+$$
+\begin{aligned}
+\widehat A^{(1)}
+&=\sigma_1u_1v_1^\top\\
+&=5
+\left(
+\frac{1}{\sqrt2}
+\begin{bmatrix}
+1\\
+1
+\end{bmatrix}
+\right)
+\left(
+\frac{1}{\sqrt2}
+\begin{bmatrix}
+1&1&0
+\end{bmatrix}
+\right)\\
+&=
+\boxed{
+\frac{5}{2}
+\begin{bmatrix}
+1&1&0\\
+1&1&0
+\end{bmatrix}
+}.
+\end{aligned}
+$$
+
+The two rows are equal, so $\widehat A^{(1)}$ has rank 1. The next singular
+value is $\sigma_2=\sqrt9=3$, so the spectral-norm error of this best rank-1
+approximation is
+
+$$
+\lVert A-\widehat A^{(1)}\rVert_2=3.
+$$
+
+### What I clarified after review
+
+The computation of $A^\top A$, the characteristic polynomial, the eigenvalues,
+the leading singular vectors, and the final rank-1 approximation were all
+correct. I clarified that $C_{11}$, $C_{22}$, and $C_{33}$ are principal
+$2\times2$ minors and stated the characteristic-polynomial sign convention.
+I also made explicit that the eigenvalues of $A^\top A$ are the squared
+singular values and verified the approximation using its rank and error.

@@ -93,20 +93,21 @@ Use these short tags throughout the plan.
 
 ---
 
-## You are here (completed)
+## You are here
 
-You already finished up to:
+Completed:
 
-**Stat110**
+- **Phase 1 (Weeks 1–8):** probability core, two conditioning/score
+  checkpoints, and Nano-Diffusion v0 on a 2D Gaussian mixture
+- **Week 9:** linear algebra refresh, selected MML exercises, PCA/SVD
+  projection and reconstruction, and the diffusion-architecture bridge
 
-- Lectures 1–6 (probability fundamentals, conditioning, Monty Hall, Simpson's Paradox)
-- Lecture 7 (Gambler's Ruin and Random Variables) + exercises
+Next:
 
-So you are ready to continue with:
+- **Week 10:** multivariate Gaussian identities, conditioning, and analytic
+  score fields
 
-- Finish Lecture 8 (Random Variables and Their Distributions)
-- Complete Week 1 artifact (forward noising notebook)
-- Start minimal diffusion contact immediately
+See [PROGRESS.md](./PROGRESS.md) for completion dates and artifact links.
 
 ---
 

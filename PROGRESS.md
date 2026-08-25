@@ -2,16 +2,12 @@
 
 ## Current Status
 
-- **Phase:** 1 (Probability Core)
-- **Week:** 8 🔄
+- **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
+- **Week:** 9 ✅
 - **Started:** 2025-01-14
-- **Week 1 Completed:** 2025-01-19
-- **Week 2 Completed:** 2025-01-23
-- **Week 3 Completed:** 2025-01-31
-- **Week 4 Completed:** 2026-02-26
-- **Week 5 Completed:** 2026-05-07
-- **Week 6 Completed:** 2026-06-02
-- **Week 7 Completed:** 2026-06-23
+- **Phase 1 Completed:** 2026-07-24
+- **Week 9 Completed:** 2026-08-25
+- **Next:** Week 10 — Multivariate Gaussian + Score
 
 ---
 
@@ -57,7 +53,7 @@
 | S3: `checkpoint_01_conditioning_in_code/`             | ✅     | 2026-02-26 | Completed analysis in `mini_projects/checkpoint_01_conditioning_in_code/analysis.md` |
 | Diffusion: `w04_conditioning_in_diffusion.md`         | ✅     | 2026-02-26 | Derivations, empirical check, and reflection completed |
 
-### Week 5 — Joint Distributions + Covariance
+### Week 5 — Joint Distributions + Covariance ✅
 
 | Task                                 | Status | Date | Notes |
 | ------------------------------------ | ------ | ---- | ----- |
@@ -67,7 +63,7 @@
 | S3: `w05_joint_gaussians.ipynb`      | ✅     | 2026-05-07 | Solved notebook executes; optional Plotly explorer in `notebooks/w05_bivariate_gaussian_explorer.html` |
 | Diffusion: 2D score vector field     | ✅     | 2026-05-07 | Completed note and solved notebook; analytic score verified against finite differences |
 
-### Week 6 — Transformations + KL Divergence
+### Week 6 — Transformations + KL Divergence ✅
 
 | Task                                 | Status | Date | Notes |
 | ------------------------------------ | ------ | ---- | ----- |
@@ -76,7 +72,7 @@
 | S3: `w06_kl_gaussians.ipynb`         | ✅     | 2026-06-02 | Solved notebook completed and executed; analytic KL, Monte Carlo estimate, histogram estimate, sensitivity plot, and reflection included |
 | Diffusion: `w06_where_kl_appears.md` | ✅     | 2026-06-02 | Completed one-page bridge note connecting KL, variational objectives, transformations, and diffusion/flow distribution matching |
 
-### Week 7 — Conditional Expectation + Inequalities
+### Week 7 — Conditional Expectation + Inequalities ✅
 
 | Task                                              | Status | Date | Notes |
 | ------------------------------------------------- | ------ | ---- | ----- |
@@ -85,7 +81,7 @@
 | S2: Problems (tower property)                     | ✅     | 2026-06-16 | Completed in `proofs/w07_stat110_conditional_expectation.md`; 4 selected problems with source-verified book comparisons, correction notes, intuition notes, and memory cards |
 | S3: `w07_conditional_expectation_in_diffusion.md` | ✅     | 2026-06-23 | Completed conceptual diffusion bridge: tower property, MSE-optimal denoising, and Gaussian score identity |
 
-### Week 8 (Checkpoint 2) — CLT + Toy Score Matching
+### Week 8 (Checkpoint 2) — CLT + Toy Score Matching ✅
 
 | Task                                    | Status | Date | Notes |
 | --------------------------------------- | ------ | ---- | ----- |
@@ -94,6 +90,19 @@
 | S1: Lecture 30 (MV Normal, skim)        | ✅     | 2026-06-30 | Notes in `notes/w08_stat110_chi_square_student_t_mvn.md` |
 | S2: Mini-exam (6 problems)              | ✅     | 2026-07-15 | Completed in two sittings; reviewed solutions in `proofs/phase1_exam/w08_phase1_mini_exam.md` |
 | S3: `checkpoint_02_toy_score_matching/` | ✅     | 2026-07-24 | Completed Nano-Diffusion v0 comparison, exact MoG evaluation, vector fields, and `report.md` |
+
+---
+
+## Phase 2 — Linear Algebra Refresh + Generative Modeling Basics
+
+### Week 9 — Linear Algebra Essentials ✅
+
+| Task                                      | Status | Date       | Notes |
+| ----------------------------------------- | ------ | ---------- | ----- |
+| S1: Selected MML Ch. 2–4                  | ✅     | 2026-08-18 | Consolidated linear algebra, geometry, eigendecomposition, SVD, and approximation in `notes/w09_mml_linear_algebra.md` |
+| S2: Selected MML exercises                | ✅     | 2026-08-19 | Reviewed solutions in `proofs/w09_mml_linear_algebra.md`, including the four curriculum exercises, optional Exercise 4.10, and additional foundation practice |
+| S3: `w09_pca_svd.ipynb`                   | ✅     | 2026-08-25 | Solved notebook executes top-to-bottom; one component retained 96.3% of variance and two reconstructed to floating-point precision |
+| Diffusion: linear algebra in architectures | ✅     | 2026-08-25 | Connected linear maps, nonlinear blocks, latent compression, low-rank intuition, and LoRA in `notes/w09_linear_algebra_in_unets.md` |
 
 ---
 
