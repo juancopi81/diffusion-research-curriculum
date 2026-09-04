@@ -3,11 +3,12 @@
 ## Current Status
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Week:** 9 ✅
+- **Week:** 10 ✅
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
 - **Week 9 Completed:** 2026-08-25
-- **Next:** Week 10 — Multivariate Gaussian + Score
+- **Week 10 Completed:** 2026-09-04
+- **Next:** Week 11 — VAE Foundations
 
 ---
 
@@ -103,6 +104,17 @@
 | S2: Selected MML exercises                | ✅     | 2026-08-19 | Reviewed solutions in `proofs/w09_mml_linear_algebra.md`, including the four curriculum exercises, optional Exercise 4.10, and additional foundation practice |
 | S3: `w09_pca_svd.ipynb`                   | ✅     | 2026-08-25 | Solved notebook executes top-to-bottom; one component retained 96.3% of variance and two reconstructed to floating-point precision |
 | Diffusion: linear algebra in architectures | ✅     | 2026-08-25 | Connected linear maps, nonlinear blocks, latent compression, low-rank intuition, and LoRA in `notes/w09_linear_algebra_in_unets.md` |
+
+---
+
+### Week 10 — Multivariate Gaussian + Score ✅
+
+| Task | Status | Date | Notes |
+| --- | --- | --- | --- |
+| S1: MML gradients and multivariate Gaussians | ✅ | 2026-09-04 | Consolidated gradient conventions, affine transformations, covariance geometry, and sampling in [the Week 10 note](notes/w10_mml_multivariate_gaussian.md) |
+| S2: Gaussian score and conditioning | ✅ | 2026-09-04 | Derived the analytic score and block conditional; completed the shared 2D example and normalized-slice visualization in [the Week 10 proof](proofs/w10_multivariate_gaussian_score.md) |
+| S3: multivariate Gaussian notebook | ✅ | 2026-09-04 | The [solved notebook](notebooks/w10_mv_gaussian_score_solved.ipynb) executes top-to-bottom; Cholesky moments, analytic versus finite-difference score, and empirical conditional moments agree |
+| Diffusion: Gaussian identities | ✅ | 2026-09-04 | Extended the [Gaussian identities sheet](notes/gaussian_identities.md) through the DDPM forward-kernel score |
 
 ---
 

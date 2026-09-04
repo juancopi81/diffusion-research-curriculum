@@ -23,9 +23,9 @@ It is divided into five phases:
 ## 🚀 Current Progress
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Completed:** Phase 1 and Week 9
-- **Latest artifact:** PCA/SVD projection, reconstruction, and diffusion bridge
-- **Next:** Week 10 - Multivariate Gaussian + Score
+- **Completed:** Phase 1 and Weeks 9–10
+- **Latest artifact:** Multivariate Gaussian score and conditioning verification
+- **Next:** Week 11 - VAE Foundations
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 
@@ -37,6 +37,7 @@ See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 | --- | --- |
 | [Checkpoint 01 - Conditioning in Code](./mini_projects/checkpoint_01_conditioning_in_code/) | Shows how conditioning changes the probability model, verified with Monte Carlo. |
 | [Checkpoint 02 - Toy Score Matching](./mini_projects/checkpoint_02_toy_score_matching/) | Compares two learned score objectives against the exact score of a noisy Gaussian mixture. |
+| [Multivariate Gaussian score and conditioning](./notebooks/w10_mv_gaussian_score_solved.ipynb) | Connects Cholesky sampling, analytic and numerical scores, Gaussian conditioning, and the DDPM forward kernel. |
 | [PCA/SVD projection and reconstruction](./notebooks/w09_pca_svd_solved.ipynb) | Connects projections, eigendecomposition, SVD, low-rank reconstruction, and latent compression. |
 | [Gaussian score derivation](./notes/w03_score_of_gaussian.md) | Builds the first exact score function used later in diffusion. |
 | [Joint Gaussian conditioning notebook](./notebooks/w05_joint_gaussians_solved.ipynb) | Connects covariance and conditional distributions to denoising intuition. |
