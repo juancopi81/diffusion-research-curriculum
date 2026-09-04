@@ -71,6 +71,10 @@ Use these short tags throughout the plan.
   [https://diffusion.csail.mit.edu/](https://diffusion.csail.mit.edu/)
 - **[MIT-6S184-Notes]** Direct lecture notes PDF:  
   [https://diffusion.csail.mit.edu/lecture-notes.pdf](https://diffusion.csail.mit.edu/lecture-notes.pdf)
+- **[Milanfar-Lagrangian]** Peyman Milanfar, “A Lagrangian View of Flow
+  Matching” (optional Lagrangian-view companion; verify its derivations and
+  stronger claims against the core papers):
+  [https://arxiv.org/abs/2609.00198](https://arxiv.org/abs/2609.00198)
 
 ### Core papers (open access)
 
@@ -78,7 +82,7 @@ Use these short tags throughout the plan.
 - **[DDIM]** Song et al. “Denoising Diffusion Implicit Models”: [https://arxiv.org/abs/2010.02502](https://arxiv.org/abs/2010.02502)
 - **[ScoreSDE]** Song et al. “Score-Based Generative Modeling through SDEs”: [https://arxiv.org/abs/2011.13456](https://arxiv.org/abs/2011.13456)
 - **[FlowMatching]** Lipman et al. “Flow Matching for Generative Modeling”: [https://arxiv.org/abs/2210.02747](https://arxiv.org/abs/2210.02747)
-- **[RectifiedFlow]** (rectified flow line of work; pick a canonical arXiv paper you like and pin it here once chosen)
+- **[RectifiedFlow]** Liu et al. “Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow”: [https://arxiv.org/abs/2209.03003](https://arxiv.org/abs/2209.03003)
 
 ### SDE numerics (free references)
 
@@ -711,14 +715,34 @@ and connect the theories to the Nano-Diffusion code you already have.
 
 - S1:
   - read **[FlowMatching]**
+  - read the motivation, non-crossing discussion, and reflow/straightening
+    sections of **[RectifiedFlow]**
   - also use **[MIT-6S184]** flow matching lectures for intuition
+  - after the core reading, use **[Milanfar-Lagrangian]** as an intuition check:
+    keep the “moving endpoint” picture, but treat its straight-characteristic,
+    Jacobian-penalty, and posterior-covariance claims as hypotheses to verify,
+    not as established results
 - S3: `notebooks/w36_flow_matching_2d.ipynb`
   - implement flow matching on 2D blobs
+  - state the notebook convention explicitly: $x_0$ is base noise at $t=0$
+    and $x_1$ is data at $t=1$
   - compare:
     - training stability
     - sampling speed
     - failure cases
+  - add a trajectory diagnostic:
+    - along each learned ODE trajectory, record the extrapolated endpoint
+      $\hat{x}_1(t) = x_t + (1-t)v_\theta(x_t,t)$
+    - measure endpoint-prediction drift, trajectory straightness/curvature, and
+      Euler endpoint error across several step counts
+    - test whether lower endpoint drift actually predicts accurate sampling with
+      fewer function evaluations
+    - distinguish crossings among sampled conditional training segments from
+      the non-crossing trajectories of a well-posed learned ODE
   - write 1 page: `notes/w36_diffusion_vs_flowmatching.md`
+    - state which claims came from the core papers, which came from the
+      Lagrangian companion preprint, and what the toy experiment supported or
+      contradicted
   - Treat this as **Nano-Flow v0**:
     - reuse the same 2D distributions from Nano-Diffusion v0
     - compare learned vector fields, sampling trajectories, runtime, and failure cases under matched model size where possible
