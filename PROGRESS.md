@@ -3,12 +3,12 @@
 ## Current Status
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Week:** 10 ✅
+- **Week:** 11 🔄 (S1–S3 complete; latent-diffusion bridge pending)
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
 - **Week 9 Completed:** 2026-08-25
 - **Week 10 Completed:** 2026-09-04
-- **Next:** Week 11 — VAE Foundations
+- **Next:** Week 11 — one-page latent-diffusion bridge
 
 ---
 
@@ -115,6 +115,17 @@
 | S2: Gaussian score and conditioning | ✅ | 2026-09-04 | Derived the analytic score and block conditional; completed the shared 2D example and normalized-slice visualization in [the Week 10 proof](proofs/w10_multivariate_gaussian_score.md) |
 | S3: multivariate Gaussian notebook | ✅ | 2026-09-04 | The [solved notebook](notebooks/w10_mv_gaussian_score_solved.ipynb) executes top-to-bottom; Cholesky moments, analytic versus finite-difference score, and empirical conditional moments agree |
 | Diffusion: Gaussian identities | ✅ | 2026-09-04 | Extended the [Gaussian identities sheet](notes/gaussian_identities.md) through the DDPM forward-kernel score |
+
+---
+
+### Week 11 — VAE Foundations 🔄
+
+| Task | Status | Date | Notes |
+| --- | --- | --- | --- |
+| S1: CS236 VAE foundations | ✅ | 2026-09-09 | Lectures 5–6, amortized inference, ELBO interpretation, and reparameterization consolidated in [the foundations note](notes/w11_cs236_vae.md) |
+| S2: ELBO and Gaussian derivations | ✅ | 2026-09-14 | Two ELBO derivations, scalar and diagonal Gaussian KL, reparameterization proof, and loss mapping in [the derivation note](notes/w11_elbo_derivation.md) |
+| S3: minimal MNIST VAE | ✅ | 2026-09-15 | [Solved notebook](notebooks/w11_minimal_vae_mnist_solved.ipynb): three implementations, checks, five-epoch training, plots, and reviewed observations completed |
+| Diffusion: why latent diffusion | ⬜ | — | One-page note on representation compression and reconstruction tradeoffs remains pending |
 
 ---
 
