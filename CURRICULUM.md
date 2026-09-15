@@ -67,14 +67,20 @@ Use these short tags throughout the plan.
 
 ### Flow matching / ODE/SDE view (Phase 4 backbone)
 
-- **[MIT-6S184]** MIT course “Flow Matching and Diffusion Models” (notes + lectures + labs):  
-  [https://diffusion.csail.mit.edu/](https://diffusion.csail.mit.edu/)
-- **[MIT-6S184-Notes]** Direct lecture notes PDF:  
-  [https://diffusion.csail.mit.edu/lecture-notes.pdf](https://diffusion.csail.mit.edu/lecture-notes.pdf)
+- **[MIT-6S184]** MIT course “Introduction to Flow Matching and Diffusion Models”
+  (2026 edition; notes + lectures + selected labs):
+  [source catalog and weekly map](./sources/mit_6s184/) ·
+  [official course](https://diffusion.csail.mit.edu/2026/index.html)
+- **[MIT-6S184-Notes]** Direct 2026 lecture notes PDF:
+  [lecture notes](https://diffusion.csail.mit.edu/2026/docs/lecture_notes.pdf)
+
 - **[Milanfar-Lagrangian]** Peyman Milanfar, “A Lagrangian View of Flow
   Matching” (optional Lagrangian-view companion; verify its derivations and
   stronger claims against the core papers):
   [https://arxiv.org/abs/2609.00198](https://arxiv.org/abs/2609.00198)
+
+Use the selected MIT lectures and lab exercises within existing sessions and
+Nano-Diffusion/Nano-Flow artifacts; completing the full MIT course is not required.
 
 ### Core papers (open access)
 
@@ -635,7 +641,9 @@ pieces into Nano-Diffusion.
 ### Weeks 21–22 — Guidance & conditioning (CFG in a small setting)
 
 - S1:
-  - Use **[Diffusers-Docs]** CFG/conditioning concepts (and/or any good reference in **[MIT-6S184-Notes]**)
+  - Watch **[MIT-6S184]** Lecture 3-B:
+    [Classifier-free Guidance](https://www.youtube.com/watch?v=8oWZ1bHwyRI)
+  - Use **[Diffusers-Docs]** for CFG/conditioning implementation support
 - S3 Artifact:
   - class-conditional MNIST diffusion
   - CFG scale sweep (e.g., 0, 1, 2, 3, 5)
@@ -661,7 +669,9 @@ Artifact: `mini_projects/nano_diffusion/reports/checkpoint_04_ablations.md`
 
 - S1:
   - skim/learn from **[Diffusers-Docs]**
-  - optional: architecture discussion in **[MIT-6S184-Notes]**
+  - Watch **[MIT-6S184]** Lecture 4:
+    [Latent Spaces and Neural Network Architectures](https://www.youtube.com/watch?v=g0MB1CCBmsI)
+    to connect U-Nets, transformers, and VAEs
 - S3:
   - refactor code into clean modules
   - add:
@@ -688,9 +698,13 @@ and connect the theories to the Nano-Diffusion code you already have.
 
 ### Weeks 29–30 — Brownian motion + Itô intuition (light, practical)
 
-- S1 (Primary): **[MIT-6S184]** lectures/notes sections introducing SDE view
+- S1 (Primary): **[MIT-6S184]** Lecture 1:
+  [Flow and Diffusion Models](https://www.youtube.com/watch?v=9eJQQVrUUoI),
+  with the accompanying ODE/SDE notes
 - S1 (Support): **[Higham-SDE]** (numerical simulation intuition)
 - S2: implement Euler–Maruyama on simple SDEs
+  - Use selected **[MIT-6S184]** Lab 1 exercises, linked in the
+    [source catalog](./sources/mit_6s184/), to support the existing notebook
 - S3: `notebooks/w30_euler_maruyama_stability.ipynb`
   - compare step sizes, show instability regimes
   - replicate 1 figure from Higham (in your own words)
@@ -707,6 +721,9 @@ and connect the theories to the Nano-Diffusion code you already have.
 ### Weeks 33–34 — Score-SDE view (paper reading light + code mapping)
 
 - S1: read selected sections of **[ScoreSDE]**
+  - Watch **[MIT-6S184]** Lecture 3-A:
+    [Score Functions and Score Matching](https://www.youtube.com/watch?v=ngC3QnYSVNM)
+    to connect score training with SDE sampling
 - S3:
   - implement VE/VP schedules variants in your codebase
   - `notes/w34_ve_vp_mapping.md`: “paper symbols ↔ my code variables”
@@ -717,13 +734,16 @@ and connect the theories to the Nano-Diffusion code you already have.
   - read **[FlowMatching]**
   - read the motivation, non-crossing discussion, and reflow/straightening
     sections of **[RectifiedFlow]**
-  - also use **[MIT-6S184]** flow matching lectures for intuition
+  - Watch **[MIT-6S184]** Lecture 2:
+    [Flow Matching](https://www.youtube.com/watch?v=PNkMKWW8Khw) for intuition
   - after the core reading, use **[Milanfar-Lagrangian]** as an intuition check:
     keep the “moving endpoint” picture, but treat its straight-characteristic,
     Jacobian-penalty, and posterior-covariance claims as hypotheses to verify,
     not as established results
 - S3: `notebooks/w36_flow_matching_2d.ipynb`
   - implement flow matching on 2D blobs
+  - Use selected **[MIT-6S184]** Lab 2 flow-matching exercises, linked in the
+    [source catalog](./sources/mit_6s184/), within this Nano-Flow artifact
   - state the notebook convention explicitly: $x_0$ is base noise at $t=0$
     and $x_1$ is data at $t=1$
   - compare:

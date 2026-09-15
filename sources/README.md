@@ -29,6 +29,7 @@ future research trigger.
 
 ## Collections
 
+- [MIT 6.S184: Flow Matching and Diffusion Models (2026)](./mit_6s184/)
 - [Step-by-Step Diffusion: An Elementary Tutorial](./step_by_step_diffusion/)
 - [Vincent (2011): Score Matching and Denoising Autoencoders](./vincent_2011_score_matching/)
 - [Geometric Deep Learning](./geometric_deep_learning/)
