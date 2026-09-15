@@ -7,7 +7,8 @@
 scalar and diagonal Gaussian KL and reparameterization proof (2026-09-14).
 The short code/reconstruction-loss checkpoint is complete. The minimal MNIST
 VAE implementation and three observations were completed and reviewed on
-2026-09-15. Week 11 remains in progress only for the latent-diffusion bridge note.
+2026-09-15. The [latent-diffusion bridge](./w11_why_latent_diffusion.md) was
+reviewed and approved on the same date. Week 11 is complete.
 
 **Source basis:** Stanford CS236 Fall 2023
 [Lecture 5 slides: Latent Variable Models](https://deepgenerativemodels.github.io/assets/slides/cs236_lecture5.pdf),
@@ -448,4 +449,6 @@ gradient checks, training, reconstructions, prior generation, and latent travers
 The three observations distinguish approximate-posterior regularization from
 reconstruction quality and input-conditioned reconstruction from prior generation.
 Reconstruction does not guarantee a previously seen latent point; the displayed
-inputs are held out. The remaining task is the one-page latent-diffusion bridge.
+inputs are held out. The [one-page latent-diffusion bridge](./w11_why_latent_diffusion.md)
+was subsequently reviewed and approved on 2026-09-15, completing Week 11.
+Next: Week 12 — normalizing flows and RealNVP on 2D data.

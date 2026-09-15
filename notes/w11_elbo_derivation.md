@@ -6,8 +6,9 @@ reparameterization proof were reviewed and consolidated on 2026-09-14.
 The three-question code and reconstruction-loss checkpoint was completed
 with a final explanation of additive constants on 2026-09-14. The planned
 Friday theory and code map are complete. The minimal MNIST notebook and its
-three observations were completed and reviewed on 2026-09-15; the separate
-latent-diffusion bridge note remains pending.
+three observations were completed and reviewed on 2026-09-15. The separate
+[latent-diffusion bridge](./w11_why_latent_diffusion.md) was approved on the
+same date, completing Week 11.
 
 **Basis:** Transcribed from the learner's two handwritten derivations supplied
 on 2026-09-10, with reviewed notation and explanatory refinements. This is
@@ -640,7 +641,8 @@ reparameterization proof are complete. The full handwritten route is retained;
 there is no need to repeat these proofs before starting the notebook.
 
 The following three-question checkpoint closes the bridge to implementation.
-The notebook and latent-diffusion note remain separate tasks.
+At this session boundary, the notebook and latent-diffusion note were still
+separate upcoming tasks; both were subsequently completed on 2026-09-15.
 
 ## Three-Question Code and Loss Checkpoint
 
@@ -773,5 +775,7 @@ reports that clipping to the display range is only a visualization step.
 
 The final observations identify preserved and lost image details, distinguish
 input-conditioned reconstruction from prior generation, and describe the effect
-of increasing the second latent coordinate. The remaining Week 11 task is
-the separate one-page explanation of why diffusion can operate in learned latents.
+of increasing the second latent coordinate. The separate
+[one-page explanation of latent diffusion](./w11_why_latent_diffusion.md)
+was reviewed and approved on 2026-09-15. Week 11 is complete; Week 12 moves
+to normalizing flows and change of variables.

@@ -3,12 +3,13 @@
 ## Current Status
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Week:** 11 🔄 (S1–S3 complete; latent-diffusion bridge pending)
+- **Week:** 11 ✅
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
 - **Week 9 Completed:** 2026-08-25
 - **Week 10 Completed:** 2026-09-04
-- **Next:** Week 11 — one-page latent-diffusion bridge
+- **Week 11 Completed:** 2026-09-15
+- **Next:** Week 12 — Normalizing flows (RealNVP on 2D)
 
 ---
 
@@ -118,14 +119,14 @@
 
 ---
 
-### Week 11 — VAE Foundations 🔄
+### Week 11 — VAE Foundations ✅
 
 | Task | Status | Date | Notes |
 | --- | --- | --- | --- |
 | S1: CS236 VAE foundations | ✅ | 2026-09-09 | Lectures 5–6, amortized inference, ELBO interpretation, and reparameterization consolidated in [the foundations note](notes/w11_cs236_vae.md) |
 | S2: ELBO and Gaussian derivations | ✅ | 2026-09-14 | Two ELBO derivations, scalar and diagonal Gaussian KL, reparameterization proof, and loss mapping in [the derivation note](notes/w11_elbo_derivation.md) |
 | S3: minimal MNIST VAE | ✅ | 2026-09-15 | [Solved notebook](notebooks/w11_minimal_vae_mnist_solved.ipynb): three implementations, checks, five-epoch training, plots, and reviewed observations completed |
-| Diffusion: why latent diffusion | ⬜ | — | One-page note on representation compression and reconstruction tradeoffs remains pending |
+| Diffusion: why latent diffusion | ✅ | 2026-09-15 | Reviewed [one-page bridge](notes/w11_why_latent_diffusion.md): PCA → PPCA → VAE, compression tradeoffs, and the separate roles of the autoencoder and latent diffusion |
 
 ---
 
