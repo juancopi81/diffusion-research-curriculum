@@ -23,9 +23,9 @@ It is divided into five phases:
 ## 🚀 Current Progress
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Completed:** Phase 1 and Weeks 9–10
-- **Latest artifact:** Multivariate Gaussian score and conditioning verification
-- **Next:** Week 11 - VAE Foundations
+- **Completed:** Phase 1 and Weeks 9–12
+- **Latest artifact:** [RealNVP on 2D blobs](./notebooks/w12_realnvp_2d_blobs_solved.ipynb) and [flows-versus-diffusion comparison](./notes/w12_flows_vs_diffusion.md)
+- **Next:** Week 13 — Optimization basics
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 
