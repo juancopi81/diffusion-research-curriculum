@@ -3,13 +3,14 @@
 ## Current Status
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Week:** 11 ✅
+- **Week:** 12 ✅
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
 - **Week 9 Completed:** 2026-08-25
 - **Week 10 Completed:** 2026-09-04
 - **Week 11 Completed:** 2026-09-15
-- **Next:** Week 12 — Normalizing flows (RealNVP on 2D)
+- **Week 12 Completed:** 2026-09-28
+- **Next:** Week 13 — Optimization basics
 
 ---
 
@@ -127,6 +128,17 @@
 | S2: ELBO and Gaussian derivations | ✅ | 2026-09-14 | Two ELBO derivations, scalar and diagonal Gaussian KL, reparameterization proof, and loss mapping in [the derivation note](notes/w11_elbo_derivation.md) |
 | S3: minimal MNIST VAE | ✅ | 2026-09-15 | [Solved notebook](notebooks/w11_minimal_vae_mnist_solved.ipynb): three implementations, checks, five-epoch training, plots, and reviewed observations completed |
 | Diffusion: why latent diffusion | ✅ | 2026-09-15 | Reviewed [one-page bridge](notes/w11_why_latent_diffusion.md): PCA → PPCA → VAE, compression tradeoffs, and the separate roles of the autoencoder and latent diffusion |
+
+---
+
+### Week 12 — Normalizing Flows ✅
+
+| Task | Status | Date | Notes |
+| --- | --- | --- | --- |
+| S1: CS236 flow foundations | ✅ | 2026-09-24 | Change of variables, Jacobians, affine coupling, and layer composition in [the foundations note](notes/w12_cs236_normalizing_flows.md) |
+| S2: change-of-variables derivations | ✅ | 2026-09-24 | Worked examples, inverse maps, and coupling log-determinants in [the proof note](proofs/w12_change_of_variables_flows.md) |
+| S3: RealNVP on 2D blobs | ✅ | 2026-09-28 | [Solved notebook](notebooks/w12_realnvp_2d_blobs_solved.ipynb): implementation checks, six-layer NLL and samples, and one-layer failure comparison |
+| Diffusion: flows versus score models | ✅ | 2026-09-28 | Reviewed [comparison note](notes/w12_flows_vs_diffusion.md): exact model likelihood, score prediction, and generation paths |
 
 ---
 
