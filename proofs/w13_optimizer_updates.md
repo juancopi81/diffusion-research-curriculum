@@ -4,9 +4,14 @@
 recurrences, and step-size checkpoint reviewed on 2026-10-06.
 Session 3 momentum calculations and conceptual checkpoints reviewed on
 2026-10-07.
+Session 5 Adam calculations, indexing, and conceptual checkpoints reviewed
+on 2026-10-09.
 
 **Source basis:** The handwritten Session 2 and Session 3 pages supplied for
 review, together with the conceptual discussion.
+The Adam section also uses the handwritten equations, spreadsheet screenshot,
+and constant-gradient derivation supplied on 2026-10-09. Its update rule is
+checked against [Adam, Algorithm 1 and §§2–3](https://arxiv.org/pdf/1412.6980).
 The calculations below are independently checked derivations for our practice
 objective, not the book's worked example or an official solution.
 Reading context: MML §§7.1.1–7.1.2; see the
@@ -420,3 +425,220 @@ handwritten work.
 - [x] Explain what momentum remembers and what happens when successive gradients agree.
 - [x] Explain how alternating gradients relate to motion in a narrow valley.
 - [x] Explain why momentum still needs a suitable learning rate.
+
+## 3. Adam on the Practice Quadratic
+
+### Translate the Paper's Update Index
+
+The paper evaluates $g_t$ at $\theta_{t-1}$ and then computes $m_t$, $v_t$,
+and $\theta_t$. Our convention evaluates $g^{(k)}$ at the current vector
+$\theta^{(k)}$ and computes states at $k+1$. A paper update $t$ therefore
+corresponds to $k=t-1$:
+
+| Paper notation | Our notation |
+| --- | --- |
+| $\theta_{t-1}$ | $\theta^{(k)}$ |
+| $g_t$ | $g^{(k)}$ |
+| $m_{t-1}$ and $v_{t-1}$ | $m^{(k)}$ and $v^{(k)}$ |
+| $m_t$ and $v_t$ | $m^{(k+1)}$ and $v^{(k+1)}$ |
+| $\theta_t$ | $\theta^{(k+1)}$ |
+| Learning rate $\alpha$ | Learning rate $\eta$ |
+
+Thus the first gradient is $g^{(0)}$, but the first moment estimates and
+updated parameters have superscript $1$. The bias-correction exponent is
+$k+1$, the number of gradient observations incorporated.
+
+### Objective, Initialization, and Update Rule
+
+Keep the same objective and column gradient:
+
+$$
+L(\theta)=\frac12(\theta_1^2+10\theta_2^2),
+\qquad
+g^{(k)}=A\theta^{(k)},
+\qquad A=\begin{bmatrix}1&0\\0&10\end{bmatrix}.
+$$
+
+The supplied initialization and hyperparameters are
+
+$$
+\theta^{(0)}=\begin{bmatrix}2\\1\end{bmatrix},
+\qquad
+m^{(0)}=v^{(0)}=\begin{bmatrix}0\\0\end{bmatrix},
+\qquad
+\eta=0.05,\quad\beta_1=0.9,\quad\beta_2=0.999,\quad\epsilon=10^{-8}.
+$$
+
+The chosen learning rate is for this practice calculation. With elementwise
+products, square roots, and division, Algorithm 1 becomes
+
+$$
+\begin{aligned}
+m^{(k+1)}&=\beta_1m^{(k)}+(1-\beta_1)g^{(k)},\\
+v^{(k+1)}&=\beta_2v^{(k)}+(1-\beta_2)
+\bigl(g^{(k)}\odot g^{(k)}\bigr),\\
+\widehat m^{(k+1)}&=\frac{m^{(k+1)}}{1-\beta_1^{k+1}},\\
+\widehat v^{(k+1)}&=\frac{v^{(k+1)}}{1-\beta_2^{k+1}},\\
+\theta^{(k+1)}&=\theta^{(k)}
+-\eta\frac{\widehat m^{(k+1)}}{\sqrt{\widehat v^{(k+1)}}+\epsilon}.
+\end{aligned}
+$$
+
+Keep the uncorrected states $m$ and $v$ for the next iteration. The
+corrected estimates are computed from those states for the parameter update.
+In particular, $\epsilon$ is outside the square root.
+
+### First Update: Current State $k=0$
+
+The first gradient, its coordinate-wise square, and the raw moment states are
+
+$$
+\begin{aligned}
+g^{(0)}&=\begin{bmatrix}2\\10\end{bmatrix},
+\qquad g^{(0)}\odot g^{(0)}=\begin{bmatrix}4\\100\end{bmatrix},\\
+m^{(1)}&=0.9\begin{bmatrix}0\\0\end{bmatrix}
++0.1\begin{bmatrix}2\\10\end{bmatrix}
+=\begin{bmatrix}0.2\\1\end{bmatrix},\\
+v^{(1)}&=0.999\begin{bmatrix}0\\0\end{bmatrix}
++0.001\begin{bmatrix}4\\100\end{bmatrix}
+=\begin{bmatrix}0.004\\0.1\end{bmatrix}.
+\end{aligned}
+$$
+
+Because one gradient observation has been incorporated, the corrected moments are
+
+$$
+\widehat m^{(1)}=\frac{m^{(1)}}{1-0.9}=\begin{bmatrix}2\\10\end{bmatrix},
+\qquad
+\widehat v^{(1)}=\frac{v^{(1)}}{1-0.999}=\begin{bmatrix}4\\100\end{bmatrix}.
+$$
+
+The parameter update is
+
+$$
+\theta^{(1)}
+=\begin{bmatrix}2\\1\end{bmatrix}
+-0.05\begin{bmatrix}2/(2+10^{-8})\\10/(10+10^{-8})\end{bmatrix}
+\approx\begin{bmatrix}1.95000000025\\0.95000000005\end{bmatrix}.
+$$
+
+The first normalized ratio is approximately $(1,1)^\top$. Both parameters
+move by approximately $0.05$, while plain GD's first displacements were
+$(-0.1,-0.5)^\top$. The shared numerical learning rate does not imply equal
+parameter updates across optimizers.
+
+### Second Update: Current State $k=1$
+
+Recompute the gradient at the updated parameters. At displayed precision,
+$g^{(1)}\approx(1.95,9.5)^\top$. Then
+
+$$
+\begin{aligned}
+m^{(2)}
+&\approx0.9\begin{bmatrix}0.2\\1\end{bmatrix}
++0.1\begin{bmatrix}1.95\\9.5\end{bmatrix}
+=\begin{bmatrix}0.375\\1.85\end{bmatrix},\\
+v^{(2)}
+&\approx0.999\begin{bmatrix}0.004\\0.1\end{bmatrix}
++0.001\begin{bmatrix}1.95^2\\9.5^2\end{bmatrix}
+=\begin{bmatrix}0.0077985\\0.19015\end{bmatrix}.
+\end{aligned}
+$$
+
+The bias-correction denominators count two observations:
+
+$$
+1-\beta_1^2=0.19,
+\qquad 1-\beta_2^2=0.001999.
+$$
+
+Retaining full precision through the calculation gives
+
+$$
+\widehat m^{(2)}\approx\begin{bmatrix}1.973684211\\9.736842106\end{bmatrix},
+\qquad
+\widehat v^{(2)}\approx\begin{bmatrix}3.901200601\\95.122561285\end{bmatrix}.
+$$
+
+Finally,
+
+$$
+\begin{aligned}
+\theta^{(2)}-\theta^{(1)}
+&=-0.05\frac{\widehat m^{(2)}}{\sqrt{\widehat v^{(2)}}+10^{-8}}
+\approx\begin{bmatrix}-0.049963002333\\-0.049916757144\end{bmatrix},\\
+\theta^{(2)}&\approx\begin{bmatrix}1.900036997917\\0.900083242906\end{bmatrix}.
+\end{aligned}
+$$
+
+These values match the supplied spreadsheet screenshot at its displayed
+precision. The expressions above round intermediate values for readability;
+the independent check retains $\epsilon$ and full precision between updates.
+The visible values were verified, rather than the unavailable cell formulas.
+
+### Derive the Initialization Correction
+
+Unroll the recurrences from zero initial states:
+
+$$
+\begin{aligned}
+m^{(k+1)}&=(1-\beta_1)\sum_{j=0}^{k}\beta_1^{k-j}g^{(j)},\\
+v^{(k+1)}&=(1-\beta_2)\sum_{j=0}^{k}\beta_2^{k-j}
+\bigl(g^{(j)}\odot g^{(j)}\bigr).
+\end{aligned}
+$$
+
+For either moving average, the accumulated weights sum to
+
+$$
+(1-\beta)\sum_{j=0}^{k}\beta^{k-j}=1-\beta^{k+1}.
+$$
+
+The remaining weight comes from the initial zero. Dividing by
+$1-\beta^{k+1}$ normalizes the observed-gradient weights to sum to one.
+If the underlying first or second raw moment is constant across these
+observations, this removes the downward bias in its expectation. With
+changing gradient distributions, it still removes the initial-zero weighting;
+it does not make the history equal to the current distribution's moment.
+
+For our scalar constant-gradient check $G=2$, the second-moment recurrence is
+
+$$
+v^{(k+1)}=\beta_2v^{(k)}+(1-\beta_2)4,
+\qquad v^{(0)}=0.
+$$
+
+Its fixed point satisfies
+
+$$
+v_*=\beta_2v_*+(1-\beta_2)4
+\quad\Longrightarrow\quad v_*=4,
+$$
+
+since $\beta_2<1$. At any positive observation count $t$, the uncorrected
+value is $v^{(t)}=4(1-\beta_2^t)$, while the corrected value is exactly $4$.
+In particular, $v^{(1)}=0.004$ becomes $\widehat v^{(1)}=4$.
+
+### Second Raw Moment, Variance, and the Denominator
+
+The constant gradient has $\mathbb E[G^2]=4$ but
+$\operatorname{Var}(G)=4-2^2=0$. Adam's $v$ averages squared components
+without centering, so it estimates a second raw moment rather than variance.
+Its square root supplies a coordinate-wise gradient scale; $m$ supplies
+the smoothed signed gradient.
+
+With a coordinate that has always had zero gradient, the corrected moments
+are both zero. Omitting $\epsilon$ gives $0/0$; a positive $\epsilon$
+makes the ratio $0/\epsilon=0$, leaving that coordinate unchanged.
+
+The [optimization note](../notes/w13_optimization.md#session-5--understand-adam-then-calculate-it)
+records the role of each term and the reviewed understanding checkpoints.
+
+### Session 5 Review Checkpoints
+
+- [x] Translate the paper's indexing without changing the algorithm.
+- [x] Record the initial moment states and all hyperparameters.
+- [x] Verify the first two updates, recomputing the gradient at the current parameters.
+- [x] Derive the zero-initialization correction and explain its exponent.
+- [x] Distinguish the second raw moment from variance.
+- [x] Explain coordinate-wise normalization and the role of $\epsilon$.

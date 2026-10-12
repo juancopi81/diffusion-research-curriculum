@@ -8,6 +8,10 @@ Session 3 momentum calculations and conceptual checkpoints reviewed on
 2026-10-07.
 Session 4 minibatch gradients, corruption noise, and the stochastic-step
 checkpoint reviewed on 2026-10-08.
+Session 5 Adam calculations and conceptual checkpoints reviewed on
+2026-10-09.
+Session 6 optimizer implementations, learning-rate comparisons, and
+behavior explanations reviewed on 2026-10-12.
 
 **Source basis:** The opening of MML §7.1, printed pages 227–228, checked
 against the local study copy. See the [MML source catalog](../sources/mml/README.md)
@@ -18,6 +22,9 @@ Session 4 uses MML §7.1.3, printed pages 231–233, and the existing
 [Week 8 training loop](../mini_projects/checkpoint_02_toy_score_matching/train.py),
 checked during our review. The expectation derivations and stochastic-gradient
 counterexample below are independent study examples.
+Session 5 uses [Adam, Algorithm 1 and §§2–3](https://arxiv.org/pdf/1412.6980),
+checked against the paper, together with the supplied handwritten equations,
+spreadsheet screenshot, and constant-gradient derivation.
 The quadratic below is our practice objective. Its calculations and figure
 are an independent consolidation of the handwritten work, not MML's worked
 example or an official solution.
@@ -597,3 +604,230 @@ Reviewed together on 2026-10-08:
 - [x] Identify data sampling and corruption noise as two sources of gradient randomness.
 - [x] Explain why the Week 8 full-batch training loop still has stochastic gradients.
 - [x] Calculate and explain an individual stochastic step that increases the full objective.
+
+## Session 5 — Understand Adam, Then Calculate It
+
+### Unify the Indexing and Keep the States Separate
+
+The paper labels the upcoming update $t$ and evaluates its gradient at
+$\theta_{t-1}$. Our convention labels the current state $k$ and computes
+the next state $k+1$. Thus $t=k+1$: the paper's $g_t$ becomes our $g^{(k)}$,
+while $m_t$, $v_t$, and $\theta_t$ become our states at $k+1$.
+
+Using the same column gradient as GD and momentum, Adam is
+
+$$
+\begin{aligned}
+g^{(k)}&=\nabla_\theta L\bigl(\theta^{(k)}\bigr),\\
+m^{(k+1)}&=\beta_1m^{(k)}+(1-\beta_1)g^{(k)},\\
+v^{(k+1)}&=\beta_2v^{(k)}+(1-\beta_2)
+\bigl(g^{(k)}\odot g^{(k)}\bigr),\\
+\widehat m^{(k+1)}&=\frac{m^{(k+1)}}{1-\beta_1^{k+1}},\\
+\widehat v^{(k+1)}&=\frac{v^{(k+1)}}{1-\beta_2^{k+1}},\\
+\theta^{(k+1)}&=\theta^{(k)}
+-\eta\frac{\widehat m^{(k+1)}}{\sqrt{\widehat v^{(k+1)}}+\epsilon}.
+\end{aligned}
+$$
+
+All products, squares, square roots, and divisions involving gradient or
+moment coordinates act elementwise. The parameter vector $\theta$, current
+gradient $g$, and moment states $m$ and $v$ are separate quantities. Carry
+the uncorrected states $m$ and $v$ into the next iteration; their corrected
+versions are used in the parameter update.
+
+The hand calculation uses $\theta^{(0)}=(2,1)^\top$,
+$m^{(0)}=v^{(0)}=(0,0)^\top$, $\eta=0.05$, $\beta_1=0.9$,
+$\beta_2=0.999$, and $\epsilon=10^{-8}$. The paper calls the learning rate
+$\alpha$; we retain $\eta$. The chosen rate is our practice setting.
+
+### What Each Term Does
+
+| Term | Role |
+| --- | --- |
+| $g^{(k)}$ | Parameter gradient evaluated at the current parameter vector |
+| $m$ | Moving average of signed gradients, like Andrew Ng's momentum convention |
+| $\beta_1$ | Retention of the previous gradient average; older contributions decay with age |
+| $v$ | Moving average of coordinate-wise squared gradients |
+| $\beta_2$ | Retention of the squared-gradient average; our $0.999$ retains history longer than $0.9$ |
+| $1-\beta_1^{k+1}$ and $1-\beta_2^{k+1}$ | Remove the initial-zero weighting after $k+1$ observations |
+| $\widehat m$ and $\widehat v$ | Moment estimates corrected for zero initialization |
+| $\sqrt{\widehat v}$ | Coordinate-wise root-mean-square gradient scale used to normalize the update |
+| $\eta$ | Shared base learning rate multiplying the normalized update |
+| $\epsilon$ | Positive numerical stabilizer added outside the square root |
+
+### A Second Raw Moment Is Different from a Variance
+
+For a scalar gradient coordinate $G$, the second raw moment and variance are
+
+$$
+\mathbb E[G^2],
+\qquad
+\operatorname{Var}(G)=\mathbb E[G^2]-(\mathbb E[G])^2.
+$$
+
+Adam averages the squares without first subtracting the mean. If a gradient
+coordinate is always $2$, its second raw moment is $4$, while its variance
+is zero. Our handwritten fixed-point check gives
+
+$$
+v_*=\beta_2v_*+(1-\beta_2)4
+\quad\Longrightarrow\quad
+(1-\beta_2)v_*=(1-\beta_2)4
+\quad\Longrightarrow\quad v_*=4,
+$$
+
+where cancellation is valid because $\beta_2<1$. In particular, the first
+term multiplies the previous squared-gradient average $v$, not the previous
+gradient value $2$.
+
+### Correct the Initial-Zero Weighting
+
+In that constant-gradient example, the first value from $v^{(0)}=0$ is
+$v^{(1)}=0.999(0)+0.001(4)=0.004$. Bias correction gives
+
+$$
+\widehat v^{(1)}=\frac{0.004}{1-0.999}=4.
+$$
+
+More generally, $v^{(t)}=4(1-\beta_2^t)$ in this example. The denominator
+therefore counts the observations incorporated, giving exponent $k+1$
+when our current iteration is $k$. The first-moment correction follows
+the same logic. These corrections remove the initialization effect; they
+do not remove gradient randomness or changes in the gradient distribution
+during training. The [proof write-up](../proofs/w13_optimizer_updates.md#3-adam-on-the-practice-quadratic)
+derives the moving-average weights explicitly.
+
+### Normalize the Step and Preserve a Positive Denominator
+
+For our first update, $\widehat m^{(1)}=(2,10)^\top$ and
+$\widehat v^{(1)}=(4,100)^\top$. Ignoring the tiny $\epsilon$ temporarily,
+their coordinate-wise ratio is $(1,1)^\top$. Both coordinates therefore
+move by approximately $\eta=0.05$, despite their different gradient
+magnitudes. The base rate is shared throughout; subsequent normalized
+ratios can differ because they retain gradient history.
+
+The denominator is $\sqrt{\widehat v}+\epsilon$, with $\epsilon$ **outside**
+the square root. If a gradient coordinate has always been zero, both
+corrected moments are zero. Omitting $\epsilon$ produces the undefined
+ratio $0/0$; including it produces $0/\epsilon=0$, leaving that coordinate
+unchanged. For a nonzero denominator, $\epsilon$ is added to the estimated
+gradient scale rather than replacing it.
+
+### Verified First Two Updates
+
+The independently recomputed values agree with the supplied spreadsheet
+screenshot at its displayed precision:
+
+| Update | Parameter vector after the update |
+| --- | --- |
+| $1$ | $\theta^{(1)}\approx(1.95,0.95)^\top$ |
+| $2$ | $\theta^{(2)}\approx(1.900036998,0.900083243)^\top$ |
+
+The [Adam proof section](../proofs/w13_optimizer_updates.md#3-adam-on-the-practice-quadratic)
+records all gradients, moment states, corrections, and parameter updates.
+
+### Session 5 Review Checkpoints
+
+Reviewed together on 2026-10-09:
+
+- [x] Unify the paper's update indexing with our current-state convention.
+- [x] Record initialization and hyperparameters, keeping moments separate from parameters.
+- [x] Verify the first two Adam updates against the displayed spreadsheet values.
+- [x] Connect the first-moment moving average to momentum.
+- [x] Distinguish the second raw moment from variance using a constant gradient.
+- [x] Explain the zero-initialization correction, coordinate-wise normalization, and role of $\epsilon$.
+
+## Session 6 — Implement and Compare the Three Optimizers
+
+The [working notebook](../notebooks/w13_optimizers_sanity_solved.ipynb)
+implements GD, displacement-based momentum, and Adam from scratch on our
+shared quadratic. All Session 6 assertions passed in a fresh Python process,
+including the first two hand-calculated updates, momentum states, Adam's
+uncorrected moment states, and the placement of $\epsilon$ outside the square
+root. The comparison starts every run at $(2,1)^\top$ and uses a fixed
+120-update budget. These are independent experiments on our practice objective.
+
+### Explain GD Through Its Coordinate Multipliers
+
+The recurrences are $\theta_1^{(k+1)}=(1-\eta)\theta_1^{(k)}$ and
+$\theta_2^{(k+1)}=(1-10\eta)\theta_2^{(k)}$.
+
+| Learning rate | Multipliers for $\theta_1$, $\theta_2$ | Behavior |
+| --- | --- | --- |
+| $0.05$ | $0.95$, $0.5$ | Both coordinates shrink without changing sign. |
+| $0.15$ | $0.85$, $-0.5$ | Both coordinates shrink; $\theta_2$ alternates sign. |
+| $0.25$ | $0.75$, $-1.5$ | $\theta_1$ shrinks, but $\theta_2$ alternates sign and grows in magnitude. |
+
+For the divergent run, the relevant fact is $|-1.5|>1$: the multiplier itself
+is negative. Starting from $\theta_2^{(0)}=1$, we have
+$\theta_2^{(k)}=(-1.5)^k$. The corresponding gradient component is
+$g_2^{(k)}=10\theta_2^{(k)}$, so its magnitude grows too. Consequently,
+
+$$
+\|\nabla_\theta L(\theta^{(k)})\|_2
+=\sqrt{\bigl(\theta_1^{(k)}\bigr)^2+100\bigl(\theta_2^{(k)}\bigr)^2}
+$$
+
+grows without bound. A run can still have numerically finite values during
+our limited budget; the notebook's `finite` status does not imply convergence.
+
+### Explain Adam's Oscillations Through Its Memory
+
+Adam's first moment averages gradients. The previous $m$ already summarizes
+older gradients; the new contribution can partially cancel that history when
+the current gradient changes sign. Partial cancellation need not reverse the
+sign of the average.
+
+If $\theta_2<0$ but $\widehat m_2>0$, then
+
+$$
+\Delta\theta_2
+=-\eta\frac{\widehat m_2}{\sqrt{\widehat v_2}+\epsilon}<0.
+$$
+
+Adding this negative update to an already negative coordinate moves it farther
+from zero. The positive denominator scales the update; its sign comes from
+the first moment and the leading minus sign. This lag can increase the
+$\theta_2$ contribution to the loss, and the total loss can increase if that
+outweighs improvement in the other coordinate.
+
+These runs use exact gradients of a fixed quadratic. Their loss increases
+are **deterministic oscillations**, rather than noise from stochastic gradients.
+
+### Interpret the Learning-Rate Grid and Choose the Metric
+
+For Adam, the saved 120-update runs show:
+
+| Learning rate | Final loss | Minimum loss reached | Steps that increased loss |
+| --- | --- | --- | --- |
+| $0.01$ | $0.5610134$ | $0.5610134$ | $0$ |
+| $0.05$ | $2.560867\times10^{-5}$ | $3.062720\times10^{-6}$ | $20$ |
+| $0.15$ | $5.733421\times10^{-6}$ | $4.540792\times10^{-6}$ | $46$ |
+
+The $0.01$ run is cautious: its loss decreases at every recorded step, but it
+progresses slowly within this budget. The $0.15$ run has the lowest **final**
+loss among these Adam rates, while $0.05$ reaches the lowest **minimum** loss
+during its run. Those are different criteria, especially when trajectories
+oscillate.
+
+Equal numerical learning rates do not produce equivalent steps: GD scales
+the current gradient, momentum carries displacement history, and Adam uses
+gradient history normalized by a coordinate-wise scale. Compare documented
+learning-rate grids with matched initialization and update budgets, and name
+the metric: final loss, minimum loss, or updates needed to reach a chosen loss
+threshold. This small experiment does not establish an overall optimizer
+winner.
+
+### Session 6 Review Checkpoints
+
+Reviewed together on 2026-10-12:
+
+- [x] Verify all three implementations against the first two hand-calculated updates.
+- [x] Explain convergence, shrinking oscillation, and divergence through the coordinate multipliers.
+- [x] Connect divergent parameter magnitudes to growing gradient norms.
+- [x] Explain Adam's overshoot through the sign of its first-moment average.
+- [x] Distinguish deterministic oscillations from stochastic gradient noise.
+- [x] Interpret the rate grid with a fixed budget and an explicit comparison metric.
+
+Session 6 is complete. Session 7's controlled score-training clipping experiment
+remains pending; its notebook setup is still disabled until the next study session.
