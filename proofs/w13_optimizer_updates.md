@@ -1,11 +1,14 @@
 # Week 13 — Optimizer Update Derivations
 
-**Status:** Partial weekly write-up — Session 2 gradient-descent calculations,
+**Status:** Complete — consolidated on 2026-10-14.
+Session 2 gradient-descent calculations,
 recurrences, and step-size checkpoint reviewed on 2026-10-06.
 Session 3 momentum calculations and conceptual checkpoints reviewed on
 2026-10-07.
 Session 5 Adam calculations, indexing, and conceptual checkpoints reviewed
 on 2026-10-09.
+The first two updates and optimizer states were also checked against the
+from-scratch implementations during Session 6 on 2026-10-12.
 
 **Source basis:** The handwritten Session 2 and Session 3 pages supplied for
 review, together with the conceptual discussion.
@@ -19,6 +22,9 @@ Reading context: MML §§7.1.1–7.1.2; see the
 [official book](https://mml-book.github.io/book/mml-book.pdf).
 The geometry and gradient convention are in the
 [Week 13 optimization note](../notes/w13_optimization.md).
+The [solved optimizer notebook](../notebooks/w13_optimizers_sanity_solved.ipynb)
+contains the numerical checks, including Adam's bias-correction indexing,
+uncorrected moment states, and placement of epsilon outside the square root.
 
 ## 1. Gradient Descent on the Practice Quadratic
 

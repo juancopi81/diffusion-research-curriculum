@@ -1,6 +1,7 @@
 # Week 13 — Optimization Basics
 
-**Status:** Week 13 in progress — Session 1 handwritten geometry and
+**Status:** Complete — Week 13 consolidated on 2026-10-14.
+Session 1 handwritten geometry and
 understanding checkpoints reviewed on 2026-10-05.
 Session 2 handwritten updates, recurrences, and step-size checkpoint
 reviewed on 2026-10-06.
@@ -12,6 +13,10 @@ Session 5 Adam calculations and conceptual checkpoints reviewed on
 2026-10-09.
 Session 6 optimizer implementations, learning-rate comparisons, and
 behavior explanations reviewed on 2026-10-12.
+Session 7 controlled score-training clipping experiment and interpretation
+reviewed on 2026-10-13.
+Session 8 model-objective comparison, instability diagnosis, and the learner's
+question round completed on 2026-10-14.
 
 **Source basis:** The opening of MML §7.1, printed pages 227–228, checked
 against the local study copy. See the [MML source catalog](../sources/mml/README.md)
@@ -829,5 +834,263 @@ Reviewed together on 2026-10-12:
 - [x] Distinguish deterministic oscillations from stochastic gradient noise.
 - [x] Interpret the rate grid with a fixed budget and an explicit comparison metric.
 
-Session 6 is complete. Session 7's controlled score-training clipping experiment
-remains pending; its notebook setup is still disabled until the next study session.
+## Session 7 — Separate Bounded Gradients from a Better Score
+
+The [working notebook](../notebooks/w13_optimizers_sanity_solved.ipynb)
+compares global gradient-norm clipping off and on in the Week 8 direct-score
+model. The five Session 7 code cells passed in a fresh Python process and
+reproduced the saved summary table. The checks verified matching initial
+states and first gradients, unchanged gradients in the off condition, and
+the applied norm bound in the on condition.
+
+### Hypothesis and Controlled Conditions
+
+Before running, we predicted that clipping would bound the applied gradient
+norm and might slightly reduce held-out score MSE by limiting large updates.
+We also expected that smaller steps could slow progress within a short budget.
+The reviewed notebook preserves that prediction separately from the result.
+
+Both conditions use the same model initialization, data split, sequence of
+fresh training corruption draws, and held-out noisy points. The fixed settings
+are SGD with learning rate $0.1$, 20 updates, corruption standard deviation
+$0.5$, 1,200 training points, and 300 held-out points. Data, split, and
+initialization seeds are $42$; training-noise and held-out-noise seeds are
+$43$ and $44$. The only intervention is clipping off or on with global L2
+threshold $0.5$, applied after backpropagation and before the optimizer step.
+
+### Observations
+
+| Condition | Clipped updates | Maximum raw norm | Maximum applied norm | Final held-out score MSE |
+| --- | --- | --- | --- | --- |
+| Clipping off | $0/20$ | $0.910351$ | $0.910351$ | $1.240304$ |
+| Clipping on | $20/20$ | $0.986525$ | $0.500000$ | $1.345339$ |
+
+The clipped run's minimum raw norm was approximately $0.501362$, so clipping
+activated at every update. Its applied norms were approximately $0.5$.
+In the off condition, the before and after norms are equal and their curves
+overlap. These measurements bracket the clipping operation, both before
+the parameter update. Later raw gradients can differ between conditions
+because their learned parameter trajectories differ.
+
+Both runs improved from the same initial held-out score MSE of $1.869517$.
+The unclipped run also had lower final sampled training loss: $3.305659$
+versus $3.414067$. Training loss is measured before each update using the
+sampled conditional score target; held-out MSE is measured after each update
+against the known marginal noisy-mixture score. They are different metrics.
+
+### Interpretation and Limits
+
+Clipping successfully bounded the applied gradients but produced higher
+final held-out score MSE under these matched conditions. The predicted fit
+improvement was not supported in this run. The unclipped gradient norms
+remained finite; this experiment does not demonstrate recovery from gradient
+explosion.
+
+For plain SGD, the update norm is the learning rate times the applied
+gradient norm. The clipped steps are therefore bounded by approximately
+$0.1\times0.5=0.05$. Smaller steps are a plausible explanation for slower
+progress within 20 updates. This does not establish that a longer clipped
+run would reach the same error or follow the same path.
+
+The result supports a conclusion about this single matched experiment.
+One data and initialization setup, one corruption sequence, one learning
+rate, one norm threshold, and a short update budget do not establish a
+general ranking. A possible follow-up is a small learning-rate grid with
+paired clipping-off/on runs at each rate, keeping all other conditions
+fixed. That proposed comparison has not been run.
+
+### Session 7 Review Checkpoints
+
+Reviewed together on 2026-10-13:
+
+- [x] Apply global L2 clipping after backpropagation and before the optimizer step.
+- [x] Verify the matched experiment and record activation frequency and norms before and after clipping.
+- [x] Interpret sampled training loss and held-out marginal score MSE.
+- [x] Separate bounded gradients from improvement in the learned score.
+- [x] Preserve the original hypothesis, report the observed result, and state a limitation and follow-up comparison.
+
+The complete experiment write-up is in the
+[diffusion-stability note](w13_training_stability_for_diffusion.md).
+
+## Session 8 — Connect the Objectives and Diagnose Training
+
+Reviewed from the learner's recall on 2026-10-14, with the objective formulas
+checked against the existing solved notebooks and Week 8 training code.
+
+| Model | Objective minimized | What poor optimization could affect |
+| --- | --- | --- |
+| VAE | Negative ELBO: reconstruction negative log-likelihood plus prior KL | Reconstruction quality and the behavior of both loss components |
+| RealNVP | Average negative log-likelihood of the data under the flow | Learned density, held-out NLL, and generated samples |
+| Direct-score toy | MSE against the conditional Gaussian score target | Accuracy of the learned score field and held-out marginal score MSE |
+
+### VAE: Reconstruction and Prior Compatibility
+
+The [Week 11 VAE](../notebooks/w11_minimal_vae_mnist_solved.ipynb)
+minimizes a Monte Carlo estimate of the negative ELBO, up to a fixed additive
+Gaussian normalization constant. With a fixed decoder variance, its per-image
+loss is
+
+$$
+\widehat\ell_{\mathrm{VAE}}(x)
+=\frac{\|x-\mu_\theta(z)\|_2^2}{2\tau^2}
++D_{\mathrm{KL}}\!\left(q_\phi(z\mid x)\,\Vert\,\mathcal N(0,I)\right),
+\qquad z\sim q_\phi(z\mid x).
+$$
+
+The encoder produces the mean and diagonal variance of the latent
+distribution. We sample a latent, decode it to an image mean, and compare
+that mean with the original image. The reconstruction error retains the
+factor $1/(2\tau^2)$. The KL encourages each input's approximate posterior
+to stay close to the prior.
+
+We maximize the ELBO by minimizing its negative, so the training loss adds
+the positive reconstruction and KL terms. An excessive learning rate can
+cause oscillations or loss increases and leave poor reconstructions.
+Inspect reconstruction loss, KL, and their total separately.
+
+### RealNVP: Exact Likelihood Still Requires Optimization
+
+Our [Week 12 flow](../notebooks/w12_realnvp_2d_blobs_solved.ipynb)
+maps data to latent variables with $z=f_\theta(x)$. It evaluates
+
+$$
+\log p_\theta(x)
+=\log p_Z(f_\theta(x))
++\log\left|\det J_{f_\theta}(x)\right|,
+\qquad
+L_{\mathrm{flow}}(\theta)
+=-\frac1B\sum_{i=1}^{B}\log p_\theta(x_i).
+$$
+
+The density's volume correction is the absolute determinant of the Jacobian.
+Taking logs turns the product into a sum; the optimizer minimizes the
+negative batch average.
+
+We can calculate the likelihood exactly for good or poor parameter settings.
+That gives an exact objective value under the current model, without
+guaranteeing that optimization finds a good fit. A poor learning rate can
+make progress unstable or very slow; a suitable rate helps without
+guaranteeing the best parameters.
+
+### Score Toy: Conditional Targets Teach a Marginal Score
+
+The direct-score model receives a noisy point at one fixed noise level:
+
+$$
+X_t=X_0+\sigma\epsilon,\qquad \epsilon\sim\mathcal N(0,I).
+$$
+
+Its training target is the analytical conditional Gaussian score:
+
+$$
+\nabla_{x_t}\log q_\sigma(x_t\mid x_0)
+=-\frac{x_t-x_0}{\sigma^2}
+=-\frac{\sigma\epsilon}{\sigma^2}
+=-\frac{\epsilon}{\sigma}.
+$$
+
+The [training loss](../mini_projects/checkpoint_02_toy_score_matching/train.py)
+averages squared error over examples and the two data coordinates. At the
+population level, with $d=2$, the objective is
+
+$$
+L_{\mathrm{score}}(\theta)
+=\mathbb E_{X_0,\epsilon}\!\left[
+\frac1d\left\|s_\theta(X_0+\sigma\epsilon)+\frac{\epsilon}{\sigma}\right\|_2^2
+\right].
+$$
+
+The network sees only the noisy point. MSE encourages it to predict the
+conditional mean of the score targets over compatible clean/noise pairs.
+At the unrestricted population optimum,
+
+$$
+s^*(x_t)
+=\mathbb E\!\left[-\frac{\epsilon}{\sigma}\,\middle|\,X_t=x_t\right]
+=\nabla_{x_t}\log p_\sigma(x_t).
+$$
+
+Thus the conditional Gaussian score is the training target, while the
+marginal noisy-mixture score is the learned quantity we want to approximate.
+The [analytical mixture score](../mini_projects/checkpoint_02_toy_score_matching/evaluate.py)
+provides a separate held-out evaluation target in this toy experiment.
+Finite data, finite model capacity, and incomplete optimization can all
+leave a gap from that ideal.
+
+### Final Diagnostic Checkpoint
+
+For a hypothetical score-training run with large loss spikes and worsening
+held-out MSE, the learner's first checks were the raw global gradient norms
+and the learning rate. For the toy's plain SGD,
+
+$$
+\|\Delta\theta\|_2=\eta\|g_{\mathrm{applied}}\|_2.
+$$
+
+Check whether large updates coincide with the spikes and deteriorating
+held-out error. An individual uphill stochastic step is not sufficient
+evidence of divergence; fresh corruption noise naturally causes fluctuations.
+
+The chosen controlled test is to **reduce only the learning rate**, keeping
+the optimizer, initialization, data split, corruption draws, and update budget
+matched. Compare loss spikes, update norms, and held-out score MSE. Fewer
+spikes and better held-out MSE would support the overshooting hypothesis.
+This is a proposed diagnostic comparison, separate from the completed
+clipping experiment; it has not been run.
+
+### Questions After the Core Review: Brief Enrichment
+
+These questions were discussed after the required checkpoints, before
+finalizing the notes. They introduce ideas for later study.
+
+**Can we look ahead before choosing an update?** Yes. We can evaluate
+gradients at provisional parameter values. One illustrative two-evaluation
+step is
+
+$$
+\begin{aligned}
+g_0&=\nabla L(\theta),&
+\widetilde\theta&=\theta-\eta g_0,\\
+g_1&=\nabla L(\widetilde\theta),&
+\theta_{\mathrm{new}}&=\theta-\frac{\eta}{2}(g_0+g_1).
+\end{aligned}
+$$
+
+This predictor/corrector illustration does not guarantee better optimization.
+Each fresh training gradient normally requires a forward and backward pass,
+so compare computational work as well as accepted updates. A related
+method, Nesterov momentum, predicts a position using stored momentum and
+evaluates one fresh gradient there; see
+[Sutskever et al., §2, equations 3–4](https://proceedings.mlr.press/v28/sutskever13.pdf).
+
+The diffusion connection is Heun sampling: evaluate a direction, take a trial
+step, evaluate again, and combine the directions. During sampling, the noisy
+sample changes while the trained parameters remain fixed. The
+[official EDM sampler](https://github.com/NVlabs/edm/blob/main/generate.py#L43-L52)
+shows this sequence. That sampling procedure was discussed, not implemented
+in our fixed-noise training experiment.
+
+**How does Muon relate to these optimizers?** Muon starts with momentum and
+approximately orthogonalizes its update matrix using Newton–Schulz iterations
+before applying the update. Its original setup targets hidden-layer weight
+matrices and uses AdamW for other parameters. Adam instead uses coordinate-wise
+scaling from squared-gradient history. See the
+[original Muon description](https://kellerjordan.github.io/posts/muon/).
+Reported performance on a particular benchmark does not establish a universal
+optimizer ranking; tuning and computational budget still matter.
+
+### Week 13 Completion
+
+- [x] Explain and calculate GD, momentum, and Adam updates with consistent indexing and explicit initial states.
+- [x] Connect learning rate and curvature to convergence, oscillation, and divergence on the shared quadratic.
+- [x] Explain unbiased stochastic gradients, their randomness, and why individual steps can increase loss.
+- [x] Implement and check the three optimizers and interpret the learning-rate comparisons.
+- [x] Interpret the matched score-training experiment without equating bounded gradients with better fit.
+- [x] Connect each model's training objective to possible optimization failures.
+- [x] Diagnose a hypothetical unstable run and choose one controlled test.
+- [x] Resolve the learner's questions and finish the notes, derivations, and diffusion-stability report.
+
+Week 13 is complete on 2026-10-14. Next is the
+[Week 14 toolkit consolidation](../CURRICULUM.md): compare the models'
+representations, objectives, sampling procedures, and characteristic failure
+modes using the work already completed.

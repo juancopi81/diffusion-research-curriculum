@@ -3,14 +3,15 @@
 ## Current Status
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Week:** 12 ✅
+- **Week:** 13 ✅
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
 - **Week 9 Completed:** 2026-08-25
 - **Week 10 Completed:** 2026-09-04
 - **Week 11 Completed:** 2026-09-15
 - **Week 12 Completed:** 2026-09-28
-- **Next:** Week 13 — Optimization basics
+- **Week 13 Completed:** 2026-10-14
+- **Next:** Week 14 (Checkpoint 3) — Generative modeling toolkit consolidation
 
 ---
 
@@ -139,6 +140,17 @@
 | S2: change-of-variables derivations | ✅ | 2026-09-24 | Worked examples, inverse maps, and coupling log-determinants in [the proof note](proofs/w12_change_of_variables_flows.md) |
 | S3: RealNVP on 2D blobs | ✅ | 2026-09-28 | [Solved notebook](notebooks/w12_realnvp_2d_blobs_solved.ipynb): implementation checks, six-layer NLL and samples, and one-layer failure comparison |
 | Diffusion: flows versus score models | ✅ | 2026-09-28 | Reviewed [comparison note](notes/w12_flows_vs_diffusion.md): exact model likelihood, score prediction, and generation paths |
+
+---
+
+### Week 13 — Optimization Basics ✅
+
+| Task | Status | Date | Notes |
+| --- | --- | --- | --- |
+| S1: MML §7.1 and Adam foundations | ✅ | 2026-10-14 | [Optimization note](notes/w13_optimization.md): geometry, learning rate, momentum, stochastic gradients, Adam, three-model review, and instability checkpoint consolidated |
+| S2: optimizer-update derivations | ✅ | 2026-10-14 | [Proof note](proofs/w13_optimizer_updates.md): first two GD, momentum, and Adam updates, coordinate recurrences, and bias correction finalized |
+| S3: optimizer comparison notebook | ✅ | 2026-10-12 | [Solved notebook](notebooks/w13_optimizers_sanity_solved.ipynb): implementations, hand-calculation checks, trajectories, losses, gradient norms, divergence, and learning-rate grids reviewed |
+| Diffusion: controlled score-training clipping | ✅ | 2026-10-14 | [Stability note](notes/w13_training_stability_for_diffusion.md): matched experiment reviewed on 2026-10-13; clipping activated 20/20 times but gave higher final held-out score MSE in this setting |
 
 ---
 
