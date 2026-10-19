@@ -111,11 +111,16 @@ Completed:
   checkpoints, and Nano-Diffusion v0 on a 2D Gaussian mixture
 - **Week 9:** linear algebra refresh, selected MML exercises, PCA/SVD
   projection and reconstruction, and the diffusion-architecture bridge
+- **Week 10:** multivariate Gaussian score, conditioning, and numerical checks
+- **Week 11:** ELBO/KL derivations, minimal MNIST VAE, and latent-diffusion bridge
+- **Week 12:** change of variables, RealNVP on 2D blobs, and flow/score comparison
+- **Week 13:** GD, momentum, Adam, and a controlled score-training clipping
+  experiment; completed on 2026-10-14
 
 Next:
 
-- **Week 10:** multivariate Gaussian identities, conditioning, and analytic
-  score fields
+- **Week 14 (Checkpoint 3):** generative modeling toolkit consolidation;
+  follow the [day-by-day plan](./notes/w14_study_plan.md)
 
 See [PROGRESS.md](./PROGRESS.md) for completion dates and artifact links.
 
@@ -525,6 +530,9 @@ one isolated training-stability change in the existing diffusion toy.
 
 ### Week 14 (Checkpoint 3) — Generative modeling toolkit consolidation
 
+Use the [day-by-day plan](./notes/w14_study_plan.md) to distribute this checkpoint
+across seven study days (about seven hours total).
+
 - S1: review Weeks 9–13 by comparing, for each model, its representation,
   objective, sampling procedure, and characteristic failure mode
 - S2: solve a bounded four-problem mixed set:
@@ -532,6 +540,7 @@ one isolated training-stability change in the existing diffusion toy.
   - ELBO/KL
   - flow change of variables and log-determinant
   - optimizer stability
+  - record reviewed solutions in `proofs/w14_generative_toolkit_mixed_set.md`
 - S3: `mini_projects/checkpoint_03_generative_toolkit_report/`
   - `report.md` (2–3 pages):
     - VAE: what objective, what failure mode

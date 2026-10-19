@@ -22,6 +22,10 @@ This page is the portfolio index for the curriculum. It links the artifacts that
 | [`notebooks/w06_kl_gaussians_solved.ipynb`](notebooks/w06_kl_gaussians_solved.ipynb) + [`notes/w06_where_kl_appears.md`](notes/w06_where_kl_appears.md) | Notebook + bridge note | Complete | Derives KL for 1D Gaussians, checks empirical estimates, and connects KL to distribution matching in diffusion/flow models. |
 | [`notes/w07_conditional_expectation_in_diffusion.md`](notes/w07_conditional_expectation_in_diffusion.md) | Diffusion bridge note | Complete | Connects MSE-optimal denoising and conditional expectation to the Gaussian score identity. |
 | [`notebooks/w09_pca_svd_solved.ipynb`](notebooks/w09_pca_svd_solved.ipynb) + [`notes/w09_linear_algebra_in_unets.md`](notes/w09_linear_algebra_in_unets.md) | Notebook + bridge note | Complete | Connects projection, eigendecomposition, SVD, low-rank reconstruction, and nonlinear latent representations. |
+| [`notebooks/w10_mv_gaussian_score_solved.ipynb`](notebooks/w10_mv_gaussian_score_solved.ipynb) + [`proofs/w10_multivariate_gaussian_score.md`](proofs/w10_multivariate_gaussian_score.md) | Notebook + derivation | Complete | Checks Gaussian sampling, analytical scores, and conditional moments against numerical evidence. |
+| [`notebooks/w11_minimal_vae_mnist_solved.ipynb`](notebooks/w11_minimal_vae_mnist_solved.ipynb) + [`notes/w11_why_latent_diffusion.md`](notes/w11_why_latent_diffusion.md) | Notebook + bridge note | Complete | Connects the ELBO to reconstruction, prior generation, and the limits of learned compression. |
+| [`notebooks/w12_realnvp_2d_blobs_solved.ipynb`](notebooks/w12_realnvp_2d_blobs_solved.ipynb) + [`notes/w12_flows_vs_diffusion.md`](notes/w12_flows_vs_diffusion.md) | Notebook + comparison | Complete | Implements exact model likelihood and inverse sampling, with a one-layer architecture failure comparison. |
+| [`notebooks/w13_optimizers_sanity_solved.ipynb`](notebooks/w13_optimizers_sanity_solved.ipynb) + [`notes/w13_training_stability_for_diffusion.md`](notes/w13_training_stability_for_diffusion.md) | Notebook + experiment report | Complete | Checks GD, momentum, and Adam, then shows that bounded gradients did not improve held-out score accuracy in one matched clipping experiment. |
 
 ## Planned Portfolio Milestones
 
@@ -29,10 +33,11 @@ These are not complete yet. They are the next pieces that should become public-f
 
 | Planned milestone | Target location | Goal |
 | --- | --- | --- |
-| DDPM from scratch | `mini_projects/ddpm_baseline_mnist/` | Build and sample from a minimal DDPM implementation. |
-| DDIM sampler comparison | `mini_projects/ddim_sampler_comparison/` | Compare deterministic and stochastic samplers on a controlled setup. |
-| Score SDE toy simulation | `mini_projects/score_sde_toy_simulation/` | Simulate a simple score-based SDE and visualize trajectories. |
-| Flow matching vs diffusion | `mini_projects/flow_matching_vs_diffusion/` | Compare vector fields and sampling dynamics on simple distributions. |
+| Checkpoint 03 - Generative Toolkit (Week 14) | `mini_projects/checkpoint_03_generative_toolkit_report/` | Compare VAE, flow, and score objectives and limitations using existing evidence; [study plan](notes/w14_study_plan.md). |
+| DDPM from scratch (Weeks 17–18) | `mini_projects/nano_diffusion/` | Graduate the Week 16 prototype into a reproducible training and sampling baseline. |
+| DDIM sampler comparison (Weeks 19–20) | `notebooks/w20_ddpm_vs_ddim_steps.ipynb` + `mini_projects/nano_diffusion/` | Compare samplers using the same trained checkpoint where possible, recording steps/NFE, runtime, and sample quality. |
+| SDE numerics (Weeks 29–30) | `notebooks/w30_euler_maruyama_stability.ipynb` | Simulate simple SDEs and diagnose step-size stability before studying score-SDE sampling. |
+| Flow matching vs diffusion (Weeks 35–36) | `notebooks/w36_flow_matching_2d.ipynb` + `notes/w36_diffusion_vs_flowmatching.md` | Compare learned fields, trajectories, runtime, and failures on the same toy distributions. |
 
 ## Portfolio Standard
 

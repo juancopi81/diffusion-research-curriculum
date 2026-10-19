@@ -15,6 +15,7 @@ not yet belong in the core curriculum.
 | Status | Paper | Why it is on the radar | Revisit trigger |
 | --- | --- | --- | --- |
 | Radar | Lourie et al., [*Small-Scale Experiments: Are We There Yet?*](https://arxiv.org/abs/2608.11859v1) | A methodology for learning about larger models from well-tuned small-scale experiments, with useful warnings about hyperparameter sensitivity and extrapolation. | Nano-Diffusion has one stable baseline, repeatable training runs, configuration logging, and enough compute budget for a real sweep across several model sizes. |
+| Radar | Kumbong et al., [*Next-Concept Modeling: Fast, Parallel Coarse-to-Fine Text Generation*](https://arxiv.org/abs/2610.14162v1) | Connects learned discrete representations, hierarchical generation, and sampling efficiency; a useful comparison with diffusion language models. | After the Weeks 19–20 DDPM/DDIM comparison, with a short VQ-VAE and discrete text-diffusion primer. |
 
 ### Small-Scale Experiments: Are We There Yet?
 
@@ -71,3 +72,41 @@ stable and repeated runs produce comparable metrics. At that point, use it to
 design a bounded scaling pilot before spending effort on larger architectures
 or broad ablations. Until then, it stays on the radar and does not expand the
 current study sequence.
+
+### Next-Concept Modeling
+
+- Authors: Hermann Kumbong et al.
+- arXiv: `2610.14162v1` (`cs.CL`), submitted October 9, 2026
+- Source status: initial triage against the official arXiv metadata and
+  [v1 HTML](https://arxiv.org/html/2610.14162v1), especially Section 3,
+  Section 4.6, and Appendices C and I, on October 19, 2026
+
+#### Why it may matter for this repository
+
+NCM first learns a text tokenizer using multiscale residual vector
+quantization, then trains a transformer to generate code levels in order,
+predicting positions within each level in parallel (Section 3). This is
+hierarchical latent generation; its connection to diffusion is a comparison
+of generation strategies.
+
+Our curriculum connection is the [Week 11 latent-representation
+bridge](../notes/w11_why_latent_diffusion.md): how does the representation
+change the work left for the generator? It also gives us a future comparison
+for the [Weeks 19–20 sampling work](../CURRICULUM.md), separating fewer
+sequential steps from cheaper steps.
+
+#### Evidence to revisit
+
+The authors report 10–31× faster generation than selected diffusion baselines.
+These are task-specific results; Section 4.6 benchmarks sampling on one H100
+at batch size 16. Main generators have roughly 100M parameters, with additional
+parameters and training costs for the tokenizer (Appendices C and I).
+Evaluate quality, diversity, tokenizer overhead, and latency together when
+revisiting these claims.
+
+#### First useful return point
+
+Revisit after the Weeks 19–20 DDPM/DDIM comparison, adding a short primer on
+VQ-VAE and discrete diffusion for text. First reading question: how much of the
+advantage comes from the representation, the generation order, and the cost
+per step? Keep this as optional enrichment until a concrete experiment emerges.

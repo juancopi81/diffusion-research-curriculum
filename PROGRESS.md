@@ -12,6 +12,7 @@
 - **Week 12 Completed:** 2026-09-28
 - **Week 13 Completed:** 2026-10-14
 - **Next:** Week 14 (Checkpoint 3) — Generative modeling toolkit consolidation
+- **Week 14 plan:** [Seven study days, about seven hours](notes/w14_study_plan.md), prepared on 2026-10-19; checkpoint work not yet started
 
 ---
 
@@ -151,6 +152,20 @@
 | S2: optimizer-update derivations | ✅ | 2026-10-14 | [Proof note](proofs/w13_optimizer_updates.md): first two GD, momentum, and Adam updates, coordinate recurrences, and bias correction finalized |
 | S3: optimizer comparison notebook | ✅ | 2026-10-12 | [Solved notebook](notebooks/w13_optimizers_sanity_solved.ipynb): implementations, hand-calculation checks, trajectories, losses, gradient norms, divergence, and learning-rate grids reviewed |
 | Diffusion: controlled score-training clipping | ✅ | 2026-10-14 | [Stability note](notes/w13_training_stability_for_diffusion.md): matched experiment reviewed on 2026-10-13; clipping activated 20/20 times but gave higher final held-out score MSE in this setting |
+
+---
+
+### Week 14 (Checkpoint 3) — Generative Modeling Toolkit Consolidation ⬜
+
+The [day-by-day plan](notes/w14_study_plan.md) is ready. Update each task as study
+begins and review finishes; preparing the plan alone does not complete a task.
+
+| Task | Status | Date | Notes |
+| --- | --- | --- | --- |
+| S1: review Weeks 9–13 | ⬜ | — | Compare representations, objectives, generation procedures, and observed limitations using existing artifacts |
+| S2: four mixed problems | ⬜ | — | Gaussian score/conditioning, ELBO/KL, flow change of variables, and optimizer stability; planned solutions in `proofs/w14_generative_toolkit_mixed_set.md` |
+| S3: toolkit report | ⬜ | — | Planned 2–3-page `mini_projects/checkpoint_03_generative_toolkit_report/report.md`, reusing existing evidence |
+| Diffusion: explain the score-model connection | ⬜ | — | Distinguish conditional training targets, marginal scores, and the sampling machinery still to come; include the comparison in the report |
 
 ---
 

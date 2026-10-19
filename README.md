@@ -23,9 +23,9 @@ It is divided into five phases:
 ## 🚀 Current Progress
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Completed:** Phase 1 and Weeks 9–12
-- **Latest artifact:** [RealNVP on 2D blobs](./notebooks/w12_realnvp_2d_blobs_solved.ipynb) and [flows-versus-diffusion comparison](./notes/w12_flows_vs_diffusion.md)
-- **Next:** Week 13 — Optimization basics
+- **Completed:** Phase 1 and Weeks 9–13 (Week 13 completed on 2026-10-14)
+- **Latest artifact:** [Optimizer comparison](./notebooks/w13_optimizers_sanity_solved.ipynb) and [controlled score-training stability experiment](./notes/w13_training_stability_for_diffusion.md)
+- **Next:** Week 14 (Checkpoint 3) — Generative modeling toolkit consolidation; [day-by-day plan](./notes/w14_study_plan.md)
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 
@@ -66,5 +66,5 @@ uv run jupyter lab
 - `notebooks/`: Practical simulations, Stat110 exercises, and toy models.
 - `proofs/`: Clean, written solutions to Strategic Practice Problems.
 - `mini_projects/`: Code and reports for monthly milestones.
-- `papers/`: Summaries and key derivations from core research papers.
+- `papers/`: [Paper Radar](./papers/README.md) for optional future reading, plus paper summaries and derivations.
 - `sources/`: Provenance catalogs and local, potentially gitignored copies of third-party references.
