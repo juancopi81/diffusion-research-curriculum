@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Score-Matching Loss Floor</title>
+<meta name="claude:viewport-fit-sides" content="cover" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Literata:opsz,wght@7..72,500;7..72,650&display=swap" />
+<style>
+  /* Layout: one reading column on graph-paper ground; each step pairs the clean
+     derivation with Juan's handwritten page; widgets are the only boxed objects. */
+  :root {
+    --paper: #f5f7fa;
+    --panel: #ffffff;
+    --ink: #172031;
+    --muted: #556174;
+    --line: #d7dde7;
+    --grid: #e4e9f1;
+    --accent: #24508f;
+    --pencil: #b23a2e;
+    --pencil-soft: #fbeeec;
+    --c-within: #2a78d6;
+    --c-which: #1baf7a;
+    --c-earned: #eb6834;
+    --c-error: #8a94a5;
+    --font-display: "Literata", "Iowan Old Style", "Georgia", serif;
+    --font-body: "Atkinson Hyperlegible", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #11151c;
+      --panel: #1a1f29;
+      --ink: #e3e8f0;
+      --muted: #9ba6b7;
+      --line: #2d3544;
+      --grid: #1b212b;
+      --accent: #8fb6ee;
+      --pencil: #ec7d70;
+      --pencil-soft: #2c1d1d;
+      --c-within: #3987e5;
+      --c-which: #199e70;
+      --c-earned: #d95926;
+      --c-error: #7e899b;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #11151c;
+    --panel: #1a1f29;
+    --ink: #e3e8f0;
+    --muted: #9ba6b7;
+    --line: #2d3544;
+    --grid: #1b212b;
+    --accent: #8fb6ee;
+    --pencil: #ec7d70;
+    --pencil-soft: #2c1d1d;
+    --c-within: #3987e5;
+    --c-which: #199e70;
+    --c-earned: #d95926;
+    --c-error: #7e899b;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+  a { color: var(--accent); text-underline-offset: 2px; }
+  a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px;
+  }
+  code, .mono { font-family: var(--font-mono); font-size: 0.86em; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  .band {
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .inner { max-width: 1060px; margin: 0 auto; }
+  .prose { max-width: 68ch; }
+
+  /* Header on graph paper, like the notebook pages */
+  header.band {
+    padding-block: 48px 36px;
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 22px 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .eyebrow {
+    font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 10px;
+  }
+  h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.2; }
+  h1 { font-size: clamp(2rem, 5vw, 2.9rem); font-weight: 650; margin: 0 0 14px; letter-spacing: -0.01em; }
+  h2 { font-size: 1.55rem; font-weight: 650; margin: 0; }
+  h3 { font-size: 1.12rem; font-weight: 650; margin: 0 0 8px; }
+  .lead { font-size: 1.12rem; color: var(--ink); margin: 0 0 22px; }
+  .identity { overflow-x: auto; overflow-y: hidden; margin: 8px 0 26px; }
+
+  nav.toc { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.95rem; margin-top: 4px; }
+  nav.toc a { text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+
+  main.band { padding-block: 12px 64px; }
+  section.block { padding-block: 40px 8px; border-bottom: 1px solid var(--line); }
+  section.block:last-of-type { border-bottom: 0; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px; }
+  .step-no {
+    font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted);
+    border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; white-space: nowrap;
+  }
+  .question { font-family: var(--font-display); font-style: italic; font-size: 1.08rem; color: var(--muted); margin: -6px 0 16px; }
+
+  .step-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  @media (min-width: 960px) {
+    .step-grid { grid-template-columns: minmax(0, 1fr) 300px; gap: 36px; }
+  }
+  .step-grid > * { min-width: 0; }
+  .prose p { margin: 0 0 12px; }
+  .prose ul, .prose ol { margin: 0 0 14px; padding-left: 1.2em; }
+  .prose li { margin-bottom: 6px; }
+  .eq { overflow-x: auto; overflow-y: hidden; margin: 6px 0 14px; }
+  mjx-container[display="true"] { margin: 0.4em 0 !important; }
+
+  .keypoint { margin: 16px 0; padding: 2px 0 2px 0; }
+  .keypoint .label, .tag {
+    display: inline-block; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 4px;
+  }
+  .keypoint p { font-family: var(--font-display); font-size: 1.12rem; line-height: 1.45; margin: 0; }
+
+  .watch {
+    margin: 14px 0; padding: 10px 14px; background: var(--pencil-soft);
+    border-radius: 8px; font-size: 0.96rem;
+  }
+  .watch .tag { color: var(--pencil); }
+  .watch p { margin: 0; }
+
+  /* Handwritten page slots */
+  aside.photos { display: grid; gap: 14px; align-content: start; }
+  figure.photo { margin: 0; }
+  figure.photo img {
+    display: block; width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--line);
+    background: var(--panel);
+  }
+  figure.photo .ph {
+    display: grid; place-items: center; text-align: center; aspect-ratio: 3 / 4; max-width: 100%;
+    border: 1.5px dashed var(--line); border-radius: 6px; padding: 14px; color: var(--muted);
+    font-size: 0.85rem; line-height: 1.4;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 14px 14px;
+  }
+  figure.photo .ph code { word-break: break-all; color: var(--ink); }
+  figure.photo figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 6px; }
+
+  /* Widgets: the only boxed objects */
+  .panel {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    padding: 18px; margin: 18px 0;
+  }
+  .panel h3 { margin-bottom: 4px; }
+  .panel .sub { color: var(--muted); font-size: 0.92rem; margin: 0 0 14px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 4px 0 14px; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .seg button {
+    font: inherit; font-size: 0.9rem; background: transparent; color: var(--ink); border: 0;
+    padding: 6px 12px; cursor: pointer;
+  }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--panel); }
+  label.check { display: inline-flex; gap: 8px; align-items: center; font-size: 0.95rem; cursor: pointer; }
+  input[type="range"] { width: min(320px, 100%); accent-color: var(--accent); }
+  .readout { font-family: var(--font-mono); font-size: 0.88rem; font-variant-numeric: tabular-nums; }
+
+  /* Budget bar */
+  .budget { position: relative; padding-top: 78px; }
+  .bar { display: flex; height: 30px; gap: 2px; }
+  .bar > div { height: 100%; transition: flex-basis 0.25s ease; }
+  .bar > div:first-child { border-radius: 4px 0 0 4px; }
+  .bar > div:last-child { border-radius: 0 4px 4px 0; }
+  .b-within { background: var(--c-within); }
+  .b-which { background: var(--c-which); }
+  .b-earned { background: var(--c-earned); }
+  .axis { position: relative; height: 26px; border-top: 1px solid var(--line); margin-top: 6px; }
+  .axis span {
+    position: absolute; top: 4px; transform: translateX(-50%); font-family: var(--font-mono);
+    font-size: 0.78rem; color: var(--muted); font-variant-numeric: tabular-nums;
+  }
+  /* Two staggered rows so the model labels never collide at phone width */
+  .marker { position: absolute; transform: translateX(-50%); text-align: center; }
+  .marker .pin { width: 2px; background: var(--ink); margin: 0 auto; }
+  #mk-x0 { top: 20px; } #mk-x0 .pin { height: 54px; }
+  #mk-sc { top: 42px; } #mk-sc .pin { height: 32px; }
+  .marker .ml {
+    position: absolute; bottom: calc(100% + 2px); left: 50%; transform: translateX(-50%); white-space: nowrap;
+    font-size: 0.8rem; color: var(--ink); font-variant-numeric: tabular-nums;
+  }
+  #mk-sc .ml { left: auto; right: 50%; transform: translateX(1px); }
+  .floor-bracket { position: absolute; top: 58px; height: 16px; border: 1px solid var(--ink); border-bottom: 0; }
+  .floor-bracket span {
+    position: absolute; top: -20px; left: 0; font-size: 0.8rem; white-space: nowrap; color: var(--ink);
+  }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 0.88rem; margin-top: 12px; }
+  .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .sw-within { background: var(--c-within); }
+  .sw-which { background: var(--c-which); }
+  .sw-earned { background: var(--c-earned); }
+  .sw-error { background: var(--c-error); }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin: 10px 0 16px; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.93rem; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-weight: 700; color: var(--muted); font-size: 0.82rem; letter-spacing: 0.02em; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--font-mono); font-size: 0.86rem; }
+
+  /* Figures */
+  .fig-grid { display: grid; gap: 18px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+  @media (min-width: 760px) { .fig-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); } }
+  .fig-grid > * { min-width: 0; }
+  svg.plot { width: 100%; height: auto; display: block; }
+  .plot text { fill: var(--muted); font-family: var(--font-body); font-size: 12px; }
+  .plot .ink { fill: var(--ink); }
+  canvas.heat { width: 100%; max-width: 420px; aspect-ratio: 1 / 1; display: block; border: 1px solid var(--line); border-radius: 6px; }
+  .heat-legend { max-width: 420px; margin-top: 8px; }
+  .heat-legend .grad { height: 10px; border-radius: 3px; }
+  .heat-legend .ticks { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
+
+  /* Two-pair widget */
+  .pair-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  @media (min-width: 760px) { .pair-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } }
+  .pair-grid > * { min-width: 0; }
+  .lossbar { display: flex; height: 18px; gap: 2px; background: transparent; margin: 6px 0 4px; }
+  .lossbar > div { height: 100%; }
+  .lossbar > div:first-child { border-radius: 3px 0 0 3px; }
+  .lossbar > div:last-child { border-radius: 0 3px 3px 0; }
+
+  /* Corrections */
+  ol.corrections { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; counter-reset: c; }
+  ol.corrections > li {
+    counter-increment: c; display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px;
+    padding: 14px 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  }
+  ol.corrections .where { font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--pencil); }
+  ol.corrections .where::before { content: counter(c) " · "; }
+  ol.corrections .row { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 10px; font-size: 0.95rem; }
+  ol.corrections .row b { color: var(--muted); font-weight: 700; font-size: 0.85rem; }
+  @media (max-width: 520px) { ol.corrections .row { grid-template-columns: minmax(0, 1fr); gap: 0; } }
+
+  /* Checklist */
+  .cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  @media (min-width: 860px) { .cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+  .cols > * { min-width: 0; }
+  ul.checks { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 8px; }
+  ul.checks label { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; align-items: start; cursor: pointer; }
+  ul.checks input { margin-top: 5px; accent-color: var(--accent); }
+  .lean { display: grid; grid-template-columns: 8.5em minmax(0, 1fr); gap: 6px 12px; font-size: 0.95rem; margin: 0 0 12px; }
+  .lean dt { font-weight: 700; }
+  .lean dd { margin: 0; }
+  @media (max-width: 520px) { .lean { grid-template-columns: minmax(0, 1fr); } .lean dd { margin-bottom: 8px; } }
+  details { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 700; }
+  details[open] summary { margin-bottom: 10px; }
+
+  /* Tooltip */
+  #tip {
+    position: fixed; z-index: 20; pointer-events: none; max-width: 260px; padding: 8px 10px;
+    background: var(--ink); color: var(--paper); border-radius: 6px; font-size: 0.82rem; line-height: 1.4;
+  }
+  [data-tip] { cursor: help; }
+
+  footer.band { padding-block: 24px 40px; color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--line); }
+
+  @media (prefers-reduced-motion: reduce) { .bar > div { transition: none; } }
+</style>
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] },
+    svg: { fontCache: "global" }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" defer></script>
+</head>
+<body>
+
+<header class="band">
+  <div class="inner">
+    <p class="eyebrow">Study notes for my next research-log post · derived together 16–20 Oct 2026 · this is not the post</p>
+    <h1>Score-Matching Loss Floor</h1>
+    <div class="prose">
+      <p class="lead">A score model that trains on noisy pairs has an expected training loss that cannot go below a fixed number. This page records how we derived that number for your Week 8 toy, what it means for your results, and what to check before you write.</p>
+    </div>
+    <div class="identity">
+      \[
+      \underbrace{\tfrac1d\,\mathbb{E}\big\|y - s(x_t)\big\|^2}_{\text{training loss}}
+      \;=\;
+      \underbrace{\tfrac1d\,\mathbb{E}\big[\operatorname{tr}\operatorname{Cov}(y \mid x_t)\big]}_{\text{floor}\;\approx\;2.11}
+      \;+\;
+      \underbrace{\tfrac1d\,\mathbb{E}\big\|\nabla_{x_t}\log p_\sigma(x_t) - s(x_t)\big\|^2}_{\text{score error}}
+      \]
+    </div>
+    <p class="sub" style="margin:-14px 0 22px">Expectations are over fresh noisy pairs. The factor 1/d (d = 2) averages over coordinates, as <code>nn.MSELoss</code> does, so every number on this page is per coordinate.</p>
+
+    <div class="panel" id="budget-panel">
+      <h3>Where the training loss can sit</h3>
+      <p class="sub">Week 8 setup: three blobs, blob spread τ = 0.5, noise σ = 0.5. Per coordinate, as <code>nn.MSELoss</code> reports it.</p>
+      <div class="controls">
+        <div class="seg" role="group" aria-label="Units">
+          <button type="button" id="u-score" aria-pressed="true">Score units</button>
+          <button type="button" id="u-x0" aria-pressed="false">x₀ units (× σ⁴)</button>
+        </div>
+      </div>
+      <div class="budget" id="budget">
+        <div class="floor-bracket" id="floor-bracket"><span id="floor-label">floor ≈ 2.11</span></div>
+        <div class="marker" id="mk-x0" tabindex="0"><div class="ml" id="mk-x0-l"></div><div class="pin"></div></div>
+        <div class="marker" id="mk-sc" tabindex="0"><div class="ml" id="mk-sc-l"></div><div class="pin"></div></div>
+        <div class="bar" role="img" aria-label="Predict-zero loss of 4 split into within-blob floor 2.0, which-blob floor 0.11, and earned-back part 1.89">
+          <div class="b-within" id="seg-within" tabindex="0"></div>
+          <div class="b-which" id="seg-which" tabindex="0"></div>
+          <div class="b-earned" id="seg-earned" tabindex="0"></div>
+        </div>
+        <div class="axis" id="budget-axis"></div>
+      </div>
+      <div class="legend">
+        <span><i class="sw-within"></i>Floor, within-blob part</span>
+        <span><i class="sw-which"></i>Floor, which-blob part</span>
+        <span><i class="sw-earned"></i>Earned back by the exact score</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Quantity</th><th class="n">Score units</th><th class="n">x₀ units</th></tr></thead>
+          <tbody>
+            <tr><td>Predict-zero loss (in x₀ units: output \(x_t\) unchanged)</td><td class="n">4.000</td><td class="n">0.250</td></tr>
+            <tr><td>Floor, within-blob part (exact)</td><td class="n">2.000</td><td class="n">0.125</td></tr>
+            <tr><td>Floor, which-blob part (Monte Carlo)</td><td class="n">≈ 0.11</td><td class="n">≈ 0.007</td></tr>
+            <tr><td>Floor, total</td><td class="n">≈ 2.11</td><td class="n">≈ 0.132</td></tr>
+            <tr><td>Earned back by the exact score</td><td class="n">≈ 1.89</td><td class="n">≈ 0.118</td></tr>
+            <tr><td>Week 8 x₀ model, validation loss</td><td class="n">2.910</td><td class="n">0.1819</td></tr>
+            <tr><td>Week 8 score model, validation loss</td><td class="n">3.473</td><td class="n">0.2171</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sub" style="margin:0">The two Week 8 losses come from 300 validation points. The floor is a population value. Step 6 explains why you cannot subtract them exactly.</p>
+    </div>
+
+    <nav class="toc" aria-label="Sections">
+      <a href="#vocab">Words we use</a>
+      <a href="#puzzle">The puzzle</a>
+      <a href="#step1">1 · Engine</a>
+      <a href="#step2">2 · What m is</a>
+      <a href="#step3">3 · Budget</a>
+      <a href="#step4">4 · The 2.0</a>
+      <a href="#step5">5 · Training</a>
+      <a href="#step6">6 · Your numbers</a>
+      <a href="#step7">7 · Vincent</a>
+      <a href="#corrections">Corrections</a>
+      <a href="#checklist">Post checklist</a>
+    </nav>
+  </div>
+</header>
+
+<main class="band">
+  <div class="inner">
+
+    <!-- Vocabulary -->
+    <section class="block" id="vocab">
+      <div class="sec-head"><h2>Words we use</h2></div>
+      <div class="prose">
+        <p>This page uses one name for each idea. The post can use other names, but use each one consistently. Every loss below is an expectation over fresh noisy pairs, averaged over the d = 2 coordinates.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Symbol</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>Noisy point</td><td>\(x_t = x_0 + \sigma\varepsilon\)</td><td>Clean point plus noise, \(\varepsilon \sim \mathcal{N}(0, I)\). Here σ = 0.5.</td></tr>
+            <tr><td>Conditional score target</td><td>\(y = -\varepsilon/\sigma = (x_0 - x_t)/\sigma^2\)</td><td>The training label. It changes with every noise draw.</td></tr>
+            <tr><td>Marginal score</td><td>\(m(x_t) = \nabla_{x_t}\log p_\sigma(x_t)\)</td><td>What the score model should learn. Your <code>evaluate.py</code> calls it the analytical score.</td></tr>
+            <tr><td>Score model</td><td>\(s(x_t)\)</td><td>The network. It sees only \(x_t\).</td></tr>
+            <tr><td>Training loss</td><td>\(\tfrac1d\,\mathbb{E}\|y - s(x_t)\|^2\)</td><td>What training minimizes.</td></tr>
+            <tr><td>Floor</td><td>\(\tfrac1d\,\mathbb{E}[\operatorname{tr}\operatorname{Cov}(y \mid x_t)]\)</td><td>The part of the expected training loss that no model can remove.</td></tr>
+            <tr><td>Score error</td><td>\(\tfrac1d\,\mathbb{E}\|m(x_t) - s(x_t)\|^2\)</td><td>The part that training can reduce. Your code reports it as score MSE.</td></tr>
+            <tr><td>Predict-zero loss</td><td>\(\tfrac1d\,\mathbb{E}\|y\|^2 = 1/\sigma^2\)</td><td>The training loss of \(s = 0\). Equals 4 here.</td></tr>
+            <tr><td>Earned-back part</td><td>\(\tfrac1d\,\mathbb{E}\|m(x_t)\|^2\)</td><td>What the exact score removes from the predict-zero loss. The marginal score has mean 0, so this is also its variance.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Puzzle -->
+    <section class="block" id="puzzle">
+      <div class="sec-head"><h2>The puzzle</h2></div>
+      <div class="prose">
+        <p>Your <a href="../mini_projects/checkpoint_02_toy_score_matching/report.md">Week 8 report</a> (lines 118–124) and your <a href="https://juancopi81.github.io/posts/2026-07-30-two-ways-to-learn-the-same-score-field.html">Two Ways post</a> show this table. Both say the two objective losses are not directly comparable.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Objective</th><th class="n">Final validation objective loss</th><th class="n">Validation score MSE</th></tr></thead>
+          <tbody>
+            <tr><td>\(x_0\)</td><td class="n">0.181885</td><td class="n">0.727958</td></tr>
+            <tr><td>Score</td><td class="n">3.472780</td><td class="n">1.407152</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose">
+        <p>Two questions come from it:</p>
+        <ul>
+          <li>Why is the score-objective loss (3.47) much larger than its score MSE (1.41)?</li>
+          <li>Can the two losses be compared after all?</li>
+        </ul>
+        <p>Short answer: about 2.11 of the score-objective loss is the floor. After a change of units, the two losses are comparable.</p>
+      </div>
+    </section>
+
+    <!-- Step 1 -->
+    <section class="block" id="step1">
+      <div class="sec-head"><span class="step-no">Step 1</span><h2>The engine: add and subtract</h2></div>
+      <p class="question">Why can no score model reach zero training loss?</p>
+      <div class="step-grid">
+        <div>
+          <div class="prose">
+            <p>The score model sees only \(x_t\). Many pairs \((x_0, \varepsilon)\) give the same \(x_t\), and each pair has its own target \(y\). Use the same move as in <a href="https://juancopi81.github.io/posts/2026-07-02-denoising-is-not-inversion.html">Denoising Is Not Inversion</a>: add and subtract \(m(x_t) = \mathbb{E}[y \mid x_t]\) inside the square, then expand.</p>
+            <div class="eq">\[
+              \tfrac1d\,\mathbb{E}\|y-s\|^2
+              = \tfrac1d\,\mathbb{E}\|y-m\|^2
+              + \tfrac2d\,\mathbb{E}\big[(y-m)^{\top}(m-s)\big]
+              + \tfrac1d\,\mathbb{E}\|m-s\|^2
+            \]</div>
+            <ul>
+              <li><b>Cross term.</b> Condition on \(x_t\) (Adam's law). Then \(m - s\) is fixed, so it moves out of the inner expectation. What remains is \(\mathbb{E}[y - m \mid x_t] = 0\).</li>
+              <li><b>First term.</b> By Adam's law again, \(\tfrac1d\,\mathbb{E}\|y-m\|^2 = \tfrac1d\,\mathbb{E}[\operatorname{tr}\operatorname{Cov}(y \mid x_t)]\): the conditional variances of the coordinates, averaged. It depends only on the data and on σ. The model cannot change it. This is the floor.</li>
+              <li><b>Last term.</b> The score error. Training can reduce it.</li>
+            </ul>
+            <p>The squares are squared norms, which sum the d = 2 coordinates, and the cross term is an inner product. The factor 1/d turns the sums into per-coordinate averages, as <code>nn.MSELoss</code> does. You can also read the whole argument one coordinate at a time.</p>
+          </div>
+          <div class="keypoint"><span class="label">Key point</span>
+            <p>The floor exists because the model sees only \(x_t\), and pairs that share an \(x_t\) have different targets.</p>
+          </div>
+
+          <div class="panel" id="pair-panel">
+            <h3>Two pairs, one input</h3>
+            <p class="sub">\(x_0\) is 0 or 2. Noise \(e\) is −1 or +1. We observe \(x_t = 1\). Pair a: \(x_0 = 0, e = +1\). Pair b: \(x_0 = 2, e = -1\). Here the target is \(x_0\), so \(m = \mathbb{E}[x_0 \mid x_t = 1] = 1\).</p>
+            <div class="controls">
+              <label for="pair-c">Model output at \(x_t = 1\): <span class="readout" id="pair-c-val">0.40</span></label>
+              <input type="range" id="pair-c" min="-1" max="3" step="0.05" value="0.4" />
+              <label class="check"><input type="checkbox" id="pair-see" /> Let the model also see \(x_0\) (it copies the answer)</label>
+            </div>
+            <div class="pair-grid">
+              <svg class="plot" id="pair-svg" viewBox="0 0 420 120" role="img" aria-label="Number line with the two targets, their mean, and the model output"></svg>
+              <div>
+                <div class="readout" id="pair-numbers"></div>
+                <div class="lossbar" id="pair-bar" aria-hidden="true"></div>
+                <div class="legend" style="margin-top:4px">
+                  <span><i class="sw-within"></i>Floor (Var = 1)</span>
+                  <span><i class="sw-error"></i>Score error \((c - 1)^2\)</span>
+                </div>
+              </div>
+            </div>
+            <p class="sub" style="margin:12px 0 0">The score target gives the same picture. With \(y = -e\), pair a has target −1 and pair b has target +1. The floor is again 1.</p>
+          </div>
+
+          <div class="watch"><span class="tag">Watch out</span>
+            <p>If the model also sees \(x_0\), the cross term is not zero. We still condition on \(x_t\) only, and \(x_0\) is still random given \(x_t\), so \(m - g(x_t, x_0)\) cannot move out. Try the checkbox: the cross term becomes −1 per pair and the loss becomes 0.</p>
+          </div>
+        </div>
+        <aside class="photos" aria-label="Your handwritten pages for step 1">
+          <figure class="photo" data-photo="step1-a"><div class="ph"></div><figcaption>First attempt. It includes "y = analytical score" (see correction 2).</figcaption></figure>
+          <figure class="photo" data-photo="step1-b"><div class="ph"></div><figcaption>Full expansion with Adam's law.</figcaption></figure>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Step 2 -->
+    <section class="block" id="step2">
+      <div class="sec-head"><span class="step-no">Step 2</span><h2>What m(xₜ) is</h2></div>
+      <p class="question">If the label is y, what does the score model learn?</p>
+      <div class="step-grid">
+        <div>
+          <div class="prose">
+            <ol>
+              <li>From \(x_t = x_0 + \sigma\varepsilon\): \(y = -\varepsilon/\sigma = (x_0 - x_t)/\sigma^2\).</li>
+              <li>This is the conditional score \(\nabla_{x_t}\log q(x_t \mid x_0)\). It points from \(x_t\) back to the one \(x_0\) that made it.</li>
+              <li>Identity (4) from <a href="https://juancopi81.github.io/posts/2026-07-23-averaging-paths-to-the-peaks-of-our-mountains.html">Averaging Paths</a> gives the average over all plausible \(x_0\):</li>
+            </ol>
+            <div class="eq">\[
+              m(x_t) = \mathbb{E}\big[\nabla_{x_t}\log q(x_t \mid x_0) \,\big|\, x_t\big] = \nabla_{x_t}\log p_\sigma(x_t)
+            \]</div>
+            <p>So \(m(x_t)\) is the marginal score: the analytical score in <code>evaluate.py</code>. The label \(y\) is not the analytical score. Steps 1 and 2 together give:</p>
+            <div class="eq">\[
+              \text{training loss} = \text{floor} + \underbrace{\tfrac1d\,\mathbb{E}\|\nabla_{x_t}\log p_\sigma(x_t) - s(x_t)\|^2}_{\text{score MSE in evaluate.py}}
+            \]</div>
+          </div>
+
+          <div class="panel" id="arrow-panel">
+            <h3>Many targets, one average</h3>
+            <p class="sub">Each thin line goes from \(x_t\) to one plausible \(x_0\): a conditional score target, drawn at scale σ². The thick arrow is their average: the marginal score at the same scale. The spread of the thin lines around the thick arrow is the floor at this \(x_t\).</p>
+            <div class="controls">
+              <div class="seg" role="group" aria-label="Position of the noisy point">
+                <button type="button" id="xt-near" aria-pressed="true">xₜ near a blob</button>
+                <button type="button" id="xt-between" aria-pressed="false">xₜ between two blobs</button>
+              </div>
+            </div>
+            <div class="fig-grid">
+              <svg class="plot" id="arrow-svg" viewBox="0 0 440 420" role="img" aria-label="Noisy point with lines to plausible clean points and their average arrow"></svg>
+              <div class="readout" id="arrow-numbers"></div>
+            </div>
+          </div>
+        </div>
+        <aside class="photos" aria-label="Your handwritten page for step 2">
+          <figure class="photo" data-photo="step2"><div class="ph"></div><figcaption>y as the conditional score, then identity (4).</figcaption></figure>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Step 3 -->
+    <section class="block" id="step3">
+      <div class="sec-head"><span class="step-no">Step 3</span><h2>The budget: Eve's law on the target</h2></div>
+      <p class="question">How big is the floor compared with the whole loss?</p>
+      <div class="step-grid">
+        <div>
+          <div class="prose">
+            <p>Steps 3 and 4 work with one coordinate at a time, so \(y\), \(\varepsilon\) and the scores are scalars. Eve's law holds for each coordinate. Averaging the two coordinates gives the per-coordinate numbers on this page.</p>
+            <p>Eve's law (<a href="../notes/w07_stat110_conditional_expectation_given_rv.md">Week 7 note</a>, lines 283–310) with \(Y = y\) and \(X = x_t\):</p>
+            <div class="eq">\[
+              \underbrace{\operatorname{Var}(y)}_{\text{predict-zero loss}}
+              = \underbrace{\mathbb{E}[\operatorname{Var}(y \mid x_t)]}_{\text{floor}}
+              + \underbrace{\operatorname{Var}(\mathbb{E}[y \mid x_t])}_{\text{earned back}}
+            \]</div>
+            <ul>
+              <li>\(\mathbb{E}[y] = 0\), so \(\operatorname{Var}(y) = \mathbb{E}[y^2] = \mathbb{E}[\varepsilon^2]/\sigma^2 = 1/\sigma^2 = 4\). This is the loss of a model that always predicts 0.</li>
+              <li>\(\mathbb{E}[y \mid x_t]\) is the marginal score. Its mean is 0 (Adam's law), so its variance is its expected squared size. This is what the exact score earns back: ≈ 1.89.</li>
+              <li>So <b>4 = floor (≈ 2.11) + earned back (≈ 1.89)</b>. The bar at the top of the page shows this split.</li>
+            </ul>
+            <p>One more line connects the floor to the clean data. Given \(x_t\), the shift by \(x_t\) does not change a variance, and the factor \(1/\sigma^2\) comes out squared:</p>
+            <div class="eq">\[
+              \operatorname{Var}(y \mid x_t) = \frac{\operatorname{Var}(x_0 \mid x_t)}{\sigma^4}
+              \qquad\Longrightarrow\qquad
+              \text{floor} = \frac{\tfrac1d\,\mathbb{E}[\operatorname{tr}\operatorname{Cov}(x_0 \mid x_t)]}{\sigma^4}
+            \]</div>
+            <p>The left equation is for one coordinate. The right one averages it over the d = 2 coordinates.</p>
+          </div>
+        </div>
+        <aside class="photos" aria-label="Your handwritten pages for step 3">
+          <figure class="photo" data-photo="step3-a"><div class="ph"></div><figcaption>Eve's law on y; the predict-zero loss is 4.</figcaption></figure>
+          <figure class="photo" data-photo="step3-b"><div class="ph"></div><figcaption>Var(y | xₜ) = Var(x₀ | xₜ) / σ⁴.</figcaption></figure>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Step 4 -->
+    <section class="block" id="step4">
+      <div class="sec-head"><span class="step-no">Step 4</span><h2>Inside the floor: the 2.0 by hand</h2></div>
+      <p class="question">Where does the number 2.11 come from?</p>
+      <div class="step-grid">
+        <div>
+          <div class="prose">
+            <p>Let \(k\) be the hidden label of the blob that produced \(x_0\). Take one coordinate of \(x_0\) and apply Eve's law again, with everything also conditioned on \(x_t\):</p>
+            <div class="eq">\[
+              \operatorname{Var}(x_0 \mid x_t)
+              = \underbrace{\mathbb{E}\big[\operatorname{Var}(x_0 \mid x_t, k) \,\big|\, x_t\big]}_{\text{within-blob}}
+              + \underbrace{\operatorname{Var}\big(\mathbb{E}[x_0 \mid x_t, k] \,\big|\, x_t\big)}_{\text{which-blob}}
+            \]</div>
+            <ul>
+              <li><b>Within-blob.</b> Given \(k\), \(x_0 \sim \mathcal{N}(\mu_k, \tau^2)\) and \(x_t = x_0 + \sigma\varepsilon\). Use the posterior variance from your <a href="../notes/w04_conditioning_in_diffusion.md">Week 4 note</a> with α = 1, \(s_0 = \tau = 0.5\), σ = 0.5:
+                \[ \frac{\tau^2\sigma^2}{\tau^2+\sigma^2} = \frac{0.0625}{0.5} = 0.125 \]
+                It does not depend on \(x_t\) or on \(k\). Divide by \(\sigma^4 = 0.0625\): exactly <b>2.0</b>.</li>
+              <li><b>Which-blob.</b> Each blob gives its own guess \(\mathbb{E}[x_0 \mid x_t, k]\). This term is the spread of those guesses, weighted by the responsibilities \(r_k(x_t)\) from your Two Ways post. Divide it by \(\sigma^4\) too. Averaged over \(x_t\) and over the two coordinates, it adds <b>≈ 0.11</b> (Monte Carlo).</li>
+            </ul>
+            <div class="eq">\[
+              \text{floor} = 2.0 + \frac{1}{\sigma^4}\,\mathbb{E}\Big[\operatorname{Var}\big(\mathbb{E}[x_0 \mid x_t, k] \,\big|\, x_t\big)\Big] \approx 2.0 + 0.11 = 2.11
+            \]</div>
+            <p>Three independent Monte Carlo runs gave 2.110, 2.115 and 2.1148. The which-blob part is small because the blobs are far apart. The closest centers, (0, 2) and (2, −1), are about 3.6 apart. The noisy blob width is \(\sqrt{\tau^2+\sigma^2} \approx 0.71\), so they are about 5 widths apart. The which-blob part is large only in thin bands between blobs, and few \(x_t\) land there.</p>
+          </div>
+
+          <div class="panel" id="heat-panel">
+            <h3>Which-blob part of the floor at each xₜ</h3>
+            <p class="sub">Score units, σ = 0.5. Dashed circles mark where most \(x_t\) land (radius \(2\sqrt{\tau^2+\sigma^2}\)). The within-blob part is 2.0 everywhere and is not shown.</p>
+            <div class="fig-grid">
+              <div>
+                <canvas class="heat" id="heat" role="img" aria-label="Heat map of the which-blob part of the floor over the plane"></canvas>
+                <div class="heat-legend"><div class="grad" id="heat-grad"></div><div class="ticks" id="heat-ticks"></div></div>
+              </div>
+              <div class="readout" id="heat-readout">Move over the map to read the value at a point.</div>
+            </div>
+          </div>
+
+          <div class="watch"><span class="tag">Side note</span>
+            <p>The within-blob variance does not depend on \(x_t\). This is a general Gaussian fact: conditioning moves the mean, not the uncertainty. In the post, give it one sentence at most.</p>
+          </div>
+        </div>
+        <aside class="photos" aria-label="Your handwritten page for step 4">
+          <figure class="photo" data-photo="step4"><div class="ph"></div><figcaption>Within-blob 0.125 and the 2.0. Note that 1/σ⁴ multiplies both pieces (correction 4).</figcaption></figure>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Step 5 -->
+    <section class="block" id="step5">
+      <div class="sec-head"><span class="step-no">Step 5</span><h2>What training can and cannot reduce</h2></div>
+      <p class="question">What does the identity say about longer training?</p>
+      <div class="prose">
+        <p>Your <a href="../notes/w13_optimization.md">Week 13 note</a> (lines 975–1018) names three causes of a gap from the ideal score: finite data, finite model capacity, and incomplete optimization.</p>
+        <ul>
+          <li>All three act on the score error. They decide how far \(s\) ends up from \(m\). They do not change \(m\); the data and σ fix \(m\).</li>
+          <li>The floor is not one of them. It stays even with infinite data, a perfect model, and perfect optimization.</li>
+          <li>The lowest possible <em>expected</em> training loss, over fresh noisy pairs, is the whole floor, <b>≈ 2.11</b>. The 2.0 is only the within-blob part.</li>
+          <li>A loss measured on one fixed, finite set is different. It can land below ≈ 2.11 by chance, and a flexible model trained on fixed noisy pairs could even memorize their noise. Your Week 8 loop draws fresh noise at every update (<code>train.py</code> line 126), so it cannot memorize the noise. That is why its training loss stays near the floor instead of sinking under it.</li>
+        </ul>
+        <p>For the Two Ways open question about longer training: more training can reduce only the score error. It can never take the expected score-objective loss below ≈ 2.11. This says nothing about which objective wins.</p>
+      </div>
+    </section>
+
+    <!-- Step 6 -->
+    <section class="block" id="step6">
+      <div class="sec-head"><span class="step-no">Step 6</span><h2>Your numbers, and what they can show</h2></div>
+      <p class="question">Can you subtract the floor from your Week 8 losses?</p>
+      <div class="step-grid">
+        <div>
+          <div class="prose">
+            <h3>Part A · Units</h3>
+            <p>The \(x_0\) model outputs \(g(x_t)\). <code>evaluate.py</code> converts it to an implied score \(\hat s = (g(x_t) - x_t)/\sigma^2\). With \(y = (x_0 - x_t)/\sigma^2\):</p>
+            <div class="eq">\[
+              \|\hat s - y\|^2 = \frac{\|g(x_t) - x_0\|^2}{\sigma^4}
+            \]</div>
+            <p>So the \(x_0\) loss is σ⁴ times the score loss of its implied score. Divide it by σ⁴ = 0.0625 to put both losses in score units.</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Objective</th><th class="n">Loss (own units)</th><th class="n">Score units</th><th class="n">Minus floor 2.11</th><th class="n">Score MSE measured</th><th class="n">Leftover</th></tr></thead>
+              <tbody>
+                <tr><td>\(x_0\)</td><td class="n">0.181885</td><td class="n">2.910</td><td class="n">0.800</td><td class="n">0.728</td><td class="n">+0.072</td></tr>
+                <tr><td>Score</td><td class="n">3.472780</td><td class="n">3.473</td><td class="n">1.363</td><td class="n">1.407</td><td class="n">−0.044</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Move</th><th>What you do</th><th>What it shows</th></tr></thead>
+              <tbody>
+                <tr><td>1 · Units</td><td>Divide the \(x_0\) loss by σ⁴</td><td>The losses become comparable: 2.91 against 3.47. The sentence about "different target spaces" was a units problem.</td></tr>
+                <tr><td>2 · Floor</td><td>Subtract the shared 2.11 from both</td><td>The leftover reads as each model's score error. The floor is the same for both, so the ranking does not change.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="prose">
+            <h3>Part B · Were the two columns measured on the same points?</h3>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Comparison</th><th>Same clean points</th><th>Same noise draws</th><th>Same moment</th></tr></thead>
+              <tbody>
+                <tr><td>Week 8: validation objective loss against score MSE</td><td>Yes. <code>shuffle</code> on <code>arange(1500)</code> and <code>permutation(1500)</code> give the same order with seed 42 (checked).</td><td>No. <code>train.py</code> draws from the global PyTorch stream after it builds the model. <code>evaluate.py</code> uses a fresh generator seeded with 42.</td><td>Yes, both at the end of training.</td></tr>
+                <tr><td>Week 13: training loss against held-out score MSE (<a href="../notes/w13_training_stability_for_diffusion.md">note</a>, lines 44–58)</td><td>No. Training data against held-out data.</td><td>No.</td><td>No. Before the update against after the update.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="prose">
+            <p>The leftovers (+0.072 and −0.044) have two possible causes, and nothing so far tells them apart:</p>
+            <ul>
+              <li><b>Different noise draws</b> between the two columns.</li>
+              <li><b>Finite sample.</b> On one set of 300 points, the cross term from step 1 is close to zero, not exactly zero.</li>
+            </ul>
+            <p>So in the post, the leftovers are the puzzle that motivates the derivation. They are not evidence.</p>
+          </div>
+          <div class="keypoint"><span class="label">The one check (no new training)</span>
+            <p>Freeze the trained model. Draw one set of fresh held-out noisy pairs, and use the same clean points and the same noise for all three numbers: (1) the loss of the exact score against y, (2) your model's loss against y, and (3) your model's score MSE. Expect (2) − (1) ≈ (3).</p>
+          </div>
+          <div class="prose">
+            <p>Reuse <code>gaussian_mixture_score</code> from <a href="../mini_projects/checkpoint_02_toy_score_matching/evaluate.py">evaluate.py</a> for (1). Number (1) is the floor measured on that set; it will be near 2.11 but not equal to it.</p>
+            <p>A larger set makes the agreement more reliable on average, because the cross term shrinks. One run with a larger set need not agree better than one with a smaller set. Fresh pairs matter: the model must not have trained on that noise.</p>
+          </div>
+        </div>
+        <aside class="photos" aria-label="Your handwritten page for step 6">
+          <figure class="photo" data-photo="step6-a"><div class="ph"></div><figcaption>The σ⁴ unit change and the leftovers. The first subtraction should give 0.80016 (correction 6).</figcaption></figure>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Step 7 -->
+    <section class="block" id="step7">
+      <div class="sec-head"><span class="step-no">Step 7</span><h2>The primary source: Vincent (2011)</h2></div>
+      <p class="question">Where does the literature already say this?</p>
+      <div class="prose">
+        <p>Read §4, eq. (6), then eqs. (8)–(10), then Appendix A, eqs. (16)–(18). Your study copy is in <code>sources/vincent_2011_score_matching/pdfs/</code> (gitignored). The <a href="../sources/vincent_2011_score_matching/README.md">source catalog</a> has the official links.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Vincent</th><th>Your notation</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>\(\tilde x\)</td><td>\(x_t\)</td><td>Noisy point</td></tr>
+            <tr><td>\(\psi(\tilde x; \theta)\)</td><td>\(s(x_t)\)</td><td>Score model</td></tr>
+            <tr><td>\(J_{\mathrm{NGSM}}\) (eq. 8)</td><td>Training loss</td><td>Match the conditional score target</td></tr>
+            <tr><td>\(J_{\mathrm{ESM}}\) (eq. 6)</td><td>Score error</td><td>Match the marginal score</td></tr>
+            <tr><td>\(C_3 = \mathbb{E}\big[\tfrac12\|\nabla\log q_\sigma(\tilde x \mid x_0)\|^2\big]\)</td><td>Predict-zero loss</td><td>Size of the conditional score target</td></tr>
+            <tr><td>\(C_2 = \mathbb{E}\big[\tfrac12\|\nabla\log q_\sigma(\tilde x)\|^2\big]\)</td><td>Earned-back part</td><td>Size of the marginal score</td></tr>
+            <tr><td>\(C_3 - C_2\)</td><td>Floor</td><td>\(J_{\mathrm{NGSM}} = J_{\mathrm{ESM}} + (C_3 - C_2)\), from eqs. 16–18</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose">
+        <ul>
+          <li><b>Conventions.</b> Vincent uses \(\tfrac12\sum_i\). <code>nn.MSELoss</code> uses \(\tfrac1d\sum_i\). So Vincent's value = (d/2) × your value. Your toy has d = 2, so the factor is 1 and the numbers agree.</li>
+          <li><b>Where identity (4) lives.</b> In Appendix A, the step that rewrites \(S(\theta)\) moves the derivative inside the integral over \(x^0\) and uses \(\partial q = q\,\partial\log q\). These are the same moves as your Averaging Paths derivation. Vincent expands both squares and shows that their cross terms are equal; you used add and subtract. Both are valid.</li>
+          <li><b>What Vincent gives.</b> The result holds for any data distribution and any corruption whose log-density is differentiable. The constant never depends on θ.</li>
+          <li><b>What you add.</b> The value of the constant (≈ 2.11), what it is (an average conditional variance, by Eve's law), its split (2.0 within-blob, ≈ 0.11 which-blob), and the σ⁴ unit change that makes your two objectives comparable.</li>
+        </ul>
+        <h3>Terms in the paper</h3>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Term</th><th>Plain meaning</th><th>In your setup</th><th>Needed in the post?</th></tr></thead>
+          <tbody>
+            <tr><td>Parzen density estimator</td><td>Put a small Gaussian bump on every data point and average them.</td><td>Your noisy marginal \(p_\sigma\), built from the data sample instead of the true blobs.</td><td>One line if you cite Vincent.</td></tr>
+            <tr><td>Denoising autoencoder</td><td>A network that maps a corrupted input back to the clean one under squared error.</td><td>Your \(x_0\)-objective model.</td><td>One sentence. Vincent's title links score matching and denoising, which is your Two Ways post.</td></tr>
+            <tr><td>Energy-based model</td><td>A model with an unnormalized density. Score matching was made to train these, because the score does not need the normalizer.</td><td>Not used.</td><td>No.</td></tr>
+            <tr><td>Restricted Boltzmann Machine</td><td>One kind of energy-based model, used in Vincent's architecture-specific part (eqs. 11–14, Appendix B).</td><td>Not used.</td><td>No. Skip those sections.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Corrections -->
+    <section class="block" id="corrections">
+      <div class="sec-head"><h2>Corrections along the way</h2></div>
+      <div class="prose"><p>These are the places where a first answer needed a fix. Each one marks a spot where a reader is likely to stumble too.</p></div>
+      <ol class="corrections">
+        <li>
+          <span class="where">Step 1, follow-up</span>
+          <div class="row"><b>First answer</b><span>If the model also sees \(x_0\), then \(x_0 - m\) moves out and the cross term is still zero.</span></div>
+          <div class="row"><b>Corrected</b><span>We still condition on \(x_t\) only, and \(x_0\) is still random given \(x_t\). So \(m - g(x_t, x_0)\) is not fixed and cannot move out. With \(g = x_0\), the cross term is \(-\operatorname{Var}(x_0 \mid x_t)\) and the loss is 0.</span></div>
+          <div class="row"><b>Why it matters</b><span>The floor exists only because the model sees \(x_t\) alone.</span></div>
+        </li>
+        <li>
+          <span class="where">Step 1, exercise</span>
+          <div class="row"><b>First answer</b><span>\(y\) = analytical score.</span></div>
+          <div class="row"><b>Corrected</b><span>\(y\) is the conditional score target. The analytical score in <code>evaluate.py</code> is the marginal score \(m(x_t) = \mathbb{E}[y \mid x_t]\).</span></div>
+          <div class="row"><b>Why it matters</b><span>This is the main distinction of the post.</span></div>
+        </li>
+        <li>
+          <span class="where">Step 1, follow-up</span>
+          <div class="row"><b>First answer</b><span>To change the floor, change \(x_0\) or \(m(x_t)\).</span></div>
+          <div class="row"><b>Corrected</b><span>The two knobs are the data distribution (blob spread τ, blob centers) and the noise level σ. \(x_0\) and \(m(x_t)\) are results of those knobs.</span></div>
+          <div class="row"><b>Why it matters</b><span>A noise-level slider in a playground moves the floor for this reason.</span></div>
+        </li>
+        <li>
+          <span class="where">Step 4</span>
+          <div class="row"><b>First answer</b><span>floor = 2 + E[which-blob variance].</span></div>
+          <div class="row"><b>Corrected</b><span>The factor 1/σ⁴ multiplies both pieces: floor = 2 + (1/σ⁴)·E[which-blob variance]. The which-blob part is ≈ 0.007 in \(x_0\) units and ≈ 0.11 in score units.</span></div>
+          <div class="row"><b>Why it matters</b><span>Mixing units gives a floor that is too small.</span></div>
+        </li>
+        <li>
+          <span class="where">Step 5</span>
+          <div class="row"><b>First answer</b><span>The lowest possible score-objective loss is 2.</span></div>
+          <div class="row"><b>Corrected</b><span>The lowest possible expected loss, over fresh noisy pairs, is the whole floor, ≈ 2.11. The 2.0 is only the within-blob part.</span></div>
+          <div class="row"><b>Why it matters</b><span>The leftovers in step 6 depend on using the whole floor.</span></div>
+        </li>
+        <li>
+          <span class="where">Step 6, part A</span>
+          <div class="row"><b>First answer</b><span>2.91016 − 2.11 = 0.81016.</span></div>
+          <div class="row"><b>Corrected</b><span>2.91016 − 2.11 = 0.80016. The leftover for the \(x_0\) row is +0.072.</span></div>
+          <div class="row"><b>Why it matters</b><span>Arithmetic only. The conclusion does not change.</span></div>
+        </li>
+        <li>
+          <span class="where">Step 6, part B</span>
+          <div class="row"><b>First answer</b><span>The leftovers come from different noise, and we can check by computing the exact score as we did.</span></div>
+          <div class="row"><b>Corrected</b><span>There are two possible causes: different noise draws and the finite sample. The ≈ 2.11 is a population number from 2M fresh samples. The check is a matched measurement: a frozen model and one set of fresh held-out pairs.</span></div>
+          <div class="row"><b>Why it matters</b><span>This decides what the post can claim as evidence.</span></div>
+        </li>
+        <li>
+          <span class="where">Step 7, conventions</span>
+          <div class="row"><b>First answer</b><span>To go from PyTorch to Vincent, divide by d/2.</span></div>
+          <div class="row"><b>Corrected</b><span>Vincent's value = (d/2) × the <code>MSELoss</code> value. Multiply. In 2D the factor is 1.</span></div>
+          <div class="row"><b>Why it matters</b><span>Only for a footnote. In your toy the numbers agree.</span></div>
+        </li>
+        <li>
+          <span class="where">Step 7, constants</span>
+          <div class="row"><b>First answer</b><span>\(C_3 - C_2\) is what the exact score earns back.</span></div>
+          <div class="row"><b>Corrected</b><span>\(C_3\) is the predict-zero loss and \(C_2\) is the earned-back part. So \(C_3 - C_2\) is the floor, and \(J_{\mathrm{NGSM}} = J_{\mathrm{ESM}} + \text{floor}\).</span></div>
+          <div class="row"><b>Why it matters</b><span>This is the bridge between your derivation and the paper.</span></div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Checklist -->
+    <section class="block" id="checklist">
+      <div class="sec-head"><h2>Checklist for the post</h2></div>
+      <div class="prose"><p>The full journey lives on this page, so the post can stay short. The ticks save in this browser only.</p></div>
+      <div class="cols">
+        <div>
+          <h3>For a short post (a suggestion; your call)</h3>
+          <dl class="lean">
+            <dt>Keep</dt><dd>The puzzle (the two losses that are "not comparable"); the identity, through your published add-and-subtract; the 2.0 by hand and the ≈ 2.11 total; the σ⁴ unit change; the one check.</dd>
+            <dt>One line each</dt><dd>The Eve's-law budget (4 = 2.11 + 1.89) and the which-blob part.</dd>
+            <dt>Reference only</dt><dd>Vincent's constants.</dd>
+            <dt>Drop</dt><dd>The Week 13 numbers. Week 8 is enough.</dd>
+          </dl>
+
+          <h3>Claims to make</h3>
+          <ul class="checks" data-group="claims">
+            <li><label><input type="checkbox" id="ck-claim-1" /><span>Training loss = floor + score error, from one add-and-subtract.</span></label></li>
+            <li><label><input type="checkbox" id="ck-claim-2" /><span>The model sees only \(x_t\), and pairs that share an \(x_t\) have different targets.</span></label></li>
+            <li><label><input type="checkbox" id="ck-claim-3" /><span>The label \(y\) is the conditional score; the model learns the marginal score.</span></label></li>
+            <li><label><input type="checkbox" id="ck-claim-4" /><span>At σ = 0.5 the floor is ≈ 2.11 per coordinate, and 2.0 of it is exact by hand.</span></label></li>
+            <li><label><input type="checkbox" id="ck-claim-5" /><span>After the σ⁴ unit change, the two Week 8 losses are comparable.</span></label></li>
+            <li><label><input type="checkbox" id="ck-claim-6" /><span>Training can reduce only the score error.</span></label></li>
+          </ul>
+
+          <h3>Caveats to state</h3>
+          <ul class="checks" data-group="caveats">
+            <li><label><input type="checkbox" id="ck-cav-1" /><span>≈ 2.11 is a population value. On 300 points, even the exact score's measured loss moves around it.</span></label></li>
+            <li><label><input type="checkbox" id="ck-cav-2" /><span>The table's columns are not matched (different noise draws), so the leftovers are the puzzle, not evidence.</span></label></li>
+            <li><label><input type="checkbox" id="ck-cav-3" /><span>The floor is per coordinate, like <code>MSELoss</code>. Vincent's ½Σ gives the same number in 2D.</span></label></li>
+            <li><label><input type="checkbox" id="ck-cav-4" /><span>The floor holds at one σ and changes with σ.</span></label></li>
+            <li><label><input type="checkbox" id="ck-cav-5" /><span>Do not claim which objective wins with longer training. Claim only that the expected loss on fresh noisy pairs cannot go below the floor.</span></label></li>
+            <li><label><input type="checkbox" id="ck-cav-6" /><span>The decomposition needs no Gaussian assumption. The exact 2.0 uses the Gaussian blobs.</span></label></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Numbers</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Quantity</th><th class="n">Value</th></tr></thead>
+              <tbody>
+                <tr><td>Predict-zero loss, 1/σ²</td><td class="n">4</td></tr>
+                <tr><td>Floor, total</td><td class="n">≈ 2.11</td></tr>
+                <tr><td>Floor, within-blob (exact)</td><td class="n">2.0</td></tr>
+                <tr><td>Floor, which-blob</td><td class="n">≈ 0.11</td></tr>
+                <tr><td>Earned back by the exact score</td><td class="n">≈ 1.89</td></tr>
+                <tr><td>Floor in x₀ units</td><td class="n">≈ 0.132</td></tr>
+                <tr><td>Week 8 losses in score units (x₀, score)</td><td class="n">2.91, 3.47</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>The one check</h3>
+          <ul class="checks" data-group="check">
+            <li><label><input type="checkbox" id="ck-check-1" /><span>Freeze the model. Draw one set of fresh held-out noisy pairs, and use it for all three numbers.</span></label></li>
+            <li><label><input type="checkbox" id="ck-check-2" /><span>Compute (1) the exact-score loss against y, (2) the model loss against y, (3) the model score MSE.</span></label></li>
+            <li><label><input type="checkbox" id="ck-check-3" /><span>Confirm (2) − (1) ≈ (3). With a larger set, expect closer agreement on average, not on every run.</span></label></li>
+          </ul>
+
+          <h3>Re-read before writing</h3>
+          <ul class="checks" data-group="reread">
+            <li><label><input type="checkbox" id="ck-read-1" /><span><a href="https://juancopi81.github.io/posts/2026-07-30-two-ways-to-learn-the-same-score-field.html">Two Ways</a>: the table, the "different target spaces" sentence, the open question on longer training.</span></label></li>
+            <li><label><input type="checkbox" id="ck-read-2" /><span><a href="https://juancopi81.github.io/posts/2026-07-02-denoising-is-not-inversion.html">Denoising Is Not Inversion</a>: the irreducible term.</span></label></li>
+            <li><label><input type="checkbox" id="ck-read-3" /><span><a href="https://juancopi81.github.io/posts/2026-07-23-averaging-paths-to-the-peaks-of-our-mountains.html">Averaging Paths</a>: identity (4).</span></label></li>
+            <li><label><input type="checkbox" id="ck-read-4" /><span><a href="../mini_projects/checkpoint_02_toy_score_matching/report.md">report.md</a> lines 118–124 and the <a href="../notes/w13_training_stability_for_diffusion.md">Week 13 stability note</a> lines 44–58.</span></label></li>
+          </ul>
+
+          <h3>References</h3>
+          <div class="prose">
+            <ul>
+              <li>Vincent (2011), <i>A Connection Between Score Matching and Denoising Autoencoders</i>: eqs. (6), (8), (10); Appendix A, eqs. (16)–(18).</li>
+              <li>Blitzstein &amp; Hwang, <i>Introduction to Probability</i>, ch. 9: Adam's and Eve's laws.</li>
+              <li>Your notes: <a href="../notes/w04_conditioning_in_diffusion.md">Week 4 posterior variance</a>, <a href="../notes/w07_stat110_conditional_expectation_given_rv.md">Week 7 Eve's law</a>, <a href="../notes/w13_optimization.md">Week 13, lines 975–1018</a>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin-top:20px">Open item: how the floor changes with σ</h3>
+      <div class="prose">
+        <p>What fraction of the predict-zero loss is floor, as σ → 0 and as σ → ∞? Start with the within-blob part. Check value: at σ = 0.5 the whole floor is 2.11 / 4 ≈ 53% of the predict-zero loss.</p>
+      </div>
+      <details>
+        <summary>Show the answer (try it first)</summary>
+        <div class="prose">
+          <p><b>Within-blob part only.</b> Divide the within-blob floor by the predict-zero loss:</p>
+          <div class="eq">\[
+            \frac{\tau^2\sigma^2/(\tau^2+\sigma^2)\,/\,\sigma^4}{1/\sigma^2} = \frac{\tau^2}{\tau^2+\sigma^2}
+          \]</div>
+          <p>It goes to 1 as σ → 0 and to 0 as σ → ∞. At σ = 0.5 it is 0.5.</p>
+          <p><b>Whole floor.</b> Per coordinate, the fraction is \(\mathbb{E}[\operatorname{Var}(x_0 \mid x_t)]/\sigma^2\).</p>
+          <ul>
+            <li>σ → 0: \(x_t\) pins \(x_0\) to within about σ, so \(\operatorname{Var}(x_0 \mid x_t) \approx \sigma^2\) and the fraction goes to 1. Almost all of the training loss is floor. A falling loss curve shows only a small remaining part.</li>
+            <li>σ → ∞: \(\operatorname{Var}(x_0 \mid x_t)\) goes to \(\operatorname{Var}(x_0)\), which stays finite, so the fraction goes to 0.</li>
+          </ul>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th class="n">σ</th><th class="n">Within-blob</th><th class="n">Which-blob</th><th class="n">Floor</th><th class="n">Predict-zero</th><th class="n">Floor fraction</th></tr></thead>
+            <tbody>
+              <tr><td class="n">0.10</td><td class="n">96.15</td><td class="n">0.012</td><td class="n">96.17</td><td class="n">100</td><td class="n">0.96</td></tr>
+              <tr><td class="n">0.25</td><td class="n">12.80</td><td class="n">0.028</td><td class="n">12.83</td><td class="n">16</td><td class="n">0.80</td></tr>
+              <tr><td class="n">0.50</td><td class="n">2.000</td><td class="n">0.115</td><td class="n">2.115</td><td class="n">4</td><td class="n">0.53</td></tr>
+              <tr><td class="n">1.00</td><td class="n">0.200</td><td class="n">0.242</td><td class="n">0.442</td><td class="n">1</td><td class="n">0.44</td></tr>
+              <tr><td class="n">2.00</td><td class="n">0.015</td><td class="n">0.081</td><td class="n">0.096</td><td class="n">0.25</td><td class="n">0.38</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="prose">
+          <p>Score units, per coordinate, Monte Carlo with 1M samples per row. In score units the which-blob part peaks near σ = 1 and then falls. This connects to loss weighting across noise levels, which comes in Week 16 and later. Keep it out of this post.</p>
+        </div>
+      </details>
+    </section>
+
+  </div>
+</main>
+
+<footer class="band">
+  <div class="inner">
+    Study record for the curriculum, Week 13 material. Setup: <code>mini_projects/checkpoint_02_toy_score_matching</code>, three blobs at (−2, −2), (0, 2), (2, −1), τ = 0.5, σ = 0.5. Photos load from <code>notebooks/w13_score_loss_floor_study_photos/</code>.
+    Revised 20 Oct 2026 after review: the floor bounds the expected loss on fresh pairs, every loss carries an explicit 1/d, and the matched check uses a frozen model on fresh held-out pairs.
+  </div>
+</footer>
+
+<div id="tip" hidden></div>
+
+<script>
+(function () {
+  "use strict";
+  var TAU = 0.5, SIG = 0.5, SIG4 = Math.pow(SIG, 4);
+  var MU = [[-2, -2], [0, 2], [2, -1]];
+  var XT = "<i>x</i><sub>t</sub>", X0 = "<i>x</i><sub>0</sub>";
+
+  function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function fmt(v, d) { return (v < 0 ? "−" : "") + Math.abs(v).toFixed(d); }
+
+  /* ---------- Tooltip ---------- */
+  var tip = document.getElementById("tip");
+  function showTip(el, html) {
+    tip.innerHTML = html; tip.hidden = false;
+    var r = el.getBoundingClientRect();
+    var tw = tip.offsetWidth, th = tip.offsetHeight;
+    var x = Math.min(Math.max(8, r.left + r.width / 2 - tw / 2), window.innerWidth - tw - 8);
+    var y = r.top - th - 8; if (y < 8) y = r.bottom + 8;
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+  }
+  function hideTip() { tip.hidden = true; }
+  function bindTip(el, fn) {
+    el.addEventListener("mouseenter", function () { showTip(el, fn()); });
+    el.addEventListener("focus", function () { showTip(el, fn()); });
+    el.addEventListener("mouseleave", hideTip);
+    el.addEventListener("blur", hideTip);
+  }
+
+  /* ---------- Budget bar ---------- */
+  var units = "score";
+  var B = { within: 2.0, which: 0.11, earned: 1.89, total: 4.0, x0m: 2.910, scm: 3.473 };
+  function budget() {
+    var k = units === "score" ? 1 : SIG4;
+    var tot = B.total * k;
+    document.getElementById("seg-within").style.flexBasis = (100 * B.within / B.total) + "%";
+    document.getElementById("seg-which").style.flexBasis = (100 * B.which / B.total) + "%";
+    document.getElementById("seg-earned").style.flexBasis = (100 * B.earned / B.total) + "%";
+    var floorPct = 100 * (B.within + B.which) / B.total;
+    var br = document.getElementById("floor-bracket");
+    br.style.left = "0"; br.style.width = floorPct + "%";
+    document.getElementById("floor-label").textContent = "floor ≈ " + (units === "score" ? "2.11" : "0.132");
+    function place(id, v, name) {
+      var el = document.getElementById(id);
+      el.style.left = (100 * v / B.total) + "%";
+      document.getElementById(id + "-l").textContent = name + " " + (units === "score" ? v.toFixed(2) : (v * SIG4).toFixed(3));
+    }
+    place("mk-x0", B.x0m, "x₀ model");
+    place("mk-sc", B.scm, "score model");
+    var ax = document.getElementById("budget-axis"); ax.innerHTML = "";
+    var ticks = units === "score" ? [0, 1, 2, 3, 4] : [0, 0.05, 0.10, 0.15, 0.20, 0.25];
+    ticks.forEach(function (t) {
+      var s = document.createElement("span");
+      s.style.left = (100 * t / tot) + "%";
+      s.textContent = units === "score" ? String(t) : t.toFixed(2);
+      if (t === 0) s.style.transform = "none";
+      if (Math.abs(t - tot) < 1e-9) s.style.transform = "translateX(-100%)";
+      ax.appendChild(s);
+    });
+  }
+  function setUnits(u) {
+    units = u;
+    document.getElementById("u-score").setAttribute("aria-pressed", u === "score");
+    document.getElementById("u-x0").setAttribute("aria-pressed", u === "x0");
+    budget();
+  }
+  document.getElementById("u-score").addEventListener("click", function () { setUnits("score"); });
+  document.getElementById("u-x0").addEventListener("click", function () { setUnits("x0"); });
+  function u(v) { return units === "score" ? v.toFixed(2) : (v * SIG4).toFixed(4); }
+  bindTip(document.getElementById("seg-within"), function () { return "<b>Floor, within-blob part:</b> " + u(B.within) + "<br>Exact: 0.125 / σ⁴. Same at every " + XT + "."; });
+  bindTip(document.getElementById("seg-which"), function () { return "<b>Floor, which-blob part:</b> ≈ " + u(B.which) + "<br>Uncertainty about which blob made " + XT + ". Monte Carlo."; });
+  bindTip(document.getElementById("seg-earned"), function () { return "<b>Earned back by the exact score:</b> ≈ " + u(B.earned) + "<br>Var of the marginal score."; });
+  bindTip(document.getElementById("mk-x0"), function () { return "<b>Week 8 x₀ model:</b> " + u(B.x0m) + "<br>Validation loss, converted with σ⁴. Distance to the floor ≈ its score error."; });
+  bindTip(document.getElementById("mk-sc"), function () { return "<b>Week 8 score model:</b> " + u(B.scm) + "<br>Validation loss. Distance to the floor ≈ its score error."; });
+  budget();
+
+  /* ---------- Two pairs, one input ---------- */
+  var cIn = document.getElementById("pair-c"), seeIn = document.getElementById("pair-see");
+  function pairs() {
+    var c = parseFloat(cIn.value), see = seeIn.checked;
+    document.getElementById("pair-c-val").textContent = c.toFixed(2);
+    cIn.disabled = see;
+    var W = 420, L = 30, R = 390, xmin = -1.5, xmax = 3.5;
+    function X(v) { return L + (v - xmin) / (xmax - xmin) * (R - L); }
+    var s = '<line x1="' + L + '" y1="70" x2="' + R + '" y2="70" stroke="var(--line)" stroke-width="1.5"/>';
+    for (var t = -1; t <= 3; t++) {
+      s += '<line x1="' + X(t) + '" y1="66" x2="' + X(t) + '" y2="74" stroke="var(--line)"/>' +
+           '<text x="' + X(t) + '" y="92" text-anchor="middle">' + t + '</text>';
+    }
+    s += '<circle cx="' + X(0) + '" cy="70" r="6" fill="var(--ink)"/><text class="ink" x="' + X(0) + '" y="112" text-anchor="middle">pair a: x₀ = 0</text>';
+    s += '<circle cx="' + X(2) + '" cy="70" r="6" fill="var(--ink)"/><text class="ink" x="' + X(2) + '" y="112" text-anchor="middle">pair b: x₀ = 2</text>';
+    s += '<line x1="' + X(1) + '" y1="54" x2="' + X(1) + '" y2="86" stroke="var(--c-within)" stroke-width="2" stroke-dasharray="3 3"/><text x="' + X(1) + '" y="48" text-anchor="middle">m = 1</text>';
+    function tri(v, lbl) {
+      var x = X(v);
+      return '<path d="M' + (x - 7) + ' 30 L' + (x + 7) + ' 30 L' + x + ' 42 Z" fill="var(--c-earned)"/>' +
+             '<text class="ink" x="' + x + '" y="22" text-anchor="middle">' + lbl + '</text>';
+    }
+    if (see) { s += tri(0, "output 0") + tri(2, "output 2"); }
+    else { s += tri(c, "output c"); }
+    document.getElementById("pair-svg").innerHTML = s;
+
+    var nums = document.getElementById("pair-numbers"), bar = document.getElementById("pair-bar");
+    var maxL = 5;
+    if (!see) {
+      var ea = c * c, eb = (c - 2) * (c - 2), loss = (ea + eb) / 2, err = (c - 1) * (c - 1);
+      nums.innerHTML =
+        "Error, pair a: (c − 0)² = " + ea.toFixed(2) + "<br>" +
+        "Error, pair b: (c − 2)² = " + eb.toFixed(2) + "<br>" +
+        "Average loss: <b>" + loss.toFixed(2) + "</b><br>" +
+        "= floor 1 + score error " + err.toFixed(2) + "<br>" +
+        "Cross term: (c − 1)·[(−1) + (+1)]/2 = 0";
+      bar.innerHTML = '<div style="flex-basis:' + (100 / maxL) + '%;background:var(--c-within)"></div>' +
+                      '<div style="flex-basis:' + (100 * err / maxL) + '%;background:var(--c-error)"></div>';
+    } else {
+      nums.innerHTML =
+        "Outputs: 0 for pair a, 2 for pair b<br>" +
+        "Errors: 0 and 0. Average loss: <b>0.00</b><br>" +
+        "Terms: Var 1 + cross 2·(−1) + mismatch 1 = 0<br>" +
+        "Cross term per pair: (−1)(+1) and (+1)(−1)<br>" +
+        "The floor is gone. The model no longer gives one answer for both pairs.";
+      bar.innerHTML = "";
+    }
+  }
+  cIn.addEventListener("input", pairs); seeIn.addEventListener("change", pairs);
+  pairs();
+
+  /* ---------- Mixture helpers ---------- */
+  function post(xt) {
+    var v = TAU * TAU + SIG * SIG, lw = MU.map(function (m) {
+      var dx = xt[0] - m[0], dy = xt[1] - m[1]; return -(dx * dx + dy * dy) / (2 * v);
+    });
+    var mx = Math.max.apply(null, lw), w = lw.map(function (l) { return Math.exp(l - mx); });
+    var z = w.reduce(function (a, b) { return a + b; }, 0); var r = w.map(function (x) { return x / z; });
+    var sh = TAU * TAU / v;
+    var mk = MU.map(function (m) { return [m[0] + sh * (xt[0] - m[0]), m[1] + sh * (xt[1] - m[1])]; });
+    var mb = [0, 0]; mk.forEach(function (p, i) { mb[0] += r[i] * p[0]; mb[1] += r[i] * p[1]; });
+    var which = 0; mk.forEach(function (p, i) { var a = p[0] - mb[0], b = p[1] - mb[1]; which += r[i] * (a * a + b * b); });
+    return { r: r, mk: mk, mean: mb, which: which / 2 };
+  }
+  function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function gauss(R) { var u1 = Math.max(R(), 1e-12), u2 = R(); return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2); }
+
+  /* ---------- Arrows: many targets, one average ---------- */
+  var XTS = { near: [0.35, 1.35], between: [0.9, 0.6] }, xtKey = "near";
+  function arrows() {
+    var xt = XTS[xtKey], P = post(xt);
+    var W = 440, H = 420, x0 = -3.6, x1 = 3.6, y0 = -3.3, y1 = 3.6;
+    function X(v) { return 20 + (v - x0) / (x1 - x0) * (W - 40); }
+    function Y(v) { return 20 + (y1 - v) / (y1 - y0) * (H - 40); }
+    var sc = (W - 40) / (x1 - x0);
+    var s = '<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="var(--c-earned)"/></marker></defs>';
+    MU.forEach(function (m, i) {
+      s += '<circle cx="' + X(m[0]) + '" cy="' + Y(m[1]) + '" r="' + (2 * TAU * sc) + '" fill="var(--grid)" stroke="var(--line)"/>' +
+           '<text x="' + X(m[0]) + '" y="' + (Y(m[1]) + 2 * TAU * sc + 14) + '" text-anchor="middle">blob ' + (i + 1) + '</text>';
+    });
+    var R = rng(7), N = 36, sw = Math.sqrt(TAU * TAU * SIG * SIG / (TAU * TAU + SIG * SIG));
+    for (var n = 0; n < N; n++) {
+      var u = R(), k = u < P.r[0] ? 0 : (u < P.r[0] + P.r[1] ? 1 : 2);
+      var px = P.mk[k][0] + sw * gauss(R), py = P.mk[k][1] + sw * gauss(R);
+      s += '<line x1="' + X(xt[0]) + '" y1="' + Y(xt[1]) + '" x2="' + X(px) + '" y2="' + Y(py) + '" stroke="var(--c-within)" stroke-opacity="0.45" stroke-width="1.25"/>' +
+           '<circle cx="' + X(px) + '" cy="' + Y(py) + '" r="2.4" fill="var(--c-within)"/>';
+    }
+    s += '<line x1="' + X(xt[0]) + '" y1="' + Y(xt[1]) + '" x2="' + X(P.mean[0]) + '" y2="' + Y(P.mean[1]) + '" stroke="var(--c-earned)" stroke-width="3.5" marker-end="url(#ah)"/>';
+    s += '<circle cx="' + X(xt[0]) + '" cy="' + Y(xt[1]) + '" r="6" fill="var(--ink)" stroke="var(--panel)" stroke-width="2"/>' +
+         '<text class="ink" x="' + (X(xt[0]) + 10) + '" y="' + (Y(xt[1]) - 10) + '">xₜ</text>';
+    document.getElementById("arrow-svg").innerHTML = s;
+    var ms = [(P.mean[0] - xt[0]) / (SIG * SIG), (P.mean[1] - xt[1]) / (SIG * SIG)];
+    var floorHere = (0.125 + P.which) / SIG4;
+    document.getElementById("arrow-numbers").innerHTML =
+      XT + " = (" + fmt(xt[0], 2) + ", " + fmt(xt[1], 2) + ")<br><br>" +
+      "Responsibilities r₁, r₂, r₃:<br>" + P.r.map(function (v) { return v.toFixed(3); }).join(", ") + "<br><br>" +
+      "Marginal score here:<br>(" + fmt(ms[0], 2) + ", " + fmt(ms[1], 2) + ")<br><br>" +
+      "Floor at this " + XT + " (score units):<br>within 2.00 + which-blob " + (P.which / SIG4).toFixed(2) + " = <b>" + floorHere.toFixed(2) + "</b><br><br>" +
+      "Averaged over all " + XT + ", the floor is ≈ 2.11.";
+  }
+  function setXt(k) {
+    xtKey = k;
+    document.getElementById("xt-near").setAttribute("aria-pressed", k === "near");
+    document.getElementById("xt-between").setAttribute("aria-pressed", k === "between");
+    arrows();
+  }
+  document.getElementById("xt-near").addEventListener("click", function () { setXt("near"); });
+  document.getElementById("xt-between").addEventListener("click", function () { setXt("between"); });
+  arrows();
+
+  /* ---------- Heat map of the which-blob part ---------- */
+  var cv = document.getElementById("heat"), D = 4.2, GRID = 160, VMAX = 6.5;
+  function hexToRgb(h) {
+    h = h.replace("#", ""); if (h.length === 3) h = h.split("").map(function (c) { return c + c; }).join("");
+    var n = parseInt(h, 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
+  function heat() {
+    var dpr = window.devicePixelRatio || 1, size = Math.round(cv.clientWidth * dpr) || 400;
+    cv.width = size; cv.height = size;
+    var ctx = cv.getContext("2d");
+    var bg = hexToRgb(css("--panel")), fg = hexToRgb(css("--c-which"));
+    var img = ctx.createImageData(GRID, GRID);
+    for (var j = 0; j < GRID; j++) for (var i = 0; i < GRID; i++) {
+      var x = -D + (i + 0.5) / GRID * 2 * D, y = D - (j + 0.5) / GRID * 2 * D;
+      var t = Math.min(1, post([x, y]).which / SIG4 / VMAX), o = (j * GRID + i) * 4;
+      t = Math.sqrt(t);
+      img.data[o] = bg[0] + (fg[0] - bg[0]) * t; img.data[o + 1] = bg[1] + (fg[1] - bg[1]) * t;
+      img.data[o + 2] = bg[2] + (fg[2] - bg[2]) * t; img.data[o + 3] = 255;
+    }
+    var off = document.createElement("canvas"); off.width = GRID; off.height = GRID;
+    off.getContext("2d").putImageData(img, 0, 0);
+    ctx.imageSmoothingEnabled = true; ctx.drawImage(off, 0, 0, size, size);
+    function P(v) { return (v + D) / (2 * D) * size; }
+    ctx.strokeStyle = css("--ink"); ctx.fillStyle = css("--ink");
+    ctx.lineWidth = 1.2 * dpr; ctx.setLineDash([5 * dpr, 4 * dpr]);
+    var rad = 2 * Math.sqrt(TAU * TAU + SIG * SIG) / (2 * D) * size;
+    MU.forEach(function (m) {
+      ctx.beginPath(); ctx.arc(P(m[0]), size - P(m[1]), rad, 0, 2 * Math.PI); ctx.stroke();
+      ctx.beginPath(); ctx.arc(P(m[0]), size - P(m[1]), 3 * dpr, 0, 2 * Math.PI); ctx.fill();
+    });
+    ctx.setLineDash([]);
+    var g = document.getElementById("heat-grad");
+    g.style.background = "linear-gradient(90deg, " + css("--panel") + ", " + css("--c-which") + ")";
+    g.style.border = "1px solid " + css("--line");
+    // Colors use a square-root scale, so evenly spaced ticks sit at VMAX·p².
+    document.getElementById("heat-ticks").innerHTML = [0, 1 / 3, 2 / 3, 1].map(function (p, i) {
+      var v = VMAX * p * p; return "<span>" + (i === 3 ? "≥ " : "") + (i === 0 ? "0" : v.toFixed(i === 3 ? 1 : 2)) + "</span>";
+    }).join("");
+  }
+  cv.addEventListener("mousemove", function (e) {
+    var r = cv.getBoundingClientRect();
+    var x = -D + (e.clientX - r.left) / r.width * 2 * D, y = D - (e.clientY - r.top) / r.height * 2 * D;
+    var v = post([x, y]).which / SIG4;
+    document.getElementById("heat-readout").innerHTML =
+      "At " + XT + " = (" + fmt(x, 2) + ", " + fmt(y, 2) + "):<br>which-blob part = <b>" + v.toFixed(2) + "</b><br>floor here = 2.00 + " + v.toFixed(2) + " = " + (2 + v).toFixed(2) +
+      "<br><br>Average over all " + XT + ": ≈ 0.11. The colors use a square-root scale so the thin bands stay visible.";
+  });
+  heat();
+  window.addEventListener("resize", function () { clearTimeout(window.__hr); window.__hr = setTimeout(heat, 150); });
+  var mq = window.matchMedia("(prefers-color-scheme: dark)");
+  if (mq.addEventListener) mq.addEventListener("change", heat);
+  new MutationObserver(heat).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  /* ---------- Handwritten photos ---------- */
+  var EXTS = ["webp", "jpg", "jpeg", "png"], DIR = "w13_score_loss_floor_study_photos/";
+  document.querySelectorAll("figure.photo[data-photo]").forEach(function (fig) {
+    var name = fig.getAttribute("data-photo"), ph = fig.querySelector(".ph"), i = 0;
+    ph.innerHTML = "Your page goes here.<br>Save it as<br><code>" + DIR + name + ".webp</code><br>(.jpg, .jpeg or .png also work)";
+    var img = new Image();
+    img.alt = "Handwritten page: " + (fig.querySelector("figcaption") || {}).textContent;
+    // No lazy loading here: a detached lazy image never starts loading.
+    img.onload = function () {
+      var a = document.createElement("a"); a.href = img.src; a.target = "_blank"; a.rel = "noopener";
+      a.appendChild(img); ph.replaceWith(a);
+    };
+    img.onerror = function () { i++; if (i < EXTS.length) img.src = DIR + name + "." + EXTS[i]; };
+    img.src = DIR + name + "." + EXTS[0];
+  });
+
+  /* ---------- Checklist memory (this browser only) ---------- */
+  var KEY = "w13-loss-floor-checklist";
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { saved = {}; }
+  document.querySelectorAll("ul.checks input[type=checkbox]").forEach(function (box) {
+    if (saved[box.id]) box.checked = true;
+    box.addEventListener("change", function () {
+      saved[box.id] = box.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) { /* storage unavailable */ }
+    });
+  });
+})();
+</script>
+</body>
+</html>
