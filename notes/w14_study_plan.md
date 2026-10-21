@@ -1,9 +1,10 @@
 # Week 14 — Generative Toolkit Checkpoint: Study Plan
 
 **Status:** Week 14 is in progress. Day 1's recall diagnostic closed on
-2026-10-19; Day 2 and Problem 1 were reviewed on 2026-10-20. Three mixed
-problems, model-evidence review, and the report remain pending. Week 13 is
-complete as of 2026-10-14.
+2026-10-19; Day 2 and Problem 1 were reviewed on 2026-10-20; Day 3, Problem 2,
+and the VAE evidence discussion were reviewed on 2026-10-21. Problems 3–4,
+flow/score evidence review, and the report remain pending. Week 13 is complete
+as of 2026-10-14.
 
 **Pacing:** The original budget was seven study days and about seven hours.
 Day 1 exceeded its 45-minute budget; the remaining days retain their planned
@@ -31,7 +32,7 @@ mixed problems, and support a short comparison with your own results.
 
 ## Outputs to Complete During the Week
 
-- Four reviewed solutions in the [mixed problem set](../proofs/w14_generative_toolkit_mixed_set.md): Problem 1 reviewed; Problems 2–4 pending.
+- Four reviewed solutions in the [mixed problem set](../proofs/w14_generative_toolkit_mixed_set.md): Problems 1–2 reviewed; Problems 3–4 pending.
 - A 2–3-page report in
   `mini_projects/checkpoint_03_generative_toolkit_report/report.md`, with a
   compact comparison table and 1–2 existing diagnostic plots per model.
@@ -50,7 +51,7 @@ the final Markdown in your own words.
 | --- | --- | --- | --- |
 | 1 | 45 min planned; exceeded | Retrieve the model map — diagnostic closed 2026-10-19 | Working comparison and three follow-ups recorded below |
 | 2 | 60 min budget | Gaussian score and conditioning — reviewed 2026-10-20 | Problem 1 correct; conditioning formula used with notes, with recall recheck assigned to Day 7 |
-| 3 | 60 min | VAE: ELBO, KL, and generation | Problem 2 reviewed; one observed VAE limitation tied to existing evidence |
+| 3 | 60 min budget | VAE: ELBO, KL, and generation — reviewed 2026-10-21 | Problem 2 and reconstruction evidence reviewed; bottleneck explanation retained as a hypothesis |
 | 4 | 60 min | Flow: density, inverse, and expressivity | Problem 3 reviewed; one-layer failure explained from the mapping |
 | 5 | 75 min | Score learning and optimizer stability | Problem 4 reviewed; training target, evaluation target, and sampling distinguished |
 | 6 | 90 min | Assemble the checkpoint report | A 2–3-page draft with traceable figures and bounded conclusions |
@@ -160,6 +161,28 @@ causes such as bottleneck size, model capacity, or brief training.
 the saved reconstruction or generation plot establishes. Do not diagnose
 posterior collapse merely because a reconstruction looks blurry.
 
+#### Day 3 Review Record
+
+**Reviewed on 2026-10-21; move to Day 4.** The
+[Problem 2 solution](../proofs/w14_generative_toolkit_mixed_set.md#problem-2--elbo-kl-and-the-implemented-loss)
+records the ELBO identity, analytic Gaussian KL, sampled negative-ELBO loss,
+and the VAE evidence interpretation.
+
+The ELBO identity was recalled without notes. Review clarified that the
+true posterior is a distribution defined by the model, equality with the
+ELBO is allowed, and increasing the ELBO forces the posterior gap down only
+when the generative model is fixed. The Gaussian KL calculation used the
+Week 11 note and the learner's KL post; a base-10 numerical evaluation was
+corrected to natural logarithms. The reconstruction scaling, positive KL
+sign, and omitted constant were correct. A log-variance/variance notation
+slip in the sampling setup was also corrected.
+
+The learner identified improved reconstruction, remaining ambiguous digits,
+and a plausible two-dimensional bottleneck explanation. The record separates
+reconstruction evidence from unconditional generation and keeps the proposed
+cause as a hypothesis. Include the fixed-model ELBO-gap qualification in
+the existing Day 7 VAE check; no additional Day 3 session is needed.
+
 ### Day 4 — Flow: Exact Density and an Architectural Limit
 
 Use roughly 35 minutes for Problem 3, 15 to inspect the saved six-layer versus
@@ -229,7 +252,7 @@ numbers before opening notes. Keep it within this session's 30-minute budget.
 
 Explain the report aloud without reading it, then review any weak answer:
 
-- Why does the VAE use a bound, while this flow evaluates its density exactly?
+- Why does the VAE use a bound, while this flow evaluates its density exactly? In the VAE explanation, state when increasing the ELBO necessarily decreases the posterior KL gap.
 - Why can exact flow likelihood coexist with a visibly imperfect fit?
 - Why is a score a vector field rather than a probability or a sample?
 - Why can smaller applied gradients coexist with worse held-out score MSE?
