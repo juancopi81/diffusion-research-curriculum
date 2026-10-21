@@ -117,10 +117,11 @@ Completed:
 - **Week 13:** GD, momentum, Adam, and a controlled score-training clipping
   experiment; completed on 2026-10-14
 
-Next:
+In progress:
 
 - **Week 14 (Checkpoint 3):** generative modeling toolkit consolidation;
-  follow the [day-by-day plan](./notes/w14_study_plan.md)
+  Days 1–2 reviewed, Day 3 next; follow the
+  [day-by-day plan](./notes/w14_study_plan.md)
 
 See [PROGRESS.md](./PROGRESS.md) for completion dates and artifact links.
 
@@ -531,7 +532,7 @@ one isolated training-stability change in the existing diffusion toy.
 ### Week 14 (Checkpoint 3) — Generative modeling toolkit consolidation
 
 Use the [day-by-day plan](./notes/w14_study_plan.md) to distribute this checkpoint
-across seven study days (about seven hours total).
+across seven study days (original budget: about seven hours; Day 1 ran over).
 
 - S1: review Weeks 9–13 by comparing, for each model, its representation,
   objective, sampling procedure, and characteristic failure mode

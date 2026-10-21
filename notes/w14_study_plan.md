@@ -1,12 +1,16 @@
 # Week 14 — Generative Toolkit Checkpoint: Study Plan
 
-**Status:** Planned on 2026-10-19. Week 13 is complete as of 2026-10-14;
-Week 14 study tasks are not yet started.
+**Status:** Week 14 is in progress. Day 1's recall diagnostic closed on
+2026-10-19; Day 2 and Problem 1 were reviewed on 2026-10-20. Three mixed
+problems, model-evidence review, and the report remain pending. Week 13 is
+complete as of 2026-10-14.
 
-**Pacing:** Seven study days, about seven hours total. Day 1 means the next
-day you study; these are flexible sessions rather than calendar deadlines.
-If a problem needs another sitting, carry it forward and move the remaining
-days with it.
+**Pacing:** The original budget was seven study days and about seven hours.
+Day 1 exceeded its 45-minute budget; the remaining days retain their planned
+budgets, so actual total time will be longer. These are flexible sessions,
+not calendar deadlines. Include short follow-up checks within each session's
+budget. Stop at the time limit or concrete stopping point, record unresolved
+items, and carry them forward instead of extending a recall session indefinitely.
 
 ## What This Week Is For
 
@@ -27,7 +31,7 @@ mixed problems, and support a short comparison with your own results.
 
 ## Outputs to Complete During the Week
 
-- Four reviewed solutions in `proofs/w14_generative_toolkit_mixed_set.md`.
+- Four reviewed solutions in the [mixed problem set](../proofs/w14_generative_toolkit_mixed_set.md): Problem 1 reviewed; Problems 2–4 pending.
 - A 2–3-page report in
   `mini_projects/checkpoint_03_generative_toolkit_report/report.md`, with a
   compact comparison table and 1–2 existing diagnostic plots per model.
@@ -36,15 +40,16 @@ mixed problems, and support a short comparison with your own results.
   explaining where the reused evidence came from. Export saved notebook
   figures into that checkpoint's `figures/` directory if needed.
 
-These outputs are planned, not completed artifacts. Write your answers first,
-review them together, then consolidate the final Markdown in your own words.
+The mixed problem set is in progress; the report and its README remain
+planned. Write your answers first, review them together, then consolidate
+the final Markdown in your own words.
 
 ## Day-by-Day Schedule
 
 | Day | Time | Focus | Concrete stopping point |
 | --- | --- | --- | --- |
-| 1 | 45 min | Retrieve the model map | A rough VAE/flow/score comparison and at most three gaps to revisit |
-| 2 | 60 min | Gaussian score and conditioning | Problem 1 attempted, checked, and explained geometrically |
+| 1 | 45 min planned; exceeded | Retrieve the model map — diagnostic closed 2026-10-19 | Working comparison and three follow-ups recorded below |
+| 2 | 60 min budget | Gaussian score and conditioning — reviewed 2026-10-20 | Problem 1 correct; conditioning formula used with notes, with recall recheck assigned to Day 7 |
 | 3 | 60 min | VAE: ELBO, KL, and generation | Problem 2 reviewed; one observed VAE limitation tied to existing evidence |
 | 4 | 60 min | Flow: density, inverse, and expressivity | Problem 3 reviewed; one-layer failure explained from the mapping |
 | 5 | 75 min | Score learning and optimizer stability | Problem 4 reviewed; training target, evaluation target, and sampling distinguished |
@@ -67,20 +72,83 @@ your own recall attempt.
 questions to resolve on Days 2–5. This table can become part of the report;
 it does not need a separate polished note.
 
+#### Day 1 Review Record
+
+**Closed on 2026-10-19 as a recall diagnostic.** The discussion covered all
+three models and identified enough follow-up work. It expanded beyond the
+intended scope, especially into sampling intuition. Several explanations
+became correct after hints or worked examples; independent retention still
+needs checking on later days.
+
+Working comparison summarized from the discussion, to refine in your own words:
+
+| Model | Representation | Training objective | Generation | Limitation / evidence still to review |
+| --- | --- | --- | --- | --- |
+| VAE | Encoder gives an image-conditioned Gaussian's mean and log variance; a latent is sampled from it | Maximize the ELBO: reconstruction log-likelihood minus KL to the prior | Draw from the prior, then decode; our notebook displays decoder means | An exact posterior encoder does not guarantee a good generator; inspect reconstruction/generation evidence on Day 3 |
+| RealNVP | Invertible, dimension-preserving data-to-latent map | Exact model log-likelihood with the forward Jacobian correction | Draw from the Gaussian base, then apply the inverse map | A single coupling layer leaves one generated marginal unchanged; revisit the one-layer comparison on Day 4 |
+| Fixed-noise score toy | Vector field on corrupted inputs | MSE against conditional Gaussian score targets; the population optimum is the marginal noisy-data score | The toy has no implemented sampler; a sampler targeting its fixed-noise density would reproduce the noisy distribution | Score ascent concentrates near modes; it does not reproduce the distribution's spread, and the fixed-noise target is not the clean-data distribution |
+
+**Recall demonstrated:** encoder parameters versus sampled-latent randomness;
+the reconstruction/KL tradeoff and prior-to-decoder generation; invertibility
+and volume correction; the unchanged-coordinate restriction and alternating
+coupling layers; the score's local direction and the need to preserve a
+distribution's spread when sampling. Some of these explanations followed
+correction, so this is evidence of current understanding, not yet a claim of
+independent mastery.
+
+Keep the follow-up list to these three clusters:
+
+| Follow-up | Why it was flagged | Scheduled check |
+| --- | --- | --- |
+| Score targets, predictions, and sampling scope | Noise scaling needed correction; target averages were initially confused with averaged losses. The weighted-mean example and nonzero loss floor became clear with guidance; sampling intuition is still new | Day 2: a brief noise-scaling check within recall time. Day 5: independently explain the conditional target, marginal score, residual target MSE, and why this toy represents noisy data |
+| VAE inference versus generative quality | The posterior is defined by the current model, and its KL gap is different from the prior KL in the ELBO. A fixed-decoder example clarified why exact inference does not improve generation by itself | Day 3: distinguish the two KL terms and explain the fixed-decoder case before reviewing Problem 2 |
+| Flow Jacobian direction | The forward and inverse volume factors were initially reversed, then corrected | Day 4: derive the correction using probability mass and check both directions in Problem 3 |
+
+PCA/Gaussian calculations, optimizer stability, and interpretation of saved
+experimental results were not independently assessed today. They remain in
+the existing schedule; do not count them as diagnosed weaknesses.
+
+**Sampling boundary:** Day 5 needs a conceptual account of what the fixed-noise
+toy learns and what a diffusion generator still needs. Sampler derivations,
+implementation, and convergence theory belong to later lessons and do not
+block closing Day 1.
+
+For each scheduled check, attempt a fresh small example without notes or hints
+first. Record whether it was independent or guided. Revisit unresolved items
+on Day 7; do not add a new extended Day 1 session.
+
 ### Day 2 — Gaussian Score and Conditioning
 
 Allow about 10 minutes for recall, 35 for Problem 1, and 15 to review the
 derivation against your Week 10 work. Explain the score's direction using
 covariance geometry, then distinguish conditioning from taking a marginal.
+Use at most five minutes of the recall period to recheck the Day 1 noise-scaling
+slip before moving to Problem 1.
 
 **Stop when:** the gradient and conditional distribution are correct, and you
 can explain why covariance changes both the score field and conditional
 uncertainty. Correct the reasoning before polishing the solution.
 
+#### Day 2 Review Record
+
+**Reviewed on 2026-10-20; move to Day 3.** The warm-up's noise scaling was
+correct; the initial marginal notation was corrected to the conditional
+corruption density. The Gaussian score derivation, numerical evaluation,
+conditional calculation, and marginal comparison are recorded in
+[Problem 1](../proofs/w14_generative_toolkit_mixed_set.md#problem-1--gaussian-score-and-conditioning).
+
+The conditioning formula was looked up in the Week 10 proof note and then
+applied correctly. The mean-shift and variance-reduction explanation was
+also correct. Count this as correct application with notes; unaided recall
+of the conditioning formula remains to be checked briefly with changed
+numbers on Day 7. No extra Day 2 session is needed for that recall check.
+
 ### Day 3 — VAE: What the Objective Buys Us
 
 Use roughly 35 minutes for Problem 2, 15 to inspect saved VAE loss curves and
 reconstructions, and 10 to record the interpretation.
+Within the problem time, start with a brief independent explanation of the
+two KL terms and why improving only the encoder leaves generation unchanged.
 
 Separate reconstruction through the encoder from generation using the prior.
 Remember that the notebook displays decoder means; those are different from
@@ -96,6 +164,8 @@ posterior collapse merely because a reconstruction looks blurry.
 
 Use roughly 35 minutes for Problem 3, 15 to inspect the saved six-layer versus
 one-layer comparison, and 10 to record the interpretation.
+Use Problem 3 itself to recheck forward versus inverse volume correction;
+no additional exercise set is needed.
 
 Keep the notebook's convention explicit: forward maps data to latent space;
 inverse generates from the Gaussian base. Connect the unchanged coordinate
@@ -108,6 +178,8 @@ exact evaluation of the model's density from an exact fit to the data.
 
 Spend about 20 minutes revisiting the Week 8 report and Week 13 score-objective
 review, 35 on Problem 4, and 20 connecting the pieces.
+Include a brief independent check of the Day 1 score-target distinction in
+the review time. Keep sampler discussion at the conceptual boundary above.
 
 Explain these three objects separately: the conditional Gaussian score used
 as a training target, the marginal noisy-mixture score used for evaluation,
@@ -151,6 +223,9 @@ explanation is either supported or explicitly a hypothesis. Reusing saved
 outputs is sufficient; do not retrain just to improve a figure.
 
 ### Day 7 — Review and Decide Whether the Checkpoint Is Complete
+
+Include a brief recheck of the Day 2 conditioning formula with changed
+numbers before opening notes. Keep it within this session's 30-minute budget.
 
 Explain the report aloud without reading it, then review any weak answer:
 

@@ -3,7 +3,7 @@
 ## Current Status
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Week:** 13 ✅
+- **Week:** 14 🔄
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
 - **Week 9 Completed:** 2026-08-25
@@ -11,8 +11,8 @@
 - **Week 11 Completed:** 2026-09-15
 - **Week 12 Completed:** 2026-09-28
 - **Week 13 Completed:** 2026-10-14
-- **Next:** Week 14 (Checkpoint 3) — Generative modeling toolkit consolidation
-- **Week 14 plan:** [Seven study days, about seven hours](notes/w14_study_plan.md), prepared on 2026-10-19; checkpoint work not yet started
+- **Next study session:** Week 14 Day 3 — VAE: ELBO, KL, and generation
+- **Week 14 plan:** [Day-by-day plan](notes/w14_study_plan.md); Day 1 diagnostic closed on 2026-10-19, Day 2 and Problem 1 reviewed on 2026-10-20; conditioning-formula recall recheck assigned to Day 7
 
 ---
 
@@ -155,17 +155,20 @@
 
 ---
 
-### Week 14 (Checkpoint 3) — Generative Modeling Toolkit Consolidation ⬜
+### Week 14 (Checkpoint 3) — Generative Modeling Toolkit Consolidation 🔄
 
-The [day-by-day plan](notes/w14_study_plan.md) is ready. Update each task as study
-begins and review finishes; preparing the plan alone does not complete a task.
+The [Day 1 diagnostic](notes/w14_study_plan.md#day-1-review-record) closed on
+2026-10-19, and [Day 2](notes/w14_study_plan.md#day-2-review-record) was reviewed
+on 2026-10-20. One of four mixed problems is reviewed. The broader review,
+remaining problems, and report are still in progress or pending; the
+checkpoint is not complete.
 
 | Task | Status | Date | Notes |
 | --- | --- | --- | --- |
-| S1: review Weeks 9–13 | ⬜ | — | Compare representations, objectives, generation procedures, and observed limitations using existing artifacts |
-| S2: four mixed problems | ⬜ | — | Gaussian score/conditioning, ELBO/KL, flow change of variables, and optimizer stability; planned solutions in `proofs/w14_generative_toolkit_mixed_set.md` |
+| S1: review Weeks 9–13 | 🔄 | 2026-10-20 | Day 1 model map and Day 2 Gaussian review done; VAE/flow/score rechecks, saved-result interpretation, and optimizer work remain scheduled. Conditioning-formula recall recheck on Day 7 |
+| S2: four mixed problems | 🔄 | 2026-10-20 | [Mixed set](proofs/w14_generative_toolkit_mixed_set.md): Problem 1 reviewed, including correct conditioning with notes; Problems 2–4 pending |
 | S3: toolkit report | ⬜ | — | Planned 2–3-page `mini_projects/checkpoint_03_generative_toolkit_report/report.md`, reusing existing evidence |
-| Diffusion: explain the score-model connection | ⬜ | — | Distinguish conditional training targets, marginal scores, and the sampling machinery still to come; include the comparison in the report |
+| Diffusion: explain the score-model connection | 🔄 | 2026-10-20 | Day 2 noise scaling correct, with conditional-density notation corrected during review. Conditional target versus marginal score and sampling scope still need the Day 5 independent recheck and report comparison |
 
 ---
 

@@ -24,8 +24,8 @@ It is divided into five phases:
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
 - **Completed:** Phase 1 and Weeks 9–13 (Week 13 completed on 2026-10-14)
-- **Latest artifact:** [Optimizer comparison](./notebooks/w13_optimizers_sanity_solved.ipynb) and [controlled score-training stability experiment](./notes/w13_training_stability_for_diffusion.md)
-- **Next:** Week 14 (Checkpoint 3) — Generative modeling toolkit consolidation; [day-by-day plan](./notes/w14_study_plan.md)
+- **Latest work:** [Week 14 mixed problem set](./proofs/w14_generative_toolkit_mixed_set.md) — Problem 1 reviewed on 2026-10-20; three problems remain
+- **Current:** Week 14 (Checkpoint 3) — Generative modeling toolkit consolidation; Days 1–2 reviewed, Day 3 next; [day-by-day plan](./notes/w14_study_plan.md)
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 
