@@ -120,7 +120,7 @@ Completed:
 In progress:
 
 - **Week 14 (Checkpoint 3):** generative modeling toolkit consolidation;
-  Days 1–3 reviewed, Day 4 next; follow the
+  Days 1–4 reviewed, Day 5 next; follow the
   [day-by-day plan](./notes/w14_study_plan.md)
 
 See [PROGRESS.md](./PROGRESS.md) for completion dates and artifact links.

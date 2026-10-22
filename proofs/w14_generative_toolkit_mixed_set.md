@@ -1,7 +1,7 @@
 # Week 14 — Generative Toolkit Mixed Problem Set
 
-**Status:** In progress. Problem 1 reviewed on 2026-10-20 and Problem 2 on
-2026-10-21; Problems 3–4 remain unattempted.
+**Status:** In progress. Problem 1 reviewed on 2026-10-20, Problem 2 on
+2026-10-21, and Problem 3 on 2026-10-22. Problem 4 remains unattempted.
 
 **Source basis:** Problem 1 consolidates the handwritten calculations and
 explanation reviewed during Day 2. The Gaussian conditioning formulas were
@@ -17,11 +17,16 @@ without notes. The Gaussian KL calculation used the
 [KL-divergence post](https://juancopi81.github.io/posts/2026-08-06-kl-divergence-is-not-a-distance.html)
 as references.
 
+Problem 3 consolidates the Day 4 handwritten work and saved flow-plot
+interpretation. The initial calculations were attempted without notes;
+corrections and the follow-up explanation are recorded separately from
+independent recall.
+
 | Problem | Status | Review evidence |
 | --- | --- | --- |
 | 1 — Gaussian score and conditioning | Reviewed 2026-10-20 | Score derivation and numerical evaluation correct; conditioning applied correctly with notes; marginal comparison explained correctly |
 | 2 — ELBO, KL, and the implemented loss | Reviewed 2026-10-21 | ELBO identity recalled without notes; Gaussian KL applied with references and a log-base correction; reconstruction loss and saved-result interpretation reviewed |
-| 3 — Change of variables and an unchanged coordinate | Pending | Scheduled for Day 4 |
+| 3 — Change of variables and an unchanged coordinate | Reviewed 2026-10-22 | Inverse recalled correctly; Jacobian/logarithm slips corrected; inverse determinant self-corrected; unchanged marginal and imperfect generated samples explained after clarification |
 | 4 — Stability and clipping | Pending | Scheduled for Day 5 |
 
 ## Day 2 Warm-up — Gaussian Corruption
@@ -355,7 +360,196 @@ No extra Day 3 session or new model training is required.
 
 ## Problem 3 — Change of Variables and an Unchanged Coordinate
 
-Pending Day 4 attempt and review. Use the prompt in the study plan.
+### Setup
+
+The forward map sends data to a two-dimensional standard-normal base:
+
+$$
+z=f(x),\qquad
+z_1=x_1,\qquad z_2=2x_2+x_1,\qquad
+Z\sim\mathcal N(0,I_2).
+$$
+
+This is the problem's coupling layer with constant log-scale and linear shift:
+
+$$
+s(x_1)=\ln2,\qquad t(x_1)=x_1.
+$$
+
+### 1. Inverse and both Jacobians
+
+Solving for the data coordinates gives
+
+$$
+x_1=z_1,\qquad x_2=\frac{z_2-z_1}{2}.
+$$
+
+The inverse was derived correctly in the first attempt. The forward Jacobian
+and determinant are
+
+$$
+J_f=
+\begin{bmatrix}1&0\\1&2\end{bmatrix},
+\qquad
+\det J_f=2,\qquad
+\ln|\det J_f|=\ln2\approx0.693147.
+$$
+
+The first handwritten Jacobian swapped the two derivatives in the second
+row. This was corrected after feedback. The subsequent numerical logarithm
+used base 10; the calculation requires the natural logarithm.
+
+The inverse Jacobian provides a consistency check:
+
+$$
+J_{f^{-1}}=
+\begin{bmatrix}1&0\\-1/2&1/2\end{bmatrix},
+\qquad
+\det J_{f^{-1}}=\frac12,
+\qquad
+\ln|\det J_{f^{-1}}|=-\ln2.
+$$
+
+The learner initially suggested reciprocating the log-determinant, then
+self-corrected to reciprocating the determinant before further feedback.
+The forward map doubles area; the inverse halves it. Inverting a map
+reciprocates its absolute determinant and negates its log absolute determinant.
+
+### 2. Evaluate the model log density
+
+Preserving probability mass gives the forward volume correction:
+
+$$
+p_X(x)\,dx=p_Z(f(x))\,dz,\qquad
+dz=|\det J_f(x)|\,dx.
+$$
+
+Therefore,
+
+$$
+\ln p_X(x)=\ln p_Z(f(x))+\ln|\det J_f(x)|.
+$$
+
+For the two-dimensional standard-normal base and this particular map,
+
+$$
+\begin{aligned}
+\ln p_Z(z)&=-\ln(2\pi)-\frac12(z_1^2+z_2^2),\\
+\ln p_X(x)&=-\ln(2\pi)
+-\frac12\left[x_1^2+(2x_2+x_1)^2\right]+\ln2.
+\end{aligned}
+$$
+
+At the requested point,
+
+$$
+x=\begin{bmatrix}1\\0\end{bmatrix}
+\quad\Longrightarrow\quad
+z=f(x)=\begin{bmatrix}1\\1\end{bmatrix}.
+$$
+
+Thus,
+
+$$
+\ln p_X(1,0)=-\ln(2\pi)-1+\ln2=-\ln\pi-1
+\approx-2.144730.
+$$
+
+The learner correctly found the latent point, evaluated the Gaussian term,
+and used the positive forward-Jacobian correction without notes. The
+substitution initially took a logarithm of the already-computed log-determinant.
+Review corrected this to adding the log-determinant once. These are reviewed
+calculations with specific corrections, not a claim of error-free recall.
+
+### 3. Why one coupling layer cannot change the first marginal
+
+For learned scale and shift functions, the more general layer is
+
+$$
+z_1=x_1,\qquad
+z_2=x_2e^{s(x_1)}+t(x_1).
+$$
+
+Its inverse is
+
+$$
+x_1=z_1,\qquad
+x_2=\left[z_2-t(z_1)\right]e^{-s(z_1)}.
+$$
+
+Generation begins with a Gaussian base draw, so
+
+$$
+Z_1\sim\mathcal N(0,1),\qquad
+X_1=Z_1
+\quad\Longrightarrow\quad
+X_1\sim\mathcal N(0,1).
+$$
+
+The first generated marginal is imposed by the unchanged coordinate; it is
+not learned from the training data. No choice of the scale and shift functions
+can give that marginal two separated modes. Alternating which coordinate is
+transformed allows both coordinates to change while preserving invertibility.
+
+The learner correctly connected the unchanged coordinate to the one-layer
+limitation after clarifying that generation starts from the Gaussian base.
+The phrase “learning just the standard normal” was refined to “keeping the
+standard-normal marginal imposed by the architecture.”
+
+### 4. Saved flow evidence
+
+**Source:** saved outputs in the
+[Week 12 solved RealNVP notebook](../notebooks/w12_realnvp_2d_blobs_solved.ipynb),
+under “Inspect both directions” and “One controlled failure: only one coupling
+layer.” The plots were extracted from saved outputs; training was not rerun.
+
+The learner's observations, with minimal wording corrections:
+
+1. With one layer, the first generated coordinate remains standard normal.
+   The orange marginal is centered near zero, unlike the blue data's two
+   peaks. With alternating layers, the first coordinate can also change;
+   the six-layer green marginal follows the two peaks more closely.
+2. Exact model-density evaluation does not guarantee an exact fit. The
+   six-layer generated-samples panel contains many points between the four
+   blobs, where the displayed held-out data are sparse.
+
+For context, the notebook uses 2,000 training points and 400 held-out points.
+Its saved held-out NLL is about 2.44 for six layers and 4.57 for one layer.
+The runs use 450 and 200 optimizer steps respectively, so the numerical
+gap is not an isolated measurement of the first-coordinate restriction.
+That restriction follows directly from the map, regardless of training time.
+
+### 5. Clarification: exact density evaluation versus exact fit
+
+The learner correctly identified the mismatch, then asked whether floating-point
+approximations explain it and whether an exact fit is possible in theory.
+This section records the explanation supplied during review.
+
+Change of variables evaluates the density defined by any fixed valid flow.
+Even an identity flow has an exactly evaluable standard-normal density while
+fitting the four blobs poorly. Training must choose a transformation that
+fits the target distribution. Limited architecture, finite data, and
+incomplete optimization can leave a mismatch even with perfect arithmetic.
+The plots do not isolate which factor explains the six-layer model's bridges.
+
+The [Week 12 comparison note](../notes/w12_flows_vs_diffusion.md#what-each-model-learns)
+already states this distinction briefly. Floating-point roundoff affects
+numerical evaluation, but “exact likelihood” here means an exact model-density
+formula rather than a variational bound or a latent-integral estimate.
+
+An ideal smooth invertible transformation can map a Gaussian to this smooth,
+positive Gaussian-mixture density. Existence of such a transformation does
+not establish exact representation by our fixed six-layer architecture or
+guarantee that training finds it. For the existence result and its conditions,
+see [Papamakarios et al., Section 2.2](https://jmlr.org/papers/volume22/19-1028/19-1028.pdf#page=4).
+The target Gaussians also have tails between blobs: sparse observed regions
+are not regions of exactly zero true density.
+
+**Review outcome:** Problem 3 and the flow evidence discussion are reviewed.
+Within the existing Day 7 flow check, revisit determinant versus log-determinant,
+the inverse correction, and why a fit can remain imperfect even with exact
+arithmetic. The theoretical clarification was explained today; unaided
+recall of it has not been assessed. No additional Day 4 exercises are assigned.
 
 ## Problem 4 — Stability and What Clipping Actually Established
 

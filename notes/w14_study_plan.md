@@ -2,8 +2,9 @@
 
 **Status:** Week 14 is in progress. Day 1's recall diagnostic closed on
 2026-10-19; Day 2 and Problem 1 were reviewed on 2026-10-20; Day 3, Problem 2,
-and the VAE evidence discussion were reviewed on 2026-10-21. Problems 3–4,
-flow/score evidence review, and the report remain pending. Week 13 is complete
+and the VAE evidence discussion were reviewed on 2026-10-21. Day 4, Problem 3,
+and the flow evidence discussion were reviewed on 2026-10-22. Problem 4,
+score/optimizer review, and the report remain pending. Week 13 is complete
 as of 2026-10-14.
 
 **Pacing:** The original budget was seven study days and about seven hours.
@@ -32,7 +33,7 @@ mixed problems, and support a short comparison with your own results.
 
 ## Outputs to Complete During the Week
 
-- Four reviewed solutions in the [mixed problem set](../proofs/w14_generative_toolkit_mixed_set.md): Problems 1–2 reviewed; Problems 3–4 pending.
+- Four reviewed solutions in the [mixed problem set](../proofs/w14_generative_toolkit_mixed_set.md): Problems 1–3 reviewed; Problem 4 pending.
 - A 2–3-page report in
   `mini_projects/checkpoint_03_generative_toolkit_report/report.md`, with a
   compact comparison table and 1–2 existing diagnostic plots per model.
@@ -52,7 +53,7 @@ the final Markdown in your own words.
 | 1 | 45 min planned; exceeded | Retrieve the model map — diagnostic closed 2026-10-19 | Working comparison and three follow-ups recorded below |
 | 2 | 60 min budget | Gaussian score and conditioning — reviewed 2026-10-20 | Problem 1 correct; conditioning formula used with notes, with recall recheck assigned to Day 7 |
 | 3 | 60 min budget | VAE: ELBO, KL, and generation — reviewed 2026-10-21 | Problem 2 and reconstruction evidence reviewed; bottleneck explanation retained as a hypothesis |
-| 4 | 60 min | Flow: density, inverse, and expressivity | Problem 3 reviewed; one-layer failure explained from the mapping |
+| 4 | 60 min budget | Flow: density, inverse, and expressivity — reviewed 2026-10-22 | Problem 3 and saved plots reviewed; determinant/logarithm corrections and exact-density versus exact-fit distinction recorded |
 | 5 | 75 min | Score learning and optimizer stability | Problem 4 reviewed; training target, evaluation target, and sampling distinguished |
 | 6 | 90 min | Assemble the checkpoint report | A 2–3-page draft with traceable figures and bounded conclusions |
 | 7 | 30 min | Explain, correct, and close | Final oral review, remaining corrections, and an honest completion decision |
@@ -197,6 +198,33 @@ in a single coupling layer to the observed first-coordinate marginal.
 **Stop when:** the inverse and determinant sign agree, and you can distinguish
 exact evaluation of the model's density from an exact fit to the data.
 
+#### Day 4 Review Record
+
+**Reviewed on 2026-10-22; move to Day 5.** The
+[Problem 3 solution](../proofs/w14_generative_toolkit_mixed_set.md#problem-3--change-of-variables-and-an-unchanged-coordinate)
+records the inverse, Jacobians, evaluated density, architectural limitation,
+and interpretation of the saved Week 12 plots.
+
+The inverse and the latent point were correct on the first attempt.
+Feedback corrected a swapped Jacobian row, base-10 versus natural logarithms,
+and applying a logarithm twice. The learner self-corrected the inverse
+determinant to the reciprocal of the determinant after initially suggesting
+the reciprocal of its logarithm. The positive forward correction was
+recalled correctly.
+
+After clarifying that generation starts from the Gaussian base, the learner
+explained the one-layer restriction and why alternating coordinates improves
+the first marginal. The learner also identified generated bridges between
+the four blobs as evidence that exact model-density evaluation does not
+guarantee exact fit. The follow-up explanation separated this issue from
+floating-point roundoff and distinguished an ideal transformation's existence
+from what our finite architecture and training can achieve.
+
+These are reviewed answers with corrections, not independent mastery of
+every detail. Keep a brief determinant/log-determinant check and the exact-fit
+explanation inside the existing Day 7 flow review. No additional Day 4
+session or new training is required.
+
 ### Day 5 — Score Learning and Optimization
 
 Spend about 20 minutes revisiting the Week 8 report and Week 13 score-objective
@@ -249,11 +277,13 @@ outputs is sufficient; do not retrain just to improve a figure.
 
 Include a brief recheck of the Day 2 conditioning formula with changed
 numbers before opening notes. Keep it within this session's 30-minute budget.
+Within the existing flow review, briefly recheck a determinant, its natural
+logarithm, and the inverse correction using fresh numbers.
 
 Explain the report aloud without reading it, then review any weak answer:
 
 - Why does the VAE use a bound, while this flow evaluates its density exactly? In the VAE explanation, state when increasing the ELBO necessarily decreases the posterior KL gap.
-- Why can exact flow likelihood coexist with a visibly imperfect fit?
+- Why can exact flow likelihood coexist with a visibly imperfect fit, even with exact arithmetic?
 - Why is a score a vector field rather than a probability or a sample?
 - Why can smaller applied gradients coexist with worse held-out score MSE?
 - What do Weeks 15–16 add beyond our single-noise-level score toy?
