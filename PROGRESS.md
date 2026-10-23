@@ -11,8 +11,8 @@
 - **Week 11 Completed:** 2026-09-15
 - **Week 12 Completed:** 2026-09-28
 - **Week 13 Completed:** 2026-10-14
-- **Next study session:** Week 14 Day 5 — Score learning and optimizer stability
-- **Week 14 plan:** [Day-by-day plan](notes/w14_study_plan.md); Days 1–4 reviewed through 2026-10-22, with three of four mixed problems reviewed; brief conditioning-formula, VAE-gap, and flow rechecks remain within Day 7
+- **Next study session:** Week 14 Day 6 — Write the report from existing evidence
+- **Week 14 plan:** [Day-by-day plan](notes/w14_study_plan.md); Days 1–5 and all four mixed problems reviewed through 2026-10-23; the report and bounded Day 7 recall checks remain
 
 ---
 
@@ -160,17 +160,18 @@
 The [Day 1 diagnostic](notes/w14_study_plan.md#day-1-review-record) closed on
 2026-10-19, [Day 2](notes/w14_study_plan.md#day-2-review-record) was reviewed on
 2026-10-20, [Day 3](notes/w14_study_plan.md#day-3-review-record) on 2026-10-21,
-and [Day 4](notes/w14_study_plan.md#day-4-review-record) on 2026-10-22.
-Three of four mixed problems and the VAE/flow evidence discussions are reviewed.
-Problem 4, the score/optimizer review, and the report are still pending;
-the checkpoint is not complete.
+[Day 4](notes/w14_study_plan.md#day-4-review-record) on 2026-10-22,
+and [Day 5](notes/w14_study_plan.md#day-5-review-record) on 2026-10-23.
+All four mixed problems and the VAE/flow/score evidence discussions are reviewed.
+The report and final recall review are still pending; the checkpoint is not
+complete. The proposed longer clipping comparison has not been run.
 
 | Task | Status | Date | Notes |
 | --- | --- | --- | --- |
-| S1: review Weeks 9–13 | 🔄 | 2026-10-22 | Model map, Gaussian work, VAE objective/evidence, and flow density/evidence reviewed; score and optimizer work remain. Brief conditioning, fixed-model ELBO-gap, and flow rechecks on Day 7 |
-| S2: four mixed problems | 🔄 | 2026-10-22 | [Mixed set](proofs/w14_generative_toolkit_mixed_set.md): Problems 1–3 reviewed with reference use and corrections recorded; Problem 4 pending |
+| S1: review Weeks 9–13 | ✅ | 2026-10-23 | Bounded model, Gaussian, optimizer, and saved-evidence reviews completed; reference use and guided clarifications recorded, with final recall checks reserved for Day 7 |
+| S2: four mixed problems | ✅ | 2026-10-23 | [Mixed set](proofs/w14_generative_toolkit_mixed_set.md): all four problems reviewed, including convergence cases, clipping interpretation, and a proposed controlled follow-up |
 | S3: toolkit report | ⬜ | — | Planned 2–3-page `mini_projects/checkpoint_03_generative_toolkit_report/report.md`, reusing existing evidence |
-| Diffusion: explain the score-model connection | 🔄 | 2026-10-20 | Day 2 noise scaling correct, with conditional-density notation corrected during review. Conditional target versus marginal score and sampling scope still need the Day 5 independent recheck and report comparison |
+| Diffusion: explain the score-model connection | 🔄 | 2026-10-23 | Conditional target and scaling recalled correctly; MSE mean/loss floor and noise-conditioned reverse sampling reviewed with guidance recorded. Report comparison and final recall remain |
 
 ---
 

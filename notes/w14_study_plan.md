@@ -3,9 +3,10 @@
 **Status:** Week 14 is in progress. Day 1's recall diagnostic closed on
 2026-10-19; Day 2 and Problem 1 were reviewed on 2026-10-20; Day 3, Problem 2,
 and the VAE evidence discussion were reviewed on 2026-10-21. Day 4, Problem 3,
-and the flow evidence discussion were reviewed on 2026-10-22. Problem 4,
-score/optimizer review, and the report remain pending. Week 13 is complete
-as of 2026-10-14.
+and the flow evidence discussion were reviewed on 2026-10-22. Day 5, Problem 4,
+and the score/optimizer discussion were reviewed on 2026-10-23. All four
+mixed problems are reviewed; the report and final recall review remain
+pending. Week 13 is complete as of 2026-10-14.
 
 **Pacing:** The original budget was seven study days and about seven hours.
 Day 1 exceeded its 45-minute budget; the remaining days retain their planned
@@ -33,7 +34,7 @@ mixed problems, and support a short comparison with your own results.
 
 ## Outputs to Complete During the Week
 
-- Four reviewed solutions in the [mixed problem set](../proofs/w14_generative_toolkit_mixed_set.md): Problems 1–3 reviewed; Problem 4 pending.
+- Four reviewed solutions in the [mixed problem set](../proofs/w14_generative_toolkit_mixed_set.md): all four reviewed through 2026-10-23, with reference use and guided corrections recorded.
 - A 2–3-page report in
   `mini_projects/checkpoint_03_generative_toolkit_report/report.md`, with a
   compact comparison table and 1–2 existing diagnostic plots per model.
@@ -42,9 +43,9 @@ mixed problems, and support a short comparison with your own results.
   explaining where the reused evidence came from. Export saved notebook
   figures into that checkpoint's `figures/` directory if needed.
 
-The mixed problem set is in progress; the report and its README remain
-planned. Write your answers first, review them together, then consolidate
-the final Markdown in your own words.
+The mixed problem set is reviewed; the report and its README remain planned.
+Write the report in your own words using the reviewed evidence. The final
+recall session will check the specific items identified during review.
 
 ## Day-by-Day Schedule
 
@@ -54,7 +55,7 @@ the final Markdown in your own words.
 | 2 | 60 min budget | Gaussian score and conditioning — reviewed 2026-10-20 | Problem 1 correct; conditioning formula used with notes, with recall recheck assigned to Day 7 |
 | 3 | 60 min budget | VAE: ELBO, KL, and generation — reviewed 2026-10-21 | Problem 2 and reconstruction evidence reviewed; bottleneck explanation retained as a hypothesis |
 | 4 | 60 min budget | Flow: density, inverse, and expressivity — reviewed 2026-10-22 | Problem 3 and saved plots reviewed; determinant/logarithm corrections and exact-density versus exact-fit distinction recorded |
-| 5 | 75 min | Score learning and optimizer stability | Problem 4 reviewed; training target, evaluation target, and sampling distinguished |
+| 5 | 75 min budget | Score learning and optimizer stability — reviewed 2026-10-23 | Problem 4 and clipping evidence reviewed; longer paired comparison proposed; score-loss floor and diffusion ingredients clarified |
 | 6 | 90 min | Assemble the checkpoint report | A 2–3-page draft with traceable figures and bounded conclusions |
 | 7 | 30 min | Explain, correct, and close | Final oral review, remaining corrections, and an honest completion decision |
 
@@ -241,6 +242,40 @@ does not yet provide: a model across noise levels and a reverse sampler.
 that clipping always helps or that it is generally harmful. Identify the
 missing ingredients for diffusion sampling; implementing them belongs later.
 
+#### Day 5 Review Record
+
+**Reviewed on 2026-10-23; move to Day 6.** The
+[Problem 4 solution](../proofs/w14_generative_toolkit_mixed_set.md#problem-4--stability-and-what-clipping-actually-established)
+records the score warm-up, gradient-descent derivation, clipping interpretation,
+and the proposed follow-up.
+
+The learner recalled the conditional Gaussian target and its noise scaling
+correctly without notes, identified its conditional density, and chose the
+weighted mean as the MSE-optimal prediction. The expected-error expression
+was correct; evaluating the nonzero loss floor needed a prompt to use the
+two target values and weights. Review explained why that residual target
+MSE can coexist with a correct marginal score prediction.
+
+The quadratic gradient, both coordinate recurrences, the common learning-rate
+range, and all three convergence classifications were correct in the staged
+first attempts. The learner also correctly separated the applied-gradient
+bound from held-out score accuracy and limited the conclusion to the saved run.
+
+The proposed next test extends both clipping conditions to the same longer
+budget while preserving matched controls, then compares held-out score MSE
+at common intermediate checkpoints and the end. This is a design only;
+no new training was run.
+
+The learner identified multiple noise levels and reverse sampling as missing
+ingredients. Review added that the model must receive the noise level and
+clarified that an analytical real-data score is not required for training;
+the known Gaussian corruption supplies the target. Keep that clarification
+and the loss-floor check inside the existing Day 7 score discussion.
+
+All four problems and the planned evidence reviews are now reviewed.
+The report and final recall review remain; no additional Day 5 exercises
+are assigned.
+
 ### Day 6 — Write the Report from Existing Evidence
 
 Use approximately 20 minutes to select evidence, 55 to write, and 15 to check
@@ -279,6 +314,8 @@ Include a brief recheck of the Day 2 conditioning formula with changed
 numbers before opening notes. Keep it within this session's 30-minute budget.
 Within the existing flow review, briefly recheck a determinant, its natural
 logarithm, and the inverse correction using fresh numbers.
+Use the existing score questions to recheck why target MSE can remain
+nonzero and why analytical marginal scores are not required for training.
 
 Explain the report aloud without reading it, then review any weak answer:
 

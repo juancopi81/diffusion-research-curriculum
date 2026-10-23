@@ -1,7 +1,8 @@
 # Week 14 — Generative Toolkit Mixed Problem Set
 
-**Status:** In progress. Problem 1 reviewed on 2026-10-20, Problem 2 on
-2026-10-21, and Problem 3 on 2026-10-22. Problem 4 remains unattempted.
+**Status:** All four problems reviewed. Problem 1 was reviewed on 2026-10-20,
+Problem 2 on 2026-10-21, Problem 3 on 2026-10-22, and Problem 4 on 2026-10-23.
+The Week 14 report and final recall review remain pending.
 
 **Source basis:** Problem 1 consolidates the handwritten calculations and
 explanation reviewed during Day 2. The Gaussian conditioning formulas were
@@ -22,12 +23,18 @@ interpretation. The initial calculations were attempted without notes;
 corrections and the follow-up explanation are recorded separately from
 independent recall.
 
+Problem 4 consolidates the Day 5 score-target recall, handwritten
+gradient-descent calculations, and interpretation of the
+[saved Week 13 clipping comparison](../notes/w13_training_stability_for_diffusion.md).
+The learner proposed a longer matched training comparison; this remains
+an experiment design, not a new result.
+
 | Problem | Status | Review evidence |
 | --- | --- | --- |
 | 1 — Gaussian score and conditioning | Reviewed 2026-10-20 | Score derivation and numerical evaluation correct; conditioning applied correctly with notes; marginal comparison explained correctly |
 | 2 — ELBO, KL, and the implemented loss | Reviewed 2026-10-21 | ELBO identity recalled without notes; Gaussian KL applied with references and a log-base correction; reconstruction loss and saved-result interpretation reviewed |
 | 3 — Change of variables and an unchanged coordinate | Reviewed 2026-10-22 | Inverse recalled correctly; Jacobian/logarithm slips corrected; inverse determinant self-corrected; unchanged marginal and imperfect generated samples explained after clarification |
-| 4 — Stability and clipping | Pending | Scheduled for Day 5 |
+| 4 — Stability and clipping | Reviewed 2026-10-23 | Gradient, recurrences, stability range, and three learning-rate cases correct; clipping evidence interpreted correctly; longer matched comparison proposed, not run |
 
 ## Day 2 Warm-up — Gaussian Corruption
 
@@ -553,4 +560,222 @@ recall of it has not been assessed. No additional Day 4 exercises are assigned.
 
 ## Problem 4 — Stability and What Clipping Actually Established
 
-Pending Day 5 attempt and review. Use the prompt in the study plan.
+### 1. Score-target recall and the MSE optimum
+
+For the fixed-noise toy,
+
+$$
+x_t=x_0+\sigma\epsilon,\qquad
+\epsilon\sim\mathcal N(0,I).
+$$
+
+The direct-score training target is
+
+$$
+Y=\nabla_{x_t}\log q_\sigma(x_t\mid x_0)
+=-\frac{x_t-x_0}{\sigma^2}
+=-\frac{\epsilon}{\sigma}.
+$$
+
+The learner recalled both forms correctly without notes and identified the
+target as the conditional corruption score. The network receives the noisy
+input during training as well as inference; the clean point constructs the
+target. The analytical marginal noisy-data score is the toy's evaluation
+reference.
+
+Under squared-error training, the ideal population predictor is
+
+$$
+s_\sigma^*(x_t)
+=\mathbb E[Y\mid X_t=x_t]
+=\nabla_{x_t}\log p_\sigma(x_t).
+$$
+
+The conditional-mean identity was explained during review. To check the
+averaging step, consider these possible scalar targets at one fixed noisy input:
+
+$$
+\Pr(Y=-3\mid X_t=x_t)=0.25,\qquad
+\Pr(Y=1\mid X_t=x_t)=0.75.
+$$
+
+The learner correctly chose the expected target:
+
+$$
+a^*=(-3)(0.25)+(1)(0.75)=0.
+$$
+
+The expected target MSE at that prediction is
+
+$$
+\mathbb E[(Y-a^*)^2\mid X_t=x_t]
+=0.25(-3)^2+0.75(1)^2
+=3.
+$$
+
+The learner correctly wrote the expected squared error and reduced it to
+the expected squared target when the prediction is zero. A prompt to use
+the two numerical targets and their weights was needed before evaluating
+the result. The nonzero minimum reflects conditional target variability;
+at this input, the optimal prediction still has zero error against the
+marginal score. Record the loss-floor calculation as reviewed with guidance.
+
+Both conditional and marginal scores differentiate log densities with
+respect to the noisy input. The optimizer instead uses a loss gradient
+with respect to model parameters, as in the calculation below.
+
+### 2. Gradient and coordinate recurrences
+
+Use the quadratic and initial point
+
+$$
+L(\theta)=\frac12\left(\theta_1^2+10\theta_2^2\right),
+\qquad
+\theta^{(0)}=\begin{pmatrix}2\\1\end{pmatrix}.
+$$
+
+The learner used lambda for the learning rate. Differentiation gives
+
+$$
+\nabla_\theta L(\theta)
+=\begin{pmatrix}\theta_1\\10\theta_2\end{pmatrix}.
+$$
+
+Substituting into plain gradient descent,
+
+$$
+\theta^{(n)}
+=\theta^{(n-1)}
+-\lambda\nabla_\theta L(\theta^{(n-1)}),
+$$
+
+gives
+
+$$
+\theta_1^{(n)}=(1-\lambda)\theta_1^{(n-1)},
+\qquad
+\theta_2^{(n)}=(1-10\lambda)\theta_2^{(n-1)}.
+$$
+
+The gradient and both factored recurrences were correct on the first attempt,
+within the staged prompts and without a reported reference lookup.
+
+### 3. Stability range and three learning rates
+
+Both starting coordinates are nonzero. Repeated multiplication approaches
+zero precisely when each multiplier has magnitude less than one:
+
+$$
+|1-\lambda|<1
+\quad\Longleftrightarrow\quad
+0<\lambda<2,
+$$
+
+$$
+|1-10\lambda|<1
+\quad\Longleftrightarrow\quad
+0<\lambda<0.2.
+$$
+
+The common range is therefore
+
+$$
+\boxed{0<\lambda<0.2}.
+$$
+
+The learner correctly derived both inequalities, including the sign reversals.
+The second coordinate imposes the stricter constraint.
+
+| Learning rate | First multiplier | Second multiplier | Coordinate behavior |
+| --- | --- | --- | --- |
+| 0.05 | 0.95 | 0.5 | Both coordinates approach zero without changing sign |
+| 0.15 | 0.85 | -0.5 | The first approaches zero without sign changes; the second alternates sign with shrinking magnitude |
+| 0.25 | 0.75 | -1.5 | The first approaches zero; the second alternates sign with growing magnitude, so the iterate diverges |
+
+All three classifications were correct. Review made the alternating-sign
+behavior of the divergent case explicit. Oscillation by itself does not
+imply divergence; the multiplier's magnitude determines whether it grows
+or decays.
+
+### 4. What the clipping experiment established
+
+**Source:** the [Week 13 stability note](../notes/w13_training_stability_for_diffusion.md)
+and its saved score-network experiment. This is separate from the quadratic
+above. It used 20 plain-SGD updates at learning rate 0.1, paired initialization,
+data splits, and training-noise draws, plus one fixed held-out noisy set.
+The clipping-on threshold was a global parameter-gradient norm of 0.5.
+
+| Condition | Clipped updates | Maximum applied gradient norm | Final held-out score MSE |
+| --- | --- | --- | --- |
+| Clipping off | 0/20 | 0.910351 | 1.240304 |
+| Clipping on | 20/20 | 0.500000 | 1.345339 |
+
+The learner correctly concluded that these results do not support improved
+score accuracy from clipping in this run: the norm was bounded as intended,
+but held-out MSE was higher with clipping.
+
+Applied gradient norms assess the effect on parameter updates. Held-out
+score MSE compares the network's predicted input-space vector field with
+the analytical marginal score. These are different measurements, so
+bounding the former does not guarantee improving the latter.
+
+The comparison establishes the observed ordering under this setup and
+budget. It does not establish a general advantage or disadvantage of clipping,
+and the saved experiment did not demonstrate recovery from exploding gradients.
+
+### 5. Proposed controlled follow-up — not run
+
+The learner proposed extending training while keeping learning rate,
+architecture, the clipping-on threshold, and other conditions fixed, and
+comparing intermediate results as well as the final result.
+
+The reviewed design is:
+
+1. Extend both clipping-off and clipping-on runs to the same longer,
+   predetermined update budget.
+2. Keep the learning rate, architecture, initialization, data split, paired
+   fresh-noise draws, fixed held-out set, and clipping-on threshold matched
+   to the original comparison.
+3. Compare held-out marginal-score MSE at the same update checkpoints and
+   at the final update. As an optional refinement, predefine a common error
+   level and compare updates needed to reach it, if either run reaches it.
+
+This tests whether the clipped run catches up, overtakes, or remains behind
+as the budget increases. A slower-progress explanation is a hypothesis,
+not an established cause. No longer budget was selected and no new training
+was run during this review.
+
+### 6. What the toy still needs for diffusion generation
+
+The learner identified multiple corruption timesteps and reverse sampling.
+Review refined these into two ingredients:
+
+1. Learn scores across a range of noise levels and tell the model the
+   corresponding timestep or noise scale, rather than learning one fixed-noise
+   score field.
+2. Add a reverse sampling procedure that starts from a suitable, easily
+   sampled high-noise distribution and uses those predictions to move
+   through decreasing noise levels toward the data distribution.
+
+For example, a noise-conditioned score model has the form
+
+$$
+s_\theta(x_t,t)\approx\nabla_{x_t}\log p_t(x_t).
+$$
+
+The learner also raised moving from analytical blobs to real data. This
+would extend the application but is not a prerequisite for diffusion:
+diffusion can be demonstrated on synthetic blobs. The analytical marginal
+blob score was an evaluation reference. Training uses the known Gaussian
+corruption conditional, whose score target can be computed from the clean
+sample and chosen noise even when the real-data density is unknown.
+
+The noise-conditioning detail and the training-versus-evaluation role of
+analytical scores were clarified during review; they have not yet been
+independently rechecked.
+
+**Review outcome:** Problem 4, the score-target review, and clipping evidence
+are reviewed on 2026-10-23. All four mixed problems are reviewed. Keep the
+loss-floor and analytical-score clarification inside the existing Day 7
+score questions; no additional Day 5 exercises or implementation are needed.
+The checkpoint report and final recall review remain pending.
