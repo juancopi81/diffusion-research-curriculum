@@ -1,16 +1,21 @@
 # Week 14 — Generative Toolkit Checkpoint: Study Plan
 
-**Status:** Week 14 is in progress. Day 1's recall diagnostic closed on
+**Status:** Week 14 is complete as a study checkpoint on 2026-10-27.
+Day 1's recall diagnostic closed on
 2026-10-19; Day 2 and Problem 1 were reviewed on 2026-10-20; Day 3, Problem 2,
 and the VAE evidence discussion were reviewed on 2026-10-21. Day 4, Problem 3,
 and the flow evidence discussion were reviewed on 2026-10-22. Day 5, Problem 4,
 and the score/optimizer discussion were reviewed on 2026-10-23. All four
-mixed problems are reviewed; the report and final recall review remain
-pending. Week 13 is complete as of 2026-10-14.
+mixed problems are reviewed. A full report draft was assembled and reviewed
+by the author on 2026-10-26, closing Day 6's study writing. Day 7's final
+review and corrections are recorded below, including reference use and
+guided score-expectation practice. Blog editing continues separately and
+does not block curriculum completion. Week 15's forward-process work is next.
 
 **Pacing:** The original budget was seven study days and about seven hours.
-Day 1 exceeded its 45-minute budget; the remaining days retain their planned
-budgets, so actual total time will be longer. These are flexible sessions,
+Day 1 exceeded its 45-minute budget; the other days retained their planned
+active-study budgets. The times below are budgets, not a measured total.
+These are flexible sessions,
 not calendar deadlines. Include short follow-up checks within each session's
 budget. Stop at the time limit or concrete stopping point, record unresolved
 items, and carry them forward instead of extending a recall session indefinitely.
@@ -35,17 +40,22 @@ mixed problems, and support a short comparison with your own results.
 ## Outputs to Complete During the Week
 
 - Four reviewed solutions in the [mixed problem set](../proofs/w14_generative_toolkit_mixed_set.md): all four reviewed through 2026-10-23, with reference use and guided corrections recorded.
-- A 2–3-page report in
-  `mini_projects/checkpoint_03_generative_toolkit_report/report.md`, with a
-  compact comparison table and 1–2 existing diagnostic plots per model.
-  Start with one plot per model; add a second only if it supports a distinct claim.
-- A short `README.md` beside the report linking the source notebooks and
-  explaining where the reused evidence came from. Export saved notebook
-  figures into that checkpoint's `figures/` directory if needed.
+- A compact [report draft](../mini_projects/checkpoint_03_generative_toolkit_report/report.md)
+  (target: 2–3 pages), assembled on 2026-10-26 with a comparison table and
+  one existing diagnostic figure per model. The author completed the read-through;
+  connections between sections remain for final blog editing.
+- A [source README](../mini_projects/checkpoint_03_generative_toolkit_report/README.md)
+  linking the notebooks and recording saved-output identities and run settings.
+  The three figures are exported into the checkpoint's `figures/` directory.
 
-The mixed problem set is reviewed; the report and its README remain planned.
-Write the report in your own words using the reviewed evidence. The final
-recall session will check the specific items identified during review.
+The mixed problem set is reviewed. A
+[Day 6 working draft](../mini_projects/checkpoint_03_generative_toolkit_report/draft.md)
+was started on 2026-10-26 and preserves the reviewed answers and corrections.
+The readable manuscript and source README are assembled, and the author has
+reviewed the wording. Day 6's study writing is closed.
+Day 7 checked the identified gaps and recorded the assistance used. The
+[completion decision](#day-7-completion-decision) distinguishes checkpoint
+completion from fluent unaided formula recall and final blog publication.
 
 ## Day-by-Day Schedule
 
@@ -56,8 +66,8 @@ recall session will check the specific items identified during review.
 | 3 | 60 min budget | VAE: ELBO, KL, and generation — reviewed 2026-10-21 | Problem 2 and reconstruction evidence reviewed; bottleneck explanation retained as a hypothesis |
 | 4 | 60 min budget | Flow: density, inverse, and expressivity — reviewed 2026-10-22 | Problem 3 and saved plots reviewed; determinant/logarithm corrections and exact-density versus exact-fit distinction recorded |
 | 5 | 75 min budget | Score learning and optimizer stability — reviewed 2026-10-23 | Problem 4 and clipping evidence reviewed; longer paired comparison proposed; score-loss floor and diffusion ingredients clarified |
-| 6 | 90 min | Assemble the checkpoint report | A 2–3-page draft with traceable figures and bounded conclusions |
-| 7 | 30 min | Explain, correct, and close | Final oral review, remaining corrections, and an honest completion decision |
+| 6 | 90 min budget | Study draft reviewed; session closed 2026-10-26 | Opening, comparison table, three sourced figures, and diffusion connection reviewed; connections between sections carried forward to blog editing |
+| 7 | 30 min active-study budget | Final review and corrections — closed 2026-10-27 | Gaussian reference use and guided score corrections recorded; study checkpoint complete, with two consolidation points carried forward |
 
 ### Day 1 — Retrieve the Model Map
 
@@ -273,10 +283,21 @@ the known Gaussian corruption supplies the target. Keep that clarification
 and the loss-floor check inside the existing Day 7 score discussion.
 
 All four problems and the planned evidence reviews are now reviewed.
-The report and final recall review remain; no additional Day 5 exercises
-are assigned.
+The report and final recall review remained at Day 5's close; both were
+subsequently completed in Days 6–7. No additional Day 5 exercises were assigned.
 
 ### Day 6 — Write the Report from Existing Evidence
+
+**Study draft reviewed; Day 6 closed on 2026-10-26.** The
+[working draft](../mini_projects/checkpoint_03_generative_toolkit_report/draft.md)
+preserves the reviewed evidence paragraphs, all three model answers, and
+a compact comparison table. The brief diffusion connection is also reviewed,
+with corrections distinguishing backpropagation from reverse sampling and
+score-error evidence from generated samples. The author's opening, table,
+figures, and closing connection are now in the
+[readable manuscript](../mini_projects/checkpoint_03_generative_toolkit_report/report.md).
+The author plans to use this text as a blog post as well as the checkpoint
+report. Website preparation is separate from the 90-minute drafting budget.
 
 Use approximately 20 minutes to select evidence, 55 to write, and 15 to check
 claims and links. A compact structure is enough:
@@ -308,6 +329,22 @@ different things. Generated sample quality was not tested by the score toy.
 explanation is either supported or explicitly a hypothesis. Reusing saved
 outputs is sufficient; do not retrain just to improve a figure.
 
+#### Day 6 Draft Record
+
+**Assembled on 2026-10-26.** The author supplied the reader aim, three
+evidence interpretations, model-comparison answers, diffusion connection,
+and personal opening. The working record preserves technical corrections;
+the manuscript contains the reviewed prose, comparison table, and three
+unchanged saved figures. The source README records the experiment settings
+and distinguishes the separate datasets, objectives, and flow training budgets.
+
+**Author read-through completed on 2026-10-26.** The author said the wording
+sounds good so far and identified connections between sections as remaining
+work for the final blog. Day 6's study writing is closed. Those connections,
+the title, and website preparation can follow during blog editing.
+Guided corrections do not establish independent recall. The identified checks
+were carried into Day 7 and completed with assistance recorded below.
+
 ### Day 7 — Review and Decide Whether the Checkpoint Is Complete
 
 Include a brief recheck of the Day 2 conditioning formula with changed
@@ -316,6 +353,9 @@ Within the existing flow review, briefly recheck a determinant, its natural
 logarithm, and the inverse correction using fresh numbers.
 Use the existing score questions to recheck why target MSE can remain
 nonzero and why analytical marginal scores are not required for training.
+Within the existing diffusion-ingredients question, distinguish
+backpropagation during training from the reverse procedure used to generate
+samples; the Day 6 paragraph needed this correction.
 
 Explain the report aloud without reading it, then review any weak answer:
 
@@ -329,12 +369,125 @@ Use the remaining time for corrections. If a central answer is still unclear,
 leave that item open and add a short review sitting rather than marking the
 week complete on schedule.
 
+#### Day 7 Review Record
+
+**Closed on 2026-10-27; 30-minute active-study budget.** The four mixed
+problems and study draft were already reviewed. This session checked the
+recorded gaps and included brief corrections, with reference use and guided
+answers distinguished from independent recall. The author is handling the
+blog in a separate thread.
+
+First attempts were requested without notes; subsequent reference use and
+prompting are recorded below. The first check used fresh Gaussian conditioning values: mean
+vector (-1, 2), covariance rows (4, 2) and (2, 3), conditioning on the first
+coordinate being 3.
+
+- **Conditional Gaussian formula recall:** The learner remembered covariance
+  blocks and a mean-dependent shift, but could not recall the exact formulas.
+  A reference lookup was used; this is not unaided formula recall.
+- **Conditional Gaussian application:** Correct with the formulas available.
+  The learner selected the covariance entries correctly and calculated a
+  conditional mean of 4 and variance of 2. Interpretation was not separately
+  rechecked in this answer.
+- **VAE ELBO and posterior KL gap:** Correct without notes. The learner
+  recalled the likelihood/ELBO/gap identity and held log-likelihood at 4:
+  raising the ELBO from 1 to 3 lowers the posterior KL gap from 3 to 1.
+  Feedback connects fixed likelihood to holding the prior, decoder, and
+  observed input fixed while changing the encoder; joint training need not
+  keep likelihood fixed.
+- **VAE versus RealNVP likelihood:** The learner correctly recalled the
+  central distinction without notes: an invertible change of variables for
+  RealNVP versus integrating over latent values in the VAE. Feedback makes
+  the tractable Jacobian determinant explicit and corrects sampling wording:
+  inverse sampling draws from the learned model, which need not equal the
+  true data distribution.
+- **Flow Jacobian calculation:** Correct inverse mapping and forward
+  Jacobian for z1 = x1 and z2 = 3*x2 - 2*x1. The forward determinant is 3,
+  the inverse determinant is 1/3, and the data log-density correction is
+  +ln(3). Feedback clarifies notation: use f(x) when f maps data to latents;
+  g-inverse(x) is equivalent if g denotes the generative map.
+- **Exact likelihood versus data fit:** Correct conceptual distinction.
+  The learner explained that exact likelihood evaluation does not remove the
+  need to fit the model to the data through training. Feedback clarifies
+  terminology: likelihood evaluates the model density on observed data;
+  this does not establish equality with the underlying data distribution.
+- **Ideal score prediction, first attempt:** The learner described weighting
+  possible clean origins for a fixed noisy input, but wrote E[Xt | X0].
+  The conditioning is reversed, and the averaged quantity must be the
+  conditional corruption score target rather than the noisy input.
+  This prompted the guided correction and transfer check recorded below.
+- **Score prediction, guided second attempt:** The learner wrote E[X0 | Xt],
+  fixing the conditioning direction but averaging the clean point rather than
+  the score target. This is the posterior mean clean point, not the score.
+- **Score-prediction correction:** Feedback explained that the ideal predictor is E[Y | Xt],
+  equal to (E[X0 | Xt] - Xt)/sigma^2 for this Gaussian corruption. This is
+  the marginal noisy-data score. The learner correctly applied the supplied
+  relationship with noisy input 5, posterior clean-point mean 3, and noise
+  variance 2, obtaining (3 - 5)/2 = -1. This is a correct guided application;
+  it does not establish unaided recall of the conditional-expectation identity.
+- **Score-loss floor:** Correct conceptual explanation. The learner described
+  the expected training MSE as score error plus an irreducible floor: several
+  clean origins can produce the same noisy input, so predicting the conditional
+  mean cannot match every individual target. Their example uses clean values
+  2 and 4, each corrupted to 3, with weights 0.75 and 0.25.
+- **Score-prediction transfer check:** With those weights conditional on
+  noisy input 3 and noise variance 1, the learner correctly calculated the
+  posterior mean clean point as 2.5 and set up (2.5 - 3)/1 for the score.
+  They reported -1.5; feedback corrects the subtraction to -0.5. The setup
+  demonstrates the clean-mean versus score distinction after guidance;
+  the remaining error in this answer was arithmetic.
+- **Training targets without an analytical marginal score:** Correct.
+  The learner supplied Y = -(Xt - X0)/sigma^2 and identified the clean image,
+  corrupted input, and known noise scale as sufficient to compute it. They
+  correctly distinguished this from the generally unknown analytical marginal
+  noisy-data score. Feedback notes that the analytical marginal score in the
+  blob experiment supported evaluation, not construction of training targets.
+- **Gradient clipping versus score accuracy:** Correct interpretation.
+  The learner explained that clipping does not guarantee lower held-out score
+  MSE, can help control very large gradients, and can also provide no benefit
+  or worsen results. They explicitly treated slower convergence from smaller
+  updates as a hypothesis. Feedback preserves the observed 20-update result
+  separately from this untested longer-training explanation.
+- **Diffusion ingredients and training versus sampling:** The learner
+  correctly described Gaussian forward corruption, a computable training
+  target, learning the model's weights, and the missing reverse sampler and
+  multiple noise levels. Feedback makes the noise-level/timestep input
+  explicit. It also specifies that backpropagation computes gradients and
+  the optimizer updates weights during training; sampling uses fixed trained
+  weights to update noisy samples. The broad distinction was recalled; these
+  implementation details were clarified rather than independently tested.
+
+The learner completes questions between other tasks. Count estimated active
+study time toward the 30-minute budget, excluding breaks between responses.
+
+#### Day 7 Completion Decision
+
+**Week 14 study checkpoint complete on 2026-10-27.** The four reviewed
+problems, comparison report with sourced figures, and final model review
+meet the checkpoint's study outcomes. The final review supports moving to
+Week 15; it does not establish unaided mastery of every formula.
+
+Two consolidation points carry forward into the next week's normal study:
+
+- Gaussian conditioning was applied correctly with a formula reference.
+  Keep that reference available; full block-matrix formula memorization was
+  not required for this checkpoint.
+- Distinguishing a conditional mean clean point from a conditional mean score
+  target needed guidance. The learner then set up the transformation correctly
+  in a fresh example, with one arithmetic correction. Briefly revisit this
+  distinction while studying the forward process; do not treat the guided
+  work as independent recall of the identity.
+
+The blog's section connections, score-section revision, title, and publication
+remain separate editorial work. The proposed longer clipping comparison
+remains an unrun follow-up experiment, not a requirement for closing Week 14.
+
 ## Four Bounded Practice Problems
 
 These are independent checkpoint prompts based on the completed material,
 not exercises attributed to a book or an official solution set. Attempt each
-before consulting the linked derivations. Solutions will be written and
-reviewed during the week; they are intentionally not supplied here.
+before consulting the linked derivations. The [reviewed solutions](../proofs/w14_generative_toolkit_mixed_set.md)
+are kept separately so these prompts can still be used for recall practice.
 
 ### Problem 1 — Gaussian Score and Conditioning
 
@@ -410,9 +563,12 @@ if a specific derivation needs checking.
 
 ## Completion Gate
 
-- [ ] Four mixed solutions are correct and reviewed; optional follow-up questions are recorded separately.
-- [ ] The report compares representation, objective, generation procedure, and observed limitations for all three models.
-- [ ] Existing figures and numerical claims have traceable sources and appropriate limitations.
-- [ ] The score-model discussion distinguishes training targets, marginal scores, and the sampling work still ahead.
-- [ ] The final explanation is clear in your own words; the report and local README are ready to skim.
-- [ ] Update `PROGRESS.md`, `README.md`, `CURRICULUM.md`, and `MILESTONES.md` after actual completion, then make Week 15 the next step.
+Completed on 2026-10-27; the [completion decision](#day-7-completion-decision)
+records the reference use and guided corrections behind this outcome.
+
+- [x] Four mixed solutions are correct and reviewed; optional follow-up questions are recorded separately.
+- [x] The report compares representation, objective, generation procedure, and observed limitations for all three models.
+- [x] Existing figures and numerical claims have traceable sources and appropriate limitations.
+- [x] The score-model discussion distinguishes training targets, marginal scores, and the sampling work still ahead.
+- [x] The final explanation is clear in your own words; the report and local README are ready to skim.
+- [x] `PROGRESS.md`, `README.md`, `CURRICULUM.md`, and `MILESTONES.md` record completion and Week 15 as the next step.

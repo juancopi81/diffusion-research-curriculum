@@ -2,7 +2,9 @@
 
 **Status:** All four problems reviewed. Problem 1 was reviewed on 2026-10-20,
 Problem 2 on 2026-10-21, Problem 3 on 2026-10-22, and Problem 4 on 2026-10-23.
-The Week 14 report and final recall review remain pending.
+The study report and final recall review are complete; Week 14 closed on
+2026-10-27. The [closeout](../notes/w14_study_plan.md#day-7-completion-decision)
+records reference use and guided corrections. Blog editing continues separately.
 
 **Source basis:** Problem 1 consolidates the handwritten calculations and
 explanation reviewed during Day 2. The Gaussian conditioning formulas were
@@ -182,10 +184,9 @@ Explanation given during review:
 > are positively correlated. The variance decreases from 2 to 3/2 since
 > knowing X1 reduces our uncertainty about X2.
 
-The calculation and interpretation are correct. The remaining recall item
-is the conditioning formula itself: include a short check with changed
-numbers during Day 7, before consulting notes. Problem 1 is reviewed; this
-does not claim unaided formula recall has already been demonstrated.
+The calculation and interpretation are correct. Day 7 rechecked conditioning
+with changed numbers: the learner again used a formula reference and applied
+it correctly. Problem 1 is reviewed; unaided formula recall is not claimed.
 
 ## Problem 2 — ELBO, KL, and the Implemented Loss
 
@@ -361,9 +362,10 @@ separate prior-sample panel; reconstruction improvement alone does not
 establish its quality.
 
 **Review outcome:** Problem 2 and the Day 3 evidence discussion are reviewed.
-During the existing Day 7 VAE check, briefly revisit why increasing the
-ELBO forces the posterior gap down only when the generative model is fixed.
-No extra Day 3 session or new model training is required.
+During Day 7, the learner recalled the identity without notes and correctly
+explained that an increased ELBO reduces the posterior KL gap when the
+log-likelihood is fixed. Feedback connected this to holding the generative
+model and input fixed. No new model training was required.
 
 ## Problem 3 — Change of Variables and an Unchanged Coordinate
 
@@ -553,10 +555,10 @@ The target Gaussians also have tails between blobs: sparse observed regions
 are not regions of exactly zero true density.
 
 **Review outcome:** Problem 3 and the flow evidence discussion are reviewed.
-Within the existing Day 7 flow check, revisit determinant versus log-determinant,
-the inverse correction, and why a fit can remain imperfect even with exact
-arithmetic. The theoretical clarification was explained today; unaided
-recall of it has not been assessed. No additional Day 4 exercises are assigned.
+Day 7's fresh calculation correctly distinguished the forward determinant,
+inverse determinant, and additive natural-log correction. The learner also
+explained that exact likelihood evaluation does not remove the need to fit
+the model to the data. Feedback clarified mapping notation and terminology.
 
 ## Problem 4 — Stability and What Clipping Actually Established
 
@@ -771,11 +773,15 @@ corruption conditional, whose score target can be computed from the clean
 sample and chosen noise even when the real-data density is unknown.
 
 The noise-conditioning detail and the training-versus-evaluation role of
-analytical scores were clarified during review; they have not yet been
-independently rechecked.
+analytical scores were clarified in the Day 5 review. In Day 7, the learner
+correctly recalled how training targets remain available without the analytical
+marginal score; noise-level conditioning was clarified again in feedback.
 
 **Review outcome:** Problem 4, the score-target review, and clipping evidence
-are reviewed on 2026-10-23. All four mixed problems are reviewed. Keep the
-loss-floor and analytical-score clarification inside the existing Day 7
-score questions; no additional Day 5 exercises or implementation are needed.
-The checkpoint report and final recall review remain pending.
+were reviewed on 2026-10-23. Day 7 correctly explained the target-loss floor,
+how real-data training targets remain available without an analytical marginal
+score, and why clipping need not improve held-out accuracy. Distinguishing
+the mean clean point from the mean score target required guidance, followed
+by correct setup of a fresh example and an arithmetic correction. All four
+problems, the study report, and the final review are complete; Week 14 closed
+on 2026-10-27. No additional experiment was required for this closeout.

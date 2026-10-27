@@ -116,12 +116,15 @@ Completed:
 - **Week 12:** change of variables, RealNVP on 2D blobs, and flow/score comparison
 - **Week 13:** GD, momentum, Adam, and a controlled score-training clipping
   experiment; completed on 2026-10-14
+- **Week 14 (Checkpoint 3):** generative toolkit comparison, four mixed
+  problems, sourced study report, and final review; completed on 2026-10-27.
+  The [closeout](./notes/w14_study_plan.md#day-7-completion-decision) records
+  reference use and guided corrections. Blog editing continues separately.
 
-In progress:
+Next:
 
-- **Week 14 (Checkpoint 3):** generative modeling toolkit consolidation;
-  Days 1–5 and all four mixed problems reviewed; Day 6 report next; follow the
-  [day-by-day plan](./notes/w14_study_plan.md)
+- **Week 15:** bridge to diffusion math and the Gaussian forward process;
+  not started.
 
 See [PROGRESS.md](./PROGRESS.md) for completion dates and artifact links.
 
@@ -530,6 +533,11 @@ Learning chain: optimizer updates → manual steps → controlled implementation
 one isolated training-stability change in the existing diffusion toy.
 
 ### Week 14 (Checkpoint 3) — Generative modeling toolkit consolidation
+
+**Completed on 2026-10-27.** The
+[final review](./notes/w14_study_plan.md#day-7-completion-decision) records
+which answers used references or guidance. Blog preparation is separate
+from this completed study checkpoint.
 
 Use the [day-by-day plan](./notes/w14_study_plan.md) to distribute this checkpoint
 across seven study days (original budget: about seven hours; Day 1 ran over).

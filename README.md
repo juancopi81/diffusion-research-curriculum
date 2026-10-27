@@ -23,9 +23,9 @@ It is divided into five phases:
 ## 🚀 Current Progress
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Completed:** Phase 1 and Weeks 9–13 (Week 13 completed on 2026-10-14)
-- **Latest work:** [Week 14 mixed problem set](./proofs/w14_generative_toolkit_mixed_set.md) — All four problems and VAE/flow/score evidence reviewed through 2026-10-23; report and final recall remain
-- **Current:** Week 14 (Checkpoint 3) — Generative modeling toolkit consolidation; Days 1–5 reviewed, Day 6 report next; [day-by-day plan](./notes/w14_study_plan.md)
+- **Completed:** Phase 1 and Weeks 9–14 (Week 14 completed on 2026-10-27)
+- **Latest work:** [Week 14 closeout](./notes/w14_study_plan.md#day-7-completion-decision) — Four problems, study report, and final review complete; reference use and guided corrections recorded
+- **Next:** Week 15 — Bridge to diffusion math: the forward process. The checkpoint's blog editing continues separately.
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 
@@ -37,6 +37,7 @@ See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 | --- | --- |
 | [Checkpoint 01 - Conditioning in Code](./mini_projects/checkpoint_01_conditioning_in_code/) | Shows how conditioning changes the probability model, verified with Monte Carlo. |
 | [Checkpoint 02 - Toy Score Matching](./mini_projects/checkpoint_02_toy_score_matching/) | Compares two learned score objectives against the exact score of a noisy Gaussian mixture. |
+| [Checkpoint 03 - Generative Toolkit](./mini_projects/checkpoint_03_generative_toolkit_report/) | Compares VAE, RealNVP, and score learning using sourced experiments and a completed study review; the blog edition remains in editing. |
 | [Multivariate Gaussian score and conditioning](./notebooks/w10_mv_gaussian_score_solved.ipynb) | Connects Cholesky sampling, analytic and numerical scores, Gaussian conditioning, and the DDPM forward kernel. |
 | [PCA/SVD projection and reconstruction](./notebooks/w09_pca_svd_solved.ipynb) | Connects projections, eigendecomposition, SVD, low-rank reconstruction, and latent compression. |
 | [Gaussian score derivation](./notes/w03_score_of_gaussian.md) | Builds the first exact score function used later in diffusion. |

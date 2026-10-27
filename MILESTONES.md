@@ -26,6 +26,7 @@ This page is the portfolio index for the curriculum. It links the artifacts that
 | [`notebooks/w11_minimal_vae_mnist_solved.ipynb`](notebooks/w11_minimal_vae_mnist_solved.ipynb) + [`notes/w11_why_latent_diffusion.md`](notes/w11_why_latent_diffusion.md) | Notebook + bridge note | Complete | Connects the ELBO to reconstruction, prior generation, and the limits of learned compression. |
 | [`notebooks/w12_realnvp_2d_blobs_solved.ipynb`](notebooks/w12_realnvp_2d_blobs_solved.ipynb) + [`notes/w12_flows_vs_diffusion.md`](notes/w12_flows_vs_diffusion.md) | Notebook + comparison | Complete | Implements exact model likelihood and inverse sampling, with a one-layer architecture failure comparison. |
 | [`notebooks/w13_optimizers_sanity_solved.ipynb`](notebooks/w13_optimizers_sanity_solved.ipynb) + [`notes/w13_training_stability_for_diffusion.md`](notes/w13_training_stability_for_diffusion.md) | Notebook + experiment report | Complete | Checks GD, momentum, and Adam, then shows that bounded gradients did not improve held-out score accuracy in one matched clipping experiment. |
+| [Checkpoint 03 study report](mini_projects/checkpoint_03_generative_toolkit_report/report.md) + [final review](notes/w14_study_plan.md#day-7-completion-decision) | Comparison report + checkpoint review | Study complete 2026-10-27 | Compares the models using three sourced figures; records Gaussian reference use and guided score-expectation corrections. The blog edition remains in editing. |
 
 ## Planned Portfolio Milestones
 
@@ -33,7 +34,7 @@ These are not complete yet. They are the next pieces that should become public-f
 
 | Planned milestone | Target location | Goal |
 | --- | --- | --- |
-| Checkpoint 03 - Generative Toolkit (Week 14) | `mini_projects/checkpoint_03_generative_toolkit_report/` | Compare VAE, flow, and score objectives and limitations using existing evidence; [study plan](notes/w14_study_plan.md). |
+| Checkpoint 03 - Generative Toolkit: blog edition | [Manuscript draft](mini_projects/checkpoint_03_generative_toolkit_report/report.md) | The Week 14 study checkpoint is complete. Section connections, the score-section revision, author-selected title, and blog preparation remain in a separate thread. |
 | DDPM from scratch (Weeks 17–18) | `mini_projects/nano_diffusion/` | Graduate the Week 16 prototype into a reproducible training and sampling baseline. |
 | DDIM sampler comparison (Weeks 19–20) | `notebooks/w20_ddpm_vs_ddim_steps.ipynb` + `mini_projects/nano_diffusion/` | Compare samplers using the same trained checkpoint where possible, recording steps/NFE, runtime, and sample quality. |
 | SDE numerics (Weeks 29–30) | `notebooks/w30_euler_maruyama_stability.ipynb` | Simulate simple SDEs and diagnose step-size stability before studying score-SDE sampling. |
