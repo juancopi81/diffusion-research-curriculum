@@ -16,6 +16,7 @@ not yet belong in the core curriculum.
 | --- | --- | --- | --- |
 | Radar | Lourie et al., [*Small-Scale Experiments: Are We There Yet?*](https://arxiv.org/abs/2608.11859v1) | A methodology for learning about larger models from well-tuned small-scale experiments, with useful warnings about hyperparameter sensitivity and extrapolation. | Nano-Diffusion has one stable baseline, repeatable training runs, configuration logging, and enough compute budget for a real sweep across several model sizes. |
 | Radar | Kumbong et al., [*Next-Concept Modeling: Fast, Parallel Coarse-to-Fine Text Generation*](https://arxiv.org/abs/2610.14162v1) | Connects learned discrete representations, hierarchical generation, and sampling efficiency; a useful comparison with diffusion language models. | After the Weeks 19–20 DDPM/DDIM comparison, with a short VQ-VAE and discrete text-diffusion primer. |
+| Radar | Jia et al., [*LLaCO: Continuous Diffusion for Large Language Models with Competition-Aware Semantic Scheduling*](https://arxiv.org/abs/2610.32604v1) | Connects embedding geometry, token identity loss, and noise scheduling; a direct diffusion-language-model companion. | After the Weeks 23–24 schedule ablations, with a short primer on normalized token embeddings and continuous text diffusion. |
 
 ### Small-Scale Experiments: Are We There Yet?
 
@@ -110,3 +111,40 @@ Revisit after the Weeks 19–20 DDPM/DDIM comparison, adding a short primer on
 VQ-VAE and discrete diffusion for text. First reading question: how much of the
 advantage comes from the representation, the generation order, and the cost
 per step? Keep this as optional enrichment until a concrete experiment emerges.
+
+### LLaCO
+
+- Authors: Zijian Jia et al.
+- arXiv: `2610.32604v1` (`cs.AI`), submitted October 23, 2026
+- Source status: initial triage against the official arXiv metadata and
+  [v1 HTML](https://arxiv.org/html/2610.32604v1), especially Sections 3–5
+  and Appendices 9.2 and 10, on October 27, 2026
+
+#### Why it may matter for this repository
+
+The authors study how token identity disappears as continuous embeddings are
+corrupted. They use directional competition to motivate spherical noising and
+Semantic Retention Scheduling, allocating time according to identity loss
+(Sections 3–4).
+
+For our curriculum, the useful question is whether evenly spaced noise levels
+produce evenly spaced changes in what the denoiser must recover. This connects
+directly to the [Weeks 23–24 schedule and loss-weighting
+ablations](../CURRICULUM.md). Our possible application is a small experiment
+measuring identity retention under different schedules; transfer to our image
+or Gaussian-mixture models would need separate evidence.
+
+#### Evidence to revisit
+
+Reported gains use an adapted 8B pretrained model; the main comparison excludes
+its original hybrid backbone (Appendix 10.2). Default decoding uses four model
+evaluations per four-token block (Section 5.1). A future review should separate
+scheduling effects from initialization and assess total generation cost.
+
+#### First useful return point
+
+Revisit after the Weeks 23–24 controlled ablations, with a short primer on
+normalized token embeddings and continuous diffusion for text. Start with the
+geometry and scheduling argument, then inspect the ablations and their controls.
+The detailed theory can remain optional until we have a concrete question to
+test. This stays on the radar as complementary reading.
