@@ -1,21 +1,23 @@
-# Week 14 — Day 6 Working Draft
+# Week 14 — Writing Notes and Review Record
 
-**Updated:** 2026-10-27 (study closeout; blog editing remains separate).
+**Updated:** 2026-10-29 (final blog manuscript approved; site commit pushed).
 
 **Status:** Working record of the author's answers after technical review.
 Grammar and technical corrections are incorporated below. The author reviewed
 the study draft on 2026-10-26; Day 6 is closed. Week 14's study checkpoint
-closed on 2026-10-27 after the final review and corrections. Connections
-between sections and the title remain for final blog editing.
+closed on 2026-10-27 after the final review and corrections. The final blog
+manuscript, including its connections, title, and personal takeaway, was
+approved on 2026-10-29.
 
-**Use:** Keep this file as the session record while writing. The readable
-first manuscript is now [report.md](report.md), with figure provenance in
-[README.md](README.md). All three model rows, the evidence paragraphs, the
-brief diffusion connection, and the author's opening are recorded here.
+**Use:** This file is the session record, not the post manuscript. Continue
+blog prose edits in [blog_draft.md](blog_draft.md). The completed study
+deliverable is [report.md](report.md), with shared figure provenance in
+[README.md](README.md). All three model rows, the evidence paragraphs,
+the brief diffusion connection, and the author's opening are recorded here.
 The author has completed the read-through. The
 [Day 7 closeout](../../notes/w14_study_plan.md#day-7-completion-decision)
-records reference use and guided corrections. Preserve the remaining blog
-work recorded below; blog editing and the study review use separate threads.
+records reference use and guided corrections. Preserve the editorial history
+below; blog editing and the study review use separate threads.
 This working record can be consolidated or removed after finalization.
 
 ## Opening — Reviewed Paragraphs
@@ -277,7 +279,35 @@ first coordinate.
 Still, even with six layers, the green histogram does not perfectly align
 with the blue data histogram, although it captures the two main peaks.
 
-### Score-model Clipping Comparison
+### Score-model Vector Fields — Blog Revision, 2026-10-29
+
+**Source:** [Week 8 toy score-matching report](../checkpoint_02_toy_score_matching/report.md),
+direct-score run `toy_score_matching_exp_20260724_222934_1784932174.2667751`.
+The [analytical field](figures/w08_score_analytical_field.png) and
+[learned field](figures/w08_score_learned_field.png) are unchanged copies of
+the saved figures. Both use the noisy-mixture score and the same arrow scale;
+the blue dots show clean data for context.
+
+The plots show the vector fields of the analytical score and the learned
+score. We can see the magnitude and direction of the scores at different
+points on the grid. The analytical field shows the true score of the
+noisy-data distribution, with vectors pointing in the direction of increasing
+log density. In the learned field, after 20 updates, the vectors seem to
+point more broadly toward the central region of the grid, consistent with
+a model that is still underfitted.
+
+**Review note:** Corrected spelling, repetition, and prepositions. Clarified
+that the reference score is for the noisy-data distribution. Changed
+"origin" to "central region" because the plot supports a broad inward field,
+not a claim that the arrows converge exactly to the origin. The underfitting
+interpretation is qualified as consistent with the visible mismatch.
+This passage replaces the clipping-focused section in the blog manuscript.
+
+### Score-model Clipping Comparison — Retained Study Evidence
+
+This earlier Day 6 passage is retained as study evidence. The blog's main
+score section now uses the Week 8 fields above. The diffusion connection
+attributes the held-out loss-curve improvement to the separate Week 13 run.
 
 **Source:** [Week 13 stability note](../../notes/w13_training_stability_for_diffusion.md)
 and its [saved figure](../../notes/figures/w13_score_clipping_comparison.png),
@@ -299,7 +329,8 @@ trained without clipping achieved lower held-out marginal-score MSE.
 The score toy is a step toward a score-based diffusion model: it already
 includes Gaussian forward corruption and a training objective that teaches
 the network to approximate the marginal score of the noisy-data distribution.
-The model learned through gradient-based training, with improvement shown
+In the separate [Week 13 experiment](../../notes/w13_training_stability_for_diffusion.md),
+the model learned through gradient-based training, with improvement shown
 by the decrease in held-out marginal-score MSE. We still need to train across
 multiple noise levels, give the model the corresponding noise level, and add
 a proper sampling procedure that moves from a suitable high-noise
@@ -375,20 +406,83 @@ The author said that "what I read sounds good so far" and noted that the
 final blog needs connections between sections. This closes Day 6 at the
 study-draft stage; it does not mark the final blog ready for publication.
 
-## Remaining Blog Editing
+## Manuscript Separation — 2026-10-29
 
-1. The author's "Models and Experiments" roadmap is now before the comparison
-   table. Continue making connections between the model sections explicit,
-   preserving the author's voice and the reviewed claims.
-2. Refocus the score section on what the model learns. The author identified
-   its current emphasis on clipping; the saved analytical and learned score
-   fields from Week 8 are proposed replacements for the main figure.
-   Figure selection and the revised interpretation remain to be reviewed.
-3. Finish the diffusion connection and add the author's open questions,
-   as promised in the roadmap.
-4. The final blog title remains the author's choice. Website formatting,
-   cards, and publication are separate from the checkpoint writing session.
-   No blog post or card has been created or published.
+The author pointed out that the score-section blog revision had been applied
+to the Week 14 deliverable. The full edited manuscript was preserved in
+[blog_draft.md](blog_draft.md), and [report.md](report.md) was restored to
+the committed checkpoint version from `efdc880`. The new score paragraph
+and both Week 8 figures remain in the blog draft. This file remains the
+working review record. Further blog prose changes belong in `blog_draft.md`.
+
+## Author Additions Reviewed — 2026-10-29
+
+The author added an introduction to the comparison table, a transition into
+the model figures, expanded diffusion connections, and three open questions
+to [blog_draft.md](blog_draft.md). The review corrected grammar while preserving
+the first-person voice, section order, and questions. The completed study
+report was not edited.
+
+Technical refinements recorded for later editing:
+
+- "Simple" and "clean" distributions are not interchangeable, and the three
+  approaches do not all learn the same kind of mapping.
+- The latent-diffusion connection concerns VAEs and related autoencoders
+  reducing computation through compressed representations. Primary references
+  for image and audio latent diffusion now accompany that passage.
+- Week 13 trained the same score-model architecture in a separate run; it
+  was not a continuation of the Week 8 checkpoint shown in the field plots.
+- The deterministic connection is specifically the probability-flow ODE
+  and continuous normalizing flows; the blog now links the source paper.
+- The relationship between inverse-CDF sampling and the density
+  change-of-variables formula remains an open question, rather than an
+  unqualified special-case claim. The uniform-universality notes link replaces
+  the author's placeholder.
+
+## Approved Editorial Pass — 2026-10-29
+
+After reviewing two external AI critiques and the proposed revision list,
+the author approved all seven changes. The post and `blog_draft.md` now:
+
+- Include References for the VAE, RealNVP, score-SDE, latent-diffusion, and
+  AudioLDM papers.
+- Describe the one-layer RealNVP restriction as the established limitation,
+  and acknowledge finite-sample variation in the six-layer histograms.
+- State the VAE's two-dimensional latent space and five training epochs
+  without attributing the blur to a single cause.
+- Omit the separate Week 13 training aside from the diffusion connection.
+- Link the three model sections to the author's related posts.
+- Use the approved lighter wording and "revisiting" in the opening.
+- Link all four figures to their full-size images.
+
+The title, top AI disclosure, personal RealNVP reflection, and section order
+are preserved. No personal takeaway was written on the author's behalf.
+
+## Approved Takeaway and Formatting — 2026-10-29
+
+The author supplied two personal closing paragraphs and approved the light
+grammar and technical refinements. "What I Think I Learned" now appears
+before Open Questions in the HTML post and `blog_draft.md`. It ends with
+the requested italic "Chapeau!" for RealNVP. The final formatting pass adds
+sparse bold emphasis to the VAE latent choices, the one-layer RealNVP
+constraint, and the score toy's missing sampler and remaining underfit.
+The author's bold "you" is preserved. Final checks confirmed matching text
+and emphasis between the manuscript and HTML, unchanged prior prose, valid
+local links and images, and no page-level overflow on desktop or mobile.
+
+## Publication Status
+
+On 2026-10-29, the author accepted "VAE, RealNVP, and a Score Toy" for now
+and requested the site version with an AI-use disclosure. The post is
+stored in the sibling blog repository at
+`posts/2026-10-29-vae-realnvp-and-a-score-toy.html`, with its Writing card,
+series entry, four figures, social preview, and feed/sitemap entries.
+After the final voice review, the author approved committing and pushing
+the work. The website files were pushed in
+[`449fb84`](https://github.com/juancopi81/juancopi81.github.io/commit/449fb840931c5484be47493871b00a0d828adcd5).
+The post's public URL is
+[VAE, RealNVP, and a Score Toy](https://juancopi81.github.io/posts/2026-10-29-vae-realnvp-and-a-score-toy.html).
+Publication remains separate from the completed study checkpoint.
 
 Week 14's study checkpoint is complete. Day 7 recorded Gaussian formula
 reference use and guided score-expectation corrections as consolidation points
