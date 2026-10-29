@@ -568,6 +568,10 @@ synthesize existing experiments → state which toolkit applies to diffusion and
 
 ### Week 15 — Bridge to diffusion math (forward process)
 
+Use the [day-by-day plan](./notes/w15_study_plan.md): six study sessions
+(about five hours) and a buffer/rest day, following reading → discussion →
+reviewed notes, then implementation and verification.
+
 - S1:
   - **[HF-AnnotatedDiff]** forward-process sections
   - **[HF-DiffCourse]** Unit 1 “Diffusion Models from Scratch,” specifically
