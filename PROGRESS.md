@@ -3,7 +3,7 @@
 ## Current Status
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Week:** 14 ✅ — completed 2026-10-27; Week 15 is next
+- **Week:** 15 🔄 — started 2026-10-30; Day 1 complete; Day 2 reading and discussion complete, new note section awaiting learner read-through
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
 - **Week 9 Completed:** 2026-08-25
@@ -12,7 +12,7 @@
 - **Week 12 Completed:** 2026-09-28
 - **Week 13 Completed:** 2026-10-14
 - **Week 14 Completed:** 2026-10-27
-- **Next study step:** Week 15 — Bridge to diffusion math: the forward process
+- **Next study step:** Read the new Day 2 note section, then continue to Week 15 Day 3 — derive the forward distributions
 - **Week 14 closeout:** [Day 7 completion decision](notes/w14_study_plan.md#day-7-completion-decision); all four problems, study report, and final review complete; reference use and guided corrections recorded; blog editing continues separately
 
 ---
@@ -182,6 +182,22 @@ separately. The proposed longer clipping comparison has not been run.
 | S3: toolkit report | ✅ | 2026-10-26 | [Study draft](mini_projects/checkpoint_03_generative_toolkit_report/report.md), source README, and three saved figures assembled; author read-through completed; connections between sections remain for final blog editing |
 | Final recall and corrections | ✅ | 2026-10-27 | [Review record](notes/w14_study_plan.md#day-7-review-record): fresh Gaussian/flow checks and VAE/score/clipping explanations completed; Gaussian lookup and guided score correction retained as consolidation points |
 | Diffusion: explain the score-model connection | ✅ | 2026-10-27 | Forward corruption, training targets, missing multiple noise levels and sampler explained; feedback clarified noise-level conditioning and fixed model weights during sampling |
+
+---
+
+### Week 15 — Bridge to Diffusion Math: The Forward Process 🔄
+
+Started on 2026-10-30 using the [daily plan](notes/w15_study_plan.md).
+
+| Task | Status | Date | Notes |
+| --- | --- | --- | --- |
+| Day 1: reading and discussion | ✅ | 2026-10-30 | [Consolidated note](notes/w15_forward_process_discrete.md): fixed schedule and fresh noise, square-root scaling, Gaussian conditionals versus mixtures, and the approximate endpoint; guidance and corrections recorded |
+| Day 1: learner read-through of cleaned note | ✅ | 2026-10-30 | Learner read and approved the note |
+| Remaining S1 reading and discussion / Day 2 | ✅ | 2026-10-30 | [Day 2 note](notes/w15_forward_process_discrete.md#day-2--direct-sampling-from-the-clean-image): direct formula, cumulative schedule, handwritten coefficient crossing, endpoint distributions, and normalization; discussion checks correct, Codex clarifications recorded |
+| Day 2: learner read-through of new note section | ⬜ | — | Pending |
+| S2: forward-process derivations / Day 3 | ⬜ | — | One-step and closed-form distributions, means, and covariances |
+| S3: notebook and verification / Days 4–5 | ⬜ | — | MNIST forward noising, two schedules, and moment checks |
+| Final consolidation / Day 6 | ⬜ | — | Explanation, evidence review, and note read-through |
 
 ---
 

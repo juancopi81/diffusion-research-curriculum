@@ -24,8 +24,8 @@ It is divided into five phases:
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
 - **Completed:** Phase 1 and Weeks 9–14 (Week 14 completed on 2026-10-27)
-- **Latest work:** [Week 14 closeout](./notes/w14_study_plan.md#day-7-completion-decision) — Four problems, study report, and final review complete; reference use and guided corrections recorded
-- **Next:** Week 15 — Bridge to diffusion math: the forward process. The checkpoint's blog editing continues separately.
+- **Latest work:** [Week 15 Day 2](./notes/w15_forward_process_discrete.md#day-2--direct-sampling-from-the-clean-image) — Reading and discussion completed on 2026-10-30, including the handwritten coefficient-crossing calculation; learner read-through of the new section pending
+- **Next:** Review the Day 2 note section, then continue to [Day 3](./notes/w15_study_plan.md#day-3--derive-before-cleaning): derive the forward distributions. The checkpoint's blog editing continues separately.
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 

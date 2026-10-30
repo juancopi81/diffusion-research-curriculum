@@ -1,6 +1,9 @@
 # Week 15 — The Forward Diffusion Process: Study Plan
 
-**Status:** Planned on 2026-10-29; study work has not started.
+**Status:** Started on 2026-10-30. Day 1 is complete, including the learner's
+read-through and approval of the [cleaned note](w15_forward_process_discrete.md).
+Day 2 reading and discussion are also complete on 2026-10-30; the learner's
+read-through of the new Day 2 section is pending. Days 3–6 remain planned.
 
 **Pacing:** Six sessions totaling about five hours, plus a seventh day for
 rest or up to 45 minutes of catch-up. These are flexible study days, not
@@ -74,6 +77,10 @@ multiplier; in this week's DDPM notation, $\alpha_t=1-\beta_t$.
 
 ### Day 1 — Understand One Step
 
+**Reading boundary:** Read the whole introductory section, then the beginning
+of the mathematical section through the forward trajectory from $x_0$ to
+$x_T$. Stop before the paragraph introducing the reverse conditional.
+
 Start with the source, then explain the role of $x_0$, $x_{t-1}$, $x_t$,
 and $\beta_t$. Discuss why the step both rescales the previous image and
 adds noise, and which part of the process is chosen in advance.
@@ -82,7 +89,28 @@ Useful check: given $x_{t-1}$, what is still random? What would change if
 you multiplied unit Gaussian noise by its intended variance instead of its
 intended standard deviation?
 
+**Discussion completed on 2026-10-30.** The
+[weekly note](w15_forward_process_discrete.md) records the one-step kernel,
+the scalar sampling check, the conditional-versus-mixture distinction, and
+the approximately Gaussian endpoint. The discussion included hints and
+corrections, recorded in the note. The learner read and approved the cleaned
+note on 2026-10-30, completing Day 1.
+
 ### Day 2 — Understand the Shortcut
+
+**Reading boundaries, checked on 2026-10-30:**
+
+- In Annotated Diffusion, jump to the objective-function section. Skip its
+  first two ELBO paragraphs and read the short passage introducing direct
+  noising from $x_0$: the conditional Gaussian formula, the definitions of
+  $\alpha_t$ and $\bar\alpha_t$, and the paragraph explaining precomputation.
+  Stop before the discussion turns to selecting training-loss terms.
+- In HF Unit 1, go to the DDPM comparison and find the later corruption
+  subsection after the U-Net material. Read through its coefficient plots,
+  image visualization, and final normalization explanation. Stop at the
+  training-objective heading. Skim code to understand the plots; execution
+  belongs to the later notebook sessions. Apply the notation corrections
+  in the [reading map](#reading-map).
 
 Read for meaning before trying to reproduce the algebra. Distinguish
 $\beta_t$, $\alpha_t$, and $\bar\alpha_t$; label the signal multiplier, noise
@@ -95,6 +123,14 @@ distribution is approximately standard Gaussian?
 
 Keep the answer about the conditional distribution $q(x_t\mid x_0)$
 separate from the marginal $q(x_t)$ over different clean images.
+
+**Reading and discussion completed on 2026-10-30.** The
+[Day 2 note](w15_forward_process_discrete.md#day-2--direct-sampling-from-the-clean-image)
+records the direct formula, cumulative schedule quantities, the learner's
+handwritten coefficient-crossing calculation, distributional agreement of
+the two methods, and the normalization explanation. The three discussion
+checks were answered correctly; Codex's clarifications are recorded. The
+learner's read-through of the new section is pending.
 
 ### Day 3 — Derive Before Cleaning
 
