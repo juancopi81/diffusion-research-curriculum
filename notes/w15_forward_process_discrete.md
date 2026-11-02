@@ -1,9 +1,11 @@
 # Week 15 — The Discrete Forward Diffusion Process
 
 **Status:** Day 1 completed and its note approved by the learner on
-2026-10-30. Day 2 reading and discussion also completed on 2026-10-30;
-the learner's read-through of the new Day 2 section is pending. The
-closed-form derivation and notebook work remain for later days in the
+2026-10-30. Day 2 reading and discussion completed on 2026-10-30; Day 3's
+handwritten derivation and guided review completed on 2026-11-02. The
+learner read and approved the Day 2 and Day 3 sections on 2026-11-02,
+completing Days 1–3.
+Notebook implementation and numerical verification are next in the
 [study plan](w15_study_plan.md).
 
 **Day 1 reading:** [The Annotated Diffusion Model](https://huggingface.co/blog/annotated-diffusion),
@@ -106,8 +108,8 @@ The thought experiment $\beta_T=1$ would make the final signal multiplier
 zero and give $x_T=\epsilon_T$ exactly. This lies outside the schedule
 constraint $0<\beta_t<1$ used above.
 
-Day 2 will study how to express the accumulated signal and noise directly
-from $x_0$; the derivation belongs to Day 3.
+Day 2 below expresses the accumulated signal and noise directly from
+$x_0$; Day 3 provides the derivation.
 
 ## Day 1 Discussion Record
 
@@ -126,8 +128,8 @@ from $x_0$; the derivation belongs to Day 3.
   as depending on sufficient accumulated signal attenuation.
 
 The reading, guided discussion, and learner's read-through are complete.
-The learner approved this cleaned note on 2026-10-30. Later derivations and
-numerical checks have not yet been attempted.
+The learner approved this cleaned note on 2026-10-30. At that point, the
+later derivations and numerical checks had not yet been attempted.
 
 ## Day 2 — Direct Sampling from the Clean Image
 
@@ -136,7 +138,7 @@ numerical checks have not yet been attempted.
 and the later corruption subsection within
 [HF Unit 1's DDPM comparison](https://huggingface.co/learn/diffusion-course/en/unit1/3#comparison-to-ddpm).
 The selected passages and discussion were completed on 2026-10-30. The
-formula below was read and interpreted; its derivation remains for Day 3.
+formula below was read and interpreted; its derivation is recorded in Day 3.
 
 ### One Step Versus Accumulated Corruption
 
@@ -223,7 +225,7 @@ marginal distribution still need not be Gaussian.
 
 Codex noted that the weighted independent Gaussian noise terms in the
 sequential construction combine into an effective Gaussian noise term.
-Day 3 will derive its coefficient and establish the closed form explicitly.
+Day 3 below derives its coefficient and establishes the closed form explicitly.
 
 ### Normalization in the Image Experiment
 
@@ -255,6 +257,202 @@ display clipping separate from the values used in calculations.
 - Codex explained the normalization convention in response to the
   learner's question. It has not yet been applied in the weekly experiment.
 
-The Day 2 reading and discussion are complete. The learner's read-through
-of this new section is pending. The full derivation and numerical
-verification remain for Days 3–5.
+The Day 2 reading and discussion are complete. The learner read and
+approved this section on 2026-11-02. The derivation follows below; numerical
+verification remains for Days 4–5.
+
+## Day 3 — Deriving the Forward Distributions
+
+**Basis:** The learner's handwritten attempt and our guided review on
+2026-11-02. This is a consolidation of that derivation, rather than an
+attributed solution from either reading. The original pages and assistance
+used are recorded below. The learner read and approved this cleaned
+section on 2026-11-02.
+
+### Setup and the One-Step Law
+
+Use a deterministic schedule with $0<\beta_t<1$,
+$\alpha_t=1-\beta_t$, and $\bar\alpha_t=\prod_{s=1}^{t}\alpha_s$.
+All fresh noise vectors $\epsilon_s\sim\mathcal N(0,I)$ are mutually
+independent and independent of $x_0$. The step is
+
+$$
+x_t=\sqrt{\alpha_t}\,x_{t-1}+\sqrt{\beta_t}\,\epsilon_t.
+$$
+
+Given $x_{t-1}$, the first term is fixed, the noise has zero mean and
+covariance $I$, and the affine transformation is Gaussian. Hence
+
+$$
+\begin{aligned}
+\mathbb E[x_t\mid x_{t-1}]&=\sqrt{\alpha_t}\,x_{t-1},\\
+\operatorname{Cov}(x_t\mid x_{t-1})&=\beta_t I,
+\end{aligned}
+$$
+
+which establishes the chosen one-step Gaussian kernel.
+
+### Expand Two Steps
+
+Substitute the first step into the second:
+
+$$
+\begin{aligned}
+x_1&=\sqrt{\alpha_1}\,x_0+\sqrt{\beta_1}\,\epsilon_1,\\
+x_2&=\sqrt{\alpha_2}\,x_1+\sqrt{\beta_2}\,\epsilon_2\\
+&=\sqrt{\alpha_1\alpha_2}\,x_0
++\sqrt{\alpha_2\beta_1}\,\epsilon_1
++\sqrt{\beta_2}\,\epsilon_2.
+\end{aligned}
+$$
+
+Given $x_0$, its term is a fixed shift. Independence from $x_0$ gives
+$\mathbb E[\epsilon_1\mid x_0]=\mathbb E[\epsilon_2\mid x_0]=0$.
+By linearity,
+
+$$
+\mathbb E[x_2\mid x_0]
+=\sqrt{\alpha_1\alpha_2}\,x_0.
+$$
+
+For the covariance, the fixed shift contributes zero and independence
+eliminates the cross-covariance terms. Squaring the noise multipliers gives
+
+$$
+\begin{aligned}
+\operatorname{Cov}(x_2\mid x_0)
+&=(\alpha_2\beta_1+\beta_2)I\\
+&=\bigl[\alpha_2(1-\alpha_1)+(1-\alpha_2)\bigr]I\\
+&=(1-\alpha_1\alpha_2)I\\
+&=(1-\bar\alpha_2)I.
+\end{aligned}
+$$
+
+The learner's Gaussianity argument: after conditioning on $x_0$, we have
+a fixed shift plus two scaled independent Gaussian vectors. Together the
+noise vectors are jointly Gaussian, and their affine combination remains
+Gaussian. The calculated moments therefore identify the full conditional
+law:
+
+$$
+x_2\mid x_0
+\sim\mathcal N\!\left(
+\sqrt{\bar\alpha_2}\,x_0,(1-\bar\alpha_2)I
+\right).
+$$
+
+### Generalize by Induction
+
+The one-step law supplies the base case. Assume that, at time $t-1$,
+
+$$
+x_{t-1}\mid x_0
+\sim\mathcal N\!\left(
+\sqrt{\bar\alpha_{t-1}}\,x_0,
+(1-\bar\alpha_{t-1})I
+\right).
+$$
+
+Apply one more step with fresh independent noise. Its conditional mean is
+
+$$
+\begin{aligned}
+\mathbb E[x_t\mid x_0]
+&=\sqrt{\alpha_t}\,\mathbb E[x_{t-1}\mid x_0]\\
+&=\sqrt{\alpha_t\bar\alpha_{t-1}}\,x_0\\
+&=\sqrt{\bar\alpha_t}\,x_0.
+\end{aligned}
+$$
+
+The new noise is independent of the entire previous history and of $x_0$,
+so the conditional covariance is
+
+$$
+\begin{aligned}
+\operatorname{Cov}(x_t\mid x_0)
+&=\alpha_t\operatorname{Cov}(x_{t-1}\mid x_0)+\beta_t I\\
+&=\bigl[\alpha_t(1-\bar\alpha_{t-1})+\beta_t\bigr]I\\
+&=(1-\alpha_t\bar\alpha_{t-1})I\\
+&=(1-\bar\alpha_t)I.
+\end{aligned}
+$$
+
+Gaussianity follows from the same affine-Gaussian argument. This completes
+the induction and establishes, for $t\geq1$,
+
+$$
+q(x_t\mid x_0)
+=\mathcal N\!\left(
+x_t;\sqrt{\bar\alpha_t}\,x_0,(1-\bar\alpha_t)I
+\right).
+$$
+
+Thus we can generate a direct sample at the chosen time using a standard
+Gaussian vector:
+
+$$
+x_t=\sqrt{\bar\alpha_t}\,x_0
++\sqrt{1-\bar\alpha_t}\,\epsilon,
+\qquad\epsilon\sim\mathcal N(0,I).
+$$
+
+This direct representation has the same conditional law as the sequential
+endpoint. A separately drawn $\epsilon$ need not reproduce the endpoint
+of a particular previously sampled trajectory.
+
+### Boundary Checks
+
+At $t=1$, $\bar\alpha_1=\alpha_1=1-\beta_1$. The direct formula becomes
+
+$$
+x_1=\sqrt{1-\beta_1}\,x_0+\sqrt{\beta_1}\,\epsilon_1,
+$$
+
+recovering the original one-step construction and its conditional law.
+
+At $t=0$, use the empty-product convention $\bar\alpha_0=1$. The signal
+multiplier is one and the noise multiplier is zero, so the formula returns
+$x_0$ exactly. Its covariance conditional on $x_0$ is the zero matrix.
+The conditional law is a point mass at the observed clean image; there is
+no ordinary nondegenerate Gaussian density at this boundary. Before
+conditioning, a clean sample can still be random under the data
+distribution $q(x_0)$.
+
+### Original Handwritten Pages
+
+All five supplied pages are preserved unchanged, including the initial
+notation and subsequent correction:
+
+1. [Two-step substitution and expansion](figures/w15_two_step_expansion_handwritten.png).
+2. [Initial conditional mean and covariance calculation](figures/w15_two_step_moments_initial_handwritten.png).
+3. [Covariance simplification with the identity matrix retained](figures/w15_two_step_covariance_handwritten.png).
+4. [Induction step](figures/w15_forward_induction_handwritten.png).
+5. [Boundary checks](figures/w15_forward_boundaries_handwritten.png).
+
+### Day 3 Review Record
+
+The independent attempt exceeded the suggested 15–20-minute starting
+budget; no exact duration was recorded. The learner brought the unfinished
+work for review after correctly expanding two steps, calculating the
+conditional mean, and obtaining the covariance coefficient
+$\alpha_2\beta_1+\beta_2$.
+
+- Codex pointed out the missing $I$ in the final vector covariance. The
+  learner included it on the next page.
+- Codex prompted substitution of $\beta_s=1-\alpha_s$. The learner
+  correctly simplified the covariance to $(1-\bar\alpha_2)I$.
+- Asked to justify Gaussianity, the learner correctly explained the fixed
+  shift and scaled independent Gaussian noise terms.
+- Codex supplied the induction hypothesis as a scaffold. The learner
+  correctly obtained the general conditional mean, covariance, and law.
+  Codex then supplied the intermediate covariance recurrence to make the
+  independence and scaling explicit.
+- With the two boundary checks prompted and the empty-product convention
+  supplied, the learner correctly recovered the first step and explained
+  the absence of conditional uncertainty at $t=0$. Codex clarified the
+  distinction from randomness in the unconditioned dataset.
+
+The derivation and guided review are complete on 2026-11-02. This records
+correct reasoning with the assistance above, rather than a fully unaided
+proof. The learner read and approved this cleaned section and the earlier
+Day 2 section on 2026-11-02. Numerical verification remains for Days 4–5.

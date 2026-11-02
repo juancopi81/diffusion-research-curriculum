@@ -3,7 +3,7 @@
 ## Current Status
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Week:** 15 🔄 — started 2026-10-30; Day 1 complete; Day 2 reading and discussion complete, new note section awaiting learner read-through
+- **Week:** 15 🔄 — Days 1–3 complete; Day 2 and Day 3 note sections read and approved by the learner on 2026-11-02
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
 - **Week 9 Completed:** 2026-08-25
@@ -12,7 +12,7 @@
 - **Week 12 Completed:** 2026-09-28
 - **Week 13 Completed:** 2026-10-14
 - **Week 14 Completed:** 2026-10-27
-- **Next study step:** Read the new Day 2 note section, then continue to Week 15 Day 3 — derive the forward distributions
+- **Next study step:** Week 15 Day 4 — open the prepared working notebook, complete three implementation exercises, and discuss the plots
 - **Week 14 closeout:** [Day 7 completion decision](notes/w14_study_plan.md#day-7-completion-decision); all four problems, study report, and final review complete; reference use and guided corrections recorded; blog editing continues separately
 
 ---
@@ -194,9 +194,10 @@ Started on 2026-10-30 using the [daily plan](notes/w15_study_plan.md).
 | Day 1: reading and discussion | ✅ | 2026-10-30 | [Consolidated note](notes/w15_forward_process_discrete.md): fixed schedule and fresh noise, square-root scaling, Gaussian conditionals versus mixtures, and the approximate endpoint; guidance and corrections recorded |
 | Day 1: learner read-through of cleaned note | ✅ | 2026-10-30 | Learner read and approved the note |
 | Remaining S1 reading and discussion / Day 2 | ✅ | 2026-10-30 | [Day 2 note](notes/w15_forward_process_discrete.md#day-2--direct-sampling-from-the-clean-image): direct formula, cumulative schedule, handwritten coefficient crossing, endpoint distributions, and normalization; discussion checks correct, Codex clarifications recorded |
-| Day 2: learner read-through of new note section | ⬜ | — | Pending |
-| S2: forward-process derivations / Day 3 | ⬜ | — | One-step and closed-form distributions, means, and covariances |
-| S3: notebook and verification / Days 4–5 | ⬜ | — | MNIST forward noising, two schedules, and moment checks |
+| Day 2: learner read-through of new note section | ✅ | 2026-11-02 | Learner read and approved the section |
+| S2: forward-process derivations and review / Day 3 | ✅ | 2026-11-02 | [Day 3 derivation](notes/w15_forward_process_discrete.md#day-3--deriving-the-forward-distributions): conditional moments, Gaussianity, induction, and boundary checks reviewed; five handwritten pages preserved; hints and corrections recorded |
+| Day 3: learner read-through of cleaned derivation | ✅ | 2026-11-02 | Learner read and approved the section |
+| S3: notebook and verification / Days 4–5 | ⬜ | — | [Day 4 working copy](notebooks/w15_forward_diffusion_mnist_solved.ipynb) prepared 2026-11-02 with three exercises and provided diagnostics; learner implementation pending; Day 5 adds the second schedule and moment checks |
 | Final consolidation / Day 6 | ⬜ | — | Explanation, evidence review, and note read-through |
 
 ---

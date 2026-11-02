@@ -1,9 +1,10 @@
 # Week 15 — The Forward Diffusion Process: Study Plan
 
-**Status:** Started on 2026-10-30. Day 1 is complete, including the learner's
+**Status:** Started on 2026-10-30. Days 1–3 are complete, including the learner's
 read-through and approval of the [cleaned note](w15_forward_process_discrete.md).
-Day 2 reading and discussion are also complete on 2026-10-30; the learner's
-read-through of the new Day 2 section is pending. Days 3–6 remain planned.
+The Day 1 section was approved on 2026-10-30; the Day 2 and Day 3 sections
+were approved on 2026-11-02. Day 4's notebook pair was prepared on 2026-11-02;
+learner implementation and discussion are pending. Days 5–6 remain planned.
 
 **Pacing:** Six sessions totaling about five hours, plus a seventh day for
 rest or up to 45 minutes of catch-up. These are flexible study days, not
@@ -130,7 +131,7 @@ records the direct formula, cumulative schedule quantities, the learner's
 handwritten coefficient-crossing calculation, distributional agreement of
 the two methods, and the normalization explanation. The three discussion
 checks were answered correctly; Codex's clarifications are recorded. The
-learner's read-through of the new section is pending.
+learner read and approved the section on 2026-11-02, completing Day 2.
 
 ### Day 3 — Derive Before Cleaning
 
@@ -144,7 +145,33 @@ Useful checks: where is independence used? Why do the old noise terms get
 rescaled? Does a fresh direct sample have to equal a particular sequential
 sample, or do the two constructions agree in distribution at the chosen time?
 
+**Derivation and guided review completed on 2026-11-02.** The
+[Day 3 section](w15_forward_process_discrete.md#day-3--deriving-the-forward-distributions)
+contains the one-step law, two-step expansion, conditional moments,
+Gaussianity argument, induction, and both boundary checks. It preserves
+all five handwritten pages. The starting attempt exceeded its 15–20-minute
+budget; exact time was not recorded. Notation correction, algebra prompts,
+the induction scaffold, and Codex's covariance recurrence are recorded.
+The learner read and approved the cleaned section on 2026-11-02,
+completing Day 3.
+
 ### Day 4 — Make the Equations Visible
+
+**Material prepared on 2026-11-02:** Open the
+[working copy](../notebooks/w15_forward_diffusion_mnist_solved.ipynb) and
+keep the [unsolved baseline](../notebooks/w15_forward_diffusion_mnist.ipynb)
+as a reference. The files start as exact copies, each with three exercises:
+cumulative schedule coefficients, one-step corruption, and direct sampling.
+Data loading, shape/boundary checks, coefficient plots, and both image grids
+are provided. Start at Setup and continue to the Day 4 stopping point under
+Wrap-up, then bring the three observation answers for discussion.
+
+The tutorial uses NumPy on CPU, seed 15, and the checksum-verified cached
+MNIST test files from Week 11. Generated figures and any missing raw data
+stay in the ignored scratch directory. The prepared code was executed with
+temporary reference implementations to validate the complete flow and
+plots; both delivered notebooks retain their exercises and empty outputs.
+Preparation does not mark the learner's implementation or review complete.
 
 Use the repository's unsolved/solved notebook convention when scaffolding
 the experiment. Codex can prepare data loading and plotting scaffolding;

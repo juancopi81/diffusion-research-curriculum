@@ -24,8 +24,8 @@ It is divided into five phases:
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
 - **Completed:** Phase 1 and Weeks 9–14 (Week 14 completed on 2026-10-27)
-- **Latest work:** [Week 15 Day 2](./notes/w15_forward_process_discrete.md#day-2--direct-sampling-from-the-clean-image) — Reading and discussion completed on 2026-10-30, including the handwritten coefficient-crossing calculation; learner read-through of the new section pending
-- **Next:** Review the Day 2 note section, then continue to [Day 3](./notes/w15_study_plan.md#day-3--derive-before-cleaning): derive the forward distributions. The checkpoint's blog editing continues separately.
+- **Latest work:** [Week 15 Day 3](./notes/w15_forward_process_discrete.md#day-3--deriving-the-forward-distributions) — Handwritten derivation and guided review completed on 2026-11-02, including Gaussianity, induction, and boundary checks; original pages and assistance recorded. Notes through Day 3 read and approved; Days 1–3 complete.
+- **Next:** Start the prepared [Day 4 working notebook](./notebooks/w15_forward_diffusion_mnist_solved.ipynb): three implementation exercises, coefficient curves, and MNIST noising grids. The checkpoint's blog editing continues separately.
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 

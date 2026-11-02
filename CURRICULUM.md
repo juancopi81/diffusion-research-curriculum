@@ -126,8 +126,10 @@ Next:
 - **Week 15:** bridge to diffusion math and the Gaussian forward process;
   started on 2026-10-30. Day 1 is complete, including the learner's approval
   of the [consolidated note](./notes/w15_forward_process_discrete.md).
-  Day 2 reading and discussion are also complete; the learner's read-through
-  of the new section is pending before Day 3's derivation work.
+  Day 2 reading and discussion are complete. Day 3's derivation and guided
+  review completed on 2026-11-02. The learner read and approved the Day 2
+  and Day 3 sections on 2026-11-02, completing Days 1–3. Day 4's notebook
+  implementation follows.
 
 See [PROGRESS.md](./PROGRESS.md) for completion dates and artifact links.
 
