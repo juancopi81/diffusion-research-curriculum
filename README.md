@@ -25,7 +25,7 @@ It is divided into five phases:
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
 - **Completed:** Phase 1 and Weeks 9–14 (Week 14 completed on 2026-10-27)
 - **Latest work:** [Week 15 Day 4](./notes/w15_forward_process_discrete.md#day-4--implementing-and-interpreting-forward-noising) — Completed and approved on 2026-11-03; all 16 code cells passed a fresh execution; figures, corrected observations, and review record preserved; Days 1–4 complete
-- **Next:** [Day 5](./notes/w15_study_plan.md#day-5--check-what-the-pictures-suggest): compare schedules and verify conditional moments with Monte Carlo sampling. The checkpoint's blog editing continues separately.
+- **Next:** Continue in the [working notebook](./notebooks/w15_forward_diffusion_mnist_solved.ipynb) at **Day 5 — Compare Schedules and Check Conditional Moments**: two new exercises, linear/cosine comparison, and fixed-input Monte Carlo checks are prepared. The checkpoint's blog editing continues separately.
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 

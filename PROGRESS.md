@@ -12,7 +12,7 @@
 - **Week 12 Completed:** 2026-09-28
 - **Week 13 Completed:** 2026-10-14
 - **Week 14 Completed:** 2026-10-27
-- **Next study step:** Day 5 — compare schedules and run fixed-input Monte Carlo moment checks
+- **Next study step:** Open the working notebook at Day 5; complete TODO 4–5, compare schedules, and run fixed-input Monte Carlo checks
 - **Week 14 closeout:** [Day 7 completion decision](notes/w14_study_plan.md#day-7-completion-decision); all four problems, study report, and final review complete; reference use and guided corrections recorded; blog editing continues separately
 
 ---
@@ -199,7 +199,7 @@ Started on 2026-10-30 using the [daily plan](notes/w15_study_plan.md).
 | Day 3: learner read-through of cleaned derivation | ✅ | 2026-11-02 | Learner read and approved the section |
 | S3: Day 4 implementation and discussion | ✅ | 2026-11-03 | [Working notebook](notebooks/w15_forward_diffusion_mnist_solved.ipynb): three exercises correct; fresh execution of 16 code cells passed checks; [reviewed observations](notes/w15_forward_process_discrete.md#day-4--implementing-and-interpreting-forward-noising) preserve figures and interpretation corrections |
 | Day 4: learner read-through of cleaned note and notebook | ✅ | 2026-11-03 | Learner reviewed and approved the note and final notebook observations; Day 4 complete |
-| S3: Day 5 schedule comparison and Monte Carlo checks | ⬜ | — | Second schedule and repeated-draw conditional moment checks proposed; not yet run |
+| S3: Day 5 schedule comparison and Monte Carlo checks | ⬜ | — | [Working notebook](notebooks/w15_forward_diffusion_mnist_solved.ipynb) extended on 2026-11-03 with two exercises, provided cosine comparison, and fixed-input Monte Carlo diagnostics; learner execution and discussion pending |
 | Final consolidation / Day 6 | ⬜ | — | Explanation, evidence review, and note read-through |
 
 ---

@@ -5,7 +5,8 @@ read-through and approval of the [cleaned note](w15_forward_process_discrete.md)
 The Day 1 section was approved on 2026-10-30; the Day 2 and Day 3 sections
 were approved on 2026-11-02. Day 4's implementation, discussion, and learner
 approval of the note and notebook observations completed on 2026-11-03.
-Days 5–6 remain planned.
+Day 5's notebook material was prepared on 2026-11-03; learner exercises
+and discussion are pending. Day 6 remains planned.
 
 **Pacing:** Six sessions totaling about five hours, plus a seventh day for
 rest or up to 45 minutes of catch-up. These are flexible study days, not
@@ -200,6 +201,28 @@ note and the notebook's consolidated observation cells on 2026-11-03,
 completing Day 4.
 
 ### Day 5 — Check What the Pictures Suggest
+
+**Material prepared on 2026-11-03:** Continue in the
+[working notebook](../notebooks/w15_forward_diffusion_mnist_solved.ipynb)
+at **Day 5 — Compare Schedules and Check Conditional Moments**, below the
+completed Day 4 Wrap-up. After a kernel restart, first run the completed
+Day 4 code cells to restore the functions and data. The new sections also
+appear in the unsolved baseline; Day 4's completed code and outputs are
+preserved in the working copy.
+
+Fill two new exercises: **TODO 4** returns the conditional reference mean
+and variance, and **TODO 5** estimates them across repetitions. The cosine
+schedule, matched-noise image comparison, repeated sampling, tolerance
+checks, plots, and CSV export are provided. The default uses 4,000 draws
+of two fixed clean coordinates at times 1, 100, 500, and 1000, under each
+schedule and each sampling method. Finish with the three Day 5 observations
+and stop at Day 5 Wrap-up for discussion.
+
+Preparation was validated using temporary reference answers: all 16
+schedule/method/time Monte Carlo cases passed the mean, variance, and
+cross-covariance diagnostics. The new cells have empty outputs and retain
+their learner exercises. These validation runs do not mark the learner's
+Day 5 experiment or review complete.
 
 Allow roughly 20 minutes for the second schedule and plots, 25 for moment
 checks, and 15 for interpretation with Codex.
