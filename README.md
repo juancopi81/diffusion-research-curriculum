@@ -24,8 +24,8 @@ It is divided into five phases:
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
 - **Completed:** Phase 1 and Weeks 9–14 (Week 14 completed on 2026-10-27)
-- **Latest work:** [Week 15 Day 3](./notes/w15_forward_process_discrete.md#day-3--deriving-the-forward-distributions) — Handwritten derivation and guided review completed on 2026-11-02, including Gaussianity, induction, and boundary checks; original pages and assistance recorded. Notes through Day 3 read and approved; Days 1–3 complete.
-- **Next:** Start the prepared [Day 4 working notebook](./notebooks/w15_forward_diffusion_mnist_solved.ipynb): three implementation exercises, coefficient curves, and MNIST noising grids. The checkpoint's blog editing continues separately.
+- **Latest work:** [Week 15 Day 4](./notes/w15_forward_process_discrete.md#day-4--implementing-and-interpreting-forward-noising) — Completed and approved on 2026-11-03; all 16 code cells passed a fresh execution; figures, corrected observations, and review record preserved; Days 1–4 complete
+- **Next:** [Day 5](./notes/w15_study_plan.md#day-5--check-what-the-pictures-suggest): compare schedules and verify conditional moments with Monte Carlo sampling. The checkpoint's blog editing continues separately.
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 

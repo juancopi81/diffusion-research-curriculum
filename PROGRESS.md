@@ -3,7 +3,7 @@
 ## Current Status
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Week:** 15 🔄 — Days 1–3 complete; Day 2 and Day 3 note sections read and approved by the learner on 2026-11-02
+- **Week:** 15 🔄 — Days 1–4 complete; Day 4 note and notebook observations read and approved on 2026-11-03
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
 - **Week 9 Completed:** 2026-08-25
@@ -12,7 +12,7 @@
 - **Week 12 Completed:** 2026-09-28
 - **Week 13 Completed:** 2026-10-14
 - **Week 14 Completed:** 2026-10-27
-- **Next study step:** Week 15 Day 4 — open the prepared working notebook, complete three implementation exercises, and discuss the plots
+- **Next study step:** Day 5 — compare schedules and run fixed-input Monte Carlo moment checks
 - **Week 14 closeout:** [Day 7 completion decision](notes/w14_study_plan.md#day-7-completion-decision); all four problems, study report, and final review complete; reference use and guided corrections recorded; blog editing continues separately
 
 ---
@@ -197,7 +197,9 @@ Started on 2026-10-30 using the [daily plan](notes/w15_study_plan.md).
 | Day 2: learner read-through of new note section | ✅ | 2026-11-02 | Learner read and approved the section |
 | S2: forward-process derivations and review / Day 3 | ✅ | 2026-11-02 | [Day 3 derivation](notes/w15_forward_process_discrete.md#day-3--deriving-the-forward-distributions): conditional moments, Gaussianity, induction, and boundary checks reviewed; five handwritten pages preserved; hints and corrections recorded |
 | Day 3: learner read-through of cleaned derivation | ✅ | 2026-11-02 | Learner read and approved the section |
-| S3: notebook and verification / Days 4–5 | ⬜ | — | [Day 4 working copy](notebooks/w15_forward_diffusion_mnist_solved.ipynb) prepared 2026-11-02 with three exercises and provided diagnostics; learner implementation pending; Day 5 adds the second schedule and moment checks |
+| S3: Day 4 implementation and discussion | ✅ | 2026-11-03 | [Working notebook](notebooks/w15_forward_diffusion_mnist_solved.ipynb): three exercises correct; fresh execution of 16 code cells passed checks; [reviewed observations](notes/w15_forward_process_discrete.md#day-4--implementing-and-interpreting-forward-noising) preserve figures and interpretation corrections |
+| Day 4: learner read-through of cleaned note and notebook | ✅ | 2026-11-03 | Learner reviewed and approved the note and final notebook observations; Day 4 complete |
+| S3: Day 5 schedule comparison and Monte Carlo checks | ⬜ | — | Second schedule and repeated-draw conditional moment checks proposed; not yet run |
 | Final consolidation / Day 6 | ⬜ | — | Explanation, evidence review, and note read-through |
 
 ---

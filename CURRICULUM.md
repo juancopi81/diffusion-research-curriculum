@@ -129,7 +129,9 @@ Next:
   Day 2 reading and discussion are complete. Day 3's derivation and guided
   review completed on 2026-11-02. The learner read and approved the Day 2
   and Day 3 sections on 2026-11-02, completing Days 1–3. Day 4's notebook
-  implementation follows.
+  implementation, discussion, and learner approval completed on 2026-11-03,
+  completing Days 1–4. Day 5's schedule comparison and
+  Monte Carlo moment checks are next.
 
 See [PROGRESS.md](./PROGRESS.md) for completion dates and artifact links.
 

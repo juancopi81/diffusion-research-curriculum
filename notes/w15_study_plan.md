@@ -1,10 +1,11 @@
 # Week 15 — The Forward Diffusion Process: Study Plan
 
-**Status:** Started on 2026-10-30. Days 1–3 are complete, including the learner's
+**Status:** Started on 2026-10-30. Days 1–4 are complete, including the learner's
 read-through and approval of the [cleaned note](w15_forward_process_discrete.md).
 The Day 1 section was approved on 2026-10-30; the Day 2 and Day 3 sections
-were approved on 2026-11-02. Day 4's notebook pair was prepared on 2026-11-02;
-learner implementation and discussion are pending. Days 5–6 remain planned.
+were approved on 2026-11-02. Day 4's implementation, discussion, and learner
+approval of the note and notebook observations completed on 2026-11-03.
+Days 5–6 remain planned.
 
 **Pacing:** Six sessions totaling about five hours, plus a seventh day for
 rest or up to 45 minutes of catch-up. These are flexible study days, not
@@ -186,6 +187,17 @@ timesteps, alongside signal decay and conditional variance growth.
 Check the clean-input boundary and tensor shapes. Record normalization and
 schedule settings. Keep raw samples for calculations; any display clipping
 belongs only to the image presentation.
+
+**Implementation and discussion reviewed on 2026-11-03.** Juan completed
+the three exercises correctly. A fresh execution of all 16 code cells
+passed the supplied assertions. The
+[Day 4 note](w15_forward_process_discrete.md#day-4--implementing-and-interpreting-forward-noising)
+preserves the three observations, figures, and corrections: amplitudes
+versus image percentages, the clean input in direct sampling, and the
+proposed fixed-input Monte Carlo comparison. The empirical moment check
+and second schedule remain for Day 5. The learner read and approved the
+note and the notebook's consolidated observation cells on 2026-11-03,
+completing Day 4.
 
 ### Day 5 — Check What the Pictures Suggest
 
