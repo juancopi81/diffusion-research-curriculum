@@ -52,6 +52,18 @@
 - Treat `sources/` as an immutable reference layer: do not edit third-party originals. Record provenance, official URLs, and redistribution status in the nearest source catalog.
 - A source file being present locally does not mean it may be committed or redistributed. Preserve the existing `.gitignore` boundary unless permission or a compatible license is documented.
 
+## Learning and Collaboration
+
+- During tutoring, start from Juan's attempt or current understanding when
+  available. Offer one manageable hint or question at a time; provide direct
+  explanations or complete solutions when requested.
+- When consolidating notes, preserve meaningful attempts and corrections,
+  Juan's voice, and his framing. Distinguish added explanations from his
+  original reasoning.
+- Notebook preparation, formatting, and routine maintenance should proceed
+  autonomously within the agreed scope, without requiring a learning exercise
+  or renewed approval.
+
 ## Skills
 A skill is a set of local instructions to follow that is stored in a `SKILL.md` file.
 
