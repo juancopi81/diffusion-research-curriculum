@@ -8,7 +8,9 @@ completing Days 1–3.
 Day 4's notebook implementation and observation discussion completed on
 2026-11-03; the learner read and approved the Day 4 note and notebook
 observations on the same date, completing Days 1–4.
-Day 5's second schedule and Monte Carlo verification are next in the
+Day 5 completed on 2026-11-04: the schedule comparison, Monte Carlo code,
+discussion, and learner approval of the cleaned note and notebook
+observations are complete. Days 1–5 are finished. Day 6 remains in the
 [study plan](w15_study_plan.md).
 
 **Day 1 reading:** [The Annotated Diffusion Model](https://huggingface.co/blog/annotated-diffusion),
@@ -598,3 +600,137 @@ of the cleaned note and the notebook's final observation cells. This
 records correct code and understanding reached through review; it does not
 claim that all initial interpretations were correct. Day 5's second
 schedule and Monte Carlo experiment remain ahead.
+
+## Day 5 — Comparing Schedules and Checking Conditional Moments
+
+**Status:** Day 5 completed on 2026-11-04, including Juan's read-through
+and approval of this section and the notebook's consolidated observations.
+The first-person observations preserve his interpretation; added
+explanations and corrections are identified below.
+
+**Evidence:** Juan completed the conditional-target and moment-estimator
+exercises in the [working notebook](../notebooks/w15_forward_diffusion_mnist_solved.ipynb).
+A fresh execution of all 27 code cells passed every supplied assertion,
+including 16 schedule/method/time Monte Carlo cases and 32 coordinate-level
+mean/variance pairs. This validates the learner's actual code, separately
+from the temporary reference answers used during preparation.
+
+The run retains the Day 4 data, normalization, root seed 15, and $T=1000$.
+It compares the linear schedule with a cosine schedule using offset
+$s=0.008$ and beta clipping bounds $[10^{-4},0.9999]$. Cumulative products
+are recomputed after clipping. The visual comparison uses the same clean
+digits and matched Gaussian noise, with seed 45. Moment checks use 4,000
+repetitions at times 1, 100, 500, and 1000; sequential and direct sampling
+use separate streams seeded 65 and 66.
+
+### Schedules at the Same Timestep
+
+At $t=500$, the linear images look unrecognizable to me, while the cosine
+images are very noisy but still retain some recognizable patterns.
+
+| Schedule | Signal amplitude | Conditional variance | My observation at $t=500$ |
+| --- | --- | --- | --- |
+| Linear | 0.280334 | 0.921413 | Looks like noise; I cannot recognize the digits |
+| Cosine | 0.702605 | 0.506346 | Very noisy, but some original patterns remain |
+
+The schedules give different image and noise multipliers at the same
+timestep. Here the cosine schedule has a higher signal amplitude and a
+lower noise amplitude. The timestep label alone does not determine the
+corruption level: the cumulative product $\bar\alpha_t$ depends on the
+schedule through that point. Conditional variance remains a variance per
+coordinate, not a percentage of the image.
+
+![Signal amplitude and conditional variance under both schedules](figures/w15_day5_schedule_comparison.png)
+
+![Linear-schedule direct snapshots using the matched noise arrays](figures/w15_day5_linear_matched.png)
+
+![Cosine-schedule direct snapshots using the same inputs and noise arrays](figures/w15_day5_cosine_matched.png)
+
+These direct snapshots compare schedules at selected times; they are not
+a sampled sequential trajectory. Recognizability is my observation of
+these selected digits and draws.
+
+### A Fixed-Coordinate Monte Carlo Comparison
+
+I selected coordinate index 1 of the two-coordinate vector: pixel $(5,18)$
+of the selected digit 0, with clean value $x_{0,j}=1$. For the cosine
+schedule at $t=100$, the recorded results are:
+
+| Quantity | Target | Sequential estimate | Direct estimate |
+| --- | --- | --- | --- |
+| Mean | 0.9857581658 | 0.9852260469 | 0.9863694586 |
+| Variance | 0.0282808385 | 0.0274859649 | 0.0290450329 |
+
+My initial answer described these estimates as close by comparing decimal
+places. After Codex supplied the standard error of the sample mean, I
+compared each discrepancy with that scale: sequential is about 0.20 SE
+from its target and direct about 0.23 SE. Both are within one SE, so these
+differences are consistent with the sampling variation we expect.
+
+**Quantitative explanation added by Codex:** For $N=4000$ independent
+Gaussian draws with variance $v=0.0282808385$, the estimator standard errors
+are
+
+$$
+\operatorname{SE}(\hat\mu)=\sqrt{\frac{v}{N}}\approx0.002659,
+\qquad
+\operatorname{SE}(\hat v)=v\sqrt{\frac{2}{N-1}}\approx0.00063246.
+$$
+
+| Method | Mean error / SE | Variance error / SE |
+| --- | --- | --- |
+| Sequential | -0.200 | -1.257 |
+| Direct | +0.230 | +1.208 |
+
+The variance discrepancies are about 1.26 and 1.21 of their own standard
+errors, also consistent with sampling variation. An estimate need not
+fall within one SE. The notebook uses a broad six-SE diagnostic tolerance;
+passing it is numerical evidence, not a proof of implementation correctness.
+Increasing $N$ reduces the expected sampling error, without guaranteeing
+that every particular estimate gets closer to its target.
+
+Across all 16 cases, the largest absolute standardized errors were 2.913
+for means, 1.649 for variances, and 1.369 for off-diagonal covariance. The
+diagnostic table reports maxima over both coordinates; its row values
+therefore need not equal the coordinate-1 errors above.
+
+![Empirical moments and theoretical curves for fixed coordinate index 0](figures/w15_day5_mc_moments.png)
+
+The moment plot displays coordinate index 0, pixel $(0,0)$ with clean value
+$-1$. My worked numerical example above uses coordinate index 1.
+
+### What the Evidence Supports
+
+The checks support that sequential and direct sampling reproduce the
+predicted conditional moments within Monte Carlo error in the tested
+settings. They also check the clean boundary, array shapes, and the
+expected zero cross-covariance between the two fixed noisy coordinates.
+The conditional law was derived on Day 3; these finite checks provide
+implementation evidence and do not establish every distributional or
+trajectory property.
+
+My conclusion about training was correct: these experiments do not tell
+us which schedule generates better images after training. For these
+schedules, the cosine images retain more visible structure at $t=500$.
+No denoiser was trained and no reverse sampling was evaluated.
+
+### Day 5 Review Record
+
+- Juan correctly implemented both exercises and reported the observed
+  schedule differences and selected empirical moments.
+- Codex prompted interpretation relative to the mean estimator's standard
+  error. Juan correctly identified both mean discrepancies as within one
+  SE and consistent with expected sampling variation. Direct's rounded
+  value is 0.23 SE.
+- Codex added the variance-error interpretation and distinguished
+  per-coordinate errors from the two-coordinate diagnostic maxima.
+- Codex corrected the method names from "sequential and linear" to
+  "sequential and direct" and scoped the recognizability claim to the
+  observed schedules and images. Juan had already distinguished the
+  forward comparison from evidence about trained generation quality.
+
+The four figures are unchanged copies of the learner's saved Day 5 plots
+under the ignored scratch directory. The raw 32-row CSV remains there as
+`scratch/w15_forward_diffusion/figures/day5_mc_results.csv`. Juan read and
+approved the cleaned note and notebook on 2026-11-04, completing Day 5.
+Day 6's whole-process explanation and final consolidation remain ahead.

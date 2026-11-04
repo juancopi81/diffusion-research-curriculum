@@ -1,12 +1,12 @@
 # Week 15 — The Forward Diffusion Process: Study Plan
 
-**Status:** Started on 2026-10-30. Days 1–4 are complete, including the learner's
+**Status:** Started on 2026-10-30. Days 1–5 are complete, including the learner's
 read-through and approval of the [cleaned note](w15_forward_process_discrete.md).
 The Day 1 section was approved on 2026-10-30; the Day 2 and Day 3 sections
 were approved on 2026-11-02. Day 4's implementation, discussion, and learner
 approval of the note and notebook observations completed on 2026-11-03.
-Day 5's notebook material was prepared on 2026-11-03; learner exercises
-and discussion are pending. Day 6 remains planned.
+Day 5's code, discussion, and learner approval of the cleaned note and
+notebook observations completed on 2026-11-04. Day 6 remains planned.
 
 **Pacing:** Six sessions totaling about five hours, plus a seventh day for
 rest or up to 45 minutes of catch-up. These are flexible study days, not
@@ -218,11 +218,11 @@ of two fixed clean coordinates at times 1, 100, 500, and 1000, under each
 schedule and each sampling method. Finish with the three Day 5 observations
 and stop at Day 5 Wrap-up for discussion.
 
-Preparation was validated using temporary reference answers: all 16
-schedule/method/time Monte Carlo cases passed the mean, variance, and
-cross-covariance diagnostics. The new cells have empty outputs and retain
-their learner exercises. These validation runs do not mark the learner's
-Day 5 experiment or review complete.
+At preparation, all 16 schedule/method/time Monte Carlo cases passed the
+mean, variance, and cross-covariance diagnostics using temporary reference
+answers. The delivered cells retained their learner
+exercises and empty outputs; that preparation was separate from the
+learner's subsequent execution and discussion.
 
 Allow roughly 20 minutes for the second schedule and plots, 25 for moment
 checks, and 15 for interpretation with Codex.
@@ -244,22 +244,48 @@ snapshots help compare schedules, but do not constitute a sampled Markov
 trajectory. These forward-only results support claims about corruption;
 generation quality requires later training and sampling evidence.
 
+**Implementation and discussion reviewed on 2026-11-04.** Juan completed
+both exercises correctly; a fresh execution of all 27 notebook code cells
+passed the supplied checks, including all 16 Monte Carlo cases. The
+[Day 5 note](w15_forward_process_discrete.md#day-5--comparing-schedules-and-checking-conditional-moments)
+and notebook observations preserve his schedule comparison and chosen
+coordinate's estimates. After a standard-error prompt, he correctly
+interpreted both mean discrepancies as expected sampling variation; Codex's
+variance explanation and wording corrections are identified separately.
+Juan read and approved the cleaned note and notebook observations on
+2026-11-04, completing Day 5.
+
 ### Day 6 — Consolidate and Hand Off to Week 16
+
+**Bring:** The [weekly note](w15_forward_process_discrete.md) and
+[completed notebook](../notebooks/w15_forward_diffusion_mnist_solved.ipynb).
+Briefly skim your equations and Days 4–5 observations. Choose one saved
+plot and one Monte Carlo example to explain; your cosine, coordinate-1,
+$t=100$ example is a ready option.
 
 Use about five minutes for your explanation, 15 for questions, and 10 to
 review the note. Explain the path from a clean image and a schedule to a
 noisy training input, then interpret one plot and one numerical check.
+Start the explanation with notes closed, then use them to check gaps.
+Connect the one-step and direct formulas, cumulative coefficients,
+conditional moments, and the agreement between the two constructions.
 
 Within the discussion, spend at most five minutes on the
 [Week 14 carryover](w14_study_plan.md#day-7-completion-decision): distinguish
 the mean noisy point given a clean input, the estimated clean point given a
 noisy observation, and the score at that noisy observation. Identify what
 each quantity conditions on and what it returns. Use the Week 7 reference
-if needed; record any guidance accurately.
+if needed, especially [The Direction Flip](w07_conditional_expectation_in_diffusion.md#1-the-direction-flip)
+and [Score Connection](w07_conditional_expectation_in_diffusion.md#5-score-connection);
+its generic signal coefficient uses a different alpha convention, as noted
+in the reading map. Record any guidance accurately.
 
 Codex now organizes the accumulated note, including source links,
 derivations, selected notebook evidence, your interpretation, and any open
 questions. Read it for accuracy before recording completion.
+Stop once the whole-process explanation, selected evidence, and conditioning
+distinction have been reviewed and the cleaned final note has been read.
+Week 16's training and reverse sampling remain the next week's work.
 
 ## Expected Outputs and Completion
 
@@ -274,10 +300,10 @@ Create these as the study progresses:
 The notebook's noising functions and settings are candidates for reuse in
 Week 16's Nano-Diffusion work. Keep them small and readable.
 
-- [ ] Explain the one-step and direct constructions, including their conditioning.
-- [ ] Derive their means and covariances, with reference use or hints recorded.
-- [ ] Compare two schedules using images and coefficient/variance curves.
-- [ ] Verify the predicted moments numerically and check both constructions.
+- [x] Explain the one-step and direct constructions, including their conditioning.
+- [x] Derive their means and covariances, with reference use or hints recorded.
+- [x] Compare two schedules using images and coefficient/variance curves.
+- [x] Verify the predicted moments numerically and check both constructions.
 - [ ] Read the cleaned note and explain the central results in your own words.
 
 Update progress after these checks are actually completed. This plan itself

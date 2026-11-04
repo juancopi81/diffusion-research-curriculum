@@ -3,7 +3,7 @@
 ## Current Status
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Week:** 15 🔄 — Days 1–4 complete; Day 4 note and notebook observations read and approved on 2026-11-03
+- **Week:** 15 🔄 — Days 1–5 complete; Day 5 note and notebook read and approved on 2026-11-04
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
 - **Week 9 Completed:** 2026-08-25
@@ -12,7 +12,7 @@
 - **Week 12 Completed:** 2026-09-28
 - **Week 13 Completed:** 2026-10-14
 - **Week 14 Completed:** 2026-10-27
-- **Next study step:** Open the working notebook at Day 5; complete TODO 4–5, compare schedules, and run fixed-input Monte Carlo checks
+- **Next study step:** Day 6's 30-minute explanation, saved-evidence review, conditioning check, and final consolidation
 - **Week 14 closeout:** [Day 7 completion decision](notes/w14_study_plan.md#day-7-completion-decision); all four problems, study report, and final review complete; reference use and guided corrections recorded; blog editing continues separately
 
 ---
@@ -199,7 +199,8 @@ Started on 2026-10-30 using the [daily plan](notes/w15_study_plan.md).
 | Day 3: learner read-through of cleaned derivation | ✅ | 2026-11-02 | Learner read and approved the section |
 | S3: Day 4 implementation and discussion | ✅ | 2026-11-03 | [Working notebook](notebooks/w15_forward_diffusion_mnist_solved.ipynb): three exercises correct; fresh execution of 16 code cells passed checks; [reviewed observations](notes/w15_forward_process_discrete.md#day-4--implementing-and-interpreting-forward-noising) preserve figures and interpretation corrections |
 | Day 4: learner read-through of cleaned note and notebook | ✅ | 2026-11-03 | Learner reviewed and approved the note and final notebook observations; Day 4 complete |
-| S3: Day 5 schedule comparison and Monte Carlo checks | ⬜ | — | [Working notebook](notebooks/w15_forward_diffusion_mnist_solved.ipynb) extended on 2026-11-03 with two exercises, provided cosine comparison, and fixed-input Monte Carlo diagnostics; learner execution and discussion pending |
+| S3: Day 5 schedule comparison and Monte Carlo checks | ✅ | 2026-11-04 | Both exercises correct; fresh execution of all 27 code cells passed all 16 Monte Carlo cases; [Day 5 discussion](notes/w15_forward_process_discrete.md#day-5--comparing-schedules-and-checking-conditional-moments) records estimates, standard-error interpretation, saved figures, and assistance |
+| Day 5: learner read-through of cleaned note and notebook | ✅ | 2026-11-04 | Learner read and approved the cleaned note and notebook; Day 5 complete |
 | Final consolidation / Day 6 | ⬜ | — | Explanation, evidence review, and note read-through |
 
 ---
