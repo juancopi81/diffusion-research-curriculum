@@ -120,20 +120,17 @@ Completed:
   problems, sourced study report, and final review; completed on 2026-10-27.
   The [closeout](./notes/w14_study_plan.md#day-7-completion-decision) records
   reference use and guided corrections. Blog editing continues separately.
+- **Week 15:** Gaussian forward-process derivation, MNIST implementation,
+  linear/cosine comparison, fixed-input Monte Carlo verification, and final
+  discussion; completed on 2026-11-05. The
+  [closeout](./notes/w15_forward_process_discrete.md#day-6--consolidating-the-forward-process-and-closing-week-15)
+  preserves notes-closed recall, prompted interpretation, and added explanations.
 
 Next:
 
-- **Week 15:** bridge to diffusion math and the Gaussian forward process;
-  started on 2026-10-30. Day 1 is complete, including the learner's approval
-  of the [consolidated note](./notes/w15_forward_process_discrete.md).
-  Day 2 reading and discussion are complete. Day 3's derivation and guided
-  review completed on 2026-11-02. The learner read and approved the Day 2
-  and Day 3 sections on 2026-11-02, completing Days 1–3. Day 4's notebook
-  implementation, discussion, and learner approval completed on 2026-11-03,
-  completing Days 1–4. Day 5's schedule comparison, Monte Carlo code,
-  discussion, and learner approval of the cleaned note and notebook
-  completed on 2026-11-04, completing Days 1–5. Day 6's final explanation
-  and consolidation remain ahead.
+- **Week 16:** first timestep-conditioned denoiser and reverse sampler,
+  connecting noise prediction, clean prediction, and score prediction.
+  Week 16 has not started; optional cosine-schedule enrichment is separate.
 
 See [PROGRESS.md](./PROGRESS.md) for completion dates and artifact links.
 
@@ -576,6 +573,9 @@ Learning chain: retrieve the core theory → solve mixed distinctions →
 synthesize existing experiments → state which toolkit applies to diffusion and why.
 
 ### Week 15 — Bridge to diffusion math (forward process)
+
+**Completed on 2026-11-05.** See the
+[final discussion and completion decision](./notes/w15_forward_process_discrete.md#day-6--consolidating-the-forward-process-and-closing-week-15).
 
 Use the [day-by-day plan](./notes/w15_study_plan.md): six study sessions
 (about five hours) and a buffer/rest day, following reading → discussion →

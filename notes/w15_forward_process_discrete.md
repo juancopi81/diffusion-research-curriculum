@@ -1,6 +1,8 @@
 # Week 15 — The Discrete Forward Diffusion Process
 
-**Status:** Day 1 completed and its note approved by the learner on
+**Status:** Week 15 completed on 2026-11-05 after the final discussion and
+Juan's request to consolidate and close the week. Day 1 completed and its
+note was approved by the learner on
 2026-10-30. Day 2 reading and discussion completed on 2026-10-30; Day 3's
 handwritten derivation and guided review completed on 2026-11-02. The
 learner read and approved the Day 2 and Day 3 sections on 2026-11-02,
@@ -10,8 +12,9 @@ Day 4's notebook implementation and observation discussion completed on
 observations on the same date, completing Days 1–4.
 Day 5 completed on 2026-11-04: the schedule comparison, Monte Carlo code,
 discussion, and learner approval of the cleaned note and notebook
-observations are complete. Days 1–5 are finished. Day 6 remains in the
-[study plan](w15_study_plan.md).
+observations are complete. Day 6's explanation, evidence discussion,
+learner questions, and final consolidation completed on 2026-11-05;
+the [study plan](w15_study_plan.md) records the completion decision.
 
 **Day 1 reading:** [The Annotated Diffusion Model](https://huggingface.co/blog/annotated-diffusion),
 the introductory explanation and the beginning of its mathematical section,
@@ -733,4 +736,241 @@ The four figures are unchanged copies of the learner's saved Day 5 plots
 under the ignored scratch directory. The raw 32-row CSV remains there as
 `scratch/w15_forward_diffusion/figures/day5_mc_results.csv`. Juan read and
 approved the cleaned note and notebook on 2026-11-04, completing Day 5.
-Day 6's whole-process explanation and final consolidation remain ahead.
+The Day 6 record below contains the subsequent whole-process explanation
+and final consolidation.
+
+## Day 6 — Consolidating the Forward Process and Closing Week 15
+
+**Status:** Completed on 2026-11-05. Juan concluded his questions and
+explicitly requested consolidation, Week 15 completion, and commit/push.
+His opening explanation was explicitly without notes; the later discussion
+reused saved evidence. Added explanations are identified below.
+
+### My Forward-Process Explanation
+
+The forward process starts from a clean dataset sample $x_0$ and corrupts
+it through incremental Gaussian steps. Our chosen setup has $T=1000$:
+
+$$
+x_t=\sqrt{1-\beta_t}\,x_{t-1}+\sqrt{\beta_t}\,\epsilon_t,
+\qquad \epsilon_t\sim\mathcal N(0,I).
+$$
+
+The schedule is fixed in advance. Each noise draw is fresh and independent
+of the clean input and the other noise draws. Defining
+$\alpha_t=1-\beta_t$ and $\bar\alpha_t=\prod_{s=1}^{t}\alpha_s$ gives direct
+sampling without simulating the intermediate states:
+
+$$
+x_t=\sqrt{\bar\alpha_t}\,x_0+\sqrt{1-\bar\alpha_t}\,\epsilon,
+\qquad \epsilon\sim\mathcal N(0,I).
+$$
+
+I correctly recalled the resulting conditional law:
+
+$$
+q(x_t\mid x_0)=\mathcal N\!\left(
+x_t;\sqrt{\bar\alpha_t}\,x_0,(1-\bar\alpha_t)I\right).
+$$
+
+**Notation supplied by Codex:** My opening omitted the explicit definition
+$\alpha_t=1-\beta_t$. Codex also clarified that $\beta_t$ is the variance at
+one step, while the sequence of these values is the schedule.
+
+### Interpreting the Saved Evidence
+
+I reused the Day 5 table. At $t=500$, cosine has a larger signal amplitude
+and smaller conditional variance than linear:
+
+| Schedule | Signal amplitude | Conditional variance |
+| --- | --- | --- |
+| Linear | 0.280334 | 0.921413 |
+| Cosine | 0.702605 | 0.506346 |
+
+That explains why I can recognize more of the selected digits under the
+cosine schedule at this timestep. This observation concerns the saved
+forward-corruption images.
+
+For the cosine, coordinate-1, $t=100$ Monte Carlo example with $N=4000$, I
+correctly described the estimator standard errors and standardized errors:
+
+$$
+\operatorname{SE}(\hat\mu)=\sqrt{v/N}\approx0.002659,
+\qquad
+\operatorname{SE}(\hat v)=v\sqrt{2/(N-1)}\approx0.00063246.
+$$
+
+Divide each absolute empirical-minus-target discrepancy by its estimator's
+SE. The mean discrepancies are about 0.20 and 0.23 SE, and the variance
+discrepancies about 1.26 and 1.21 SE. I interpreted these as consistent with
+finite-sample variation. Codex clarified the wording: these SEs describe
+variation of the estimators across repeated experiments. The targets and
+estimates are preserved in the Day 5 numerical table above.
+
+### Conditional Means and the Score
+
+For an observed noisy image $X_t=x_t$, I would use
+$\mathbb E[X_0\mid X_t=x_t]$ to estimate its clean source under squared
+error. The observation is held fixed, and the average ranges over possible
+clean sources using their posterior probabilities. In a discrete example,
+sum clean value times posterior probability; use an integral for a density.
+
+This differs from the forward mean
+$\mathbb E[X_t\mid X_0=x_0]=\sqrt{\bar\alpha_t}\,x_0$, which holds the clean
+input fixed and averages over corruption noise.
+
+With the score formula included in the question, I correctly explained
+that $\nabla_{x_t}\log q_t(x_t)$ gives a local direction of increasing
+noisy-data log density. It describes a density gradient, while the clean
+estimate is a posterior average of possible source images. Codex added
+that the gradient gives the steepest local direction and its magnitude
+gives the rate of increase in that direction.
+
+**Small clarifications:** Codex wrote $X_t$ for a general timestep instead
+of my $X_T$, and clarified the weighted-value wording. This naturally
+revisited the [Week 14 conditioning/score discussion](w14_study_plan.md#day-7-completion-decision):
+I distinguished the objects correctly in this context. An unaided
+derivation of the identity relating the clean estimate to the score was
+not assessed; that relationship remains part of Week 16's planned work.
+
+### My Questions and the Added Explanations
+
+**Cosine schedule: how much of its mathematics is needed now?**
+
+I understood its implications and plots, but had only briefly inspected
+the code. I asked whether a later exploration or blog post would be useful.
+
+**Codex explanation:** Linear scheduling specifies the stepwise betas;
+cosine scheduling first specifies a desired cumulative curve, then derives
+the betas. For the desired curve $g_t=f(t)/f(0)$,
+
+$$
+f(t)=\cos^2\!\left(\frac{t/T+s}{1+s}\,\frac{\pi}{2}\right),
+\qquad
+\beta_t=1-\frac{g_t}{g_{t-1}}.
+$$
+
+The ratio follows from the cumulative-product recurrence. The notebook
+clips the resulting betas and recomputes the actual cumulative product.
+The authors chose cosine-squared for the desired decay shape and describe
+other similarly shaped functions as possible alternatives; see
+[Improved DDPM, Section 3.2](https://proceedings.mlr.press/v139/nichol21a/nichol21a.pdf#page=4).
+
+Understanding the observed schedule effects meets this week's goal.
+Tracing normalization, offset, and clipping is optional enrichment. A
+possible later blog angle is "Why a linear noise schedule does not produce
+linear signal decay." No post or additional study session was started.
+
+**Percentages: can the squared coefficients describe a 90/10 split?**
+
+Returning to the Day 4 percentage question, I correctly observed that
+$a^2+b^2=1$ for $a=\sqrt{\bar\alpha_t}$ and
+$b=\sqrt{1-\bar\alpha_t}$. I asked what percentage interpretation that
+allows.
+
+**Codex explanation:** For one coordinate across different clean inputs,
+independence and unit noise variance give
+
+$$
+\operatorname{Var}(X_t)=a^2v_0+b^2,
+\qquad v_0=\operatorname{Var}(X_0).
+$$
+
+If $v_0=1$, squared weights 0.9 and 0.1 are indeed 90% and 10% contributions
+to the marginal variance. If $v_0=0.1$, the contributions are 0.09 and 0.1,
+so noise contributes about 53% of the total variance. Normalizing the
+pixel range does not ensure $v_0=1$. These are variance contributions,
+not percentages of recognizable content or pixels. Given one fixed clean
+input, the signal term is deterministic and the conditional variance is
+$b^2$; the conditional mean still carries the scaled clean image.
+
+**My alternative: what if the coefficients themselves sum to one?**
+
+I proposed a different process with weights 0.99/0.01, then 0.98/0.02,
+eventually 0.01/0.99. Treating the noise as fresh at every step gives, for
+example,
+
+$$
+x_1=0.99x_0+0.01\epsilon_1,
+\qquad
+x_2=0.98x_1+0.02\epsilon_2.
+$$
+
+**Codex explanation:** This is a valid Gaussian noising process. Calling
+the first step a 99% image / 1% noise blend describes its linear weights;
+its noise variance contribution is $0.01^2=0.0001$. The second step blends
+the already noisy $x_1$, so expansion gives
+
+$$
+x_2=0.9702x_0+0.0098\epsilon_1+0.02\epsilon_2.
+$$
+
+These linear weights sum to one. Independent noise variances still add
+through squared weights. This family uses $a_t+b_t=1$, whereas our DDPM
+uses $a_t^2+b_t^2=1$; changing only DDPM's beta cannot reproduce the exact
+0.99/0.01 pair.
+
+**Why does DDPM use the squared-coefficient constraint?**
+
+I then asked what advantage it gives over my linear blend.
+
+**Codex explanation and algebra:** With independent unit-variance inputs,
+DDPM gives $(1-\beta_t)+\beta_t=1$ for the output variance. An equal linear
+blend gives $0.5^2+0.5^2=0.5$. DDPM therefore keeps unit variance unchanged
+as it replaces signal with noise. More generally, for a coordinate,
+
+$$
+\operatorname{Var}(X_t)
+=\bar\alpha_t\operatorname{Var}(X_0)+(1-\bar\alpha_t).
+$$
+
+As the cumulative signal coefficient decreases, this marginal variance
+moves toward one. An independent Gaussian step also leaves
+$\mathcal N(0,I)$ unchanged if its input already has that law, giving a
+convenient reference distribution for the endpoint and reverse sampler.
+Sufficient cumulative attenuation is still needed to reach an approximately
+standard-normal endpoint from image data. The original paper explicitly
+discusses consistent network-input scale and matching the noise prior in
+[DDPM, Appendix C](https://arxiv.org/pdf/2006.11239#page=15).
+
+This is a convenient design, not evidence that every alternative blend
+would generate worse images. I acknowledged the explanation and said my
+questions were answered; independent recall of this added derivation was
+not tested.
+
+### Day 6 Review and Completion Decision
+
+- My opening was explicitly notes-closed and correctly recalled both
+  sampling equations, independence, and the conditional law. Codex supplied
+  the omitted alpha definition and the schedule terminology.
+- I used the saved schedule table to explain recognizability and correctly
+  interpreted the Monte Carlo estimates using standard errors. These were
+  prompted evidence discussions, not an additional blind recall test.
+- I correctly distinguished posterior clean estimation from the score with
+  the score formula supplied in the prompt. Codex refined notation and
+  weighted-average wording; this is new positive evidence in the returning
+  Week 14 context, not a claim that every related identity is fluent.
+- My own questions produced the correct squared-weight identity and an
+  alternative linear-blend proposal. The detailed cosine, variance-share,
+  and variance-preserving explanations above were added by Codex. My
+  acknowledgement after those explanations is not an independent test.
+
+Juan explicitly requested closing Week 15 after the discussion. The
+existing derivation, completed notebook, schedule comparison, numerical
+checks, and final explanation meet the week's study scope. The new written
+consolidation was prepared at that request; no separate post-writing
+read-through is claimed. The optional Day 7 buffer can remain free.
+
+### Handoff to Week 16
+
+The working notebook retains the completed schedule, one-step and direct
+samplers, normalization, seeded data setup, and conditional-moment checks.
+These are the forward inputs for the next week. Compared with the
+single-noise-level experiments in Weeks 1 and 8, we now have a consistent
+family of indexed Gaussian corruption levels and their cumulative law.
+
+Week 16 will add the training objective, timestep-conditioned noise
+prediction, relationships among prediction parameterizations, and reverse
+sampling. No denoiser or reverse sampler was trained or evaluated in Week
+15. The [Week 16 curriculum](../CURRICULUM.md#week-16--first-full-toy-diffusion-training-small)
+remains the next step; the optional cosine/blog exploration does not block it.

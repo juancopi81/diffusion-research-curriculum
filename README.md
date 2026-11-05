@@ -23,9 +23,9 @@ It is divided into five phases:
 ## 🚀 Current Progress
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Completed:** Phase 1 and Weeks 9–14 (Week 14 completed on 2026-10-27)
-- **Latest work:** [Week 15 Day 5](./notes/w15_forward_process_discrete.md#day-5--comparing-schedules-and-checking-conditional-moments) — Completed and approved on 2026-11-04; all 27 code cells and 16 Monte Carlo cases passed; schedule figures, chosen estimates, and review record preserved; Days 1–5 complete
-- **Next:** [Day 6](./notes/w15_study_plan.md#day-6--consolidate-and-hand-off-to-week-16): a 30-minute whole-process explanation, saved-evidence review, conditioning check, and final consolidation. Bring the weekly note and completed notebook. The checkpoint's blog editing continues separately.
+- **Completed:** Phase 1 and Weeks 9–15 (Week 15 completed on 2026-11-05)
+- **Latest work:** [Week 15 closeout](./notes/w15_forward_process_discrete.md#day-6--consolidating-the-forward-process-and-closing-week-15) — Forward derivation, completed MNIST notebook, linear/cosine comparison, Monte Carlo verification, final explanation, and learner questions consolidated; independent recall and added explanations distinguished
+- **Next:** [Week 16](./CURRICULUM.md#week-16--first-full-toy-diffusion-training-small): training objective, timestep-conditioned denoising, prediction parameterizations, and reverse sampling. The optional cosine-schedule/blog exploration is enrichment. The checkpoint's blog editing continues separately.
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 
@@ -38,6 +38,7 @@ See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 | [Checkpoint 01 - Conditioning in Code](./mini_projects/checkpoint_01_conditioning_in_code/) | Shows how conditioning changes the probability model, verified with Monte Carlo. |
 | [Checkpoint 02 - Toy Score Matching](./mini_projects/checkpoint_02_toy_score_matching/) | Compares two learned score objectives against the exact score of a noisy Gaussian mixture. |
 | [Checkpoint 03 - Generative Toolkit](./mini_projects/checkpoint_03_generative_toolkit_report/) | Compares VAE, RealNVP, and score learning using sourced experiments and a completed study review; the blog edition remains in editing. |
+| [Canonical forward diffusion on MNIST](./notebooks/w15_forward_diffusion_mnist_solved.ipynb) | Connects the Gaussian derivation to two schedules, saved image grids, fixed-input Monte Carlo checks, and the final conceptual review. |
 | [Multivariate Gaussian score and conditioning](./notebooks/w10_mv_gaussian_score_solved.ipynb) | Connects Cholesky sampling, analytic and numerical scores, Gaussian conditioning, and the DDPM forward kernel. |
 | [PCA/SVD projection and reconstruction](./notebooks/w09_pca_svd_solved.ipynb) | Connects projections, eigendecomposition, SVD, low-rank reconstruction, and latent compression. |
 | [Gaussian score derivation](./notes/w03_score_of_gaussian.md) | Builds the first exact score function used later in diffusion. |

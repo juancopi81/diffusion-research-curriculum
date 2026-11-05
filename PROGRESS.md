@@ -3,7 +3,7 @@
 ## Current Status
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Week:** 15 🔄 — Days 1–5 complete; Day 5 note and notebook read and approved on 2026-11-04
+- **Week:** 15 ✅ — Completed on 2026-11-05; Week 16 is next and has not started
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
 - **Week 9 Completed:** 2026-08-25
@@ -12,7 +12,8 @@
 - **Week 12 Completed:** 2026-09-28
 - **Week 13 Completed:** 2026-10-14
 - **Week 14 Completed:** 2026-10-27
-- **Next study step:** Day 6's 30-minute explanation, saved-evidence review, conditioning check, and final consolidation
+- **Week 15 Completed:** 2026-11-05
+- **Next study step:** Week 16's training objective, timestep-conditioned noise prediction, parameterization relationships, and first reverse sampler
 - **Week 14 closeout:** [Day 7 completion decision](notes/w14_study_plan.md#day-7-completion-decision); all four problems, study report, and final review complete; reference use and guided corrections recorded; blog editing continues separately
 
 ---
@@ -185,9 +186,14 @@ separately. The proposed longer clipping comparison has not been run.
 
 ---
 
-### Week 15 — Bridge to Diffusion Math: The Forward Process 🔄
+### Week 15 — Bridge to Diffusion Math: The Forward Process ✅
 
 Started on 2026-10-30 using the [daily plan](notes/w15_study_plan.md).
+Completed on 2026-11-05 after the final discussion and Juan's explicit
+request to consolidate and close the week. The
+[Day 6 record](notes/w15_forward_process_discrete.md#day-6--consolidating-the-forward-process-and-closing-week-15)
+distinguishes notes-closed recall, prompted evidence interpretation, and
+Codex's explanations. Optional cosine/blog enrichment does not block Week 16.
 
 | Task | Status | Date | Notes |
 | --- | --- | --- | --- |
@@ -201,7 +207,8 @@ Started on 2026-10-30 using the [daily plan](notes/w15_study_plan.md).
 | Day 4: learner read-through of cleaned note and notebook | ✅ | 2026-11-03 | Learner reviewed and approved the note and final notebook observations; Day 4 complete |
 | S3: Day 5 schedule comparison and Monte Carlo checks | ✅ | 2026-11-04 | Both exercises correct; fresh execution of all 27 code cells passed all 16 Monte Carlo cases; [Day 5 discussion](notes/w15_forward_process_discrete.md#day-5--comparing-schedules-and-checking-conditional-moments) records estimates, standard-error interpretation, saved figures, and assistance |
 | Day 5: learner read-through of cleaned note and notebook | ✅ | 2026-11-04 | Learner read and approved the cleaned note and notebook; Day 5 complete |
-| Final consolidation / Day 6 | ⬜ | — | Explanation, evidence review, and note read-through |
+| Final explanation, evidence discussion, and learner questions / Day 6 | ✅ | 2026-11-05 | Correct notes-closed forward explanation; saved schedule/Monte Carlo interpretation; posterior clean mean versus score; cosine, percentages, blending, and variance-preservation questions answered; assistance recorded |
+| Week 15 completion decision and consolidation | ✅ | 2026-11-05 | Juan requested closure after his questions; final notes and notebook saved; Week 16 not started |
 
 ---
 

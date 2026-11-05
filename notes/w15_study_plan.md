@@ -1,12 +1,15 @@
 # Week 15 — The Forward Diffusion Process: Study Plan
 
-**Status:** Started on 2026-10-30. Days 1–5 are complete, including the learner's
+**Status:** Week 15 completed on 2026-11-05; started on 2026-10-30.
+Days 1–5 are complete, including the learner's
 read-through and approval of the [cleaned note](w15_forward_process_discrete.md).
 The Day 1 section was approved on 2026-10-30; the Day 2 and Day 3 sections
 were approved on 2026-11-02. Day 4's implementation, discussion, and learner
 approval of the note and notebook observations completed on 2026-11-03.
 Day 5's code, discussion, and learner approval of the cleaned note and
-notebook observations completed on 2026-11-04. Day 6 remains planned.
+notebook observations completed on 2026-11-04. Day 6's explanation,
+evidence discussion, learner questions, and final consolidation completed
+on 2026-11-05. Juan explicitly requested closing the week after his questions.
 
 **Pacing:** Six sessions totaling about five hours, plus a seventh day for
 rest or up to 45 minutes of catch-up. These are flexible study days, not
@@ -287,6 +290,17 @@ Stop once the whole-process explanation, selected evidence, and conditioning
 distinction have been reviewed and the cleaned final note has been read.
 Week 16's training and reverse sampling remain the next week's work.
 
+**Day 6 completed on 2026-11-05.** The
+[final discussion record](w15_forward_process_discrete.md#day-6--consolidating-the-forward-process-and-closing-week-15)
+and working notebook preserve the notes-closed opening, saved-table and
+Monte Carlo interpretations, and the conditioning/score distinction.
+Juan's own questions on cosine scheduling, percentage interpretations,
+linear blending, and variance preservation were answered before
+consolidation. Codex's additions and prompts are identified. After stating
+that his questions were answered, Juan asked to consolidate, close Week 15,
+and commit/push. The optional Day 7 buffer is free; Week 16 is next and has
+not started.
+
 ## Expected Outputs and Completion
 
 Create these as the study progresses:
@@ -304,7 +318,11 @@ Week 16's Nano-Diffusion work. Keep them small and readable.
 - [x] Derive their means and covariances, with reference use or hints recorded.
 - [x] Compare two schedules using images and coefficient/variance curves.
 - [x] Verify the predicted moments numerically and check both constructions.
-- [ ] Read the cleaned note and explain the central results in your own words.
+- [x] Review the accumulated notes, explain the central results, resolve the learner's questions, and authorize final consolidation and closure.
 
 Update progress after these checks are actually completed. This plan itself
 does not mark the readings, derivations, or experiment as done.
+
+All Week 15 study outcomes are complete as recorded above. Optional later
+enrichment is a short cosine-schedule exploration, potentially a blog post;
+it adds no completion requirement or scheduled work.
