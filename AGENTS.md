@@ -60,6 +60,21 @@
 - When consolidating notes, preserve meaningful attempts and corrections,
   Juan's voice, and his framing. Distinguish added explanations from his
   original reasoning.
+- Gather useful learning evidence in existing weekly notes and session review
+  records from work already happening in the curriculum. Keep it brief; do not
+  add exercises, forms, scores, separate logs, review queues, or study time
+  solely to collect evidence.
+- When observed, record the initial reasoning, the correction or explanation
+  that helped, and whether the answer was independent, used a reference, or
+  followed hints. A corrected answer after guidance does not establish
+  independent recall.
+- When a concept returns naturally, link the relevant earlier record when
+  useful and note what Juan demonstrates in the new context. Treat unassessed
+  understanding as unknown; an earlier mistake alone does not establish a
+  continuing weakness.
+- Use accumulated evidence at future curriculum checkpoints to assess whether
+  a small workflow improvement is warranted. Keep the current curriculum and
+  study rhythm unless a change is agreed with Juan.
 - Notebook preparation, formatting, and routine maintenance should proceed
   autonomously within the agreed scope, without requiring a learning exercise
   or renewed approval.
