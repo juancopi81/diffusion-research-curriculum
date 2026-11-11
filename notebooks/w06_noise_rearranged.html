@@ -1,0 +1,837 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>html,body{height:100%}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Noise, Rearranged</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap">
+<style>
+/* Layout: a concert programme on the left, one square stage on the right; the lab and the written argument sit below. */
+:root{
+  color-scheme:dark;
+  --ground:#06070c; --panel:#0d0f18; --rule:#232739; --fg:#eceef7; --dim:#9298b0; --faint:#5d6379;
+  --u0:#3d6bff; --u1:#27d3c3; --u2:#ffc857; --u3:#ff5c8a;   /* the ramp that encodes u everywhere */
+  --display:"Instrument Serif","Iowan Old Style",Georgia,serif;
+  --body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --math:"STIX Two Text","STIX Two Math","Cambria Math","Times New Roman",serif;
+}
+html{background:var(--ground)}
+body{background:var(--ground);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+p,h1,h2,h3,ol,ul{margin:0}
+.wrap{max-width:1340px;margin:0 auto;padding-block:28px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:64px}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:minmax(250px,340px) minmax(0,1fr);grid-template-areas:"intro stage" "chapters stage";grid-template-rows:auto 1fr;column-gap:40px;row-gap:28px;align-items:start}
+.intro{grid-area:intro;display:flex;flex-direction:column;gap:14px;padding-top:6px}
+.kicker{font:500 12px/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+h1{font:400 clamp(44px,5vw,64px)/.98 var(--display);letter-spacing:-.01em;text-wrap:balance}
+.lede{color:#c9cde0;max-width:36ch}
+.stagecol{grid-area:stage;display:flex;justify-content:center;min-width:0}
+.stagebox{width:min(100%,calc(100dvh - 128px));min-width:0;display:flex;flex-direction:column;gap:12px}
+.chapters{grid-area:chapters;list-style:none;padding:0;display:flex;flex-direction:column;border-top:1px solid var(--rule)}
+.chapters button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:44px 1fr;column-gap:10px;align-items:baseline;width:100%;padding:11px 2px 12px;border-bottom:1px solid var(--rule);position:relative;color:var(--dim)}
+.chapters button:hover{color:var(--fg)}
+.chapters button:focus-visible{outline:2px solid var(--u1);outline-offset:2px}
+.chapters .tm{font:400 12px var(--mono);font-variant-numeric:tabular-nums}
+.chapters .nm{font:400 23px/1.1 var(--display)}
+.chapters .ds{grid-column:2;font-size:13px;line-height:1.35;color:var(--faint)}
+.chapters button[aria-current="true"]{color:var(--fg)}
+.chapters button[aria-current="true"] .ds{color:var(--dim)}
+.chapters .bar{position:absolute;left:0;bottom:-1px;height:2px;width:0;background:linear-gradient(90deg,var(--u0),var(--u1),var(--u2),var(--u3))}
+
+/* ---------- stage ---------- */
+.stage{position:relative;aspect-ratio:1;width:100%;max-width:100%;container-type:inline-size;background:var(--ground);border-radius:10px;overflow:hidden;outline:1px solid var(--rule)}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#bloom{filter:blur(1.1cqw);opacity:.7;mix-blend-mode:screen}
+.hud{position:absolute;inset:0;pointer-events:none}
+.cue{position:absolute;opacity:0;text-shadow:0 0 .5cqw var(--ground),0 0 1cqw var(--ground),0 0 1.8cqw var(--ground)}
+.k{font:500 1.6cqw/1.2 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);left:5.2cqw;top:4.4cqw}
+.h{font:400 7.6cqw/1 var(--display);left:5cqw;top:7cqw;letter-spacing:-.01em;white-space:nowrap}
+.h.low{top:auto;bottom:8.6cqw}
+.e{font:400 3.5cqw/1.3 var(--math);right:5.2cqw;top:5cqw;text-align:right;white-space:nowrap}
+.s{font:400 2.65cqw/1.36 var(--body);left:5.2cqw;bottom:3.8cqw;width:80cqw;color:#cfd3e4;text-wrap:balance}
+.s.one{width:91cqw}
+.m i{font-style:italic}
+.m sup,.m sub{font-size:.62em;line-height:0}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.8em;line-height:1.08;margin:0 .1em}
+.frac>span:first-child{border-bottom:.06em solid currentColor;padding:0 .2em .05em}
+.frac>span:last-child{padding:.05em .2em 0}
+.row{left:5.2cqw;right:5.2cqw;display:grid;grid-template-columns:30cqw 1fr;column-gap:2cqw;align-items:baseline}
+.row b{font:400 6.4cqw/1 var(--display)}
+.row .m{font:400 3.7cqw/1.25 var(--math);white-space:nowrap}
+.row small{grid-column:2;font:500 1.5cqw/1.5 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--dim);padding-top:.7cqw}
+.foot{left:5.2cqw;right:5.2cqw;font:400 2.65cqw/1.4 var(--body);color:#cfd3e4;border-top:1px solid var(--rule);padding-top:2.2cqw;text-wrap:balance}
+
+@container (max-width:560px){
+  .k{font-size:2.05cqw;letter-spacing:.09em}
+  .s{font-size:3.15cqw;width:90cqw;bottom:3cqw}
+  .h.low{font-size:6.4cqw;bottom:12.2cqw}
+  .row small{font-size:1.95cqw;letter-spacing:.08em}
+  .foot{font-size:3.15cqw}
+}
+
+/* ---------- transport ---------- */
+.transport{display:flex;align-items:center;gap:12px}
+.transport button{all:unset;cursor:pointer;font:500 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--rule);border-radius:6px;padding:8px 12px;min-width:74px;text-align:center;color:var(--fg)}
+.transport button:hover{border-color:var(--dim)}
+.transport button:focus-visible,.lab button:focus-visible,.lab input:focus-visible,.filebtn:focus-within{outline:2px solid var(--u1);outline-offset:2px}
+.transport input[type=range]{flex:1;min-width:0;accent-color:var(--fg);height:24px}
+.transport output{font:400 12px var(--mono);font-variant-numeric:tabular-nums;color:var(--dim);min-width:86px;text-align:right}
+
+/* ---------- lab ---------- */
+.below{display:flex;flex-direction:column;gap:64px}
+.sect{display:flex;flex-direction:column;gap:22px}
+.sect>h2{font:400 clamp(30px,3.4vw,42px)/1.05 var(--display);text-wrap:balance}
+.sect>.note{color:var(--dim);max-width:68ch}
+.lab{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:28px 44px}
+.ctl{display:flex;flex-direction:column;gap:12px;min-width:0}
+.ctl h3{font:600 15px/1.3 var(--body)}
+.ctl p{color:var(--dim);font-size:14px;max-width:52ch}
+.rowf{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.lab input[type=text]{font:500 17px var(--body);color:var(--fg);background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:9px 12px;min-width:0;flex:1 1 160px}
+.lab button,.filebtn{all:unset;cursor:pointer;font:500 13px var(--body);border:1px solid var(--rule);border-radius:6px;padding:9px 13px;color:var(--fg);background:var(--panel)}
+.lab button:hover,.filebtn:hover{border-color:var(--dim)}
+.lab button.primary{background:var(--fg);color:var(--ground);border-color:var(--fg)}
+.filebtn input{position:absolute;width:1px;height:1px;opacity:0}
+.filebtn{position:relative}
+#pad{width:100%;height:132px;display:block;background:var(--panel);border:1px solid var(--rule);border-radius:6px;touch-action:none;cursor:crosshair}
+.status{font:400 12px var(--mono);color:var(--dim);min-height:1.4em}
+
+/* ---------- argument ---------- */
+.moves{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:36px 44px}
+.move{display:flex;flex-direction:column;gap:10px;min-width:0;border-top:1px solid var(--rule);padding-top:16px}
+.move .src{font:500 11.5px var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--dim)}
+.move h3{font:400 34px/1 var(--display)}
+.move .eq{font:400 21px/1.4 var(--math);padding:4px 0;overflow-x:auto;white-space:nowrap}
+.move p{color:#c9cde0;font-size:15px;max-width:60ch}
+.move p .m{font-family:var(--math);font-size:1.06em}
+.receipts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px 44px}
+.receipts div{border-left:2px solid var(--rule);padding-left:14px;min-width:0}
+.receipts b{display:block;font:400 30px/1.1 var(--display);font-variant-numeric:tabular-nums}
+.receipts span{color:var(--dim);font-size:14px}
+.fine{color:var(--dim);font-size:14px;max-width:76ch;display:flex;flex-direction:column;gap:10px}
+.fine .m{font-family:var(--math);font-size:1.05em}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:minmax(0,1fr);grid-template-areas:"intro" "stage" "chapters";row-gap:20px}
+  .stagebox{width:100%}
+  .wrap{gap:48px;padding-block:20px 56px}
+  .transport output{display:none}
+}
+/* film capture: the stage alone at 1080 px */
+.capture body{overflow:hidden}
+.capture .wrap{padding:0;max-width:none;gap:0;margin:0}
+.capture .hero{display:block}
+.capture .intro,.capture .chapters,.capture .transport,.capture .below{display:none}
+.capture .stagebox{width:1080px}
+.capture .stage{border-radius:0;outline:0}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="intro">
+      <p class="kicker">Stat 110 · Lectures 13 and 22</p>
+      <h1>Noise, rearranged</h1>
+      <p class="lede">Two lectures from an intro probability course, played forward until they turn into a diffusion model. Everything on the stage is computed live on this page. There is no video and no neural network.</p>
+    </div>
+
+    <div class="stagecol"><div class="stagebox">
+      <div class="stage" id="stage">
+        <canvas id="glow"></canvas>
+        <canvas id="bloom"></canvas>
+        <canvas id="ink"></canvas>
+        <div class="hud" id="hud">
+          <!-- noise -->
+          <p class="cue k" data-a="-1" data-b="6.4"><span id="npts">100,000</span> uniform random points in the unit square</p>
+          <p class="cue h low" data-a="-1" data-b="1.5">This is noise.</p>
+          <p class="cue h low" data-a="2.2" data-b="6.4">Same noise, rearranged.</p>
+          <p class="cue s one" data-a="2.9" data-b="4.3">Nothing added, nothing removed. Each dot moved once, by one function.</p>
+          <p class="cue s one" data-a="4.5" data-b="6.4">Swap the function and the same dots become anything.</p>
+          <!-- rearrange -->
+          <p class="cue k" data-a="6.7" data-b="13.5">Stat 110 · Lecture 13 · Universality of the Uniform</p>
+          <p class="cue h" data-a="6.7" data-b="13.5">Rearrange.</p>
+          <p class="cue e m" data-a="7.0" data-b="13.5"><i>X</i> = <i>F</i><sup>&minus;1</sup>(<i>U</i>)</p>
+          <p class="cue s" data-a="7.2" data-b="11.6">Pick <i>u</i> uniformly. Go across to the CDF. Drop straight down.</p>
+          <p class="cue s" data-a="11.8" data-b="13.5">Any CDF works. The dots stay the same. Only the landing spots change.</p>
+          <!-- squeeze -->
+          <p class="cue k" data-a="13.7" data-b="23.3">Stat 110 · Lecture 22 · Change of variables</p>
+          <p class="cue h" data-a="13.7" data-b="23.3">Squeeze.</p>
+          <p class="cue e m" data-a="14.0" data-b="18.3"><i>f<sub>X</sub></i>(<i>x</i>) = <i>f<sub>U</sub></i>(<i>u</i>) <span>|</span><span class="frac"><span><i>du</i></span><span><i>dx</i></span></span><span>|</span> = 1 &middot; <i>F</i>&prime;(<i>x</i>)</p>
+          <p class="cue s" data-a="14.2" data-b="18.3">Every slice holds 5% of the dots. Where the CDF is steep the slice is narrow, so the dots pile high.</p>
+          <p class="cue e m" data-a="18.6" data-b="23.3"><i>f<sub>Y</sub></i>(<b>y</b>) = <i>f<sub>X</sub></i>(<b>x</b>) <span>|</span>det <span class="frac"><span>&part;<b>x</b></span><span>&part;<b>y</b></span></span><span>|</span></p>
+          <p class="cue s" data-a="18.8" data-b="23.3">In 2D each cell keeps its share of the dots. Density is how much the cell shrank.</p>
+          <!-- slowly -->
+          <p class="cue k" data-a="23.5" data-b="37.3">Diffusion · Flow matching</p>
+          <p class="cue h" data-a="23.5" data-b="37.3">Slowly.</p>
+          <p class="cue e m" data-a="23.9" data-b="26.2"><i>x<sub>t</sub></i> = (1 &minus; <i>t</i>) <i>x</i><sub>0</sub> + <i>t</i> <i>&epsilon;</i><br><i>p<sub>t</sub></i> = <i>p</i><sub>(1&minus;<i>t</i>)<i>x</i>₀</sub> &lowast; <i>p</i><sub><i>t&epsilon;</i></sub></p>
+          <p class="cue s" data-a="23.9" data-b="26.2">Forward: add noise a little at a time. Adding independent noise is a convolution, the other half of Lecture 22.</p>
+          <p class="cue e m" data-a="26.5" data-b="30.9"><i>F<sub>t</sub></i>(<i>x<sub>t</sub></i>) = <i>u</i> &nbsp;&hArr;&nbsp; <i>x<sub>t</sub></i> = <i>F<sub>t</sub></i><sup>&minus;1</sup>(<i>u</i>)</p>
+          <p class="cue s" data-a="26.5" data-b="30.9">Reverse: follow the flow back. In 1D every dot keeps its <i>u</i>, so its path is a level curve of the CDF.</p>
+          <p class="cue s one" data-a="31.2" data-b="32.6">Start from Gaussian noise: the same uniform dots, pushed through &Phi;<sup>&minus;1</sup>.</p>
+          <p class="cue e m" data-a="32.2" data-b="37.3"><span class="frac"><span><i>dx<sub>t</sub></i></span><span><i>dt</i></span></span> = <i>v<sub>t</sub></i>(<i>x<sub>t</sub></i>)</p>
+          <p class="cue s" data-a="32.8" data-b="37.3">The same flow in 2D. No network, no learned parameters. The velocity comes straight from that convolution.</p>
+          <!-- recap -->
+          <div class="cue row" style="top:25cqw" data-a="37.6" data-b="40.7"><b>Rearrange.</b><span class="m"><i>X</i> = <i>F</i><sup>&minus;1</sup>(<i>U</i>)</span><small>Lecture 13 · universality of the uniform</small></div>
+          <div class="cue row" style="top:41cqw" data-a="38.0" data-b="40.7"><b>Squeeze.</b><span class="m"><i>f<sub>Y</sub></i>(<i>y</i>) = <i>f<sub>X</sub></i>(<i>x</i>) <span>|</span><span class="frac"><span><i>dx</i></span><span><i>dy</i></span></span><span>|</span></span><small>Lecture 22 · change of variables</small></div>
+          <div class="cue row" style="top:58cqw" data-a="38.4" data-b="40.7"><b>Slowly.</b><span class="m"><span class="frac"><span><i>dx<sub>t</sub></i></span><span><i>dt</i></span></span> = <i>v<sub>t</sub></i>(<i>x<sub>t</sub></i>)</span><small>Diffusion · flow matching</small></div>
+          <p class="cue foot" style="top:77cqw" data-a="38.9" data-b="40.7">A diffusion model is what you train when you only have samples and must learn <i>v</i>.</p>
+        </div>
+      </div>
+      <div class="transport">
+        <button id="play" type="button" aria-label="Pause the film">Pause</button>
+        <input id="scrub" type="range" min="0" max="41.4" step="0.01" value="0" aria-label="Film position">
+        <output id="clock">0:00 / 0:41</output>
+      </div>
+    </div></div>
+
+    <ol class="chapters" id="chapters">
+      <li><button type="button" data-t="0"><span class="tm">0:00</span><span class="nm">Noise</span><span class="ds">Uniform points become a formula, a spiral, a ring.</span><span class="bar"></span></button></li>
+      <li><button type="button" data-t="6.6"><span class="tm">0:07</span><span class="nm">Rearrange</span><span class="ds">Lecture 13. The inverse CDF as a machine.</span><span class="bar"></span></button></li>
+      <li><button type="button" data-t="13.6"><span class="tm">0:14</span><span class="nm">Squeeze</span><span class="ds">Lecture 22. Density is the Jacobian.</span><span class="bar"></span></button></li>
+      <li><button type="button" data-t="23.4"><span class="tm">0:23</span><span class="nm">Slowly</span><span class="ds">Diffusion as the same map in small steps.</span><span class="bar"></span></button></li>
+      <li><button type="button" data-t="37.4"><span class="tm">0:37</span><span class="nm">Recap</span><span class="ds">Three lines.</span><span class="bar"></span></button></li>
+    </ol>
+  </div>
+
+  <div class="below">
+    <section class="sect">
+      <h2>Give it your own target</h2>
+      <div class="lab">
+        <div class="ctl">
+          <h3>A word or a picture, for the 2D scenes</h3>
+          <p>The opening rearranges the dots with the inverse CDF. The finale reaches the same target by integrating the exact probability flow.</p>
+          <div class="rowf">
+            <input id="word" type="text" maxlength="14" value="diffusion" aria-label="Target text" autocomplete="off" spellcheck="false">
+            <button id="useword" type="button" class="primary">Rearrange into this</button>
+          </div>
+          <div class="rowf">
+            <label class="filebtn">Use an image<input id="imgfile" type="file" accept="image/*"></label>
+            <button id="reset2d" type="button">Back to the formula</button>
+          </div>
+          <p class="status" id="st2d" role="status"></p>
+        </div>
+        <div class="ctl">
+          <h3>A density, for the 1D scenes</h3>
+          <p>Drag across the box to draw any density. The CDF machine, the slices and the diffusion paths all rebuild from your curve.</p>
+          <canvas id="pad" aria-label="Draw a density"></canvas>
+          <div class="rowf">
+            <button type="button" data-p="bumps">Three bumps</button>
+            <button type="button" data-p="lognormal">LogNormal</button>
+            <button type="button" data-p="spikes">Two spikes</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sect">
+      <h2>The argument in three moves</h2>
+      <div class="moves">
+        <article class="move">
+          <p class="src">Lecture 13 · Universality of the Uniform</p>
+          <h3>Rearrange</h3>
+          <p class="eq m"><i>U</i> ~ Unif(0, 1) &nbsp;&rArr;&nbsp; <i>F</i><sup>&minus;1</sup>(<i>U</i>) ~ <i>F</i></p>
+          <p>Every distribution is the same uniform dots sent to new places. For Expo(1) the map is <span class="m"><i>x</i> = &minus;ln(1 &minus; <i>u</i>)</span>, and <span class="m"><i>u</i> = 0.7</span> lands at 1.204, the worked example in the notes. Run the map backwards and <span class="m"><i>F</i>(<i>X</i>)</span> is uniform again.</p>
+        </article>
+        <article class="move">
+          <p class="src">Lecture 22 · Change of variables</p>
+          <h3>Squeeze</h3>
+          <p class="eq m"><i>f<sub>Y</sub></i>(<i>y</i>) = <i>f<sub>X</sub></i>(<i>x</i>) |<i>dx</i>/<i>dy</i>|</p>
+          <p>Moving dots never creates or destroys them, so wherever the map compresses, density has to rise. Apply the rule to <span class="m"><i>X</i> = <i>F</i><sup>&minus;1</sup>(<i>U</i>)</span>: the uniform density is 1 and <span class="m"><i>du</i>/<i>dx</i> = <i>F</i>&prime;(<i>x</i>)</span>, so the density of <i>X</i> is the slope of its CDF. Lecture 13 is Lecture 22 with a flat starting density.</p>
+        </article>
+        <article class="move">
+          <p class="src">Diffusion · Flow matching</p>
+          <h3>Slowly</h3>
+          <p class="eq m"><i>d</i>/<i>dt</i> <i>F<sub>t</sub></i>(<i>x<sub>t</sub></i>) = 0</p>
+          <p>Noising adds an independent variable, so each marginal <span class="m"><i>p<sub>t</sub></i></span> is a convolution, the other formula in Lecture 22. The probability flow ODE moves dots so they have exactly those marginals. In one dimension that pins every dot to its quantile: <span class="m"><i>x<sub>t</sub></i> = <i>F<sub>t</sub></i><sup>&minus;1</sup>(<i>u</i>)</span>. The sampler is the inverse CDF method played as a film.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="sect">
+      <h2>Checked on this device</h2>
+      <p class="note">These numbers are computed in your browser when the page loads, from the same arrays the film draws.</p>
+      <div class="receipts">
+        <div><b id="rc1">…</b><span>Largest gap between integrating the 1D ODE with RK4 and reading <span class="m" style="font-family:var(--math)"><i>F</i><sub>0</sub><sup>&minus;1</sup>(<i>u</i>)</span> off the CDF, on an axis 7 units wide.</span></div>
+        <div><b id="rc2">…</b><span>Correlation between where the 2D flow left the dots and the target density, on a 96 × 96 grid.</span></div>
+        <div><b id="rc3">0</b><span>Learned parameters. The velocity field is a closed form because the target is known.</span></div>
+      </div>
+      <div class="fine">
+        <p>What is exact: the 1D paths are level curves of numerically convolved CDFs, with no ODE solver involved. The 2D finale integrates <span class="m"><i>dx</i>/<i>dt</i> = <i>v<sub>t</sub></i>(<i>x</i>)</span> with Heun's method for the interpolant <span class="m"><i>x<sub>t</sub></i> = (1 &minus; <i>t</i>)<i>x</i><sub>0</sub> + <i>t&epsilon;</i></span>, where the target is a 288 × 288 grid of small Gaussian pixels. That is the path a perfectly trained flow-matching model for this target would follow.</p>
+        <p>What a real model adds: here the data distribution is known, so nothing is learned. With only samples, a network has to regress <span class="m"><i>v<sub>t</sub></i></span> (or the score, or the noise) from noisy examples. In more than one dimension there are many maps from noise to data. The opening uses the inverse CDF twice, first for <i>x</i> and then for <i>y</i> given <i>x</i>; the finale uses the flow. Along the flow the density obeys the same rule in differential form: <span class="m"><i>d</i>/<i>dt</i> log <i>p<sub>t</sub></i>(<i>x<sub>t</sub></i>) = &minus;&nabla;&middot;<i>v<sub>t</sub></i>(<i>x<sub>t</sub></i>)</span>.</p>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var CAPTURE=/[?&]capture\b/.test(location.search);
+if(CAPTURE)document.documentElement.classList.add('capture');
+var $=function(s){return document.querySelector(s)};
+function clamp(x,a,b){return x<a?a:x>b?b:x}
+function lerp(a,b,t){return a+(b-a)*t}
+function sstep(a,b,x){x=clamp((x-a)/(b-a),0,1);return x*x*(3-2*x)}
+function ease(x){x=clamp(x,0,1);return x<.5?4*x*x*x:1-Math.pow(2-2*x,3)/2}
+function mixE(a,b,t){return Math.exp(lerp(Math.log(a),Math.log(b),clamp(t,0,1)))}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var rnd=mulberry32(20261111);
+function probit(p){
+  var a=[-39.69683028665376,220.9460984245205,-275.9285104469687,138.3577518672690,-30.66479806614716,2.506628277459239],
+      b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.28068155288572],
+      c=[-0.007784894002430293,-0.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783],
+      d=[0.007784695709041462,0.3224671290700398,2.445134137142996,3.754408661907416],q,r;
+  if(p<0.02425){q=Math.sqrt(-2*Math.log(p));return(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)}
+  if(p<=1-0.02425){q=p-0.5;r=q*q;return(((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1)}
+  q=Math.sqrt(-2*Math.log(1-p));return-(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)
+}
+
+/* ---------- colour: the ramp that means "u" ---------- */
+var STOPS=[[61,107,255],[39,211,195],[255,200,87],[255,92,138]];
+var rc=[0,0,0];
+function ramp(u,o){u=clamp(u,0,1)*3;var i=Math.min(2,u|0),f=u-i,a=STOPS[i],b=STOPS[i+1];o[0]=(a[0]+(b[0]-a[0])*f)/255;o[1]=(a[1]+(b[1]-a[1])*f)/255;o[2]=(a[2]+(b[2]-a[2])*f)/255;return o}
+function rampCss(u,al){ramp(u,rc);return'rgba('+(rc[0]*255|0)+','+(rc[1]*255|0)+','+(rc[2]*255|0)+','+al+')'}
+
+/* ---------- timeline (seconds) ---------- */
+var S1=6.6,S2=13.6,S2B=18.4,S3=23.4,S3B=31.0,S4=37.4,END=41.4;
+var CH=[0,S1,S2,S3,S4,END];
+
+/* ---------- stage geometry, in 1080 logical units ---------- */
+var SQ0={x:160,y:112,s:760},SQ2={x:190,y:212,s:700},SQ3={x:90,y:150,s:900};
+var PX0=190,PX1=1010,PW=820,UY0=560,UY1=205,YBASE=908,HP=212,BW=PW/256;
+var QX0=100,QW=900,YT=322,YB=792,TOPB=314,HPT=86,BOTB=926,HPB=116,BW3=QW/256;
+function sx(s){return PX0+s*PW}
+function uy(u){return UY0+(UY1-UY0)*u}
+function ty(t){return YB+(YT-YB)*t}
+
+/* ---------- glow layer: additive particle accumulation ---------- */
+var stage=$('#stage'),glow=$('#glow'),gctx=glow.getContext('2d'),bloom=$('#bloom'),bctx=bloom.getContext('2d');
+var R=1080,SC=1,accR,accG,accB,mark,cur,prev,nCur=0,nPrev=0,img,LN=4095,LS=512,LR,LG,LB;
+function initGlow(){
+  var css=stage.clientWidth||800,dpr=window.devicePixelRatio||1,coarse=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+  R=CAPTURE?1080:Math.round(clamp(css*dpr,480,coarse?840:1080));SC=R/1080;
+  glow.width=glow.height=R;bloom.width=bloom.height=Math.round(R/3);
+  accR=new Float32Array(R*R);accG=new Float32Array(R*R);accB=new Float32Array(R*R);mark=new Uint8Array(R*R);
+  cur=new Int32Array(R*R);prev=new Int32Array(R*R);img=gctx.createImageData(R,R);
+  LR=new Uint8Array(LN+1);LG=new Uint8Array(LN+1);LB=new Uint8Array(LN+1);
+  for(var i=0;i<=LN;i++){var v=1-Math.exp(-i/LS);LR[i]=Math.round(6+249*v);LG[i]=Math.round(7+248*v);LB[i]=Math.round(12+243*v)}
+}
+function splat(x,y,r,g,b){
+  x=x*SC-0.5;y=y*SC-0.5;
+  if(!(x>=0&&y>=0&&x<R-1&&y<R-1))return;
+  var ix=x|0,iy=y|0,fx=x-ix,fy=y-iy,k=iy*R+ix,w;
+  w=(1-fx)*(1-fy);if(!mark[k]){mark[k]=1;cur[nCur++]=k}accR[k]+=r*w;accG[k]+=g*w;accB[k]+=b*w;k++;
+  w=fx*(1-fy);if(!mark[k]){mark[k]=1;cur[nCur++]=k}accR[k]+=r*w;accG[k]+=g*w;accB[k]+=b*w;k+=R-1;
+  w=(1-fx)*fy;if(!mark[k]){mark[k]=1;cur[nCur++]=k}accR[k]+=r*w;accG[k]+=g*w;accB[k]+=b*w;k++;
+  w=fx*fy;if(!mark[k]){mark[k]=1;cur[nCur++]=k}accR[k]+=r*w;accG[k]+=g*w;accB[k]+=b*w;
+}
+function dot(x,y,rad,r,g,b){
+  var cx=x*SC,cy=y*SC,rr=rad*SC,ext=Math.ceil(rr*2.1),inv=1/(rr*rr);
+  var x0=Math.max(0,(cx-ext)|0),x1=Math.min(R-1,(cx+ext)|0),y0=Math.max(0,(cy-ext)|0),y1=Math.min(R-1,(cy+ext)|0);
+  for(var py=y0;py<=y1;py++){var dy=py+.5-cy;for(var px=x0;px<=x1;px++){var dx=px+.5-cx,w=Math.exp(-(dx*dx+dy*dy)*inv);if(w<.03)continue;
+    var k=py*R+px;if(!mark[k]){mark[k]=1;cur[nCur++]=k}accR[k]+=r*w;accG[k]+=g*w;accB[k]+=b*w}}
+}
+function flush(ex){
+  var d=img.data,i,k,j,r,g,b,l,s=ex*LS,a,t;
+  for(i=0;i<nPrev;i++){k=prev[i];if(!mark[k])d[4*k+3]=0}
+  for(i=0;i<nCur;i++){k=cur[i];j=4*k;r=accR[k];g=accG[k];b=accB[k];l=(r+g+b)*.045;
+    if((r+g+b)*s<.75){d[j+3]=0}else{a=((r+l)*s)|0;d[j]=LR[a>LN?LN:a];a=((g+l)*s)|0;d[j+1]=LG[a>LN?LN:a];a=((b+l)*s)|0;d[j+2]=LB[a>LN?LN:a];d[j+3]=255}
+    accR[k]=accG[k]=accB[k]=0;mark[k]=0}
+  t=prev;prev=cur;cur=t;nPrev=nCur;nCur=0;
+  gctx.putImageData(img,0,0);
+  bctx.clearRect(0,0,bloom.width,bloom.height);bctx.drawImage(glow,0,0,bloom.width,bloom.height);
+}
+
+/* ---------- ink layer: axes, curves, meshes ---------- */
+var ink=$('#ink'),ic=ink.getContext('2d');
+function sizeInk(){var w=stage.clientWidth||1080,d=CAPTURE?1:Math.min(2.5,window.devicePixelRatio||1),px=Math.round(w*d);if(ink.width!==px){ink.width=ink.height=px}}
+function beginInk(){ic.setTransform(1,0,0,1,0,0);ic.clearRect(0,0,ink.width,ink.height);var k=ink.width/1080;ic.setTransform(k,0,0,k,0,0);ic.globalAlpha=1;ic.lineCap='round';ic.lineJoin='round';ic.setLineDash([])}
+function seg(x0,y0,x1,y1){ic.beginPath();ic.moveTo(x0,y0);ic.lineTo(x1,y1);ic.stroke()}
+function label(str,x,y,size,align,color,weight){ic.font=(weight||'500')+' '+size+'px "JetBrains Mono", ui-monospace, Menlo, monospace';ic.textAlign=align||'left';ic.textBaseline='alphabetic';ic.fillStyle=color||'#9298b0';ic.fillText(str,x,y)}
+
+/* ---------- 2D: particles, targets, the inverse-CDF (Knothe-Rosenblatt) map ---------- */
+var coarseDev=(window.matchMedia&&matchMedia('(pointer:coarse)').matches)||innerWidth<700;
+var N2=CAPTURE?130000:(coarseDev?55000:100000);
+var U=new Float32Array(2*N2),COL=new Float32Array(3*N2),STG=new Float32Array(N2),SWP=new Float32Array(N2),OM=new Float32Array(N2),PH=new Float32Array(N2);
+var CORN=[[61,107,255],[39,211,195],[255,92,138],[255,200,87]];
+(function(){for(var i=0;i<N2;i++){var a=rnd(),b=rnd();U[2*i]=a;U[2*i+1]=b;
+  for(var c=0;c<3;c++)COL[3*i+c]=((CORN[0][c]*(1-a)+CORN[1][c]*a)*(1-b)+(CORN[2][c]*(1-a)+CORN[3][c]*a)*b)/255;
+  STG[i]=rnd();SWP[i]=.65*a+.35*rnd();OM[i]=1.6+3*rnd();PH[i]=6.2832*rnd()}})();
+var SIG=0.5,PG=new Float32Array(2*N2),Z=new Float32Array(2*N2);
+(function(){for(var i=0;i<2*N2;i++){var z=SIG*probit(clamp(U[i],1e-6,1-1e-6));Z[i]=z;PG[i]=.5+.5*z}})();
+
+var GK=576,G=288;
+var tcan=document.createElement('canvas');tcan.width=tcan.height=GK;var tctx=tcan.getContext('2d',{willReadFrequently:true});
+function canvasW(){var d=tctx.getImageData(0,0,GK,GK).data,W=new Float32Array(GK*GK);for(var i=0;i<GK*GK;i++)W[i]=d[4*i]/255;return W}
+function drawFormula(){
+  tctx.fillStyle='#000';tctx.fillRect(0,0,GK,GK);tctx.fillStyle='#fff';tctx.textBaseline='alphabetic';tctx.textAlign='left';
+  var segs=[['X',1],[' = ',0],['F',1],['−1',2],['(',0],['U',1],[')',0]],fam=' "STIX Two Text", "Times New Roman", serif';
+  function fnt(t,z){return(t===1?'italic ':'')+'700 '+(t===2?z*.6:z)+'px'+fam}
+  var w=0,i;for(i=0;i<segs.length;i++){tctx.font=fnt(segs[i][1],100);w+=tctx.measureText(segs[i][0]).width+(segs[i][0]==='F'?5:0)}
+  var z=.95*GK*100/w,x=(GK-w*z/100)/2,y=GK/2+.34*z;
+  for(i=0;i<segs.length;i++){tctx.font=fnt(segs[i][1],z);tctx.fillText(segs[i][0],x,segs[i][1]===2?y-.4*z:y);x+=tctx.measureText(segs[i][0]).width+(segs[i][0]==='F'?.05*z:0)}
+  return canvasW();
+}
+function drawWord(str){
+  tctx.fillStyle='#000';tctx.fillRect(0,0,GK,GK);tctx.fillStyle='#fff';tctx.textBaseline='alphabetic';tctx.textAlign='center';
+  var fam='px "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif';tctx.font='700 100'+fam;
+  var w=Math.max(1,tctx.measureText(str).width),z=Math.min(.96*GK*100/w,.62*GK);tctx.font='700 '+z+fam;tctx.fillText(str,GK/2,GK/2+.35*z);
+  return canvasW();
+}
+function drawPicture(im){
+  var s=Math.max(GK/im.width,GK/im.height),w=im.width*s,h=im.height*s;
+  tctx.fillStyle='#000';tctx.fillRect(0,0,GK,GK);tctx.drawImage(im,(GK-w)/2,(GK-h)/2,w,h);
+  var d=tctx.getImageData(0,0,GK,GK).data,W=new Float32Array(GK*GK),mean=0,i;
+  for(i=0;i<GK*GK;i++){W[i]=(.299*d[4*i]+.587*d[4*i+1]+.114*d[4*i+2])/255;mean+=W[i]}
+  mean/=GK*GK;for(i=0;i<GK*GK;i++){var v=mean>.55?1-W[i]:W[i];v=Math.max(0,v-.08);W[i]=Math.pow(v,1.6)}
+  return W;
+}
+function ringW(sd,floor){
+  var W=new Float32Array(GK*GK),cx=[],cy=[],k,i,j,sum=0;
+  for(k=0;k<8;k++){cx.push(.5+.31*Math.cos(k*Math.PI/4+.39));cy.push(.5+.31*Math.sin(k*Math.PI/4+.39))}
+  for(i=0;i<GK;i++)for(j=0;j<GK;j++){var x=(j+.5)/GK,y=(i+.5)/GK,v=0;for(k=0;k<8;k++){var dx=x-cx[k],dy=y-cy[k];v+=Math.exp(-(dx*dx+dy*dy)/(2*sd*sd))}W[i*GK+j]=v;sum+=v}
+  if(floor>0){var add=floor*sum/((1-floor)*GK*GK);for(i=0;i<GK*GK;i++)W[i]+=add}
+  return W;
+}
+function spiralW(){
+  var W=new Float32Array(GK*GK),c=.42/(6.5*Math.PI),sd=.013,i,j,k;
+  for(i=0;i<GK;i++)for(j=0;j<GK;j++){var x=(j+.5)/GK-.5,y=(i+.5)/GK-.5,r=Math.sqrt(x*x+y*y),th=Math.atan2(y,x),best=1;
+    if(th<0)th+=2*Math.PI;
+    for(k=0;k<4;k++){var ph=th+2*Math.PI*k;if(ph<1.2*Math.PI||ph>6.5*Math.PI)continue;var dd=Math.abs(r-c*ph);if(dd<best)best=dd}
+    W[i*GK+j]=best<.06?Math.exp(-best*best/(2*sd*sd)):0}
+  return W;
+}
+function buildKR(W){
+  var n=GK,colM=new Float64Array(n),i,j,tot=0;
+  for(i=0;i<n;i++)for(j=0;j<n;j++)colM[j]+=W[i*n+j];
+  for(j=0;j<n;j++)tot+=colM[j];
+  var cx=new Float64Array(n+1);for(j=0;j<n;j++)cx[j+1]=cx[j]+colM[j]/tot;cx[n]=1;
+  var cc=new Float32Array(n*(n+1));
+  for(j=0;j<n;j++){if(colM[j]<=0)continue;var acc=0,o=j*(n+1);for(i=0;i<n;i++){acc+=W[i*n+j];cc[o+i+1]=acc/colM[j]}cc[o+n]=1}
+  return{cx:cx,cc:cc,colM:colM};
+}
+function qcol(K,j,u){var o=j*(GK+1),cc=K.cc,lo=0,hi=GK;while(hi-lo>1){var m=(lo+hi)>>1;if(cc[o+m]<=u)lo=m;else hi=m}var den=cc[o+lo+1]-cc[o+lo];return(lo+(den>0?(u-cc[o+lo])/den:.5))/GK}
+function kr(K,u1,u2,out,blend){
+  var cx=K.cx,lo=0,hi=GK;while(hi-lo>1){var m=(lo+hi)>>1;if(cx[m]<=u1)lo=m;else hi=m}
+  var den=cx[lo+1]-cx[lo],fx=den>0?(u1-cx[lo])/den:.5,y=qcol(K,lo,u2);
+  if(blend){var jn=fx<.5?lo-1:lo+1,wn=Math.abs(fx-.5);if(jn>=0&&jn<GK&&K.colM[jn]>0)y=y*(1-wn)+qcol(K,jn,u2)*wn}
+  out[0]=(lo+fx)/GK;out[1]=y;
+}
+function support(W){var a=0,b=0;for(var i=0;i<W.length;i++){a+=W[i];b+=W[i]*W[i]}return a*a/(W.length*b)}
+function mapTarget(W,blend){var K=buildKR(W),pos=new Float32Array(2*N2),o=[0,0];for(var i=0;i<N2;i++){kr(K,U[2*i],U[2*i+1],o,blend);pos[2*i]=o[0];pos[2*i+1]=o[1]}return{pos:pos,f:support(W),K:K}}
+function expoFor(f,sq){return clamp(1.25*f*(sq.s*SC)*(sq.s*SC)/N2,.16,1.7)}
+
+var TA,TB,TC,TM,fG=4*Math.PI*.25*.25;
+var NGM=30,PTS=150,meshT,cellU=null,cellT=null;
+function buildMesh(K){
+  meshT=new Float32Array(2*(NGM+1)*(PTS+1)*2);var o=[0,0],dir,l,p,q=0;
+  for(dir=0;dir<2;dir++)for(l=0;l<=NGM;l++)for(p=0;p<=PTS;p++){var a=clamp(l/NGM,1e-5,1-1e-5),b=clamp(p/PTS,1e-5,1-1e-5);kr(K,dir?b:a,dir?a:b,o,true);meshT[q++]=o[0];meshT[q++]=o[1]}
+  var V=new Float32Array((NGM+1)*(NGM+1)*2);
+  for(l=0;l<=NGM;l++)for(p=0;p<=NGM;p++){kr(K,clamp(l/NGM,1e-5,1-1e-5),clamp(p/NGM,1e-5,1-1e-5),o,true);V[(l*(NGM+1)+p)*2]=o[0];V[(l*(NGM+1)+p)*2+1]=o[1]}
+  var best=1e9;
+  for(l=0;l<NGM;l++)for(p=0;p<NGM;p++){
+    var id=[l*(NGM+1)+p,(l+1)*(NGM+1)+p,(l+1)*(NGM+1)+p+1,l*(NGM+1)+p+1],xs=[],ys=[],k;
+    for(k=0;k<4;k++){xs.push(V[id[k]*2]);ys.push(V[id[k]*2+1])}
+    var ar=0;for(k=0;k<4;k++){var n=(k+1)%4;ar+=xs[k]*ys[n]-xs[n]*ys[k]}ar=Math.abs(ar)/2*NGM*NGM;
+    var mx=(xs[0]+xs[2])/2,my=(ys[0]+ys[2])/2,sc=Math.abs(Math.log(ar/.13))+(mx>.52&&my<.48?0:3);
+    if(sc<best){best=sc;cellT=[xs,ys];cellU=[[l/NGM,(l+1)/NGM,(l+1)/NGM,l/NGM],[p/NGM,p/NGM,(p+1)/NGM,(p+1)/NGM]]}}
+}
+
+/* ---------- 2D exact probability flow (runs in a worker) ----------
+   Data: G x G grid of Gaussian pixels (std del) with weights W. Interpolant x_t=(1-t)x0+t*n, n~N(0,s^2 I).
+   v_t(x) = ((t s^2-(1-t)del^2) x - t s^2 cbar(x)) / V,  V=(1-t)^2 del^2+t^2 s^2,
+   cbar = posterior mean of the pixel centre, a ratio of two separable Gaussian convolutions. */
+function flowRun(m,onp){
+  var G=m.G,M=m.M,K=m.K,N=m.N,s=m.s,W=m.W,del=m.del,rho=m.rho,s2=s*s,d2=del*del,i,j,r,q;
+  var c=new Float64Array(G);for(j=0;j<G;j++)c[j]=-1+(j+0.5)*2/G;
+  var rows=[],jlo=new Int32Array(G),jhi=new Int32Array(G);
+  for(r=0;r<G;r++){var a0=-1,b0=-1;for(j=0;j<G;j++)if(W[r*G+j]>0){if(a0<0)a0=j;b0=j}if(a0>=0){rows.push(r);jlo[r]=a0;jhi[r]=b0+1}}
+  var nr=rows.length,Nk=new Float64Array(M*G),klo=new Int32Array(M),khi=new Int32Array(M);
+  var A=new Float64Array(nr*M),Ac=new Float64Array(nr*M),P=new Float64Array(M*M),Px=new Float64Array(M*M),Py=new Float64Array(M*M);
+  function field(t,vx,vy){
+    var a=1-t,V=a*a*d2+t*t*s2,inv=0.5/V,sd=Math.sqrt(V),L=a*1.06+t*s*3.7+3*del,step=2*L/M,cut=6.5*sd,X,Y,lo,hi,o,d,ix,iy,w,s0,s1;
+    for(i=0;i<M;i++){X=-L+(i+0.5)*step;lo=0;hi=G;
+      if(a>1e-9){lo=Math.max(0,Math.floor(((X-cut)/a+1)*G/2-0.5));hi=Math.min(G,Math.ceil(((X+cut)/a+1)*G/2+0.5)+1);if(hi<lo)hi=lo}
+      klo[i]=lo;khi[i]=hi;o=i*G;for(j=lo;j<hi;j++){d=X-a*c[j];Nk[o+j]=Math.exp(-d*d*inv)}}
+    for(q=0;q<nr;q++){r=rows[q];var wl=jlo[r],wh=jhi[r],wo=r*G;
+      for(i=0;i<M;i++){lo=klo[i]>wl?klo[i]:wl;hi=khi[i]<wh?khi[i]:wh;s0=0;s1=0;o=i*G;
+        for(j=lo;j<hi;j++){w=W[wo+j]*Nk[o+j];s0+=w;s1+=w*c[j]}A[q*M+i]=s0;Ac[q*M+i]=s1}}
+    P.fill(0);Px.fill(0);Py.fill(0);
+    for(iy=0;iy<M;iy++){o=iy*M;var kl=klo[iy],kh=khi[iy];
+      for(q=0;q<nr;q++){r=rows[q];if(r<kl||r>=kh)continue;var wy=Nk[iy*G+r];if(wy===0)continue;var wc=wy*c[r],qa=q*M;
+        for(ix=0;ix<M;ix++){var av=A[qa+ix];P[o+ix]+=wy*av;Px[o+ix]+=wy*Ac[qa+ix];Py[o+ix]+=wc*av}}}
+    var k1=(t*s2-a*d2)/V,k2=t*s2/V,am=a>1e-3?a:1e-3,p,cx,cy;
+    for(iy=0;iy<M;iy++){Y=-L+(iy+0.5)*step;for(ix=0;ix<M;ix++){X=-L+(ix+0.5)*step;o=iy*M+ix;p=P[o];
+      if(p>1e-250){cx=Px[o]/p;cy=Py[o]/p}else{cx=X/am;cy=Y/am;cx=cx<-1?-1:cx>1?1:cx;cy=cy<-1?-1:cy>1?1:cy}
+      vx[o]=k1*X-k2*cx;vy[o]=k1*Y-k2*cy}}
+    return L;
+  }
+  var x=new Float32Array(m.z),QS=16000,n2=2*N,traj=new Int16Array((K+1)*n2);
+  function store(k){var o=k*n2,v;for(var e=0;e<n2;e++){v=Math.round(x[e]*QS);traj[o+e]=v>32767?32767:v<-32767?-32767:v}}
+  var v0x=new Float32Array(M*M),v0y=new Float32Array(M*M),v1x=new Float32Array(M*M),v1y=new Float32Array(M*M),tmp,mm=M-1.0001;
+  var t0=1,L0=field(1,v0x,v0y);store(0);
+  for(var k=1;k<=K;k++){
+    var t1=Math.pow(1-k/K,rho),L1=field(t1,v1x,v1y),h=t1-t0,g0=M/(2*L0),g1=M/(2*L1);
+    for(var e=0;e<N;e++){
+      var px=x[2*e],py=x[2*e+1],fx=(px+L0)*g0-0.5,fy=(py+L0)*g0-0.5;
+      fx=fx<0?0:fx>mm?mm:fx;fy=fy<0?0:fy>mm?mm:fy;
+      var ix=fx|0,iy=fy|0,ax=fx-ix,ay=fy-iy,o=iy*M+ix;
+      var ux=(v0x[o]*(1-ax)+v0x[o+1]*ax)*(1-ay)+(v0x[o+M]*(1-ax)+v0x[o+M+1]*ax)*ay;
+      var uy=(v0y[o]*(1-ax)+v0y[o+1]*ax)*(1-ay)+(v0y[o+M]*(1-ax)+v0y[o+M+1]*ax)*ay;
+      var qx=px+h*ux,qy=py+h*uy;
+      fx=(qx+L1)*g1-0.5;fy=(qy+L1)*g1-0.5;fx=fx<0?0:fx>mm?mm:fx;fy=fy<0?0:fy>mm?mm:fy;
+      ix=fx|0;iy=fy|0;ax=fx-ix;ay=fy-iy;o=iy*M+ix;
+      var wx=(v1x[o]*(1-ax)+v1x[o+1]*ax)*(1-ay)+(v1x[o+M]*(1-ax)+v1x[o+M+1]*ax)*ay;
+      var wy2=(v1y[o]*(1-ax)+v1y[o+1]*ax)*(1-ay)+(v1y[o+M]*(1-ax)+v1y[o+M+1]*ax)*ay;
+      x[2*e]=px+h*0.5*(ux+wx);x[2*e+1]=py+h*0.5*(uy+wy2)}
+    store(k);tmp=v0x;v0x=v1x;v1x=tmp;tmp=v0y;v0y=v1y;v1y=tmp;t0=t1;L0=L1;if(onp)onp(k)}
+  return traj;
+}
+var flow={ready:false,traj:null,K:48,id:0,prog:0,f:.1,Wg:null,corr:null},FEND=new Float32Array(2*N2),worker=null,flowWaiters=[];
+function downW(W){var Wg=new Float32Array(G*G),r=GK/G,i,j,a,b,sum=0;for(i=0;i<G;i++)for(j=0;j<G;j++){var v=0;for(a=0;a<r;a++)for(b=0;b<r;b++)v+=W[(i*r+a)*GK+j*r+b];Wg[i*G+j]=v;sum+=v}for(i=0;i<G*G;i++)Wg[i]/=sum;return Wg}
+function flowDone(id,traj){
+  if(id!==flow.id)return;flow.traj=traj;flow.ready=true;flow.prog=1;flow.ms=Math.round(performance.now()-flow.t0);
+  var o=flow.K*2*N2,i;for(i=0;i<2*N2;i++)FEND[i]=(traj[o+i]/16000+1)/2;
+  var B=96,H=new Float32Array(B*B),Tg=new Float32Array(B*B),j;
+  for(i=0;i<N2;i++){var bx=(FEND[2*i]*B)|0,by=(FEND[2*i+1]*B)|0;if(bx>=0&&by>=0&&bx<B&&by<B)H[by*B+bx]++}
+  for(i=0;i<G;i++)for(j=0;j<G;j++)Tg[((i*B/G)|0)*B+((j*B/G)|0)]+=flow.Wg[i*G+j];
+  var mh=0,mt=0;for(i=0;i<B*B;i++){mh+=H[i];mt+=Tg[i]}mh/=B*B;mt/=B*B;var sxy=0,sxx=0,syy=0;
+  for(i=0;i<B*B;i++){var dh=H[i]-mh,dt=Tg[i]-mt;sxy+=dh*dt;sxx+=dh*dh;syy+=dt*dt}
+  flow.corr=sxy/Math.sqrt(sxx*syy);var el=$('#rc2');if(el)el.textContent=flow.corr.toFixed(3);
+  setStatus('');while(flowWaiters.length)flowWaiters.pop()();
+}
+function startFlow(W){
+  var Wg=downW(W);flow.Wg=Wg;flow.f=support(Wg);flow.ready=false;flow.prog=0;flow.t0=performance.now();var id=++flow.id;
+  var msg={id:id,G:G,M:256,K:flow.K,N:N2,s:SIG,del:.6*2/G,rho:2.2,W:Wg,z:Z};
+  function local(){setTimeout(function(){flowDone(id,flowRun(msg,null))},30)}
+  try{
+    if(worker)worker.terminate();
+    var src=flowRun.toString()+';self.onmessage=function(e){var m=e.data;var t=flowRun(m,function(k){self.postMessage({p:k,id:m.id})});self.postMessage({id:m.id,traj:t},[t.buffer])};';
+    worker=new Worker(URL.createObjectURL(new Blob([src],{type:'text/javascript'})));
+    worker.onmessage=function(e){var d=e.data;if(d.traj)flowDone(d.id,d.traj);else if(d.id===flow.id)flow.prog=d.p/flow.K};
+    worker.onerror=function(){worker=null;local()};
+    worker.postMessage(msg);
+  }catch(err){worker=null;local()}
+}
+function setStatus(s){var el=$('#st2d');if(el)el.textContent=s}
+
+function cloud(a,sqa,b,sqb,p,stag,sig,wgt,shim,t){
+  var ax=sqa.x,ay=sqa.y,as=sqa.s,bx=sqb.x,by=sqb.y,bs=sqb.s,inv=1+sig;
+  for(var i=0,j=0,c=0;i<N2;i++,j+=2,c+=3){
+    var m=p*inv-stag[i]*sig;m=m<=0?0:m>=1?1:(m<.5?4*m*m*m:1-Math.pow(2-2*m,3)/2);
+    var x0=ax+as*a[j],y0=ay+as*a[j+1],x=x0+(bx+bs*b[j]-x0)*m,y=y0+(by+bs*b[j+1]-y0)*m,w=wgt;
+    if(shim>0)w*=1+shim*Math.sin(t*OM[i]+PH[i]);
+    splat(x,y,COL[c]*w,COL[c+1]*w,COL[c+2]*w)}
+}
+function cloudFlow(kap,sq,wgt){
+  var K=flow.K,k0=Math.min(K-1,Math.max(0,kap|0)),fr=clamp(kap-k0,0,1),n2=2*N2,o0=k0*n2,o1=o0+n2,tr=flow.traj,h=sq.s/2,cx=sq.x+h,cy=sq.y+h,q=1/16000;
+  for(var i=0,j=0,c=0;i<N2;i++,j+=2,c+=3){
+    var x=tr[o0+j],y=tr[o0+j+1];x+=(tr[o1+j]-x)*fr;y+=(tr[o1+j+1]-y)*fr;
+    splat(cx+h*x*q,cy+h*y*q,COL[c]*wgt,COL[c+1]*wgt,COL[c+2]*wgt)}
+}
+
+/* ---------- 1D: distributions on s in [0,1], quantile tables, the dot machine ---------- */
+var MQ=512,N1=4200,XR=7,K1=72,NX=512;
+function makeDist(fn,ticks){
+  var n=1024,pdf=new Float64Array(n),sum=0,i;for(i=0;i<n;i++){pdf[i]=Math.max(0,fn((i+.5)/n));sum+=pdf[i]}
+  var cdf=new Float64Array(n+1);for(i=0;i<n;i++)cdf[i+1]=cdf[i]+pdf[i]/sum;cdf[n]=1;
+  var d={pdf:pdf,cdf:cdf,n:n,ticks:ticks||[],Q:new Float32Array(MQ+1)};
+  for(i=0;i<=MQ;i++)d.Q[i]=quant(d,i/MQ);return d;
+}
+function quant(d,u){
+  var c=d.cdf,n=d.n,lo=0,hi=n;
+  if(u>=1){var e=n;while(e>1&&c[e-1]>=1-1e-12)e--;return e/n}
+  while(hi-lo>1){var m=(lo+hi)>>1;if(c[m]<=u)lo=m;else hi=m}
+  var den=c[lo+1]-c[lo];return(lo+(den>0?(u-c[lo])/den:0))/n;
+}
+function gauss(x,m,s){var z=(x-m)/s;return Math.exp(-.5*z*z)/s}
+function tk(x0,x1,vals){return vals.map(function(v){return[(v-x0)/(x1-x0),String(v).replace('-','−')]})}
+var PRESET={
+  expo:function(){return makeDist(function(s){var x=5.5*s-.25;return x>=0?Math.exp(-x):0},tk(-.25,5.25,[0,1,2,3,4,5]))},
+  bumps:function(){return makeDist(function(s){var x=7*s-3.5;return .3*gauss(x,-1.6,.25)+.45*gauss(x,.2,.4)+.25*gauss(x,1.7,.2)},tk(-3.5,3.5,[-3,-2,-1,0,1,2,3]))},
+  lognormal:function(){return makeDist(function(s){var x=5.5*s-.25;if(x<=1e-3)return 0;var l=Math.log(x);return Math.exp(-.5*l*l)/x},tk(-.25,5.25,[0,1,2,3,4,5]))},
+  spikes:function(){return makeDist(function(s){var x=7*s-3.5;return .5*gauss(x,-1.4,.12)+.5*gauss(x,1.4,.12)},tk(-3.5,3.5,[-3,-2,-1,0,1,2,3]))}
+};
+var distA,distB,D1=null;
+var DU=new Float32Array(N1),DC=new Float32Array(3*N1),LX=new Float32Array(N1),LY=new Float32Array(N1),qA=new Float32Array(N1),qB=new Float32Array(N1);
+var DS=new Float32Array(N1),DBIN=new Int16Array(N1),DLEV=new Int16Array(N1),cnt=new Int32Array(256),QT=new Float32Array(MQ+1);
+var topX=new Float32Array(N1),topY=new Float32Array(N1),botX=new Float32Array(N1),botY=new Float32Array(N1),sTop=new Float32Array(N1);
+(function(){
+  var perm=[],i,j,t;for(i=0;i<N1;i++)perm.push(i);for(i=N1-1;i>0;i--){j=(rnd()*(i+1))|0;t=perm[i];perm[i]=perm[j];perm[j]=t}
+  var ROWS=90,rc2=new Int32Array(ROWS),o=[0,0,0];
+  for(i=0;i<N1;i++){var u=(perm[i]+rnd())/N1;DU[i]=u;ramp(u,o);DC[3*i]=o[0];DC[3*i+1]=o[1];DC[3*i+2]=o[2];
+    var row=Math.min(ROWS-1,(u*ROWS)|0),rk=rc2[row]++;LX[i]=PX0-16-rk*2.5;LY[i]=uy((row+.5)/ROWS)}
+})();
+function Qat(u){var x=clamp(u,0,1)*MQ,i=Math.min(MQ-1,x|0);return QT[i]+(QT[i+1]-QT[i])*(x-i)}
+
+function build1D(dist){
+  var mass=new Float64Array(NX),r=dist.n/NX,tot=0,i,j,k;for(i=0;i<dist.n;i++){mass[(i/r)|0]+=dist.pdf[i];tot+=dist.pdf[i]}for(j=0;j<NX;j++)mass[j]/=tot;
+  var dx=XR/NX,del=.8*dx,xs=new Float64Array(NX);for(j=0;j<NX;j++)xs[j]=((j+.5)/NX-.5)*XR;
+  var P=new Float32Array((K1+1)*NX),C=new Float32Array((K1+1)*(NX+1)),pmax=0,ja=0,jb=NX;
+  while(ja<NX&&mass[ja]<=0)ja++;while(jb>ja&&mass[jb-1]<=0)jb--;
+  for(k=0;k<=K1;k++){var t=k/K1,a=1-t,V=a*a*del*del+t*t,inv=.5/V,nrm=1/Math.sqrt(2*Math.PI*V),cut=6*Math.sqrt(V),acc=0,o=k*NX,oc=k*(NX+1);
+    for(i=0;i<NX;i++){var x=xs[i],lo=ja,hi=jb;
+      if(a>1e-6){lo=Math.max(ja,Math.floor(((x-cut)/a/XR+.5)*NX-.5));hi=Math.min(jb,Math.ceil(((x+cut)/a/XR+.5)*NX+.5)+1)}
+      var sum=0;for(j=lo;j<hi;j++){var d=x-a*xs[j];sum+=mass[j]*Math.exp(-d*d*inv)}
+      var p=sum*nrm;P[o+i]=p;if(p>pmax)pmax=p;acc+=p*dx;C[oc+i+1]=acc}
+    for(i=0;i<=NX;i++)C[oc+i]/=acc}
+  return{P:P,C:C,pmax:pmax,mass:mass,xs:xs,del:del,dx:dx};
+}
+function quantT(k,u){var C=D1.C,o=k*(NX+1),lo=0,hi=NX;while(hi-lo>1){var m=(lo+hi)>>1;if(C[o+m]<=u)lo=m;else hi=m}var den=C[o+lo+1]-C[o+lo];return(lo+(den>0?(u-C[o+lo])/den:.5))/NX}
+function quantAt(t,u){var kk=clamp(t,0,1)*K1,k0=Math.min(K1-1,kk|0),a=quantT(k0,u);return a+(quantT(k0+1,u)-a)*(kk-k0)}
+function vel1(x,t){
+  var mass=D1.mass,xs=D1.xs,del=D1.del,a=1-t,V=a*a*del*del+t*t,inv=.5/V,num=0,den=0;
+  for(var j=0;j<NX;j++){var mj=mass[j];if(mj<=0)continue;var d=x-a*xs[j],r=mj*Math.exp(-d*d*inv);if(r===0)continue;den+=r;num+=r*((t/V)*d-(xs[j]+a*del*del/V*d))}
+  return den>0?num/den:0;
+}
+function receipt(){
+  var us=[.06,.18,.32,.46,.6,.74,.88,.96],worst=0,n=700,h=-1/n;
+  for(var q=0;q<us.length;q++){var x=(quantT(K1,us[q])-.5)*XR,t=1;
+    for(var i=0;i<n;i++){var a=vel1(x,t),b=vel1(x+h/2*a,t+h/2),c=vel1(x+h/2*b,t+h/2),d=vel1(x+h*c,Math.max(0,t+h));x+=h/6*(a+2*b+2*c+d);t+=h}
+    worst=Math.max(worst,Math.abs(x-(quantT(0,us[q])-.5)*XR))}
+  return worst;
+}
+var heat=document.createElement('canvas'),NL=26,trajL=null,outT=null,outB=null,dyT3=2,dyB3=2;
+function build3(){
+  var i,k,b;heat.width=NX;heat.height=K1+1;var hc=heat.getContext('2d'),im=hc.createImageData(NX,K1+1);
+  for(k=0;k<=K1;k++)for(i=0;i<NX;i++){var v=Math.pow(D1.P[k*NX+i]/D1.pmax,.5),o=((K1-k)*NX+i)*4;im.data[o]=70+90*v;im.data[o+1]=96+90*v;im.data[o+2]=255;im.data[o+3]=255*Math.min(1,v*1.1)}
+  hc.putImageData(im,0,0);
+  trajL=new Float32Array(NL*(K1+1));for(i=0;i<NL;i++)for(k=0;k<=K1;k++)trajL[i*(K1+1)+k]=quantT(k,(i+.5)/NL);
+  var ct=new Int32Array(256),cb=new Int32Array(256),tt=new Int32Array(256),mt=1,mb=1,bt=new Int16Array(N1),bb=new Int16Array(N1),lt=new Int16Array(N1),lb=new Int16Array(N1);
+  for(i=0;i<N1;i++){sTop[i]=quantT(K1,DU[i]);b=Math.min(255,(sTop[i]*256)|0);bt[i]=b;tt[b]++;b=Math.min(255,(quantT(0,DU[i])*256)|0);bb[i]=b}
+  for(i=0;i<N1;i++){lt[i]=tt[bt[i]]-1-(ct[bt[i]]++);lb[i]=cb[bb[i]]++}
+  for(b=0;b<256;b++){if(ct[b]>mt)mt=ct[b];if(cb[b]>mb)mb=cb[b]}
+  dyT3=Math.min(2.4,HPT/mt);dyB3=Math.min(2.4,HPB/mb);
+  for(i=0;i<N1;i++){topX[i]=QX0+(bt[i]+.5)*BW3;topY[i]=TOPB-(lt[i]+.5)*dyT3;botX[i]=QX0+(bb[i]+.5)*BW3;botY[i]=BOTB-(lb[i]+.5)*dyB3}
+  outT=new Float32Array(NX);outB=new Float32Array(NX);
+  for(i=0;i<NX;i++){outT[i]=N1*D1.P[K1*NX+i]*(XR/256)*dyT3;outB[i]=Math.min(HPB*1.25,N1*D1.P[i]*(XR/256)*dyB3)}
+}
+function setDistB(d){distB=d;for(var i=0;i<N1;i++)qB[i]=quant(d,DU[i]);D1=build1D(d);build3();padFromDist();
+  setTimeout(function(){var w=receipt(),el=$('#rc1');if(el)el.textContent=w<1e-4?'< 0.0001':w.toFixed(4)},60)}
+
+/* ---------- scenes ---------- */
+function scene0(t){
+  var eN=expoFor(1,SQ0),eA=expoFor(TA.f,SQ0),eB=expoFor(TB.f,SQ0),eC=expoFor(TC.f,SQ0),out=1-sstep(6.25,6.6,t),ex,p;
+  if(t<1.1){cloud(U,SQ0,U,SQ0,0,STG,0,1,.4,t);ex=eN}
+  else if(t<4.1){p=(t-1.1)/1.9;cloud(U,SQ0,TA.pos,SQ0,p,SWP,.9,1,.4*(1-sstep(0,.5,p)),t);ex=mixE(eN,eA,sstep(.2,.95,p))}
+  else if(t<5.35){p=(t-4.1)/.95;cloud(TA.pos,SQ0,TB.pos,SQ0,p,STG,.5,1,0,t);ex=mixE(eA,eB,ease(p))}
+  else{p=(t-5.35)/.85;cloud(TB.pos,SQ0,TC.pos,SQ0,p,STG,.5,out,0,t);ex=mixE(eB,eC,ease(p))}
+  ic.globalAlpha=.9*out;ic.strokeStyle='#262b40';ic.lineWidth=1;ic.strokeRect(SQ0.x-8,SQ0.y-8,SQ0.s+16,SQ0.s+16);
+  return ex;
+}
+function machine(tl,comb){
+  var A=sstep(0,.5,tl)*(comb>=0?1-sstep(4.4,4.8,comb):1),mm=ease((tl-5.25)/1.3),i,m;
+  for(m=0;m<=MQ;m++)QT[m]=lerp(distA.Q[m],distB.Q[m],mm);
+  // axes
+  ic.globalAlpha=A;ic.strokeStyle='#3b415c';ic.lineWidth=1.5;seg(PX0,UY1-16,PX0,UY0);seg(PX0,UY0,PX1+12,UY0);
+  ic.strokeStyle='#262b40';ic.lineWidth=1;seg(PX0,UY1,PX1,UY1);seg(PX0,YBASE,PX1,YBASE);
+  label('1',PX0+12,UY1+5,15,'left','#6f7590');label('u',PX0,UY1-26,17,'center','#c9cde0');label('x',PX1+26,UY0+5,17,'left','#c9cde0');
+  label('U ~ Unif(0, 1)',PX0-16,UY1-14,15,'right','#9298b0');
+  label('CDF  F(x)',PX1,UY1+26,15,'right','#c9cde0');label('density  f(x)',PX1,YBASE-HP-16,15,'right','#9298b0');
+  var tsets=[[distA.ticks,1-mm],[distB.ticks,mm]];
+  for(var q=0;q<2;q++){if(tsets[q][1]<.02)continue;ic.globalAlpha=A*tsets[q][1];for(i=0;i<tsets[q][0].length;i++){var tx=sx(tsets[q][0][i][0]);ic.strokeStyle='#3b415c';seg(tx,UY0,tx,UY0+6);label(tsets[q][0][i][1],tx,UY0+25,14,'center','#6f7590')}}
+  ic.globalAlpha=A;
+  // CDF curve
+  var pr=sstep(.1,.9,tl),mEnd=Math.round(pr*MQ);
+  ic.strokeStyle='#eceef7';ic.lineWidth=2.4;ic.beginPath();ic.moveTo(sx(0),uy(0));ic.lineTo(sx(QT[0]),uy(0));for(m=1;m<=mEnd;m++)ic.lineTo(sx(QT[m]),uy(m/MQ));if(mEnd>=MQ)ic.lineTo(sx(1),uy(1));ic.stroke();
+  // dots: flat pile -> across to the curve -> down into the density pile
+  cnt.fill(0);var mx=1,b;
+  for(i=0;i<N1;i++){var s=qA[i]+(qB[i]-qA[i])*mm;DS[i]=s;b=Math.min(255,(s*256)|0);DBIN[i]=b;DLEV[i]=cnt[b]++}
+  for(b=0;b<256;b++)if(cnt[b]>mx)mx=cnt[b];
+  var dy=Math.min(2.5,HP/mx);
+  // density outline from the quantile table: f = du/ds
+  ic.strokeStyle='rgba(236,238,247,.55)';ic.lineWidth=1.3;ic.beginPath();ic.moveTo(sx(QT[0]),YBASE);
+  for(m=0;m<MQ;m++){var ds=QT[m+1]-QT[m];if(ds<=1e-7)continue;var hh=Math.min(HP*1.3,N1/MQ/(ds*256)*dy);ic.lineTo(sx((QT[m]+QT[m+1])/2),YBASE-hh)}
+  ic.lineTo(sx(QT[MQ]),YBASE);ic.stroke();
+  for(i=0;i<N1;i++){
+    var f=(tl-.5-3.1*i/N1)/1.35,x,y,yu=uy(DU[i]),xs_=sx(DS[i]),xb=PX0+(DBIN[i]+.5)*BW,yb=YBASE-(DLEV[i]+.5)*dy,g;
+    if(f<=0){x=LX[i];y=LY[i]}
+    else if(f<.14){g=ease(f/.14);x=lerp(LX[i],PX0,g);y=lerp(LY[i],yu,g)}
+    else if(f<.56){g=ease((f-.14)/.42);x=lerp(PX0,xs_,g);y=yu}
+    else if(f<1){g=(f-.56)/.44;x=lerp(xs_,xb,g);y=lerp(yu,yb,g*g)}
+    else{x=xb;y=yb}
+    dot(x,y,1.25,DC[3*i]*A,DC[3*i+1]*A,DC[3*i+2]*A)}
+  // tracer: the worked example from the notes, u = 0.7 -> x = 1.204
+  var ta=A*sstep(.8,1.1,tl)*(1-sstep(4.9,5.3,tl));
+  if(ta>.01&&distA===EXPO){
+    var u0=.7,xq=sx((1.2040+.25)/5.5),yq=uy(u0),g1=ease((tl-1.2)/.9),g2=ease((tl-2.1)/.6),cxp=lerp(PX0,xq,g1),cyp=lerp(yq,UY0,g2);
+    ic.globalAlpha=ta;ic.strokeStyle='#ffffff';ic.lineWidth=1.6;ic.setLineDash([5,6]);seg(PX0,yq,cxp,yq);if(g2>0)seg(xq,yq,xq,cyp);ic.setLineDash([]);
+    ic.fillStyle='#ffffff';ic.beginPath();ic.arc(cxp,cyp,6,0,6.2832);ic.fill();
+    label('u = 0.70',PX0+12,yq-12,17,'left','#ffffff');
+    if(tl>2.55){ic.globalAlpha=ta*sstep(2.55,2.9,tl);label('x = −ln(1 − 0.70) ≈ 1.204',xq+16,UY0+62,17,'left','#ffffff')}
+  }
+  // comb + equal-mass bars
+  if(comb>=0){
+    var M=20,ba=sstep(2.3,3.1,comb);
+    for(m=1;m<M;m++){var u=m/M,sq=sx(Qat(u)),gg=clamp((comb-.15-m*.085)/.6,0,1),g_h=Math.min(1,gg*2),g_v=Math.max(0,gg*2-1);
+      if(gg<=0)continue;ic.globalAlpha=A*.95;ic.strokeStyle=rampCss(u,.95);ic.lineWidth=1.5;seg(PX0,uy(u),lerp(PX0,sq,g_h),uy(u));
+      if(g_v>0){seg(sq,uy(u),sq,lerp(uy(u),UY0,g_v));if(g_v>=1){ic.globalAlpha=A*.35*ba;seg(sq,UY0,sq,YBASE)}}}
+    if(ba>0)for(m=0;m<M;m++){var s0=Qat(m/M),s1=Qat((m+1)/M),w=Math.max(1e-6,s1-s0),bh=Math.min(HP*1.3,N1/M/(w*256)*dy);
+      ic.globalAlpha=A*ba;ic.fillStyle=rampCss((m+.5)/M,.17);ic.strokeStyle=rampCss((m+.5)/M,.95);ic.lineWidth=1.4;
+      ic.fillRect(sx(s0),YBASE-bh,sx(s1)-sx(s0),bh);ic.strokeRect(sx(s0),YBASE-bh,sx(s1)-sx(s0),bh)}
+  }
+  ic.globalAlpha=1;return 1.5;
+}
+function scene2b(t){
+  var A=sstep(0,.45,t)*(1-sstep(4.6,5,t)),p=(t-.6)/3.2,e=ease(p),dir,l,q,k,o=0;
+  cloud(U,SQ2,TM.pos,SQ2,p,STG,0,A,0,0);
+  for(dir=0;dir<2;dir++)for(l=0;l<=NGM;l++){
+    ic.beginPath();
+    for(q=0;q<=PTS;q++,o+=2){var a=l/NGM,b=q/PTS,u1=dir?b:a,u2=dir?a:b,x=SQ2.x+SQ2.s*lerp(u1,meshT[o],e),y=SQ2.y+SQ2.s*lerp(u2,meshT[o+1],e);if(q)ic.lineTo(x,y);else ic.moveTo(x,y)}
+    ic.globalAlpha=A;ic.lineWidth=dir?1:1.15;ic.strokeStyle=dir?'rgba(236,238,247,.4)':rampCss(l/NGM,.8);ic.stroke()}
+  if(cellT){
+    var xs=[],ys=[],ar=0;for(k=0;k<4;k++){xs.push(SQ2.x+SQ2.s*lerp(cellU[0][k],cellT[0][k],e));ys.push(SQ2.y+SQ2.s*lerp(cellU[1][k],cellT[1][k],e))}
+    for(k=0;k<4;k++){var n=(k+1)%4;ar+=xs[k]*ys[n]-xs[n]*ys[k]}ar=Math.abs(ar)/2/(SQ2.s*SQ2.s)*NGM*NGM;
+    var ca=A*sstep(.3,.7,t);ic.globalAlpha=ca;ic.fillStyle='rgba(255,255,255,.85)';ic.strokeStyle='#fff';ic.lineWidth=1.6;
+    ic.beginPath();ic.moveTo(xs[0],ys[0]);for(k=1;k<4;k++)ic.lineTo(xs[k],ys[k]);ic.closePath();ic.fill();ic.stroke();
+    var cxm=(xs[0]+xs[2])/2,cym=(ys[0]+ys[2])/2,lx=SQ2.x+SQ2.s-232,ly=SQ2.y+52;
+    ic.lineWidth=1;ic.strokeStyle='rgba(255,255,255,.7)';seg(cxm,cym,lx-12,ly+12);
+    ic.fillStyle='rgba(6,7,12,.82)';ic.fillRect(lx-12,ly-24,244,62);
+    label('area × '+ar.toFixed(2),lx,ly,18,'left','#ffffff');label('density × '+(1/ar).toFixed(1),lx,ly+26,18,'left','#ffc857');
+  }
+  ic.globalAlpha=1;return mixE(expoFor(1,SQ2),expoFor(TM.f,SQ2),e)*.42;
+}
+function scene3(t){
+  var A=sstep(0,.5,t)*(1-sstep(7.25,7.6,t)),rev=clamp((t-.5)/2,0,1),i,k,P=D1.P;
+  ic.globalAlpha=A;
+  if(rev>0){ic.save();ic.beginPath();var yr=ty(rev);ic.rect(QX0,yr,QW,YB-yr);ic.clip();ic.globalAlpha=A*lerp(.95,.5,sstep(2.6,3.4,t));ic.imageSmoothingEnabled=true;ic.drawImage(heat,QX0,YT,QW,YB-YT);ic.restore()}
+  ic.globalAlpha=A;ic.strokeStyle='#3b415c';ic.lineWidth=1.5;seg(QX0,YT,QX0+QW,YT);seg(QX0,YB,QX0+QW,YB);
+  ic.strokeStyle='#262b40';ic.lineWidth=1;seg(QX0,BOTB,QX0+QW,BOTB);
+  label('t = 1',QX0-14,YT+5,15,'right','#c9cde0');label('noise',QX0-14,YT+25,14,'right','#6f7590');
+  label('t = 0',QX0-14,YB+5,15,'right','#c9cde0');label('data',QX0-14,YB+25,14,'right','#6f7590');
+  // pile outlines
+  ic.strokeStyle='rgba(236,238,247,.5)';ic.lineWidth=1.2;ic.beginPath();for(i=0;i<NX;i++){var xx=QX0+(i+.5)/NX*QW;if(i)ic.lineTo(xx,BOTB-outB[i]);else ic.moveTo(xx,BOTB-outB[i])}ic.stroke();
+  var ga=sstep(2.2,2.8,t);if(ga>0){ic.globalAlpha=A*ga;ic.beginPath();for(i=0;i<NX;i++){xx=QX0+(i+.5)/NX*QW;if(i)ic.lineTo(xx,TOPB-outT[i]);else ic.moveTo(xx,TOPB-outT[i])}ic.stroke();
+    label('N(0, 1)',QX0+QW,TOPB-HPT+6,15,'right','#9298b0')}
+  // forward: scanline with the marginal riding on it
+  if(t>.5&&t<2.9){var al=A*(1-sstep(2.5,2.9,t)),kk=Math.round(rev*K1),y0=ty(rev);ic.globalAlpha=al;ic.strokeStyle='rgba(255,255,255,.55)';ic.lineWidth=1;seg(QX0,y0,QX0+QW,y0);
+    ic.beginPath();ic.moveTo(QX0,y0);for(i=0;i<NX;i++)ic.lineTo(QX0+(i+.5)/NX*QW,y0-Math.min(150,P[kk*NX+i]*150));ic.lineTo(QX0+QW,y0);ic.fillStyle='rgba(255,255,255,.14)';ic.fill();ic.strokeStyle='#fff';ic.lineWidth=2;ic.stroke();
+    label('pₜ = data ∗ noise',QX0+QW,y0-12,15,'right','#ffffff')}
+  // reverse: the level curves F_t(x) = u
+  var tr=sstep(2.7,3.6,t);
+  if(tr>0){var kEnd=Math.round(K1*(1-tr));for(i=0;i<NL;i++){ic.beginPath();for(k=K1;k>=kEnd;k--){var px=QX0+trajL[i*(K1+1)+k]*QW,py=ty(k/K1);if(k===K1)ic.moveTo(px,py);else ic.lineTo(px,py)}
+    ic.globalAlpha=A;ic.strokeStyle=rampCss((i+.5)/NL,.8);ic.lineWidth=1.25;ic.stroke()}}
+  // dots
+  var wb=1-.75*sstep(.5,2.4,t),wb2=1-sstep(2.3,2.9,t),wt=sstep(2.3,2.9,t);
+  for(i=0;i<N1;i++){
+    var f=(t-3.2-2.0*i/N1)/1.8,x,y,w=A,c=3*i,g;
+    if(f<=0){
+      if(wb2>.01){w=A*wb*wb2;dot(botX[i],botY[i],1.25,DC[c]*w,DC[c+1]*w,DC[c+2]*w)}
+      if(wt<=.01)continue;x=topX[i];y=topY[i];w=A*wt}
+    else if(f<.1){g=ease(f/.1);x=lerp(topX[i],QX0+sTop[i]*QW,g);y=lerp(topY[i],YT,g)}
+    else if(f<.88){g=ease((f-.1)/.78);var tp=1-g;x=QX0+quantAt(tp,DU[i])*QW;y=ty(tp)}
+    else if(f<1){g=(f-.88)/.12;x=lerp(QX0+quantT(0,DU[i])*QW,botX[i],g);y=lerp(YB,botY[i],g*g)}
+    else{x=botX[i];y=botY[i]}
+    dot(x,y,f>0&&f<1?1.6:1.25,DC[c]*w,DC[c+1]*w,DC[c+2]*w)}
+  ic.globalAlpha=1;return 1.5;
+}
+function scene3b(t){
+  var A=sstep(0,.4,t),eN=expoFor(1,SQ2),eG=expoFor(fG,SQ3),eF=expoFor(flow.f,SQ3);
+  if(t<1.5||!flow.ready){var p=(t-.3)/1.1;cloud(U,SQ2,PG,SQ3,p,STG,.3,A,0,0);
+    if(t>=1.5){ic.globalAlpha=1;label('convolving the exact velocity field  '+Math.round(flow.prog*100)+'%',540,1010,16,'center','#c9cde0')}
+    return mixE(eN,eG*.72,ease(p))}
+  var tau=clamp((t-1.5)/3.7,0,1);cloudFlow(tau*flow.K,SQ3,1);return mixE(eG*.72,eF,sstep(.2,.97,tau));
+}
+function scene4(t){
+  var p=(t-3.15)/.85,back=ease(p),w=lerp(1-sstep(0,.55,t),1,back),src=flow.ready?FEND:PG;
+  if(w>.004)cloud(src,SQ3,U,SQ0,p,STG,.4,w,.4*back,t-(END-S4));
+  if(back>0){ic.globalAlpha=.9*back;ic.strokeStyle='#262b40';ic.lineWidth=1;ic.strokeRect(SQ0.x-8,SQ0.y-8,SQ0.s+16,SQ0.s+16);ic.globalAlpha=1}
+  return mixE(expoFor(flow.ready?flow.f:fG,SQ3),expoFor(1,SQ0),back);
+}
+
+/* ---------- cues (captions) ---------- */
+var cues=[].slice.call(document.querySelectorAll('[data-a]')).map(function(el){return{el:el,a:+el.dataset.a,b:+el.dataset.b,o:-1}});
+function runCues(T){
+  for(var i=0;i<cues.length;i++){var c=cues[i],f=.35,o;
+    if(c.a<0)o=Math.max(1-sstep(c.b-f,c.b,T),sstep(END-.55,END-.1,T));
+    else o=(T<c.a||T>c.b)?0:sstep(c.a,c.a+f,T)*(1-sstep(c.b-f,c.b,T));
+    o=Math.round(o*100)/100;if(o!==c.o){c.o=o;c.el.style.opacity=o}}
+}
+
+/* ---------- film clock ---------- */
+var T=0,playing=true,last=0,ready=false,EXPO=null;
+function render(tt){
+  beginInk();var ex;
+  if(tt<S1)ex=scene0(tt);
+  else if(tt<S2)ex=machine(tt-S1,-1);
+  else if(tt<S2B)ex=machine(tt-S1,tt-S2);
+  else if(tt<S3)ex=scene2b(tt-S2B);
+  else if(tt<S3B)ex=scene3(tt-S3);
+  else if(tt<S4)ex=scene3b(tt-S3B);
+  else ex=scene4(tt-S4);
+  flush(ex);runCues(tt);
+}
+var scrub=$('#scrub'),clock=$('#clock'),playBtn=$('#play'),chBtns=[].slice.call(document.querySelectorAll('#chapters button')),scrubbing=false,lastUI=-1;
+function fmt(s){s=Math.floor(s);return Math.floor(s/60)+':'+('0'+s%60).slice(-2)}
+function syncUI(){
+  if(Math.abs(T-lastUI)<.04)return;lastUI=T;
+  if(!scrubbing)scrub.value=T.toFixed(2);clock.textContent=fmt(T)+' / '+fmt(END);
+  for(var i=0;i<chBtns.length;i++){var on=T>=CH[i]&&T<CH[i+1];chBtns[i].setAttribute('aria-current',on?'true':'false');chBtns[i].lastElementChild.style.width=on?(100*(T-CH[i])/(CH[i+1]-CH[i])).toFixed(1)+'%':'0'}
+}
+function setPlaying(p){playing=p;playBtn.textContent=p?'Pause':'Play';playBtn.setAttribute('aria-label',p?'Pause the film':'Play the film')}
+function seek(t){T=clamp(t,0,END-.001);lastUI=-1}
+function frame(now){
+  if(playing){var dt=Math.min(.05,(now-last)/1000);T+=dt;if(!flow.ready&&T>S3B+1.5&&T<S4)T=S3B+1.5;if(T>=END)T-=END}
+  last=now;render(T);syncUI();requestAnimationFrame(frame);
+}
+
+/* ---------- lab ---------- */
+var pad=$('#pad'),pc=pad.getContext('2d'),PN=160,padH=new Float32Array(PN),padDown=false,padLast=-1;
+function padFromDist(){if(!distB)return;var mx=0,i,j,r=distB.n/PN;for(i=0;i<PN;i++){var v=0;for(j=0;j<r;j++)v+=distB.pdf[Math.min(distB.n-1,((i*r)|0)+j)];padH[i]=v;if(v>mx)mx=v}for(i=0;i<PN;i++)padH[i]/=mx||1;drawPad()}
+function drawPad(){
+  var w=pad.clientWidth,h=pad.clientHeight,d=Math.min(2,window.devicePixelRatio||1);if(!w)return;
+  if(pad.width!==Math.round(w*d)){pad.width=Math.round(w*d);pad.height=Math.round(h*d)}
+  pc.setTransform(d,0,0,d,0,0);pc.clearRect(0,0,w,h);var tot=0,i,acc=0;for(i=0;i<PN;i++)tot+=padH[i];
+  for(i=0;i<PN;i++){acc+=padH[i];pc.fillStyle=rampCss(tot>0?(acc-padH[i]/2)/tot:0,.9);var bh=padH[i]*(h-14);pc.fillRect(i*w/PN,h-bh,w/PN+.6,bh)}
+}
+function padSet(ev){var r=pad.getBoundingClientRect(),i=clamp(((ev.clientX-r.left)/r.width*PN)|0,0,PN-1),v=clamp(1-(ev.clientY-r.top-7)/(r.height-14),0,1);
+  if(padLast<0)padLast=i;var a=Math.min(padLast,i),b=Math.max(padLast,i),v0=padH[padLast];for(var k=a;k<=b;k++)padH[k]=b===a?v:lerp(v0,v,Math.abs(k-padLast)/(b-a));padH[i]=v;padLast=i;drawPad()}
+pad.addEventListener('pointerdown',function(e){padDown=true;padLast=-1;try{pad.setPointerCapture(e.pointerId)}catch(_){}padSet(e)});
+pad.addEventListener('pointermove',function(e){if(padDown)padSet(e)});
+function padUp(){if(!padDown)return;padDown=false;var tot=0,i;for(i=0;i<PN;i++)tot+=padH[i];if(tot<=.05){padFromDist();return}
+  var h=new Float32Array(PN);for(i=0;i<PN;i++)h[i]=(padH[Math.max(0,i-1)]+2*padH[i]+padH[Math.min(PN-1,i+1)])/4;
+  setDistB(makeDist(function(s){var x=clamp(s*PN-.5,0,PN-1.001),k=x|0;return h[k]+(h[k+1]-h[k])*(x-k)},[]));seek(S1+4.6);setPlaying(true)}
+pad.addEventListener('pointerup',padUp);pad.addEventListener('pointercancel',padUp);
+[].forEach.call(document.querySelectorAll('[data-p]'),function(b){b.addEventListener('click',function(){setDistB(PRESET[b.dataset.p]());seek(S1+4.6);setPlaying(true)})});
+function retarget(W,alsoHook){if(alsoHook)TA=mapTarget(W,false);setStatus('Building the exact velocity field for your target…');startFlow(W);seek(0);setPlaying(true)}
+$('#useword').addEventListener('click',function(){var s=$('#word').value.trim();if(!s)return;retarget(drawWord(s),true)});
+$('#word').addEventListener('keydown',function(e){if(e.key==='Enter')$('#useword').click()});
+$('#reset2d').addEventListener('click',function(){TA=mapTarget(drawFormula(),false);$('#word').value='diffusion';setStatus('Building the exact velocity field…');startFlow(drawWord('diffusion'));seek(0);setPlaying(true)});
+$('#imgfile').addEventListener('change',function(e){var f=e.target.files&&e.target.files[0];if(!f)return;var fr=new FileReader();
+  fr.onload=function(){var im=new Image();im.onload=function(){retarget(drawPicture(im),true)};im.onerror=function(){setStatus('That file could not be read as an image. Try a PNG or JPEG.')};im.src=fr.result};fr.readAsDataURL(f)});
+playBtn.addEventListener('click',function(){setPlaying(!playing)});
+scrub.addEventListener('input',function(){scrubbing=true;seek(+scrub.value)});
+scrub.addEventListener('change',function(){scrubbing=false});
+chBtns.forEach(function(b){b.addEventListener('click',function(){seek(+b.dataset.t);setPlaying(true)})});
+document.addEventListener('keydown',function(e){if(e.code==='Space'&&!/INPUT|BUTTON|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();setPlaying(!playing)}});
+window.addEventListener('resize',function(){sizeInk();drawPad();lastUI=-1});
+
+/* ---------- boot ---------- */
+function fontsReady(){
+  var want=['italic 700 100px "STIX Two Text"','700 100px "STIX Two Text"','700 100px "Instrument Sans"','500 16px "JetBrains Mono"','400 60px "Instrument Serif"'];
+  var p=document.fonts&&document.fonts.load?Promise.all(want.map(function(f){return document.fonts.load(f).catch(function(){})})):Promise.resolve();
+  return Promise.race([p,new Promise(function(r){setTimeout(r,3500)})]);
+}
+var readyPromise=fontsReady().then(function(){
+  initGlow();sizeInk();
+  $('#npts').textContent=N2.toLocaleString('en-US');
+  TA=mapTarget(drawFormula(),false);TB=mapTarget(spiralW(),false);TC=mapTarget(ringW(.042,0),false);TM=mapTarget(ringW(.06,.12),true);buildMesh(TM.K);
+  EXPO=distA=PRESET.expo();for(var i=0;i<N1;i++)qA[i]=quant(distA,DU[i]);
+  setDistB(PRESET.bumps());
+  startFlow(drawWord('diffusion'));
+  ready=true;
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){T=3.5;setPlaying(false)}
+  if(CAPTURE){playing=false;render(0);return new Promise(function(res){if(flow.ready)res();else flowWaiters.push(res)})}
+  last=performance.now();requestAnimationFrame(frame);
+});
+window.__film={END:END,ready:readyPromise,seek:function(t){T=t;render(t)},flow:flow,stats:function(){return{N2:N2,R:R,corr:flow.corr,fA:TA&&TA.f,fFlow:flow.f,flowMs:flow.ms}}};
+})();
+</script>
+</body>
+</html>
