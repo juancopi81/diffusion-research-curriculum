@@ -17,6 +17,7 @@ not yet belong in the core curriculum.
 | Radar | Lourie et al., [*Small-Scale Experiments: Are We There Yet?*](https://arxiv.org/abs/2608.11859v1) | A methodology for learning about larger models from well-tuned small-scale experiments, with useful warnings about hyperparameter sensitivity and extrapolation. | Nano-Diffusion has one stable baseline, repeatable training runs, configuration logging, and enough compute budget for a real sweep across several model sizes. |
 | Radar | Kumbong et al., [*Next-Concept Modeling: Fast, Parallel Coarse-to-Fine Text Generation*](https://arxiv.org/abs/2610.14162v1) | Connects learned discrete representations, hierarchical generation, and sampling efficiency; a useful comparison with diffusion language models. | After the Weeks 19–20 DDPM/DDIM comparison, with a short VQ-VAE and discrete text-diffusion primer. |
 | Radar | Jia et al., [*LLaCO: Continuous Diffusion for Large Language Models with Competition-Aware Semantic Scheduling*](https://arxiv.org/abs/2610.32604v1) | Connects embedding geometry, token identity loss, and noise scheduling; a direct diffusion-language-model companion. | After the Weeks 23–24 schedule ablations, with a short primer on normalized token embeddings and continuous text diffusion. |
+| Radar | Hoover et al., [*Classical Energies Learn to Reason 1,000x Faster than Looped Models*](https://arxiv.org/abs/2611.17309v1) | Energy-based inference, local constraint learning, and a useful warning about what reasoning benchmarks establish. | After the Weeks 33–34 score-SDE work, with a short primer on Hopfield networks and pairwise energy models. |
 
 ### Small-Scale Experiments: Are We There Yet?
 
@@ -148,3 +149,44 @@ normalized token embeddings and continuous diffusion for text. Start with the
 geometry and scheduling argument, then inspect the ablations and their controls.
 The detailed theory can remain optional until we have a concrete question to
 test. This stays on the radar as complementary reading.
+
+### Classical Energies Learn to Reason 1,000x Faster than Looped Models
+
+- Authors: Benjamin Hoover, Hugh Blayney, and James C. R. Whittington
+- arXiv: `2611.17309v1` (`cs.AI`), submitted November 12, 2026
+- Source status: initial triage against the official arXiv metadata and
+  [v1 HTML](https://arxiv.org/html/2611.17309v1), especially Sections 3–5
+  and Appendices B, C.2, and C.4, on November 16, 2026; results not replicated
+
+#### Why it may matter for this repository
+
+CRAM learns a Hopfield-style pairwise energy from solved puzzles, primarily
+using pseudolikelihood without backpropagating through the inference search.
+At inference, it searches the energy with puzzle clues fixed and uses explicit
+stopping tests (Section 3).
+
+Our connection is conceptual: compare learning an energy and searching it with
+learning a noise-conditioned score and sampling from it. The paper studies
+discrete constraint puzzles; transfer to diffusion would need separate evidence.
+It could be useful companion reading after the [Weeks 33–34 score-SDE
+work](../CURRICULUM.md).
+
+#### Evidence to revisit
+
+The authors report near-perfect Sudoku-Extreme and Maze-Unique accuracy with
+millisecond-scale training on one H200 (Table 2). Read the headline with three
+qualifications:
+
+- The benchmarks admit simple pairwise constraints; performance does not
+  establish general reasoning ability (Section 5).
+- CRAM fit times use warm runs; long baseline fits include startup costs
+  (Appendix C.2).
+- Maze-Unique depends on initialization: the empty board has lower energy
+  than the solution, so inference is not simply global energy minimization
+  (Appendix C.4).
+
+#### First useful return point
+
+Revisit after the Weeks 33–34 score-SDE work, with a short Hopfield/pairwise-energy
+primer. First question: which benefits come from the learned energy, the search
+procedure, and the task structure? Keep this as optional enrichment on the radar.
