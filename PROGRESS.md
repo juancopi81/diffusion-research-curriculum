@@ -3,7 +3,7 @@
 ## Current Status
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Week:** 15 ✅ — Completed on 2026-11-05; Week 16 is next and has not started
+- **Week:** 16 🔄 — Started on 2026-11-16; Day 1 complete, including consolidated-note read-through
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
 - **Week 9 Completed:** 2026-08-25
@@ -13,7 +13,7 @@
 - **Week 13 Completed:** 2026-10-14
 - **Week 14 Completed:** 2026-10-27
 - **Week 15 Completed:** 2026-11-05
-- **Next study step:** Week 16's training objective, timestep-conditioned noise prediction, parameterization relationships, and first reverse sampler
+- **Next study step:** Day 2's prediction relationships in the [Week 16 daily plan](notes/w16_study_plan.md).
 - **Week 14 closeout:** [Day 7 completion decision](notes/w14_study_plan.md#day-7-completion-decision); all four problems, study report, and final review complete; reference use and guided corrections recorded; blog editing continues separately
 
 ---
@@ -209,6 +209,24 @@ Codex's explanations. Optional cosine/blog enrichment does not block Week 16.
 | Day 5: learner read-through of cleaned note and notebook | ✅ | 2026-11-04 | Learner read and approved the cleaned note and notebook; Day 5 complete |
 | Final explanation, evidence discussion, and learner questions / Day 6 | ✅ | 2026-11-05 | Correct notes-closed forward explanation; saved schedule/Monte Carlo interpretation; posterior clean mean versus score; cosine, percentages, blending, and variance-preservation questions answered; assistance recorded |
 | Week 15 completion decision and consolidation | ✅ | 2026-11-05 | Juan requested closure after his questions; final notes and notebook saved; Week 16 not started |
+
+---
+
+### Week 16 — First Full Toy Diffusion Training 🔄
+
+The [daily plan](notes/w16_study_plan.md) was prepared on 2026-11-13 for
+November 16–22: six sessions totaling six active-study hours, plus a
+buffer/rest day. Study started on 2026-11-16; Day 1 is complete, including
+learner read-through and approval of the note. Days 2–6 have not started.
+
+| Task | Status | Date | Notes |
+| --- | --- | --- | --- |
+| Day 1: training objective and timestep conditioning | ✅ | 2026-11-16 | [Discussion consolidated](notes/w16_hf_ddpm_training.md): correct opening training explanation; guided sampling-noise, fresh-draw, and timestep corrections followed by correct responses; learner read and approved the note |
+| Day 2: prediction parameterizations | ⬜ | — | Derive clean/noise/score relationships and distinguish prediction conversion from loss weighting |
+| Day 3: reverse sampling | ⬜ | — | Trace the sourced reverse update, index convention, and final-step rule |
+| Day 4: training implementation and checks | ⬜ | — | Prepare notebook pair, complete the training step, and run a short learning check |
+| Day 5: complete training-and-sampling experiment | ⬜ | — | Small MNIST run with configuration, loss, per-epoch generated grids, and runtime |
+| Day 6: evidence review and completion decision | ⬜ | — | Explain the complete system, review notes and results, and identify the Weeks 17–18 handoff |
 
 ---
 

@@ -24,8 +24,8 @@ It is divided into five phases:
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
 - **Completed:** Phase 1 and Weeks 9–15 (Week 15 completed on 2026-11-05)
-- **Latest work:** [Week 15 closeout](./notes/w15_forward_process_discrete.md#day-6--consolidating-the-forward-process-and-closing-week-15) — Forward derivation, completed MNIST notebook, linear/cosine comparison, Monte Carlo verification, final explanation, and learner questions consolidated; independent recall and added explanations distinguished
-- **Next:** [Week 16](./CURRICULUM.md#week-16--first-full-toy-diffusion-training-small): training objective, timestep-conditioned denoising, prediction parameterizations, and reverse sampling. The optional cosine-schedule/blog exploration is enrichment. The checkpoint's blog editing continues separately.
+- **Latest work:** [Week 16 Day 1](./notes/w16_hf_ddpm_training.md), completed on 2026-11-16 — Training objective, noise targets, sampling randomness, and timestep conditioning consolidated; guided corrections recorded; learner read and approved the note
+- **Next:** Day 2's prediction relationships in the [Week 16 daily plan — November 16–22](./notes/w16_study_plan.md). Six hours across six sessions plus a buffer/rest day. The optional cosine-schedule/blog exploration is enrichment. The checkpoint's blog editing continues separately.
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 

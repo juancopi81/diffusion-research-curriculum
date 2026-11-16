@@ -130,7 +130,10 @@ Next:
 
 - **Week 16:** first timestep-conditioned denoiser and reverse sampler,
   connecting noise prediction, clean prediction, and score prediction.
-  Week 16 has not started; optional cosine-schedule enrichment is separate.
+  The [daily plan](./notes/w16_study_plan.md) schedules November 16–22, 2026.
+  Started on 2026-11-16: [Day 1](./notes/w16_hf_ddpm_training.md)
+  is complete, including learner read-through. Day 2's prediction
+  relationships follow; optional cosine-schedule enrichment is separate.
 
 See [PROGRESS.md](./PROGRESS.md) for completion dates and artifact links.
 
@@ -607,6 +610,13 @@ Learning chain: canonical forward-process notation → derive one-step and
 closed-form noising → verify both in code → understand the inputs Week 16 will train on.
 
 ### Week 16 — First full toy diffusion training (small)
+
+Use the [day-by-day plan](./notes/w16_study_plan.md), prepared for
+November 16–22, 2026: six sessions totaling six active-study hours and a
+buffer/rest day. Follow objective → prediction relationships → reverse
+sampling → implementation → experiment → review. Training run time is
+recorded separately; the dates are flexible. Study started on 2026-11-16:
+Day 1 is complete, including learner read-through and approval of the note.
 
 - S1:
   - **[HF-DiffCourse]** Unit 1 sections on the training objective, timestep
