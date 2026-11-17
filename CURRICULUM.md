@@ -150,8 +150,9 @@ Next:
   connecting noise prediction, clean prediction, and score prediction.
   The [daily plan](./notes/w16_study_plan.md) schedules November 16–22, 2026.
   Started on 2026-11-16: [Day 1](./notes/w16_hf_ddpm_training.md)
-  is complete, including learner read-through. Day 2's prediction
-  relationships follow; optional cosine-schedule enrichment is separate.
+  is complete, including learner read-through. [Day 2's derivations](./notes/w16_prediction_parameterizations.md)
+  and learner read-through completed on 2026-11-17.
+  Day 3's reverse-sampler study follows; optional cosine-schedule enrichment is separate.
 
 See [PROGRESS.md](./PROGRESS.md) for completion dates and artifact links.
 
@@ -635,6 +636,8 @@ buffer/rest day. Follow objective → prediction relationships → reverse
 sampling → implementation → experiment → review. Training run time is
 recorded separately; the dates are flexible. Study started on 2026-11-16:
 Day 1 is complete, including learner read-through and approval of the note.
+Day 2's prediction relationships, weighting discussion, and learner
+read-through completed on 2026-11-17.
 
 - S1:
   - **[HF-DiffCourse]** Unit 1 sections on the training objective, timestep

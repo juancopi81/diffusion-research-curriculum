@@ -2,7 +2,10 @@
 
 **Status:** Prepared on 2026-11-13; Week 16 started on 2026-11-16.
 Day 1 is complete, including Juan's read-through and approval of the
-[consolidated note](w16_hf_ddpm_training.md). Days 2–6 have not started. The dates below are
+[consolidated note](w16_hf_ddpm_training.md). Day 2 is complete on 2026-11-17,
+including Juan's read-through and approval of the
+[derivation note](w16_prediction_parameterizations.md).
+Days 3–6 have not started. The dates below are
 a suggested calendar for **November 16–22, 2026**. Move unfinished
 sessions forward in order if needed.
 
@@ -41,9 +44,9 @@ schedule and one small model, inspect the loss and generated samples, and
 explain the results. The [Week 16 curriculum](../CURRICULUM.md#week-16--first-full-toy-diffusion-training-small)
 sets the scope.
 
-Build the following as the sessions progress. The training note now
-contains Day 1's discussion; the derivation note and notebook pair remain
-planned outputs:
+Build the following as the sessions progress. The training note contains
+Day 1's discussion and the derivation note contains Day 2's work; the
+notebook pair remains a planned output:
 
 - `notes/w16_hf_ddpm_training.md`: your explanation of the objective,
   timestep conditioning, sampler, and experimental observations.
@@ -173,6 +176,14 @@ not an attributed official solution.
 clean posterior mean from the score. Record whether the explanation used
 notes or hints. Consolidate into `notes/w16_prediction_parameterizations.md`.
 
+**Day 2 completed on 2026-11-17, including learner read-through.**
+The [Day 2 note](w16_prediction_parameterizations.md) preserves both prediction
+conversions, the Gaussian-score derivation, the supplied marginal-score
+identity and Juan's application, the factorization attempt and guided
+correction, and his correct $9$ versus $1/9$ weighting interpretation.
+Nine original handwritten pages are retained. Juan read and approved the
+consolidation, completing the planned review; Day 3 follows.
+
 ### Day 3 — How Does a Reverse Step Work?
 
 **Use:** the final HF sampling subsection for intuition, then Annotated
@@ -276,7 +287,7 @@ required this week.
 ## Completion Checks
 
 - [x] Explain the noise target, timestep input, and training objective.
-- [ ] Review the clean/noise/score conversions and loss-weighting distinction.
+- [x] Review the clean/noise/score conversions and loss-weighting distinction.
 - [ ] Explain the reverse update and the final-step rule.
 - [ ] Complete and check the training and sampling implementations.
 - [ ] Save the run configuration, loss, per-epoch generated grids, and runtime.
