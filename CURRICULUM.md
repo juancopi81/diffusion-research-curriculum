@@ -90,6 +90,19 @@ Nano-Diffusion/Nano-Flow artifacts; completing the full MIT course is not requir
 - **[FlowMatching]** Lipman et al. “Flow Matching for Generative Modeling”: [https://arxiv.org/abs/2210.02747](https://arxiv.org/abs/2210.02747)
 - **[RectifiedFlow]** Liu et al. “Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow”: [https://arxiv.org/abs/2209.03003](https://arxiv.org/abs/2209.03003)
 
+### Architecture and world-model bridges
+
+- **[DiT]** Peebles & Xie, “Scalable Diffusion Models with Transformers”:
+  [paper](https://arxiv.org/abs/2212.09748)
+- **[V-JEPA2]** Assran et al., “V-JEPA 2: Self-Supervised Video Models Enable
+  Understanding, Prediction and Planning”:
+  [paper](https://arxiv.org/abs/2506.09985) ·
+  [architecture and planning overview](https://ai.meta.com/blog/v-jepa-2-world-model-benchmarks/)
+
+Use selected excerpts at the return points below, within existing session
+budgets. Weeks 16–24 keep their current scope. Related optional reading stays
+on the [world-model radar](./papers/README.md#world-models-and-multimodal-generation).
+
 ### SDE numerics (free references)
 
 - **[Higham-SDE]** Higham “An Algorithmic Introduction to Numerical Simulation of SDEs” (PDF):  
@@ -713,6 +726,14 @@ Artifact: `mini_projects/nano_diffusion/reports/checkpoint_04_ablations.md`
   - Watch **[MIT-6S184]** Lecture 4:
     [Latent Spaces and Neural Network Architectures](https://www.youtube.com/watch?v=g0MB1CCBmsI)
     to connect U-Nets, transformers, and VAEs
+  - Replace 20–30 minutes of general overview reading with a bridge using
+    **[DiT]**'s abstract/architecture overview and **[V-JEPA2]**'s encoder,
+    predictor, and action-conditioning overview.
+  - In the architecture notes used for these sessions, compare inputs,
+    prediction targets, and training objectives: diffusion generation versus
+    JEPA's prediction of learned representations. Distinguish the transformer
+    architecture from the learning objective and from a world model's role.
+    Stop at a compact conceptual comparison; no additional model training.
 - S3:
   - refactor code into clean modules
   - add:
@@ -831,6 +852,15 @@ Explain (with diagrams):
 - what objective is optimized (high level)
 - what changes in implementation (what you literally changed in code)
 
+Within the same 3–5 pages and session budget, include a short outlook (up to
+half a page) on extending these methods to video or action-conditioned
+next-state prediction. Identify the extra temporal representations, data, and
+evaluation needed; distinguish generating actions from predicting their
+consequences. Separate what our experiments demonstrate from proposed
+extensions. Use **[V-JEPA2]** as a comparison and the
+[world-model radar](./papers/README.md#world-models-and-multimodal-generation)
+for optional follow-up; no new implementation is required at this checkpoint.
+
 ---
 
 # Phase 5 — Paper pass + reproduction + portfolio (Weeks 41–52)
@@ -853,11 +883,24 @@ For each paper:
 
 ### Weeks 45–48 — Reproduction target (one solid reproduction)
 
+Choose the project alongside one role family of interest, such as research
+engineering, applied generative ML, or model evaluation. Use a small sample of
+then-current role descriptions to identify relevant capabilities. Record the
+target role, project question, and evidence the project should provide in its
+existing README, within the project-selection budget.
+
 Pick ONE target you can finish:
 
 - a clean DDPM/DDIM baseline with strong ablations
 - OR a flow-matching baseline with comparisons
 - OR a unified Nano-Diffusion vs Nano-Flow report if both baselines are stable enough
+
+At selection time, assess whether a bounded video/world-model experiment
+could replace one of these targets. Consider it only with a stable baseline,
+an understood objective, accessible data, feasible compute/runtime, and a
+meaningful evaluation within the same four-week budget. Otherwise, keep a
+core target above. Deeper 3D, robotics, or planning study remains a later
+expansion to choose after the core curriculum.
 
 Artifact:
 

@@ -18,6 +18,30 @@ not yet belong in the core curriculum.
 | Radar | Kumbong et al., [*Next-Concept Modeling: Fast, Parallel Coarse-to-Fine Text Generation*](https://arxiv.org/abs/2610.14162v1) | Connects learned discrete representations, hierarchical generation, and sampling efficiency; a useful comparison with diffusion language models. | After the Weeks 19–20 DDPM/DDIM comparison, with a short VQ-VAE and discrete text-diffusion primer. |
 | Radar | Jia et al., [*LLaCO: Continuous Diffusion for Large Language Models with Competition-Aware Semantic Scheduling*](https://arxiv.org/abs/2610.32604v1) | Connects embedding geometry, token identity loss, and noise scheduling; a direct diffusion-language-model companion. | After the Weeks 23–24 schedule ablations, with a short primer on normalized token embeddings and continuous text diffusion. |
 | Radar | Hoover et al., [*Classical Energies Learn to Reason 1,000x Faster than Looped Models*](https://arxiv.org/abs/2611.17309v1) | Energy-based inference, local constraint learning, and a useful warning about what reasoning benchmarks establish. | After the Weeks 33–34 score-SDE work, with a short primer on Hopfield networks and pairwise energy models. |
+| Radar | Zhou et al., [*Transfusion: Predict the Next Token and Diffuse Images with One Multi-Modal Model*](https://arxiv.org/abs/2408.11039) | Shows how next-token text prediction and image diffusion can share a transformer; connects the curriculum to multimodal systems. | After the Weeks 25–26 architecture bridge, if a question about combining objectives warrants optional follow-up. |
+| Radar | Chefer et al., [*Self-Supervised Flow Matching for Scalable Multi-Modal Synthesis*](https://bfl.ai/techblog/self-flow/index.html) (Self-Flow) | Connects representation learning with flow-based generation across images, video, and audio. | After the Weeks 39–40 bridge report, if representation learning is relevant to the later project choice. |
+| Radar | Black et al., [*π₀: A Vision-Language-Action Flow Model for General Robot Control*](https://arxiv.org/abs/2410.24164) | Connects a pretrained vision-language model to flow-based action generation; helps distinguish a policy from a predictive world model. | After the Weeks 39–40 bridge report, if action generation or robotics remains an interest. |
+
+### World models and multimodal generation
+
+Orientation added on 2026-11-17 from primary abstracts and project overviews
+for Transfusion, Self-Flow, and π₀; full paper reviews and replications remain
+pending. **[DiT]** and **[V-JEPA2]** have short, scheduled roles in the
+[curriculum](../CURRICULUM.md#architecture-and-world-model-bridges); the three
+radar entries above are optional follow-up, not additional assigned reading.
+
+The useful comparison is between generating observations, predicting learned
+representations or future states, and generating actions. π₀ supplies an
+action policy; this alone does not make it a next-state dynamics model.
+For any later experiment, ask what the model predicts, what evidence supports
+its usefulness, and which failures the evaluation can detect. Visual quality
+alone does not establish physical accuracy or planning ability.
+
+Revisit these directions when selecting the Weeks 45–48 project and a target
+role. Larger expansions into 3D geometry, robotics, or planning stay beyond
+the core curriculum unless a bounded project fits the existing scope and
+budget. Keep observations and decisions in the existing notes and project
+reports.
 
 ### Small-Scale Experiments: Are We There Yet?
 

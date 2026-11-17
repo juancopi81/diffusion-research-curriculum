@@ -40,6 +40,16 @@ These are not complete yet. They are the next pieces that should become public-f
 | DDIM sampler comparison (Weeks 19–20) | `notebooks/w20_ddpm_vs_ddim_steps.ipynb` + `mini_projects/nano_diffusion/` | Compare samplers using the same trained checkpoint where possible, recording steps/NFE, runtime, and sample quality. |
 | SDE numerics (Weeks 29–30) | `notebooks/w30_euler_maruyama_stability.ipynb` | Simulate simple SDEs and diagnose step-size stability before studying score-SDE sampling. |
 | Flow matching vs diffusion (Weeks 35–36) | `notebooks/w36_flow_matching_2d.ipynb` + `notes/w36_diffusion_vs_flowmatching.md` | Compare learned fields, trajectories, runtime, and failures on the same toy distributions. |
+| Bridge report (Weeks 39–40) | `mini_projects/checkpoint_05_bridge_report/bridge_report.md` | Connect the implemented diffusion/flow formulations and include a brief world-model outlook within the existing report budget. |
+| Reproduction target (Weeks 45–48) | `mini_projects/reproduction_target/` + reused Nano-Diffusion/Nano-Flow code | Choose one project alongside a target role, following the [curriculum's scope criteria](CURRICULUM.md#weeks-4548--reproduction-target-one-solid-reproduction). A world-model experiment remains conditional on readiness and budget. |
+
+For the reproduction milestone, use its existing README and report to show
+what Juan implemented or adapted, the references and assistance used, the
+baseline and evaluation, failures or limitations, and which target-role
+capabilities the work demonstrates. The intended evidence is an understood
+implementation, a defensible experiment, and a bounded contribution relevant
+to that role; the contribution may be an evaluation, efficiency, or adaptation
+result, with its scope stated accurately.
 
 ## Portfolio Standard
 
