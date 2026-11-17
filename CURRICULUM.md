@@ -60,6 +60,11 @@ Use these short tags throughout the plan.
   [https://huggingface.co/blog/annotated-diffusion](https://huggingface.co/blog/annotated-diffusion)
 - **[Diffusers-Docs]** Hugging Face Diffusers docs:  
   [https://huggingface.co/docs/diffusers/index](https://huggingface.co/docs/diffusers/index)
+- **[ModularDiffusers-Integration]** Alvaro Somoza (OzzyGT),
+  [*Use any model with diffusers without waiting for an official integration*](https://huggingface.co/blog/OzzyGT/using-new-models-with-modular-diffusers).
+  Optional tooling reference: revisit only if useful for parity checks in
+  Weeks 27–28 or packaging in Weeks 51–52. No assigned reading or new exercise.
+  Check current API docs and model-specific validation needs before using it.
 - **[Song-Tut]** Yang Song’s score-based tutorial hub:  
   [https://yang-song.net/blog/2021/score/](https://yang-song.net/blog/2021/score/)
 - **[Weng]** Lilian Weng blog (useful for intuition + summaries):  
