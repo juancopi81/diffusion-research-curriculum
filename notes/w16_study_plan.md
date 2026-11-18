@@ -5,7 +5,9 @@ Day 1 is complete, including Juan's read-through and approval of the
 [consolidated note](w16_hf_ddpm_training.md). Day 2 is complete on 2026-11-17,
 including Juan's read-through and approval of the
 [derivation note](w16_prediction_parameterizations.md).
-Days 3–6 have not started. The dates below are
+Day 3 is complete on 2026-11-18, including Juan's review of the
+[sampler note](w16_hf_ddpm_training.md#day-3--sampling-from-a-trained-ddpm).
+Day 4 comes next. The dates below are
 a suggested calendar for **November 16–22, 2026**. Move unfinished
 sessions forward in order if needed.
 
@@ -45,8 +47,8 @@ explain the results. The [Week 16 curriculum](../CURRICULUM.md#week-16--first-fu
 sets the scope.
 
 Build the following as the sessions progress. The training note contains
-Day 1's discussion and the derivation note contains Day 2's work; the
-notebook pair remains a planned output:
+the discussions from Days 1 and 3, and the derivation note contains Day 2's
+work:
 
 - `notes/w16_hf_ddpm_training.md`: your explanation of the objective,
   timestep conditioning, sampler, and experimental observations.
@@ -209,6 +211,11 @@ uses the matching schedule values, adds no fresh noise in the final
 transition to $x_0$, and never performs an optimizer update. Check one
 step numerically with supplied values before polishing the explanation.
 
+**Day 3 complete on 2026-11-18.** Juan traced the reverse step, corrected
+the loop indexing and final-step rule after prompts, and approved the
+[consolidated note](w16_hf_ddpm_training.md#day-3--sampling-from-a-trained-ddpm).
+The posterior-averaging connection remains pending.
+
 ### Day 4 — Build the Training Step
 
 **Starting point:** Codex prepares the notebook pair following the repo's
@@ -288,7 +295,7 @@ required this week.
 
 - [x] Explain the noise target, timestep input, and training objective.
 - [x] Review the clean/noise/score conversions and loss-weighting distinction.
-- [ ] Explain the reverse update and the final-step rule.
+- [x] Explain the reverse update and the final-step rule.
 - [ ] Complete and check the training and sampling implementations.
 - [ ] Save the run configuration, loss, per-epoch generated grids, and runtime.
 - [ ] Review the evidence and consolidated notes, recording any assistance

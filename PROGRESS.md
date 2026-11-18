@@ -3,7 +3,7 @@
 ## Current Status
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Week:** 16 🔄 — Days 1–2 complete, including learner read-through; Day 2 completed on 2026-11-17
+- **Week:** 16 🔄 — Days 1–3 complete, including learner read-through. Day 3 completed on 2026-11-18.
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
 - **Week 9 Completed:** 2026-08-25
@@ -13,7 +13,7 @@
 - **Week 13 Completed:** 2026-10-14
 - **Week 14 Completed:** 2026-10-27
 - **Week 15 Completed:** 2026-11-05
-- **Next study step:** Day 3's reverse-sampler study in the [Week 16 daily plan](notes/w16_study_plan.md).
+- **Next study step:** Day 4's training step and fixed-batch check in the [Week 16 daily plan](notes/w16_study_plan.md#day-4--build-the-training-step).
 - **Week 14 closeout:** [Day 7 completion decision](notes/w14_study_plan.md#day-7-completion-decision); all four problems, study report, and final review complete; reference use and guided corrections recorded; blog editing continues separately
 
 ---
@@ -219,13 +219,14 @@ November 16–22: six sessions totaling six active-study hours, plus a
 buffer/rest day. Study started on 2026-11-16; Day 1 is complete, including
 learner read-through and approval of the note. Day 2 completed on
 2026-11-17, including learner read-through and approval of its note.
-Days 3–6 have not started.
+Day 3 completed on 2026-11-18, including learner approval of the sampler
+note. Day 4 comes next.
 
 | Task | Status | Date | Notes |
 | --- | --- | --- | --- |
 | Day 1: training objective and timestep conditioning | ✅ | 2026-11-16 | [Discussion consolidated](notes/w16_hf_ddpm_training.md): correct opening training explanation; guided sampling-noise, fresh-draw, and timestep corrections followed by correct responses; learner read and approved the note |
 | Day 2: prediction parameterizations | ✅ | 2026-11-17 | [Derivations consolidated](notes/w16_prediction_parameterizations.md) with nine original pages: correct conversions and Gaussian-score work; supplied marginal-score identity applied correctly; factorization corrected after a hint; weighting interpreted correctly; learner read and approved the note |
-| Day 3: reverse sampling | ⬜ | — | Trace the sourced reverse update, index convention, and final-step rule |
+| Day 3: reverse sampling | ✅ | 2026-11-18 | [Sampler note](notes/w16_hf_ddpm_training.md#day-3--sampling-from-a-trained-ddpm) approved. Includes a numerical trace, pseudocode with guided indexing corrections, and three handwritten pages. Posterior averaging remains pending. |
 | Day 4: training implementation and checks | ⬜ | — | Prepare notebook pair, complete the training step, and run a short learning check |
 | Day 5: complete training-and-sampling experiment | ⬜ | — | Small MNIST run with configuration, loss, per-epoch generated grids, and runtime |
 | Day 6: evidence review and completion decision | ⬜ | — | Explain the complete system, review notes and results, and identify the Weeks 17–18 handoff |

@@ -1,9 +1,9 @@
 # Week 16 — DDPM Training and Sampling
 
-**Status:** Day 1 completed on 2026-11-16, including Juan's read-through
-and approval of this consolidated note. Week 16 is in progress;
-the parameterization derivations, sampler study, and experiment remain ahead.
-The [daily plan](w16_study_plan.md) gives the sequence.
+**Week 16 is in progress.** Day 1 was reviewed on 2026-11-16 and the
+[Day 2 derivations](w16_prediction_parameterizations.md) on 2026-11-17.
+Juan reviewed and approved the [Day 3 sampler note](#day-3--sampling-from-a-trained-ddpm)
+on 2026-11-18. The [daily plan](w16_study_plan.md) gives the sequence.
 
 ## Day 1 — My Explanation of One Training Example
 
@@ -190,3 +190,95 @@ was trained or sampler implemented today.
 **Day 1 complete:** Juan read and approved this consolidated note on
 2026-11-16. The discussion and read-through meet today's conceptual
 stopping point. Active study time was not measured.
+
+## Day 3 — Sampling from a Trained DDPM
+
+**Day 3 complete on 2026-11-18, including Juan's read-through.**
+
+### Tracing one reverse step
+
+After the sampling readings, I described starting from Gaussian noise with
+the shape of an image and working backward to $x_0$. I distinguished the
+network's predicted noise, which goes into the reverse mean, from the fresh
+noise $z$, which determines where the sample lands around that mean. Codex
+clarified two inputs in my first description. We set $t=T$ and draw
+$x_T\sim\mathcal N(0,I)$. On each step the network receives **both** the
+current image $x_t$ and its timestep $t$.
+
+I used the reverse-mean formula supplied on Day 1 to trace one scalar
+coordinate at $t>1$. The example gave $x_t=0.9$, a model prediction of
+$0.3$, $\alpha_t=0.8$, $\beta_t=0.2$, and $\bar\alpha_t=0.64$. This gave
+
+$$
+\mu_\theta(x_t,t)
+=\frac{1}{\sqrt{0.8}}\left(0.9-\frac{0.2}{\sqrt{1-0.64}}\times 0.3\right)
+=\frac{0.9-0.1}{\sqrt{0.8}}
+\approx 0.894427.
+$$
+
+In my [handwritten trace](figures/w16_day3_01_reverse_step_handwritten.png)
+I set up the mean and sampling update correctly, then made an arithmetic
+slip in the last multiplication for the mean. Codex pointed to that line
+and I recalculated it. With the supplied $\sigma_t=1/3$ and $z=-0.6$, my
+corrected sample was $x_{t-1}=0.894427-0.2\approx 0.694427$. The draw
+moved this coordinate $0.2$ below its mean.
+
+### My sampling loop, with the indexing corrected
+
+I drafted the [full loop](figures/w16_day3_02_sampling_loop_handwritten.png)
+from an open prompt. My draft initialized $x_T$ and wrote updates from
+$x_t$ to $x_{t-1}$, but started the loop at $T-1$ and ended at $0$.
+Codex pointed out the mismatch. I corrected the loop to run from $T$ down
+to $1$, and after a follow-up prompt corrected the fresh-noise condition to
+$t>1$. The blog's code index is one less than our mathematical timestep.
+Its index zero denotes the update that takes $x_1$ to $x_0$.
+[DDPM, Algorithm 2](https://arxiv.org/pdf/2006.11239#page=4) ·
+[Annotated Diffusion, Sampling](https://huggingface.co/blog/annotated-diffusion#sampling)
+
+```text
+draw x[T] from N(0, I) with the desired image shape
+for t from T down to 1 inclusive:
+    predicted_noise = trained_model(x[t], t)
+    mean = (x[t] - beta[t] * predicted_noise / sqrt(1 - alpha_bar[t])) / sqrt(alpha[t])
+    if t > 1:
+        draw fresh z from N(0, I) with the same shape as x[t]
+        x[t-1] = mean + sigma[t] * z
+    else:
+        x[0] = mean
+return x[0]
+```
+
+The trained weights stay fixed while $x_t$ and $t$ change. Each update
+uses the schedule values for the current $t$. The outer square root uses
+$\alpha_t$ for this single step, and the noise coefficient inside the mean
+uses the cumulative $\bar\alpha_t$.
+
+### The clean estimate and the open question
+
+Asked how to proceed when the original clean image is unknown, I suggested
+using $m_t(x_t)=\mathbb E[X_0\mid X_t=x_t,t]$, the mean of the possible
+clean images given this observation. When prompted to connect it to Day 2,
+I wrote the [conversion from predicted noise](figures/w16_day3_03_clean_estimate_handwritten.png).
+Codex clarified the distinction between my model's estimate and the ideal
+conditional mean. Using a hat for the estimate, my formula is
+
+$$
+\hat m_{\theta,t}(x_t)=
+\frac{x_t-\sqrt{1-\bar\alpha_t}\,\epsilon_\theta(x_t,t)}
+{\sqrt{\bar\alpha_t}}.
+$$
+
+This estimates the **clean endpoint** $x_0$. For the sampler I used
+$\mu_\theta(x_t,t)$ to take **one step** toward that endpoint.
+
+**Pending — posterior averaging.** If we knew $x_0$, the Gaussian
+posterior $q(x_{t-1}\mid x_t,x_0)$ would give us a mean for the previous
+state. Given only $x_t$, why does averaging those means over plausible
+clean images yield $\mathbb E[X_{t-1}\mid X_t=x_t,t]$? Codex supplied
+that connection at the end and I said it was still confusing. I used the
+reverse-mean formula as a reference in this session. Its derivation and
+the reason for that averaging remain open for a later discussion.
+
+I found the pace comfortable with room to propose the loop and the clean
+estimate. The indexing corrections followed hints. Active study time was
+not measured. I read and approved this note on 2026-11-18.

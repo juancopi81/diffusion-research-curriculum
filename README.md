@@ -24,8 +24,8 @@ It is divided into five phases:
 
 - **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
 - **Completed:** Phase 1 and Weeks 9–15 (Week 15 completed on 2026-11-05)
-- **Latest work:** [Week 16 Day 2](./notes/w16_prediction_parameterizations.md), completed on 2026-11-17 — Clean/noise/score relationships and implicit loss weighting, with nine original handwritten pages and assistance recorded; learner read and approved the note
-- **Next:** Day 3's reverse-sampler study in the [Week 16 daily plan — November 16–22](./notes/w16_study_plan.md). Six hours across six sessions plus a buffer/rest day. The optional cosine-schedule/blog exploration is enrichment. The checkpoint's blog editing continues separately.
+- **Latest work:** [Week 16 Day 3](./notes/w16_hf_ddpm_training.md#day-3--sampling-from-a-trained-ddpm), completed on 2026-11-18 after learner review. Includes the reverse-step trace and sampling loop. Posterior averaging remains pending.
+- **Next:** Day 4's training step and fixed-batch check in the [Week 16 daily plan — November 16–22](./notes/w16_study_plan.md). Six hours across six sessions plus a buffer/rest day. The optional cosine-schedule/blog exploration is enrichment. The checkpoint's blog editing continues separately.
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 
