@@ -7,7 +7,9 @@ including Juan's read-through and approval of the
 [derivation note](w16_prediction_parameterizations.md).
 Day 3 is complete on 2026-11-18, including Juan's review of the
 [sampler note](w16_hf_ddpm_training.md#day-3--sampling-from-a-trained-ddpm).
-Day 4 comes next. The dates below are
+Day 4 is complete on 2026-11-19, including Juan's review of the
+[training note](w16_hf_ddpm_training.md#day-4--training-on-a-fixed-mnist-batch).
+Day 5 comes next. The dates below are
 a suggested calendar for **November 16–22, 2026**. Move unfinished
 sessions forward in order if needed.
 
@@ -47,7 +49,7 @@ explain the results. The [Week 16 curriculum](../CURRICULUM.md#week-16--first-fu
 sets the scope.
 
 Build the following as the sessions progress. The training note contains
-the discussions from Days 1 and 3, and the derivation note contains Day 2's
+the discussions from Days 1, 3, and 4, and the derivation note contains Day 2's
 work:
 
 - `notes/w16_hf_ddpm_training.md`: your explanation of the objective,
@@ -236,6 +238,13 @@ it does not establish generation quality.
 **Stop when:** the training step works and the notebook can construct a
 noisy batch, predict its noise, compute MSE, and update parameters. Retain
 the completed exercises and actual observations in the working notebook.
+
+**Day 4 complete on 2026-11-19.** Juan completed the training
+exercises. A fresh rerun reproduced the fixed-batch MSE decrease from
+0.9683 to 0.6795. The
+[Day 4 note](w16_hf_ddpm_training.md#day-4--training-on-a-fixed-mnist-batch)
+records his explanation of broadcasting and what the check establishes.
+Juan read and approved the note.
 
 ### Day 5 — Train, Then Generate from Noise
 

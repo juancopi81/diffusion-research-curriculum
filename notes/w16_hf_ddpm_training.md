@@ -3,7 +3,8 @@
 **Week 16 is in progress.** Day 1 was reviewed on 2026-11-16 and the
 [Day 2 derivations](w16_prediction_parameterizations.md) on 2026-11-17.
 Juan reviewed and approved the [Day 3 sampler note](#day-3--sampling-from-a-trained-ddpm)
-on 2026-11-18. The [daily plan](w16_study_plan.md) gives the sequence.
+on 2026-11-18 and the [Day 4 training note](#day-4--training-on-a-fixed-mnist-batch)
+on 2026-11-19. The [daily plan](w16_study_plan.md) gives the sequence.
 
 ## Day 1 — My Explanation of One Training Example
 
@@ -282,3 +283,40 @@ the reason for that averaging remain open for a later discussion.
 I found the pace comfortable with room to propose the loop and the clean
 estimate. The indexing corrections followed hints. Active study time was
 not measured. I read and approved this note on 2026-11-18.
+
+## Day 4 — Training on a Fixed MNIST Batch
+
+**Day 4 complete on 2026-11-19, including Juan's read-through.**
+
+In the [working notebook](../notebooks/w16_train_tiny_ddpm_mnist_solved.ipynb),
+I completed the two exercises. I drew one timestep per image and Gaussian
+noise with the same shape as the clean batch. I used the forward equation
+to make $x_t$ and kept that noise as the target. The training step predicts
+noise from $x_t$ and $t$, computes MSE, clears gradients before backpropagation,
+and updates the model with Adam.
+
+### One schedule coefficient per image
+
+When we traced my code together, I identified the output shape of
+$\bar\alpha_t$ after the lookup and reshape as $(16,1,1,1)$. It lines up with
+the image batch $(16,1,28,28)$. The batch dimensions already agree, and
+broadcasting applies each image's scalar across its pixels. Codex clarified
+that the lookup first returns shape $(16,)$ and that broadcasting behaves
+as if the scalar were repeated without storing the copies.
+
+### What the fixed batch showed
+
+On CPU, the check used seed 16 for data selection and model initialization
+and seed 17 for corruption. It held 16 clean images, their sampled
+timesteps, and their noise targets fixed across 20 optimizer updates.
+The shape, finiteness, and gradient checks passed, and the optimizer
+changed the model parameters. Noise MSE fell from **0.9683 to 0.6795**.
+Codex reran all code cells from a fresh Python session and reproduced
+that result.
+
+Asked what the result showed, I explained that the model got better at
+predicting the noise on that same batch, which shows that the training step
+can improve the objective. For Day 5, I want to see whether we can start
+from pure noise and generate recognizable digits using the reverse loop.
+
+I read and approved this note on 2026-11-19. Active study time was not measured.

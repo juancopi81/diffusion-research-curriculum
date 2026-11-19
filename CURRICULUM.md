@@ -153,8 +153,10 @@ Next:
   is complete, including learner read-through. [Day 2's derivations](./notes/w16_prediction_parameterizations.md)
   and learner read-through completed on 2026-11-17.
   [Day 3's sampler study](./notes/w16_hf_ddpm_training.md#day-3--sampling-from-a-trained-ddpm)
-  completed on 2026-11-18 after learner review. Day 4 covers the training step.
-  Optional cosine-schedule enrichment is separate.
+  completed on 2026-11-18 after learner review.
+  [Day 4's training-step check](./notes/w16_hf_ddpm_training.md#day-4--training-on-a-fixed-mnist-batch)
+  and learner review completed on 2026-11-19. Day 5 covers sampling from
+  the trained model. Optional cosine-schedule enrichment is separate.
 
 See [PROGRESS.md](./PROGRESS.md) for completion dates and artifact links.
 
@@ -640,7 +642,9 @@ recorded separately; the dates are flexible. Study started on 2026-11-16:
 Day 1 is complete, including learner read-through and approval of the note.
 Day 2's prediction relationships, weighting discussion, and learner
 read-through completed on 2026-11-17. Day 3's sampling trace, pseudocode,
-and read-through completed on 2026-11-18. Posterior averaging remains pending.
+and read-through completed on 2026-11-18. Day 4's training implementation,
+fixed-batch check, and read-through completed on 2026-11-19.
+Posterior averaging remains pending.
 
 - S1:
   - **[HF-DiffCourse]** Unit 1 sections on the training objective, timestep
