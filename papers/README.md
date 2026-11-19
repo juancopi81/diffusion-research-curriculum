@@ -18,6 +18,7 @@ not yet belong in the core curriculum.
 | Radar | Kumbong et al., [*Next-Concept Modeling: Fast, Parallel Coarse-to-Fine Text Generation*](https://arxiv.org/abs/2610.14162v1) | Connects learned discrete representations, hierarchical generation, and sampling efficiency; a useful comparison with diffusion language models. | After the Weeks 19–20 DDPM/DDIM comparison, with a short VQ-VAE and discrete text-diffusion primer. |
 | Radar | Jia et al., [*LLaCO: Continuous Diffusion for Large Language Models with Competition-Aware Semantic Scheduling*](https://arxiv.org/abs/2610.32604v1) | Connects embedding geometry, token identity loss, and noise scheduling; a direct diffusion-language-model companion. | After the Weeks 23–24 schedule ablations, with a short primer on normalized token embeddings and continuous text diffusion. |
 | Radar | Hoover et al., [*Classical Energies Learn to Reason 1,000x Faster than Looped Models*](https://arxiv.org/abs/2611.17309v1) | Energy-based inference, local constraint learning, and a useful warning about what reasoning benchmarks establish. | After the Weeks 33–34 score-SDE work, with a short primer on Hopfield networks and pairwise energy models. |
+| Radar | Patel, [*Tessera-small*](https://huggingface.co/thejagstudio/tessera-small) (model and demo) | Makes discrete diffusion visible through confidence-guided unmasking of palette tokens on a 16×16 sprite. | After the Weeks 19–20 DDPM/DDIM comparison, trace one sprite through its sampling rounds. |
 | Radar | Zhou et al., [*Transfusion: Predict the Next Token and Diffuse Images with One Multi-Modal Model*](https://arxiv.org/abs/2408.11039) | Shows how next-token text prediction and image diffusion can share a transformer; connects the curriculum to multimodal systems. | After the Weeks 25–26 architecture bridge, if a question about combining objectives warrants optional follow-up. |
 | Radar | Chefer et al., [*Self-Supervised Flow Matching for Scalable Multi-Modal Synthesis*](https://bfl.ai/techblog/self-flow/index.html) (Self-Flow) | Connects representation learning with flow-based generation across images, video, and audio. | After the Weeks 39–40 bridge report, if representation learning is relevant to the later project choice. |
 | Radar | Black et al., [*π₀: A Vision-Language-Action Flow Model for General Robot Control*](https://arxiv.org/abs/2410.24164) | Connects a pretrained vision-language model to flow-based action generation; helps distinguish a policy from a predictive world model. | After the Weeks 39–40 bridge report, if action generation or robotics remains an interest. |
@@ -214,3 +215,23 @@ qualifications:
 Revisit after the Weeks 33–34 score-SDE work, with a short Hopfield/pairwise-energy
 primer. First question: which benefits come from the learned energy, the search
 procedure, and the task structure? Keep this as optional enrichment on the radar.
+
+### Tessera-small
+
+Initial review on 2026-11-19 of Jagrat Patel's model card and sampler, following
+[Sayak Paul's post](https://x.com/RisingSayak/status/2123427418367266990).
+Each pixel is a token from a learned 512-entry palette, including transparency.
+The text-conditioned model starts with all 256 pixels masked. In each round,
+it proposes colors in parallel and commits a subset based on confidence. A
+cosine schedule controls how many positions stay masked over roughly 16 rounds.
+[Model card](https://huggingface.co/thejagstudio/tessera-small) ·
+[Sampler source](https://huggingface.co/spaces/thejagstudio/tessera-pixel-studio/blob/main/tessera/sampler.py)
+
+After the Weeks 19–20 DDPM/DDIM comparison, use the browser demo to trace one
+sprite and compare it with the [Week 16 reverse loop](../notes/w16_hf_ddpm_training.md#day-3--sampling-from-a-trained-ddpm).
+In DDPM the state is a noisy real-valued image at each step. In Tessera it is a
+partially filled grid of color tokens. Ask which decisions the schedule makes
+(how many pixels to reveal) and which the model's predictions guide (where and
+what to reveal). The model card reports 47.6M parameters and about 5.5 hours of
+training on an RTX PRO 6000 Blackwell using 1.4M sprites. Start with the demo and
+sampler walkthrough. [Slack Moji demo](https://huggingface.co/spaces/cfahlgren1/slack-moji)
