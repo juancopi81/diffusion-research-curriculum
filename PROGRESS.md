@@ -14,7 +14,7 @@
 - **Week 13 Completed:** 2026-10-14
 - **Week 14 Completed:** 2026-10-27
 - **Week 15 Completed:** 2026-11-05
-- **Next study step:** Start the [Weeks 17–18 DDPM baseline](CURRICULUM.md#weeks-1718--ddpm-from-scratch-clean-baseline).
+- **Next study step:** [Week 17, Day 1](notes/w17_study_plan.md#day-1--read-the-algorithms-through-the-notebook) maps DDPM Algorithms 1 and 2 to the Week 16 notebook.
 - **Week 14 closeout:** [Day 7 completion decision](notes/w14_study_plan.md#day-7-completion-decision); all four problems, study report, and final review complete; reference use and guided corrections recorded; blog editing continues separately
 
 ---
@@ -234,6 +234,17 @@ Day 6's synthesis and learner review closed Week 16 on 2026-11-22.
 | Day 4: training implementation and checks | ✅ | 2026-11-19 | [Working notebook](notebooks/w16_train_tiny_ddpm_mnist_solved.ipynb) reran successfully. Fixed-batch MSE fell from 0.9683 to 0.6795 in 20 updates. Juan read and approved the [discussion note](notes/w16_hf_ddpm_training.md#day-4--training-on-a-fixed-mnist-batch). |
 | Day 5: complete training-and-sampling experiment | ✅ | 2026-11-20 | [Experiment and checks](notes/w16_hf_ddpm_training.md#day-5--training-and-generating-from-noise). The 30-epoch run saved loss curves, 16 samples per epoch, and runtimes. Later grids show clearer strokes but mostly fragmented digits. |
 | Day 6: evidence review and completion decision | ✅ | 2026-11-22 | Juan explained the workflow, interpreted the saved run, proposed a wider-context denoiser comparison, and approved the [recap and handoff](notes/w16_hf_ddpm_training.md#day-6--reviewing-the-ddpm-workflow). |
+
+---
+
+## Phase 3 — Diffusion in Depth
+
+### Week 17 — DDPM Paper and First Nano-Diffusion Baseline ⬜
+
+The [day-by-day plan](notes/w17_study_plan.md) covers November 23–29, 2026.
+The first sessions connect the reverse posterior and objective to the
+working notebook. The second half extracts and checks a short baseline
+run from a fresh process. Study begins with Day 1.
 
 ---
 

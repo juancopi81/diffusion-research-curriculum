@@ -162,7 +162,7 @@ Completed:
 Next:
 
 - **Weeks 17–18:** establish the [clean DDPM baseline](#weeks-1718--ddpm-from-scratch-clean-baseline)
-  in Nano-Diffusion.
+  in Nano-Diffusion. Start with the [Week 17 daily plan](./notes/w17_study_plan.md).
 
 See [PROGRESS.md](./PROGRESS.md) for completion dates and artifact links.
 
@@ -692,7 +692,19 @@ pieces into Nano-Diffusion.
 **Phase goal:** build **Nano-Diffusion** into a clean, reproducible baseline and learn the “engineering moves”
 (schedules, EMA, sampling variants, conditioning, evaluation) by improving the same small system.
 
+**Optional from Week 17 onward.** When a question comes up during study, consider
+whether an agent could investigate it while you continue the planned work. Keep
+your own first attempt when the question is part of what you’re learning. Bring
+a finding into the next regular review only if you can check the evidence and
+it changes how you understand a result or what you would do next. A week can
+pass without using this option.
+
 ### Weeks 17–18 — DDPM from scratch (clean baseline)
+
+Follow the [Week 17 daily plan](./notes/w17_study_plan.md) for November
+23–29, 2026. Week 17 connects the paper to the notebook and checks a short
+run from a fresh process. Week 18 adds EMA and finishes the run records
+and baseline.
 
 - S1:
   - Read **[DDPM]** (focus on algorithm + objective)

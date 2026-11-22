@@ -24,7 +24,7 @@ It is divided into five phases:
 
 - **Completed:** Phases 1–2, through Week 16 on 2026-11-22.
 - **Latest work:** [Week 16 closeout](./notes/w16_hf_ddpm_training.md#day-6--reviewing-the-ddpm-workflow). The tiny DDPM trained on MNIST and generated grids from Gaussian noise. The review records the results and the pieces to reuse.
-- **Next:** Phase 3 starts with the [Weeks 17–18 DDPM baseline](./CURRICULUM.md#weeks-1718--ddpm-from-scratch-clean-baseline). The optional cosine-schedule exploration and checkpoint blog work continue separately.
+- **Next:** Phase 3 starts with the [Week 17 daily plan](./notes/w17_study_plan.md) for November 23–29. It connects the DDPM paper to a small, reproducible Nano-Diffusion baseline.
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 
