@@ -144,8 +144,6 @@ Completed:
   [closeout](./notes/w15_forward_process_discrete.md#day-6--consolidating-the-forward-process-and-closing-week-15)
   preserves notes-closed recall, prompted interpretation, and added explanations.
 
-Next:
-
 - **Week 16:** first timestep-conditioned denoiser and reverse sampler,
   connecting noise prediction, clean prediction, and score prediction.
   The [daily plan](./notes/w16_study_plan.md) schedules November 16–22, 2026.
@@ -157,8 +155,14 @@ Next:
   [Day 4's training-step check](./notes/w16_hf_ddpm_training.md#day-4--training-on-a-fixed-mnist-batch)
   and learner review completed on 2026-11-19.
   [Day 5's MNIST experiment](./notes/w16_hf_ddpm_training.md#day-5--training-and-generating-from-noise)
-  completed on 2026-11-20. Day 6 reviews the workflow and results.
-  Optional cosine-schedule enrichment is separate.
+  completed on 2026-11-20. Juan approved the
+  [Day 6 review](./notes/w16_hf_ddpm_training.md#day-6--reviewing-the-ddpm-workflow)
+  on 2026-11-22, completing Week 16 and Phase 2.
+
+Next:
+
+- **Weeks 17–18:** establish the [clean DDPM baseline](#weeks-1718--ddpm-from-scratch-clean-baseline)
+  in Nano-Diffusion.
 
 See [PROGRESS.md](./PROGRESS.md) for completion dates and artifact links.
 
@@ -647,7 +651,9 @@ read-through completed on 2026-11-17. Day 3's sampling trace, pseudocode,
 and read-through completed on 2026-11-18. Day 4's training implementation,
 fixed-batch check, and read-through completed on 2026-11-19.
 Day 5's sampler and 30-epoch MNIST experiment completed on 2026-11-20.
-The posterior-variance derivation and posterior averaging remain pending.
+Day 6's workflow and evidence review completed on 2026-11-22, closing
+Week 16. The posterior-variance derivation and posterior averaging remain
+open for follow-up.
 
 - S1:
   - **[HF-DiffCourse]** Unit 1 sections on the training objective, timestep

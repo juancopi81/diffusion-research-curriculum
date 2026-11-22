@@ -22,10 +22,9 @@ It is divided into five phases:
 
 ## 🚀 Current Progress
 
-- **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Completed:** Phase 1 and Weeks 9–15 (Week 15 completed on 2026-11-05)
-- **Latest work:** [Week 16 Day 5](./notes/w16_hf_ddpm_training.md#day-5--training-and-generating-from-noise), completed on 2026-11-20. The tiny DDPM trained on MNIST and generated grids from Gaussian noise. Later samples show clearer strokes and often remain fragmented.
-- **Next:** [Day 6 review](./notes/w16_study_plan.md#day-6--explain-the-whole-path-and-close-the-week) of the full workflow and saved experiment. The optional cosine-schedule/blog exploration is enrichment. The checkpoint's blog editing continues separately.
+- **Completed:** Phases 1–2, through Week 16 on 2026-11-22.
+- **Latest work:** [Week 16 closeout](./notes/w16_hf_ddpm_training.md#day-6--reviewing-the-ddpm-workflow). The tiny DDPM trained on MNIST and generated grids from Gaussian noise. The review records the results and the pieces to reuse.
+- **Next:** Phase 3 starts with the [Weeks 17–18 DDPM baseline](./CURRICULUM.md#weeks-1718--ddpm-from-scratch-clean-baseline). The optional cosine-schedule exploration and checkpoint blog work continue separately.
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 

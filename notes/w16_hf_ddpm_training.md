@@ -1,12 +1,13 @@
 # Week 16 — DDPM Training and Sampling
 
-**Week 16 is in progress.** Day 1 was reviewed on 2026-11-16 and the
+**Week 16 completed on 2026-11-22.** Day 1 was reviewed on 2026-11-16 and the
 [Day 2 derivations](w16_prediction_parameterizations.md) on 2026-11-17.
 Juan reviewed and approved the [Day 3 sampler note](#day-3--sampling-from-a-trained-ddpm)
 on 2026-11-18 and the [Day 4 training note](#day-4--training-on-a-fixed-mnist-batch)
 on 2026-11-19. The [Day 5 MNIST run](#day-5--training-and-generating-from-noise)
-is complete as of 2026-11-20. The [daily plan](w16_study_plan.md) gives the
-sequence.
+is complete as of 2026-11-20. Juan read and approved the
+[Day 6 review](#day-6--reviewing-the-ddpm-workflow) on 2026-11-22.
+The [daily plan](w16_study_plan.md) gives the sequence.
 
 ## Day 1 — My Explanation of One Training Example
 
@@ -372,3 +373,63 @@ training and generation from Gaussian noise. Consistent production of
 recognizable digits remains an open empirical question.
 
 Active study time was not measured.
+
+## Day 6 — Reviewing the DDPM Workflow
+
+**Day 6 complete on 2026-11-22, including Juan's read-through and approval.**
+
+### Explanation from memory
+
+In my first answer, I described making training pairs by sampling a timestep
+and Gaussian noise and using the direct corruption formula. That gives us
+$x_t$ and the exact noise target. I feed $x_t$ and $t$ into the model,
+compare the predicted noise with the draw I used, and backpropagate the
+loss to update the weights.
+
+For generation, I start at $t=T$ with a standard Gaussian image and work
+backward. The predicted noise gives me the reverse mean through our
+schedule. A separate draw $z$ samples around that mean. I remembered
+setting $z=0$ for the last update. Codex clarified that the step runs at
+$t=1$, with $x_1$ as the input and $x_0$ as the output, and that fresh
+noise is scaled by the square root of the chosen variance.
+
+On follow-up prompts, I explained that $t$ tells the network the corruption
+level and tells the sampler which coefficients to look up. I also recalled
+how to estimate the clean image by subtracting
+$\sqrt{1-\bar\alpha_t}\,\epsilon_\theta(x_t,t)$ from $x_t$ and dividing by
+$\sqrt{\bar\alpha_t}$. These answers followed questions from Codex.
+
+### What I see in the experiment
+
+Looking at the saved noise loss and the epoch 30 grid, I see that the
+model gets better at predicting noise during training. I also see white
+strokes and loops on dark backgrounds. Some suggest a 4 or a 2, but I
+still have trouble seeing clear MNIST digits. Codex clarified that this
+describes the observed output of the trained model and sampler together.
+The grid alone leaves the cause of the fragmented shapes uncertain.
+
+### What I would test next
+
+I would start by changing the denoiser. My question was how much of the
+input can influence each output pixel. After Codex reviewed dilation and
+supplied the width rule for stride 1, I traced the three layers. Each uses
+a $3\times3$ kernel. The first layer sees $3\times3$. The middle layer
+has dilation 2 and expands the footprint to $7\times7$. The final layer
+expands it to $9\times9$. This is the nominal receptive field per output
+pixel in one call. Near the image boundaries, part of the footprint
+lies in the padding.
+
+**Comparison proposed in discussion.** Try a denoiser with wider spatial
+context and keep the data subset, training budget, schedule, and sampling
+seed fixed. Compare the same grid positions for more connected strokes and
+recognizable whole digits. The receptive field gives us a hypothesis
+for this test.
+
+### Handoff to Weeks 17–18
+
+The notebook's schedule and coefficient lookup, forward batch construction,
+TinyDenoiser, optimizer update, and reverse-step and sampling functions are
+the starting pieces for a shared baseline. Keep the sampler checks and the
+current MNIST run as references. The posterior-variance derivation,
+posterior averaging, and whether wider context improves the grids remain
+open. Active study time was not measured.

@@ -1,6 +1,6 @@
 # Week 16 — Train and Sample a Tiny DDPM: Study Plan
 
-**Status:** Prepared on 2026-11-13; Week 16 started on 2026-11-16.
+**Status:** Week 16 ran from 2026-11-16 through 2026-11-22 and is complete.
 Day 1 is complete, including Juan's read-through and approval of the
 [consolidated note](w16_hf_ddpm_training.md). Day 2 is complete on 2026-11-17,
 including Juan's read-through and approval of the
@@ -11,9 +11,10 @@ Day 4 is complete on 2026-11-19, including Juan's review of the
 [training note](w16_hf_ddpm_training.md#day-4--training-on-a-fixed-mnist-batch).
 Day 5 is complete on 2026-11-20, with the
 [training and generation run](w16_hf_ddpm_training.md#day-5--training-and-generating-from-noise)
-saved in the working notebook. Day 6 comes next. The dates below are
-a suggested calendar for **November 16–22, 2026**. Move unfinished
-sessions forward in order if needed.
+saved in the working notebook. Day 6 is complete on 2026-11-22 after
+Juan's review of the
+[workflow recap and handoff](w16_hf_ddpm_training.md#day-6--reviewing-the-ddpm-workflow).
+The dates below reflect the original suggested calendar.
 
 **Pacing:** Six sessions totaling **six hours of active study**, plus Sunday
 for rest or up to 45 minutes of catch-up. This is one hour more than Week
@@ -308,6 +309,12 @@ Identify the forward helpers, model, training step, and sampler that can
 become shared code in Weeks 17–18. No extraction or new framework is
 required this week.
 
+**Day 6 complete on 2026-11-22.** Juan explained training and sampling,
+interpreted the loss and the epoch 30 grid, and proposed testing a denoiser
+with a wider receptive field. He read and approved the consolidated
+review. The posterior-variance derivation and posterior averaging carry
+forward as open questions.
+
 ## Completion Checks
 
 - [x] Explain the noise target, timestep input, and training objective.
@@ -315,7 +322,7 @@ required this week.
 - [x] Explain the reverse update and the final-step rule.
 - [x] Complete and check the training and sampling implementations.
 - [x] Save the run configuration, loss, per-epoch generated grids, and runtime.
-- [ ] Review the evidence and consolidated notes, recording any assistance
+- [x] Review the evidence and consolidated notes, recording any assistance
   and unresolved items before deciding whether Week 16 is complete.
 
 Update progress from work actually completed. Preparing this plan does

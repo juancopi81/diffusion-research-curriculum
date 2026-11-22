@@ -2,10 +2,11 @@
 
 ## Current Status
 
-- **Phase:** 2 (Linear Algebra + Generative Modeling Basics)
-- **Week:** 16 🔄 — Days 1–5 complete. Day 5 completed on 2026-11-20.
+- **Phase:** 2 complete. Phase 3 is next.
+- **Week:** 16 ✅ — completed on 2026-11-22.
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
+- **Phase 2 Completed:** 2026-11-22
 - **Week 9 Completed:** 2026-08-25
 - **Week 10 Completed:** 2026-09-04
 - **Week 11 Completed:** 2026-09-15
@@ -13,7 +14,7 @@
 - **Week 13 Completed:** 2026-10-14
 - **Week 14 Completed:** 2026-10-27
 - **Week 15 Completed:** 2026-11-05
-- **Next study step:** Review the full DDPM workflow and the experiment evidence on [Day 6](notes/w16_study_plan.md#day-6--explain-the-whole-path-and-close-the-week).
+- **Next study step:** Start the [Weeks 17–18 DDPM baseline](CURRICULUM.md#weeks-1718--ddpm-from-scratch-clean-baseline).
 - **Week 14 closeout:** [Day 7 completion decision](notes/w14_study_plan.md#day-7-completion-decision); all four problems, study report, and final review complete; reference use and guided corrections recorded; blog editing continues separately
 
 ---
@@ -212,7 +213,7 @@ Codex's explanations. Optional cosine/blog enrichment does not block Week 16.
 
 ---
 
-### Week 16 — First Full Toy Diffusion Training 🔄
+### Week 16 — First Full Toy Diffusion Training ✅
 
 The [daily plan](notes/w16_study_plan.md) was prepared on 2026-11-13 for
 November 16–22: six sessions totaling six active-study hours, plus a
@@ -223,6 +224,7 @@ Day 3 completed on 2026-11-18, including learner approval of the sampler
 note. Day 4 completed on 2026-11-19 after the training checks, discussion,
 and learner review of the note. Day 5 completed on 2026-11-20 with the
 verified sampler and a saved run from training through image generation.
+Day 6's synthesis and learner review closed Week 16 on 2026-11-22.
 
 | Task | Status | Date | Notes |
 | --- | --- | --- | --- |
@@ -231,7 +233,7 @@ verified sampler and a saved run from training through image generation.
 | Day 3: reverse sampling | ✅ | 2026-11-18 | [Sampler note](notes/w16_hf_ddpm_training.md#day-3--sampling-from-a-trained-ddpm) approved. Includes a numerical trace, pseudocode with guided indexing corrections, and three handwritten pages. Posterior averaging remains pending. |
 | Day 4: training implementation and checks | ✅ | 2026-11-19 | [Working notebook](notebooks/w16_train_tiny_ddpm_mnist_solved.ipynb) reran successfully. Fixed-batch MSE fell from 0.9683 to 0.6795 in 20 updates. Juan read and approved the [discussion note](notes/w16_hf_ddpm_training.md#day-4--training-on-a-fixed-mnist-batch). |
 | Day 5: complete training-and-sampling experiment | ✅ | 2026-11-20 | [Experiment and checks](notes/w16_hf_ddpm_training.md#day-5--training-and-generating-from-noise). The 30-epoch run saved loss curves, 16 samples per epoch, and runtimes. Later grids show clearer strokes but mostly fragmented digits. |
-| Day 6: evidence review and completion decision | ⬜ | — | Explain the complete system, review notes and results, and identify the Weeks 17–18 handoff |
+| Day 6: evidence review and completion decision | ✅ | 2026-11-22 | Juan explained the workflow, interpreted the saved run, proposed a wider-context denoiser comparison, and approved the [recap and handoff](notes/w16_hf_ddpm_training.md#day-6--reviewing-the-ddpm-workflow). |
 
 ---
 
