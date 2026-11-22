@@ -9,7 +9,9 @@ Day 3 is complete on 2026-11-18, including Juan's review of the
 [sampler note](w16_hf_ddpm_training.md#day-3--sampling-from-a-trained-ddpm).
 Day 4 is complete on 2026-11-19, including Juan's review of the
 [training note](w16_hf_ddpm_training.md#day-4--training-on-a-fixed-mnist-batch).
-Day 5 comes next. The dates below are
+Day 5 is complete on 2026-11-20, with the
+[training and generation run](w16_hf_ddpm_training.md#day-5--training-and-generating-from-noise)
+saved in the working notebook. Day 6 comes next. The dates below are
 a suggested calendar for **November 16–22, 2026**. Move unfinished
 sessions forward in order if needed.
 
@@ -17,8 +19,8 @@ sessions forward in order if needed.
 for rest or up to 45 minutes of catch-up. This is one hour more than Week
 15's planned budget because this week adds both training and generation.
 Reading, discussion, and reviewing cleaned notes are included. Computer run
-time is separate and should be measured; the proposed training settings
-have not yet been timed. Stop at the budget and carry a specific unfinished
+time is recorded separately in the experiment note. Stop at the budget
+and carry a specific unfinished
 item forward.
 
 ## Where We Are
@@ -49,7 +51,7 @@ explain the results. The [Week 16 curriculum](../CURRICULUM.md#week-16--first-fu
 sets the scope.
 
 Build the following as the sessions progress. The training note contains
-the discussions from Days 1, 3, and 4, and the derivation note contains Day 2's
+the discussions from Days 1 and 3–5, and the derivation note contains Day 2's
 work:
 
 - `notes/w16_hf_ddpm_training.md`: your explanation of the objective,
@@ -281,6 +283,12 @@ Gaussian noise; reconstructions of supplied clean digits are a different
 diagnostic. Inspect recognizability, diversity, and failure cases without
 assuming that lower training loss guarantees better samples.
 
+**Day 5 complete on 2026-11-20.** Juan implemented and checked the
+sampler, then saved the configured 30-epoch CPU run with a loss plot,
+16 samples per epoch, and separate training and sampling times. The
+[experiment note](w16_hf_ddpm_training.md#day-5--training-and-generating-from-noise)
+records the guided corrections and the changes in the generated grids.
+
 ### Day 6 — Explain the Whole Path and Close the Week
 
 Use five minutes for an explanation with notes initially closed, 20 to
@@ -305,8 +313,8 @@ required this week.
 - [x] Explain the noise target, timestep input, and training objective.
 - [x] Review the clean/noise/score conversions and loss-weighting distinction.
 - [x] Explain the reverse update and the final-step rule.
-- [ ] Complete and check the training and sampling implementations.
-- [ ] Save the run configuration, loss, per-epoch generated grids, and runtime.
+- [x] Complete and check the training and sampling implementations.
+- [x] Save the run configuration, loss, per-epoch generated grids, and runtime.
 - [ ] Review the evidence and consolidated notes, recording any assistance
   and unresolved items before deciding whether Week 16 is complete.
 

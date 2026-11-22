@@ -4,7 +4,9 @@
 [Day 2 derivations](w16_prediction_parameterizations.md) on 2026-11-17.
 Juan reviewed and approved the [Day 3 sampler note](#day-3--sampling-from-a-trained-ddpm)
 on 2026-11-18 and the [Day 4 training note](#day-4--training-on-a-fixed-mnist-batch)
-on 2026-11-19. The [daily plan](w16_study_plan.md) gives the sequence.
+on 2026-11-19. The [Day 5 MNIST run](#day-5--training-and-generating-from-noise)
+is complete as of 2026-11-20. The [daily plan](w16_study_plan.md) gives the
+sequence.
 
 ## Day 1 — My Explanation of One Training Example
 
@@ -320,3 +322,53 @@ can improve the objective. For Day 5, I want to see whether we can start
 from pure noise and generate recognizable digits using the reverse loop.
 
 I read and approved this note on 2026-11-19. Active study time was not measured.
+
+## Day 5 — Training and Generating from Noise
+
+**Day 5 complete on 2026-11-20.** Juan implemented the reverse step,
+sampling loop, and epoch loop in the
+[working notebook](../notebooks/w16_train_tiny_ddpm_mnist_solved.ipynb).
+
+### Sampler implementation and checks
+
+The first reverse step used the cumulative $\bar\alpha_t$ in the
+outer denominator of the mean, branched on a batch of timestep labels,
+and used $\beta_t$ as its variance. After Codex's review, Juan used the
+single-step $\alpha_t$ for that denominator, kept a scalar timestep for
+the branch and a batch of labels for the model, and used the supplied
+fixed posterior variance $\tilde\beta_t$. The revised step reproduced
+the Day 3 result of $0.694427$ for each image in a two-image test and
+returned the mean at $t=1$ without drawing fresh noise.
+
+Juan's loop started with Gaussian noise and carried the output of each
+reverse step into the next one. He made the sample count an argument
+after review. Codex verified the seeded Gaussian start, the full timestep
+sequence, finite image-shaped output, and unchanged model weights.
+The posterior-variance derivation and the posterior-averaging
+connection remain open.
+
+### Saved MNIST run
+
+| Setting | Value |
+| --- | --- |
+| Data | 5,000 MNIST training images at $28\times28$, scaled to $[-1,1]$ |
+| Model and optimizer | TinyDenoiser with 2,929 parameters, Adam at $10^{-3}$, batch size 64 |
+| Forward schedule | 1,000 linear steps, $\beta_t$ from $10^{-4}$ to $0.02$ |
+| Training | CPU, 30 epochs, 2,370 optimizer updates |
+| Seeds and grids | Seed 16 for setup and training. Reset sampling seed 16 for each 16-image grid. |
+| Runtime | About 62.2 s training and 51.9 s sampling, summed from the per-epoch logs |
+
+The notebook retains the batch and epoch noise-MSE curves and one grid
+per epoch. Mean batch MSE by epoch was **0.4860** at epoch 1, **0.2044**
+at epoch 2, **0.0610** at epoch 20, and **0.0543** at epoch 30. Codex
+reran the updated notebook with a two-epoch configuration in memory and
+reproduced the first two losses and the loss plot for that run.
+
+**Visual review by Codex.** Epoch 2 shows mostly broad patches. Later
+grids show darker backgrounds and brighter, more defined strokes.
+At epoch 30, most samples still contain fragments or disconnected marks,
+with a few shapes resembling parts of digits. The run demonstrates
+training and generation from Gaussian noise. Consistent production of
+recognizable digits remains an open empirical question.
+
+Active study time was not measured.
