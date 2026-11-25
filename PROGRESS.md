@@ -247,9 +247,9 @@ study conversation and handwritten derivation.
 
 | Session | Status | Study record |
 | --- | --- | --- |
-| Day 1 — Algorithms 1 and 2 | ✅ | [Notebook walkthrough](notes/w17_ddpm_posterior_and_objective.md#day-1--reading-the-algorithms-through-the-notebook). Juan traced the noise target, Gaussian initialization, reverse mean, and final step. |
-| Day 2 — Clean-conditioned posterior | ✅ | [Derivation and corrections](notes/w17_ddpm_posterior_and_objective.md#day-2--deriving-the-clean-conditioned-posterior). Juan matched Gaussian coefficients with prompts, checked Equation 7, and discussed the clean boundary and pixelwise covariance. |
-| Day 3 — Reverse mean and noise objective | ✅ | Juan connected posterior averaging to predicted noise, simplified the reverse mean with prompts, and explained how timestep weighting changes the contribution of equal errors. [Derivation and loss comparison](notes/w17_ddpm_posterior_and_objective.md#day-3--averaging-over-possible-clean-images) |
+| Day 1 — Algorithms 1 and 2 | ✅ | [Notebook walkthrough](proofs/w17_ddpm_worked_derivation.md#day-1--reading-the-algorithms-through-the-notebook). Juan traced the noise target, Gaussian initialization, reverse mean, and final step. |
+| Day 2 — Clean-conditioned posterior | ✅ | [Derivation and corrections](proofs/w17_ddpm_worked_derivation.md#day-2--deriving-the-clean-conditioned-posterior). Juan matched Gaussian coefficients with prompts, checked Equation 7, and discussed the clean boundary and pixelwise covariance. |
+| Day 3 — Reverse mean and noise objective | ✅ | Juan connected posterior averaging to predicted noise, simplified the reverse mean with prompts, and explained how timestep weighting changes the contribution of equal errors. [Derivation and loss comparison](proofs/w17_ddpm_worked_derivation.md#day-3--averaging-over-possible-clean-images) |
 
 ---
 

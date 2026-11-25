@@ -1,109 +1,67 @@
 # Week 17 — The DDPM Posterior and Objective
 
-Days 1–3 are complete. This note follows Juan’s work from the paper-to-code walkthrough through the posterior derivation and the noise-prediction objective, with the original handwritten attempts and corrections. [Week 17 plan](w17_study_plan.md)
+During training, both the clean image and the noise added to it are known. During generation, the sampler has only the current noisy image and its timestep. How can a network trained to predict noise tell the sampler where to go next? The link is the mean of the previous state given the current one. [Worked derivation and handwritten pages](../proofs/w17_ddpm_worked_derivation.md)
 
 ## Day 1 — Reading the algorithms through the notebook
 
-With the notebook closed, Juan picked the gradient update in Algorithm 1. He used the prompt to recall the function name and correctly identified the two tensors in the loss as the actual corruption noise and the model’s prediction. For Algorithm 2 he remembered drawing the starting image with `torch.randn`. He initially placed that draw inside the reverse step. After the tutor pointed him to the outer loop, he found the line and explained why replacing the training batch size with his sample count gives `(n_samples, 1, 28, 28)`.
+Let $\beta_t$ be the variance of the noise added at step $t$, $\alpha_t=1-\beta_t$, and $\bar\alpha_t=\prod_{s=1}^t\alpha_s$, with $\bar\alpha_0=1$. A single forward step retains a factor of $\sqrt{\alpha_t}$ of the previous state. Starting from the clean image instead, all $t$ steps can be sampled in one draw, with $\epsilon\sim\mathcal N(0,I)$:
 
-| Paper step | What Juan traced in the Week 16 notebook |
+$$
+x_t=\sqrt{\bar\alpha_t}\,x_0+\sqrt{1-\bar\alpha_t}\,\epsilon.
+$$
+
+| DDPM algorithm | How it works in the Week 16 MNIST notebook |
 | --- | --- |
-| Algorithm 1, draw a timestep and corrupt a clean image | `prepare_batch` draws a timestep per image and fresh noise. It forms $x_t=\sqrt{\bar\alpha_t}\,x_0+\sqrt{1-\bar\alpha_t}\,\epsilon$ directly and returns that same $\epsilon$ as the target. |
-| Algorithm 1, update the model | `train_step` calls the model on $(x_t,t)$, computes the MSE against $\epsilon$, and takes an optimizer step. After Juan’s recap, the tutor clarified that the clean image and sampled noise are used to **construct** the network input. |
-| Algorithm 2, initialize and iterate | `sample_loop` draws $x_T$ from a standard Gaussian. The clean batch supplies dimensions, dtype, and device. The loop runs from $T$ through $1$. |
-| Algorithm 2, take one reverse step | `single_step_reverse` calls the model at each step. Juan identified $\beta_t$ and $\bar\alpha_t$ as schedule values in the reverse mean. For $t>1$ the code adds fresh noise scaled by the step’s standard deviation. At $t=1$ it sets $z=0$ and returns the computed mean. |
+| 1. Training | For each clean image, `prepare_batch` draws a uniform timestep and Gaussian noise, then constructs $x_t$ in one shot. `train_step` gives $(x_t,t)$ to the network and takes an optimizer step on the MSE between its prediction and that same noise draw. |
+| 2. Sampling | `sample_loop` starts with $x_T\sim\mathcal N(0,I)$ and counts down to $1$. At each step, `single_step_reverse` uses the network prediction and schedule to compute a mean. It adds scaled fresh noise for $t>1$ and returns the mean at $t=1$. |
 
-[DDPM, Algorithms 1 and 2](https://arxiv.org/pdf/2006.11239#page=4) · [Week 16 solved notebook](../notebooks/w16_train_tiny_ddpm_mnist_solved.ipynb)
+The network’s output has the same meaning in both algorithms. Training uses a known corruption draw as the target. Sampling uses the prediction to compute the reverse mean, then makes a separate random draw to sample around that mean. [DDPM, Algorithms 1 and 2](https://arxiv.org/pdf/2006.11239#page=4) · [Week 16 notebook](../notebooks/w16_train_tiny_ddpm_mnist_solved.ipynb)
 
 ## Day 2 — Deriving the clean-conditioned posterior
 
-### Apply Bayes with the clean image already fixed
-
-Juan remembered using Bayes with one observation in Week 4 and asked how to handle two conditioning values. The tutor suggested holding $x_0$ fixed first. On paper, Juan set $A=X_{t-1}$ and $B=X_t$, then used $P_c$ for the law conditional on $X_0=c$. Ordinary Bayes under $P_c$ then gives the density identity below. [Week 4 Bayes derivation](w04_conditioning_in_diffusion.md#checkpoint-21-complete-derivation) · [Handwritten Bayes setup](figures/w17_day2_01_conditional_bayes_handwritten.png)
+**If we knew the clean image, where could the previous state have been?** Fix $x_0$, $x_t$, and $t>1$. Let $y=x_{t-1}$. Bayes’ rule under the law conditioned on $x_0$ gives
 
 $$
-q(y\mid x_t,x_0)
-=\frac{q(x_t\mid y,x_0)\,q(y\mid x_0)}{q(x_t\mid x_0)}
-\propto q(x_t\mid y)\,q(y\mid x_0),
-\qquad y=x_{t-1}.
+q(y\mid x_t,x_0)\propto q(x_t\mid y)\,q(y\mid x_0).
 $$
 
-The denominator is constant in $y$. The forward Markov property gives $q(x_t\mid y,x_0)=q(x_t\mid y)$. Juan identified the first factor as one forward step and the second as accumulated corruption through $t-1$. His first page used $\epsilon\ne0$ to justify the nondegenerate case. The tutor clarified that the condition is on the **variance**, $1-\bar\alpha_{t-1}>0$, which holds for $t>1$ under this schedule. [Week 15 forward laws](w15_forward_process_discrete.md#the-direct-conditional-distribution)
-
-### Read the Gaussian parameters from the log density
-
-Write $\alpha_t=1-\beta_t$ and $\bar\alpha_t=\alpha_t\bar\alpha_{t-1}$. In one dimension the two factors have means $\sqrt{\alpha_t}\,y$ and $\sqrt{\bar\alpha_{t-1}}\,x_0$, respectively. Juan used the Week 4 approach of expanding both squares while keeping $x_0$ and $x_t$ fixed. [Handwritten Gaussian factors and expansion](figures/w17_day2_02_gaussian_factors_handwritten.png)
+The first factor asks how likely the observed $x_t$ is after one step from $y$. The forward Markov property makes $y$ sufficient for that step. The second factor tells us which values of $y$ are plausible after $t-1$ steps from $x_0$. Both factors are Gaussian. For one coordinate their product has log density
 
 $$
-\log q(y\mid x_t,x_0)
-=-\frac{(x_t-\sqrt{\alpha_t}\,y)^2}{2\beta_t}
- -\frac{(y-\sqrt{\bar\alpha_{t-1}}\,x_0)^2}{2(1-\bar\alpha_{t-1})}
- +C(x_t,x_0).
+-\frac{(x_t-\sqrt{\alpha_t}\,y)^2}{2\beta_t}
+-\frac{(y-\sqrt{\bar\alpha_{t-1}}\,x_0)^2}{2(1-\bar\alpha_{t-1})}
++C(x_t,x_0).
 $$
 
-The terms involving $y$ were correct on the first expansion. The tutor flagged the constant inside the second square, $\bar\alpha_{t-1}x_0^2$. Juan corrected it and collected the terms independent of $y$ into $C(x_t,x_0)$. With prompts to name the two brackets and compare them with a Gaussian log density, he obtained the following coefficients. [Handwritten coefficient matching](figures/w17_day2_03_matching_coefficients_handwritten.png)
+Collecting powers of $y$ gives $-Ay^2/2+By+C$, so the variance is $1/A$ and the mean is $B/A$. Simplifying with $\bar\alpha_t=\alpha_t\bar\alpha_{t-1}$ gives
 
 $$
-\log q(y\mid x_t,x_0)=-\tfrac12 A y^2+B y+C(x_t,x_0),
-$$
-
-$$
-A=\frac{\alpha_t}{\beta_t}+\frac{1}{1-\bar\alpha_{t-1}},
+\tilde\beta_t=\beta_t\frac{1-\bar\alpha_{t-1}}{1-\bar\alpha_t},
 \qquad
-B=\frac{\sqrt{\alpha_t}\,x_t}{\beta_t}
-+\frac{\sqrt{\bar\alpha_{t-1}}\,x_0}{1-\bar\alpha_{t-1}}.
-$$
-
-Matching powers of $y$ gave $A=1/\sigma^2$ and $B=\mu/\sigma^2$. The tutor suggested keeping the denominator factored. Juan used $\alpha_t(1-\bar\alpha_{t-1})+\beta_t=1-\bar\alpha_t$ to simplify $1/A$, then multiplied $B$ by that variance to get the mean. He compared his result with Equation 7 **after** doing the algebra. [Handwritten mean and variance](figures/w17_day2_04_mean_and_variance_handwritten.png) · [DDPM, Equations 6–7](https://arxiv.org/pdf/2006.11239#page=3)
-
-$$
-\tilde\beta_t=\frac{1}{A}
-=\beta_t\frac{1-\bar\alpha_{t-1}}{1-\bar\alpha_t},
-$$
-
-$$
-\tilde\mu_t(x_t,x_0)=\frac{B}{A}
-=\frac{\sqrt{\bar\alpha_{t-1}}\,\beta_t}{1-\bar\alpha_t}\,x_0
+\tilde\mu_t(x_t,x_0)=
+\frac{\sqrt{\bar\alpha_{t-1}}\,\beta_t}{1-\bar\alpha_t}\,x_0
 +\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})}{1-\bar\alpha_t}\,x_t.
 $$
 
-### Check the last page against the derivation
-
-- **Which alpha goes under the root?** Juan’s derived coefficient of $x_t$ on page 4 correctly uses $\sqrt{1-\beta_t}=\sqrt{\alpha_t}$. An extra bar appeared when copying it onto page 5.
-- **What equals one at $t=1$?** Juan found the unit coefficient of $x_0$ and zero variance. The tutor clarified that the $x_1$ coefficient vanishes, so the **mean equals $x_0$**. The variance expression still carries $\beta_1$, multiplied by $1-\bar\alpha_0=0$. The posterior puts all its mass on the known clean image. In generation the clean image is unknown, and the notebook returns the model’s final mean.
-- **Why does the scalar result extend to images?** Juan distinguished correlations among clean pixels across the dataset from the independent corruption of each pixel. With $x_0$ and $x_t$ fixed, both Gaussian factors separate across coordinates. The tutor pointed out that every pixel uses the same schedule, so all diagonal entries agree. This gives covariance $\tilde\beta_t I$ and explains the factor $\sqrt{\tilde\beta_t}$ multiplying standard Gaussian noise in the notebook.
-
-For $t>1$, the image-level result is
-
-$$
-q(x_{t-1}\mid x_t,x_0)
-=\mathcal N\!\left(x_{t-1};\tilde\mu_t(x_t,x_0),\tilde\beta_t I\right).
-$$
-
-[Handwritten paper comparison and boundary check](figures/w17_day2_05_paper_and_boundary_handwritten.png)
+For an image, both Gaussian factors split across pixels and the schedule uses the same noise scale for each pixel. The posterior therefore has covariance $\tilde\beta_t I$. At $t=1$, the previous state is the very $x_0$ we conditioned on. Its conditional mean is $x_0$ and its variance is zero. [DDPM, Equations 6–7](https://arxiv.org/pdf/2006.11239#page=3) · [Coefficient matching and boundary check](../proofs/w17_ddpm_worked_derivation.md#read-the-gaussian-parameters-from-the-log-density)
 
 ## Day 3 — Averaging over possible clean images
 
-Juan proposed two routes in his opening answer. He could average all the candidate posterior means, or he could average the possible clean images first and calculate the posterior mean just once. He was unsure whether the two operations give the same result.
-
-The tutor identified the weighting law $q(x_0\mid x_t)$ and supplied the affine form $a_t x_0+b_t x_t$ from Day 2. Juan then split the conditional expectation by linearity, pulled out the schedule coefficient $a_t$, and kept $b_t x_t$ intact because $x_t$ is already observed. [Juan’s handwritten calculation](figures/w17_day3_01_conditional_mean_handwritten.png)
+**Can we average the possible clean images first, then compute the reverse mean just once?** Yes. With $x_t$ observed, each possible $x_0$ gets its weight from $q(x_0\mid x_t)$. Write the two coefficients from Day 2 as $a_t,b_t$. The tower property and the affine form of the mean give
 
 $$
-\mathbb E[a_tX_0+b_t x_t\mid X_t=x_t]
-=a_t\,\mathbb E[X_0\mid X_t=x_t]+b_t x_t.
+\begin{aligned}
+\mathbb E[X_{t-1}\mid X_t=x_t]
+&=\mathbb E[\tilde\mu_t(x_t,X_0)\mid X_t=x_t]\\
+&=a_t\,\mathbb E[X_0\mid X_t=x_t]+b_t x_t.
+\end{aligned}
 $$
 
-The tower property identifies the left side as the reverse mean $\mathbb E[X_{t-1}\mid X_t=x_t]$. The right side evaluates the Day 2 mean at the posterior average clean image. This proves the equivalence Juan proposed. [Day 3 plan](w17_study_plan.md#day-3--from-the-posterior-to-predicted-noise)
+That last line is the Day 2 mean evaluated at the average plausible clean image. It determines the reverse **mean**. The reverse distribution averages over multiple clean images and can have additional variability.
 
-Given the forward noising equation, Juan solved for $x_0$ using the actual noise $\epsilon$, then substituted the model prediction $\epsilon_\theta(x_t,t)$. Both algebraic steps were correct. His last line kept the label $x_0$. The tutor added a hat there to mark the clean-image estimate obtained with predicted noise. [Handwritten rearrangement and substitution](figures/w17_day3_02_clean_from_predicted_noise_handwritten.png) · [Week 16 prediction conversions](w16_prediction_parameterizations.md#setup-and-prediction-conversions)
+### Getting the reverse mean from a noise prediction
 
-$$
-\hat x_{0,\theta}(x_t,t)
-=\frac{x_t-\sqrt{1-\bar\alpha_t}\,\epsilon_\theta(x_t,t)}
-{\sqrt{\bar\alpha_t}}.
-$$
-
-On the next page Juan used the hat for the model estimate. To find the actual posterior mean, he returned to the equation with the sampled noise and took its conditional expectation. He pulled out the schedule coefficients and the observed $x_t$, leaving the conditional mean of the noise. The tutor flagged a missing $\epsilon$ inside the second expectation on the intermediate line. Juan had already included it correctly in his final expression. [Handwritten conditional expectation](figures/w17_day3_03_conditional_noise_mean_handwritten.png)
+Solve the forward noising equation for $X_0$ and take its conditional expectation at fixed $t$. The schedule and the observed $x_t$ are fixed, so only the noise needs to be averaged:
 
 $$
 \mathbb E[X_0\mid X_t=x_t]
@@ -111,54 +69,29 @@ $$
 {\sqrt{\bar\alpha_t}}.
 $$
 
-Juan restored the missing $\epsilon$ and compared the two expressions side by side. He identified the ideal prediction as $\mathbb E[\epsilon\mid X_t=x_t]$, in his words “the average noise that could have produced this particular $x_t$.” Substituting that prediction makes the clean-image estimate equal the posterior mean. The tutor flagged one notation slip in the closing sentence of the page. The observation is $X_t=x_t$, with $t$ denoting the timestep. [Corrected page and comparison](figures/w17_day3_04_noise_predictor_comparison_handwritten.png)
-
-Juan then substituted the entire clean-image estimate into the $x_0$ term of his Day 2 mean. The substitution was correct. When he copied the separate $x_t$ term, he wrote $\sqrt{\bar\alpha_t}$ where Day 2 gave $\sqrt{\alpha_t}$. With that bar corrected, the model’s reverse mean before simplification is
-
-$$
-\mu_\theta(x_t,t)=
-\frac{\sqrt{\bar\alpha_{t-1}}\,\beta_t}{1-\bar\alpha_t}
-\left(\frac{x_t-\sqrt{1-\bar\alpha_t}\,\epsilon_\theta(x_t,t)}{\sqrt{\bar\alpha_t}}\right)
-+\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})}{1-\bar\alpha_t}\,x_t.
-$$
-
-[Handwritten substitution](figures/w17_day3_05_reverse_mean_substitution_handwritten.png)
-
-Juan corrected the separate $x_t$ coefficient in both lines. Using the suggested identity $\bar\alpha_t=\alpha_t\bar\alpha_{t-1}$, he factored the denominator and canceled $\sqrt{\bar\alpha_{t-1}}$, obtaining $\sqrt{\bar\alpha_{t-1}}/\sqrt{\bar\alpha_t}=1/\sqrt{\alpha_t}$. [Corrected substitution and cancellation](figures/w17_day3_06_schedule_ratio_handwritten.png)
-
-The tutor put the two coefficients of $x_t$ over a common denominator. Juan expanded the numerator to $\beta_t+\alpha_t-\alpha_t\bar\alpha_{t-1}=1-\bar\alpha_t$. He then canceled $1-\bar\alpha_t$ against the matching denominator factor, leaving $x_t/\sqrt{\alpha_t}$ as the first term of the reverse mean. [Handwritten simplification of the coefficient](figures/w17_day3_07_reverse_mean_xt_coefficient_handwritten.png)
-
-Given the unsimplified noise coefficient, Juan canceled one factor of $\sqrt{1-\bar\alpha_t}$ and retained the minus sign. His last line gives $-\beta_t/(\sqrt{\alpha_t}\sqrt{1-\bar\alpha_t})$. [Handwritten noise coefficient](figures/w17_day3_08_reverse_mean_noise_coefficient_handwritten.png)
-
-The tutor combined Juan’s two coefficients by factoring out $1/\sqrt{\alpha_t}$.
+Under squared error the ideal noise predictor outputs precisely that conditional average, the average noise that could have produced this particular $x_t$. Substituting the trained predictor $\epsilon_\theta(x_t,t)$ for the conditional noise mean gives a clean-image estimate $\hat x_{0,\theta}$. Substituting that estimate into $a_t\hat x_{0,\theta}+b_t x_t$ gives the model mean
 
 $$
 \mu_\theta(x_t,t)=\frac{1}{\sqrt{\alpha_t}}
 \left(x_t-\frac{\beta_t}{\sqrt{1-\bar\alpha_t}}\,\epsilon_\theta(x_t,t)\right).
 $$
 
-This is the mean computed by the Week 16 sampler. Its denominator in code is $\sqrt{1-\beta_t}=\sqrt{\alpha_t}$. [DDPM, Equation 11](https://arxiv.org/pdf/2006.11239#page=4) · [Week 16 sampler](../notebooks/w16_train_tiny_ddpm_mnist_solved.ipynb)
+This is `mean` in `single_step_reverse`. The sampler separately chooses the fixed variance $\tilde\beta_t$ and uses its **square root** to scale a fresh standard Gaussian draw. At $t=1$ the code sets that draw to zero and outputs the model’s final mean. [DDPM, Equation 11 and Algorithm 2](https://arxiv.org/pdf/2006.11239#page=4) · [Week 16 sampler](../notebooks/w16_train_tiny_ddpm_mnist_solved.ipynb)
 
 ### From mean error to noise error
 
-Juan wrote the model mean minus the clean-conditioned mean. With this order, he correctly canceled the two $x_t$ terms and obtained the sign $\epsilon-\epsilon_\theta$. His second line also dropped the shared $1/\sqrt{\alpha_t}$. The tutor pointed out that this factor multiplies both noise terms and can be pulled outside the difference. Restoring it gives
+For a training example, the clean-conditioned mean can be written in the same form using the actual noise $\epsilon$. Subtracting the two means cancels the common $x_t$ term. Squaring the difference gives
 
 $$
-\mu_\theta(x_t,t)-\tilde\mu_t(x_t,x_0)
-=\frac{\beta_t}{\sqrt{\alpha_t}\sqrt{1-\bar\alpha_t}}
-\bigl(\epsilon-\epsilon_\theta(x_t,t)\bigr).
-$$
-
-The prompt used the opposite subtraction order. Reversing the order changes the sign and gives the same squared norm. [Juan’s first subtraction](figures/w17_day3_09_mean_difference_attempt_handwritten.png)
-
-Juan restored $1/\sqrt{\alpha_t}$ in both noise terms and squared the common coefficient correctly. His last line says “take squared norm” and omits the superscript on the norm itself. Applying $\|cv\|^2=c^2\|v\|^2$ gives the corrected line below. [Corrected subtraction and squared coefficient](figures/w17_day3_10_squared_mean_error_handwritten.png)
-
-$$
-\|\mu_\theta(x_t,t)-\tilde\mu_t(x_t,x_0)\|^2
+\|\mu_\theta-\tilde\mu_t\|^2
 =\frac{\beta_t^2}{\alpha_t(1-\bar\alpha_t)}
 \|\epsilon-\epsilon_\theta(x_t,t)\|^2.
 $$
 
-For $t>1$, the tutor connected this identity to the fixed reverse variance $\sigma_t^2$. Equation 8 multiplies the squared mean error by $1/(2\sigma_t^2)$, giving the timestep weight $\beta_t^2/[2\sigma_t^2\alpha_t(1-\bar\alpha_t)]$ on the squared noise error in Equation 12. [DDPM, Equations 8 and 12](https://arxiv.org/pdf/2006.11239#page=3)
+For $t>1$, Equation 8 weights this squared mean error by $1/(2\sigma_t^2)$, where $\sigma_t^2$ is the model’s fixed reverse variance at that step. Thus Equation 12 weights the squared **noise** error by
 
-**Day 3 closing comparison.** Given the weight, Juan explained that the same squared noise error contributes differently at two timesteps if their weights differ. In his Week 16 noise MSE, both errors contribute equally. For a per-example error $e$, Equation 12 uses $w_t e$ and Equation 14 uses $e$. The notebook samples timesteps uniformly and applies MSE directly to predicted and sampled noise. [DDPM, Equations 12 and 14](https://arxiv.org/pdf/2006.11239#page=4) · [Week 16 training notebook](../notebooks/w16_train_tiny_ddpm_mnist_solved.ipynb)
+$$
+w_t=\frac{\beta_t^2}{2\sigma_t^2\alpha_t(1-\bar\alpha_t)}.
+$$
+
+If two sampled timesteps have the same squared noise error $e$, their contributions to Equation 12 are $w_t e$ and $w_s e$. The simplified objective in Equation 14 drops this explicit timestep weight. That is the Week 16 training choice: sample timesteps uniformly and use plain noise MSE, so equal errors contribute equally. [DDPM, Equations 8, 12, and 14](https://arxiv.org/pdf/2006.11239#page=3) · [Worked mean-error subtraction](../proofs/w17_ddpm_worked_derivation.md#from-mean-error-to-noise-error)

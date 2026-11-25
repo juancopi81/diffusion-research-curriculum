@@ -1,8 +1,9 @@
 # Week 17 — From the DDPM Paper to Nano-Diffusion
 
 **Week of November 23–29, 2026.** Days 1–3 are complete. The
-[study note](w17_ddpm_posterior_and_objective.md) records the notebook
-walkthrough, posterior and reverse-mean derivations, and loss-weighting discussion.
+[concept note](w17_ddpm_posterior_and_objective.md) connects the notebook,
+posterior, reverse mean, and loss. The [worked derivation](../proofs/w17_ddpm_worked_derivation.md)
+preserves the handwritten steps and tutoring discussion.
 Next is the [Day 4 notebook extraction](#day-4--move-the-working-pieces-into-nano-diffusion).
 
 Week 16 and Phase 2 are complete. You already have a working DDPM that
@@ -21,9 +22,9 @@ only have a short window.
 
 ## What This Week Produces
 
-- A short record in `notes/w17_ddpm_posterior_and_objective.md` with your
-  derivation attempts, any hints, and the links between the paper's
-  posterior, noise loss, and sampling update.
+- A [concept reference](w17_ddpm_posterior_and_objective.md) on the
+  posterior, sampling update, and noise loss, with a [worked companion](../proofs/w17_ddpm_worked_derivation.md)
+  for your attempts, hints, and corrections.
 - A first version of `mini_projects/nano_diffusion/` that runs with one
   explicit config and one documented command from a fresh process. Reuse
   the Week 16 MNIST data setup, TinyDenoiser, training step, and sampler.
@@ -33,8 +34,8 @@ only have a short window.
 **Working rhythm.** Try the derivation or implementation first, then bring
 your reasoning and the point where you got stuck. We'll review one question
 at a time. Use the Week 16 notebook as a reference once you have a route
-in mind. Keep assistance and unresolved questions in the existing study
-notes. Count the correct run and its evidence as the engineering result,
+in mind. Keep assistance and unresolved questions with the relevant
+worked step. Count the correct run and its evidence as the engineering result,
 even if the digits still look rough.
 
 ## Reading Map

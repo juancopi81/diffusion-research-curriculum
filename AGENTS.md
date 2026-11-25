@@ -57,11 +57,17 @@
 - During tutoring, start from Juan's attempt or current understanding when
   available. Offer one manageable hint or question at a time; provide direct
   explanations or complete solutions when requested.
-- When consolidating notes, preserve meaningful attempts and corrections,
-  Juan's voice, and his framing. Distinguish added explanations from his
-  original reasoning.
-- Gather useful learning evidence in existing weekly notes and session review
-  records from work already happening in the curriculum. Keep it brief; do not
+- From Week 17 onward, write weekly concept notes in `notes/` so someone
+  can follow the question, reasoning, and result without reading the tutoring
+  conversation. Keep Juan's framing when it helps explain the concept. For an
+  inline clarification, ask **Would this help someone understand the idea even
+  if they knew nothing about our session?**
+- Keep personal attempts, handwritten work, useful hints, and corrections
+  beside the relevant step in a linked worked derivation or exercise write-up
+  (usually in `proofs/`). Link back to the concept note. Preserve Juan's voice
+  and distinguish his reasoning from explanations added by the tutor.
+- Reuse worked exercises and session reviews for learning evidence from
+  study already happening in the curriculum. Keep it brief; do not
   add exercises, forms, scores, separate logs, review queues, or study time
   solely to collect evidence.
 - When observed, record the initial reasoning, the correction or explanation
