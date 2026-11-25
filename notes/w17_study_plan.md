@@ -1,9 +1,9 @@
 # Week 17 — From the DDPM Paper to Nano-Diffusion
 
-**Week of November 23–29, 2026.** Days 1 and 2 are complete. The
+**Week of November 23–29, 2026.** Days 1–3 are complete. The
 [study note](w17_ddpm_posterior_and_objective.md) records the notebook
-walkthrough, the five handwritten pages, and the corrections discussed.
-Resume at [Day 3](#day-3--from-the-posterior-to-predicted-noise).
+walkthrough, posterior and reverse-mean derivations, and loss-weighting discussion.
+Next is the [Day 4 notebook extraction](#day-4--move-the-working-pieces-into-nano-diffusion).
 
 Week 16 and Phase 2 are complete. You already have a working DDPM that
 trains on MNIST and generates images from Gaussian noise. The
@@ -174,8 +174,8 @@ or implementation issue with the point at which you stopped.
 
 - [x] Map DDPM Algorithms 1 and 2 to the working implementation.
 - [x] Derive the clean-conditioned mean and variance and identify the sampler’s noise scale and final no-noise step.
-- [ ] Connect the clean-conditioned mean to the sampler’s predicted-noise mean when the clean image is unknown.
-- [ ] Explain the weighted versus simplified objective for one intermediate step.
+- [x] Connect the clean-conditioned mean to the sampler’s predicted-noise mean when the clean image is unknown.
+- [x] Explain the weighted versus simplified objective for one intermediate step.
 - [ ] Run the extracted baseline from a documented command and check a repeat.
 - [ ] Save and review the config, losses, samples, and timings.
 

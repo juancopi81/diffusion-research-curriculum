@@ -1,6 +1,6 @@
 # Week 17 — The DDPM Posterior and Objective
 
-Days 1 and 2 are complete. This note brings together Juan’s study conversation and his five handwritten pages. [Week 17 plan](w17_study_plan.md)
+Days 1–3 are complete. This note follows Juan’s work from the paper-to-code walkthrough through the posterior derivation and the noise-prediction objective, with the original handwritten attempts and corrections. [Week 17 plan](w17_study_plan.md)
 
 ## Day 1 — Reading the algorithms through the notebook
 
@@ -82,6 +82,83 @@ $$
 
 [Handwritten paper comparison and boundary check](figures/w17_day2_05_paper_and_boundary_handwritten.png)
 
-## Where Day 3 starts
+## Day 3 — Averaging over possible clean images
 
-Juan has a mean for the case where both endpoints are given. The next question is how to combine those means when only the noisy image is observed. The discussion stopped at that question. The predicted-noise form and the weighted versus simplified loss follow later in the session. [Day 3 plan](w17_study_plan.md#day-3--from-the-posterior-to-predicted-noise)
+Juan proposed two routes in his opening answer. He could average all the candidate posterior means, or he could average the possible clean images first and calculate the posterior mean just once. He was unsure whether the two operations give the same result.
+
+The tutor identified the weighting law $q(x_0\mid x_t)$ and supplied the affine form $a_t x_0+b_t x_t$ from Day 2. Juan then split the conditional expectation by linearity, pulled out the schedule coefficient $a_t$, and kept $b_t x_t$ intact because $x_t$ is already observed. [Juan’s handwritten calculation](figures/w17_day3_01_conditional_mean_handwritten.png)
+
+$$
+\mathbb E[a_tX_0+b_t x_t\mid X_t=x_t]
+=a_t\,\mathbb E[X_0\mid X_t=x_t]+b_t x_t.
+$$
+
+The tower property identifies the left side as the reverse mean $\mathbb E[X_{t-1}\mid X_t=x_t]$. The right side evaluates the Day 2 mean at the posterior average clean image. This proves the equivalence Juan proposed. [Day 3 plan](w17_study_plan.md#day-3--from-the-posterior-to-predicted-noise)
+
+Given the forward noising equation, Juan solved for $x_0$ using the actual noise $\epsilon$, then substituted the model prediction $\epsilon_\theta(x_t,t)$. Both algebraic steps were correct. His last line kept the label $x_0$. The tutor added a hat there to mark the clean-image estimate obtained with predicted noise. [Handwritten rearrangement and substitution](figures/w17_day3_02_clean_from_predicted_noise_handwritten.png) · [Week 16 prediction conversions](w16_prediction_parameterizations.md#setup-and-prediction-conversions)
+
+$$
+\hat x_{0,\theta}(x_t,t)
+=\frac{x_t-\sqrt{1-\bar\alpha_t}\,\epsilon_\theta(x_t,t)}
+{\sqrt{\bar\alpha_t}}.
+$$
+
+On the next page Juan used the hat for the model estimate. To find the actual posterior mean, he returned to the equation with the sampled noise and took its conditional expectation. He pulled out the schedule coefficients and the observed $x_t$, leaving the conditional mean of the noise. The tutor flagged a missing $\epsilon$ inside the second expectation on the intermediate line. Juan had already included it correctly in his final expression. [Handwritten conditional expectation](figures/w17_day3_03_conditional_noise_mean_handwritten.png)
+
+$$
+\mathbb E[X_0\mid X_t=x_t]
+=\frac{x_t-\sqrt{1-\bar\alpha_t}\,\mathbb E[\epsilon\mid X_t=x_t]}
+{\sqrt{\bar\alpha_t}}.
+$$
+
+Juan restored the missing $\epsilon$ and compared the two expressions side by side. He identified the ideal prediction as $\mathbb E[\epsilon\mid X_t=x_t]$, in his words “the average noise that could have produced this particular $x_t$.” Substituting that prediction makes the clean-image estimate equal the posterior mean. The tutor flagged one notation slip in the closing sentence of the page. The observation is $X_t=x_t$, with $t$ denoting the timestep. [Corrected page and comparison](figures/w17_day3_04_noise_predictor_comparison_handwritten.png)
+
+Juan then substituted the entire clean-image estimate into the $x_0$ term of his Day 2 mean. The substitution was correct. When he copied the separate $x_t$ term, he wrote $\sqrt{\bar\alpha_t}$ where Day 2 gave $\sqrt{\alpha_t}$. With that bar corrected, the model’s reverse mean before simplification is
+
+$$
+\mu_\theta(x_t,t)=
+\frac{\sqrt{\bar\alpha_{t-1}}\,\beta_t}{1-\bar\alpha_t}
+\left(\frac{x_t-\sqrt{1-\bar\alpha_t}\,\epsilon_\theta(x_t,t)}{\sqrt{\bar\alpha_t}}\right)
++\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})}{1-\bar\alpha_t}\,x_t.
+$$
+
+[Handwritten substitution](figures/w17_day3_05_reverse_mean_substitution_handwritten.png)
+
+Juan corrected the separate $x_t$ coefficient in both lines. Using the suggested identity $\bar\alpha_t=\alpha_t\bar\alpha_{t-1}$, he factored the denominator and canceled $\sqrt{\bar\alpha_{t-1}}$, obtaining $\sqrt{\bar\alpha_{t-1}}/\sqrt{\bar\alpha_t}=1/\sqrt{\alpha_t}$. [Corrected substitution and cancellation](figures/w17_day3_06_schedule_ratio_handwritten.png)
+
+The tutor put the two coefficients of $x_t$ over a common denominator. Juan expanded the numerator to $\beta_t+\alpha_t-\alpha_t\bar\alpha_{t-1}=1-\bar\alpha_t$. He then canceled $1-\bar\alpha_t$ against the matching denominator factor, leaving $x_t/\sqrt{\alpha_t}$ as the first term of the reverse mean. [Handwritten simplification of the coefficient](figures/w17_day3_07_reverse_mean_xt_coefficient_handwritten.png)
+
+Given the unsimplified noise coefficient, Juan canceled one factor of $\sqrt{1-\bar\alpha_t}$ and retained the minus sign. His last line gives $-\beta_t/(\sqrt{\alpha_t}\sqrt{1-\bar\alpha_t})$. [Handwritten noise coefficient](figures/w17_day3_08_reverse_mean_noise_coefficient_handwritten.png)
+
+The tutor combined Juan’s two coefficients by factoring out $1/\sqrt{\alpha_t}$.
+
+$$
+\mu_\theta(x_t,t)=\frac{1}{\sqrt{\alpha_t}}
+\left(x_t-\frac{\beta_t}{\sqrt{1-\bar\alpha_t}}\,\epsilon_\theta(x_t,t)\right).
+$$
+
+This is the mean computed by the Week 16 sampler. Its denominator in code is $\sqrt{1-\beta_t}=\sqrt{\alpha_t}$. [DDPM, Equation 11](https://arxiv.org/pdf/2006.11239#page=4) · [Week 16 sampler](../notebooks/w16_train_tiny_ddpm_mnist_solved.ipynb)
+
+### From mean error to noise error
+
+Juan wrote the model mean minus the clean-conditioned mean. With this order, he correctly canceled the two $x_t$ terms and obtained the sign $\epsilon-\epsilon_\theta$. His second line also dropped the shared $1/\sqrt{\alpha_t}$. The tutor pointed out that this factor multiplies both noise terms and can be pulled outside the difference. Restoring it gives
+
+$$
+\mu_\theta(x_t,t)-\tilde\mu_t(x_t,x_0)
+=\frac{\beta_t}{\sqrt{\alpha_t}\sqrt{1-\bar\alpha_t}}
+\bigl(\epsilon-\epsilon_\theta(x_t,t)\bigr).
+$$
+
+The prompt used the opposite subtraction order. Reversing the order changes the sign and gives the same squared norm. [Juan’s first subtraction](figures/w17_day3_09_mean_difference_attempt_handwritten.png)
+
+Juan restored $1/\sqrt{\alpha_t}$ in both noise terms and squared the common coefficient correctly. His last line says “take squared norm” and omits the superscript on the norm itself. Applying $\|cv\|^2=c^2\|v\|^2$ gives the corrected line below. [Corrected subtraction and squared coefficient](figures/w17_day3_10_squared_mean_error_handwritten.png)
+
+$$
+\|\mu_\theta(x_t,t)-\tilde\mu_t(x_t,x_0)\|^2
+=\frac{\beta_t^2}{\alpha_t(1-\bar\alpha_t)}
+\|\epsilon-\epsilon_\theta(x_t,t)\|^2.
+$$
+
+For $t>1$, the tutor connected this identity to the fixed reverse variance $\sigma_t^2$. Equation 8 multiplies the squared mean error by $1/(2\sigma_t^2)$, giving the timestep weight $\beta_t^2/[2\sigma_t^2\alpha_t(1-\bar\alpha_t)]$ on the squared noise error in Equation 12. [DDPM, Equations 8 and 12](https://arxiv.org/pdf/2006.11239#page=3)
+
+**Day 3 closing comparison.** Given the weight, Juan explained that the same squared noise error contributes differently at two timesteps if their weights differ. In his Week 16 noise MSE, both errors contribute equally. For a per-example error $e$, Equation 12 uses $w_t e$ and Equation 14 uses $e$. The notebook samples timesteps uniformly and applies MSE directly to predicted and sampled noise. [DDPM, Equations 12 and 14](https://arxiv.org/pdf/2006.11239#page=4) · [Week 16 training notebook](../notebooks/w16_train_tiny_ddpm_mnist_solved.ipynb)

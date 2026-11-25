@@ -3,7 +3,7 @@
 ## Current Status
 
 - **Phase:** 3 — Diffusion in Depth.
-- **Week:** 17 🔄 — Days 1 and 2 complete.
+- **Week:** 17 🔄 — Days 1–3 complete.
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
 - **Phase 2 Completed:** 2026-11-22
@@ -14,7 +14,7 @@
 - **Week 13 Completed:** 2026-10-14
 - **Week 14 Completed:** 2026-10-27
 - **Week 15 Completed:** 2026-11-05
-- **Next study step:** [Week 17, Day 3](notes/w17_study_plan.md#day-3--from-the-posterior-to-predicted-noise) begins with the reverse mean when only the noisy image is known.
+- **Next study step:** [Week 17, Day 4](notes/w17_study_plan.md#day-4--move-the-working-pieces-into-nano-diffusion) moves the working MNIST baseline into Nano-Diffusion.
 - **Week 14 closeout:** [Day 7 completion decision](notes/w14_study_plan.md#day-7-completion-decision); all four problems, study report, and final review complete; reference use and guided corrections recorded; blog editing continues separately
 
 ---
@@ -249,6 +249,7 @@ study conversation and handwritten derivation.
 | --- | --- | --- |
 | Day 1 — Algorithms 1 and 2 | ✅ | [Notebook walkthrough](notes/w17_ddpm_posterior_and_objective.md#day-1--reading-the-algorithms-through-the-notebook). Juan traced the noise target, Gaussian initialization, reverse mean, and final step. |
 | Day 2 — Clean-conditioned posterior | ✅ | [Derivation and corrections](notes/w17_ddpm_posterior_and_objective.md#day-2--deriving-the-clean-conditioned-posterior). Juan matched Gaussian coefficients with prompts, checked Equation 7, and discussed the clean boundary and pixelwise covariance. |
+| Day 3 — Reverse mean and noise objective | ✅ | Juan connected posterior averaging to predicted noise, simplified the reverse mean with prompts, and explained how timestep weighting changes the contribution of equal errors. [Derivation and loss comparison](notes/w17_ddpm_posterior_and_objective.md#day-3--averaging-over-possible-clean-images) |
 
 ---
 

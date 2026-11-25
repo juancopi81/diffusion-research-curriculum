@@ -162,9 +162,9 @@ Completed:
 In progress:
 
 - **Weeks 17–18:** establish the [clean DDPM baseline](#weeks-1718--ddpm-from-scratch-clean-baseline)
-  in Nano-Diffusion. Week 17 [Days 1 and 2](./notes/w17_ddpm_posterior_and_objective.md)
-  covered the paper-to-code walkthrough and the clean-conditioned posterior.
-  Resume with the [Day 3 reverse-mean question](./notes/w17_study_plan.md#day-3--from-the-posterior-to-predicted-noise).
+  in Nano-Diffusion. Week 17 [Days 1–3](./notes/w17_ddpm_posterior_and_objective.md)
+  covered the paper-to-code walkthrough, posterior, reverse mean, and noise objective.
+  Resume with the [Day 4 notebook extraction](./notes/w17_study_plan.md#day-4--move-the-working-pieces-into-nano-diffusion).
 
 See [PROGRESS.md](./PROGRESS.md) for completion dates and artifact links.
 

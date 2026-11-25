@@ -23,8 +23,8 @@ It is divided into five phases:
 ## 🚀 Current Progress
 
 - **Completed:** Phases 1–2, through Week 16 on 2026-11-22.
-- **Latest work:** Week 17, Days 1 and 2. I traced DDPM training and sampling through my MNIST notebook and derived the reverse posterior given the clean image. [Study notes and handwritten derivation](./notes/w17_ddpm_posterior_and_objective.md)
-- **Next:** Connect that posterior to the reverse mean when the clean image is unknown, then trace the noise-prediction loss. [Week 17, Day 3](./notes/w17_study_plan.md#day-3--from-the-posterior-to-predicted-noise)
+- **Latest work:** Week 17, Days 1–3. I connected the posterior derivation to my sampler’s reverse mean and explained how the paper weights the noise error at each timestep. [Study notes and handwritten derivations](./notes/w17_ddpm_posterior_and_objective.md)
+- **Next:** Move the working MNIST baseline out of the notebook and check it on fixed inputs. [Week 17, Day 4](./notes/w17_study_plan.md#day-4--move-the-working-pieces-into-nano-diffusion)
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 
