@@ -134,12 +134,18 @@ batch size 64, Adam at $10^{-3}$, seed 16, the $T=1000$ linear
 schedule, two epochs, and 16 generated images after each epoch.
 Keep initialization, shuffling, corruption, and generation seeded.
 
-**40 min.** Run from a fresh process. Check that the images start from
-Gaussian noise and that each epoch's grid uses the same sampling seed.
-Repeat the short run with the same config on the same device. Compare
-losses and samples and record any differences. If a short run exceeds
-the budget, carry the repeat into the buffer or reduce the documented
-training subset while keeping the schedule intact.
+**40 min.** Run the same command twice, each time from a fresh process.
+Compare the two runs’ losses and grids to check repeatability. To check
+that the extraction preserved the notebook’s behavior, compare each run
+with the first two epochs of the saved Week 16 CPU run. On the same setup
+with 5,000 images and seed 16, the mean batch noise MSE printed as
+**0.4860 at epoch 1** and **0.2044 at epoch 2**. Compare the corresponding
+16-image grids as well, resetting the sampling generator to seed 16 each
+epoch as the notebook does. [Week 16 notebook, “Train and compare grids”](../notebooks/w16_train_tiny_ddpm_mnist_solved.ipynb)
+
+If time runs short, carry the repeat into the buffer. If you use a smaller
+training subset, record its size and compare the two runs at that size.
+The Week 16 reference values apply to the original 5,000-image setup.
 
 **20 min.** Save the resolved config, losses, per-epoch sample grids,
 and separate training and sampling times under
@@ -156,7 +162,9 @@ the paper or your derivation note.
 
 **20 min.** Review the fixed-input checks, one loss result, and one
 generated grid. Explain what the repeat tells you about reproducibility
-and what the grid tells you about image quality.
+and what the grid tells you about image quality. If Friday’s comparisons
+diverge, an agent can optionally trace the first differing input or output.
+On Saturday, verify that finding against the two runs or the notebook.
 
 **15 min.** Review the consolidated note and run record. Write one
 sentence on what to carry into Week 18. Preserve any unresolved theory
