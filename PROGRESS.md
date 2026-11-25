@@ -2,8 +2,8 @@
 
 ## Current Status
 
-- **Phase:** 2 complete. Phase 3 is next.
-- **Week:** 16 ✅ — completed on 2026-11-22.
+- **Phase:** 3 — Diffusion in Depth.
+- **Week:** 17 🔄 — Days 1 and 2 complete.
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
 - **Phase 2 Completed:** 2026-11-22
@@ -14,7 +14,7 @@
 - **Week 13 Completed:** 2026-10-14
 - **Week 14 Completed:** 2026-10-27
 - **Week 15 Completed:** 2026-11-05
-- **Next study step:** [Week 17, Day 1](notes/w17_study_plan.md#day-1--read-the-algorithms-through-the-notebook) maps DDPM Algorithms 1 and 2 to the Week 16 notebook.
+- **Next study step:** [Week 17, Day 3](notes/w17_study_plan.md#day-3--from-the-posterior-to-predicted-noise) begins with the reverse mean when only the noisy image is known.
 - **Week 14 closeout:** [Day 7 completion decision](notes/w14_study_plan.md#day-7-completion-decision); all four problems, study report, and final review complete; reference use and guided corrections recorded; blog editing continues separately
 
 ---
@@ -239,12 +239,16 @@ Day 6's synthesis and learner review closed Week 16 on 2026-11-22.
 
 ## Phase 3 — Diffusion in Depth
 
-### Week 17 — DDPM Paper and First Nano-Diffusion Baseline ⬜
+### Week 17 — DDPM Paper and First Nano-Diffusion Baseline 🔄
 
 The [day-by-day plan](notes/w17_study_plan.md) covers November 23–29, 2026.
-The first sessions connect the reverse posterior and objective to the
-working notebook. The second half extracts and checks a short baseline
-run from a fresh process. Study begins with Day 1.
+The first two sessions were recorded here on 2026-11-25 from Juan’s
+study conversation and handwritten derivation.
+
+| Session | Status | Study record |
+| --- | --- | --- |
+| Day 1 — Algorithms 1 and 2 | ✅ | [Notebook walkthrough](notes/w17_ddpm_posterior_and_objective.md#day-1--reading-the-algorithms-through-the-notebook). Juan traced the noise target, Gaussian initialization, reverse mean, and final step. |
+| Day 2 — Clean-conditioned posterior | ✅ | [Derivation and corrections](notes/w17_ddpm_posterior_and_objective.md#day-2--deriving-the-clean-conditioned-posterior). Juan matched Gaussian coefficients with prompts, checked Equation 7, and discussed the clean boundary and pixelwise covariance. |
 
 ---
 

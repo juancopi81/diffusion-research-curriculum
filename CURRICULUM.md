@@ -159,10 +159,12 @@ Completed:
   [Day 6 review](./notes/w16_hf_ddpm_training.md#day-6--reviewing-the-ddpm-workflow)
   on 2026-11-22, completing Week 16 and Phase 2.
 
-Next:
+In progress:
 
 - **Weeks 17–18:** establish the [clean DDPM baseline](#weeks-1718--ddpm-from-scratch-clean-baseline)
-  in Nano-Diffusion. Start with the [Week 17 daily plan](./notes/w17_study_plan.md).
+  in Nano-Diffusion. Week 17 [Days 1 and 2](./notes/w17_ddpm_posterior_and_objective.md)
+  covered the paper-to-code walkthrough and the clean-conditioned posterior.
+  Resume with the [Day 3 reverse-mean question](./notes/w17_study_plan.md#day-3--from-the-posterior-to-predicted-noise).
 
 See [PROGRESS.md](./PROGRESS.md) for completion dates and artifact links.
 

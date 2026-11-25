@@ -13,8 +13,8 @@ The full, 52-week study plan is documented in **[CURRICULUM.md](./CURRICULUM.md)
 It is divided into five phases:
 
 1. **Probability Core**
-2. **Generative Basics** (Current Phase: linear algebra, VAEs, and flows)
-3. **Diffusion in Depth** (DDPM/DDIM)
+2. **Generative Basics** (linear algebra, VAEs, and flows)
+3. **Diffusion in Depth** (current phase, DDPM/DDIM)
 4. **The SDE View** (Score-based models)
 5. **Research & Replication** (Paper reproductions)
 
@@ -23,8 +23,8 @@ It is divided into five phases:
 ## 🚀 Current Progress
 
 - **Completed:** Phases 1–2, through Week 16 on 2026-11-22.
-- **Latest work:** [Week 16 closeout](./notes/w16_hf_ddpm_training.md#day-6--reviewing-the-ddpm-workflow). The tiny DDPM trained on MNIST and generated grids from Gaussian noise. The review records the results and the pieces to reuse.
-- **Next:** Phase 3 starts with the [Week 17 daily plan](./notes/w17_study_plan.md) for November 23–29. It connects the DDPM paper to a small, reproducible Nano-Diffusion baseline.
+- **Latest work:** Week 17, Days 1 and 2. I traced DDPM training and sampling through my MNIST notebook and derived the reverse posterior given the clean image. [Study notes and handwritten derivation](./notes/w17_ddpm_posterior_and_objective.md)
+- **Next:** Connect that posterior to the reverse mean when the clean image is unknown, then trace the noise-prediction loss. [Week 17, Day 3](./notes/w17_study_plan.md#day-3--from-the-posterior-to-predicted-noise)
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 
