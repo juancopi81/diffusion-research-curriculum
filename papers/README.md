@@ -19,6 +19,7 @@ not yet belong in the core curriculum.
 | Radar | Jia et al., [*LLaCO: Continuous Diffusion for Large Language Models with Competition-Aware Semantic Scheduling*](https://arxiv.org/abs/2610.32604v1) | Connects embedding geometry, token identity loss, and noise scheduling; a direct diffusion-language-model companion. | After the Weeks 23–24 schedule ablations, with a short primer on normalized token embeddings and continuous text diffusion. |
 | Radar | Hoover et al., [*Classical Energies Learn to Reason 1,000x Faster than Looped Models*](https://arxiv.org/abs/2611.17309v1) | Energy-based inference, local constraint learning, and a useful warning about what reasoning benchmarks establish. | After the Weeks 33–34 score-SDE work, with a short primer on Hopfield networks and pairwise energy models. |
 | Radar | Patel, [*Tessera-small*](https://huggingface.co/thejagstudio/tessera-small) (model and demo) | Makes discrete diffusion visible through confidence-guided unmasking of palette tokens on a 16×16 sprite. | After the Weeks 19–20 DDPM/DDIM comparison, trace one sprite through its sampling rounds. |
+| Radar | Chng et al., [*Looped Diffusion Transformer*](https://arxiv.org/abs/2609.40305v1) | Tests whether compute is better spent repeating shared blocks inside the denoiser or taking more sampling steps. | Revisit alongside the Weeks 25–26 DiT reading once the MNIST baseline is reproducible. |
 | Radar | Zhou et al., [*Transfusion: Predict the Next Token and Diffuse Images with One Multi-Modal Model*](https://arxiv.org/abs/2408.11039) | Shows how next-token text prediction and image diffusion can share a transformer; connects the curriculum to multimodal systems. | After the Weeks 25–26 architecture bridge, if a question about combining objectives warrants optional follow-up. |
 | Radar | Chefer et al., [*Self-Supervised Flow Matching for Scalable Multi-Modal Synthesis*](https://bfl.ai/techblog/self-flow/index.html) (Self-Flow) | Connects representation learning with flow-based generation across images, video, and audio. | After the Weeks 39–40 bridge report, if representation learning is relevant to the later project choice. |
 | Radar | Black et al., [*π₀: A Vision-Language-Action Flow Model for General Robot Control*](https://arxiv.org/abs/2410.24164) | Connects a pretrained vision-language model to flow-based action generation; helps distinguish a policy from a predictive world model. | After the Weeks 39–40 bridge report, if action generation or robotics remains an interest. |
@@ -235,3 +236,40 @@ partially filled grid of color tokens. Ask which decisions the schedule makes
 what to reveal). The model card reports 47.6M parameters and about 5.5 hours of
 training on an RTX PRO 6000 Blackwell using 1.4M sprites. Start with the demo and
 sampler walkthrough. [Slack Moji demo](https://huggingface.co/spaces/cfahlgren1/slack-moji)
+
+### Looped Diffusion Transformer
+
+Inkling 2 Mini reuses its middle layers three times per token. Chng et al.
+study the corresponding idea in image diffusion. At a fixed noise level, a
+shared block gets several passes to refine the image features before the
+sampler advances. In Figure 6, four passes outperformed spending the same
+inference compute on additional sampling steps in the settings tested.
+Table 4 shows a modest gain from looping alone, with larger gains when the
+authors also supervised intermediate predictions and modulated attention.
+[Inkling 2 Mini release](https://thinkingmachines.ai/news/inkling-2-mini/) ·
+[Looped-DiT, Sections 3.2–3.3](https://arxiv.org/html/2609.40305v1)
+
+Juan’s Week 16 question was whether seeing more of a digit would help the
+denoiser connect fragmented strokes. An optional MNIST test would compare the
+current single middle convolution with three passes through that convolution
+and with three separately learned convolutions. Both deeper variants see a
+nominal 17×17 region per output pixel, up from 9×9. Comparing them at the
+same depth tests what weight sharing contributes. Use the same starting noise
+to compare stroke continuity and record sampling time.
+[Week 16 discussion](../notes/w16_hf_ddpm_training.md#what-i-would-test-next)
+
+**Can the first pass guide the last?** Liu et al.’s LoopCD amplifies the change
+in a language model’s next-token prediction between an early and a late pass.
+The analogy to classifier-free guidance is the extrapolation. CFG varies the
+conditioning, while LoopCD holds the input fixed and varies the depth.
+[LoopCD, Section 3](https://arxiv.org/html/2610.02185v1) ·
+[Inkling follow-up discussed by Peter Baylies](https://x.com/pbaylies/status/2125449107820974571)
+
+Wang and An tested this directly in image generation. Their distilled
+four-step SD3-medium student used an early prediction from the same forward
+pass to guide the final one. GenEval rose from 0.592 to 0.643 as compute
+increased from 7.21 to 7.79 TFLOPs per image. If the MNIST experiment produces
+usable noise estimates at both depths, compare ordinary final-pass sampling
+with amplifying the final-minus-early difference on the same checkpoint and
+seeds. Check both stroke continuity and whether the samples still cover a
+variety of digits. [*Distill to Loop*, Table 4 and Appendix C.1](https://arxiv.org/html/2611.31977v1)
