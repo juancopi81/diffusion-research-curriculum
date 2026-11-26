@@ -59,6 +59,18 @@ uv run jupyter lab
 
 ```
 
+### Nano-diffusion tooling
+
+From the repository root or the `mini_projects/nano_diffusion` directory, run
+`uv run ruff check .` to lint the mini-project and `uv run ruff format .` to
+format it. Use `uv run ruff format --check .` to check the formatting without
+writing changes. The forward-process smoke check runs from the mini-project
+directory with `uv run python diffusion.py`.
+
+For format on save in Cursor or VS Code, open `mini_projects/nano_diffusion`
+as the workspace folder and enable the recommended Ruff extension. Its folder
+settings use the repository's `.venv`.
+
 ---
 
 ## 📁 Structure

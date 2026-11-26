@@ -14,7 +14,7 @@
 - **Week 13 Completed:** 2026-10-14
 - **Week 14 Completed:** 2026-10-27
 - **Week 15 Completed:** 2026-11-05
-- **Next study step:** Identify which schedule tensors `single_step_reverse` reads from earlier notebook cells. [Week 17, Day 4](notes/w17_study_plan.md#day-4--move-the-working-pieces-into-nano-diffusion)
+- **Next study step:** The model and one-update training smoke checks both pass. Feed one normalized batch from the Week 16 MNIST loader through `prepare_batch` and `train_step`. [Day 4 worked record](proofs/w17_ddpm_worked_derivation.md#day-4--tracing-the-reverse-steps-inputs)
 - **Week 14 closeout:** [Day 7 completion decision](notes/w14_study_plan.md#day-7-completion-decision); all four problems, study report, and final review complete; reference use and guided corrections recorded; blog editing continues separately
 
 ---

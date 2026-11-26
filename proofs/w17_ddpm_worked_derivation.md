@@ -166,3 +166,65 @@ For $t>1$, the tutor connected this identity to the fixed reverse variance $\sig
 ### Handoff to the next session
 
 Juan proposed averaging the possible clean images before the tutor supplied the weighting law. With the affine form given, he showed why that shortcut works. He also explained the loss weighting once the weight was on the page. The reverse-mean algebra was guided, with the corrected coefficients preserved above. Day 4 brings those coefficients back in code when Juan traces which schedule values the reverse step needs outside the notebook. [Day 4 plan](../notes/w17_study_plan.md#day-4--move-the-working-pieces-into-nano-diffusion)
+
+## Day 4 — Tracing the reverse step’s inputs
+
+Reading `single_step_reverse`, Juan spotted `alpha_bar` in the first lookup and traced `t_tensor` back to the supplied `t` and `x_t`. The function builds that index locally. After a prompt to inspect the third lookup, he identified `betas` and explained that the caller currently supplies neither schedule table. [Week 16 notebook](../notebooks/w16_train_tiny_ddpm_mnist_solved.ipynb)
+
+Juan proposed keeping the four existing parameters and passing both schedule tables explicitly:
+
+```python
+def single_step_reverse(
+    x_t: torch.Tensor,
+    t: int,
+    model: nn.Module,
+    generator: torch.Generator,
+    alpha_bar: torch.Tensor,
+    betas: torch.Tensor,
+) -> torch.Tensor:
+    ...
+```
+
+The existing lookups can use those parameter names directly. When the function is extracted, its caller will need to pass the two tables.
+
+In `prepare_batch`, Juan identified both schedule dependencies on his first pass. The function uses `T` to set the range of sampled timesteps and `alpha_bar` to look up the coefficient for each image. Asked to use the table as the sampling bound, he reasoned that its shape is `(T + 1,)` and wrote:
+
+```python
+t = torch.randint(1, alpha_bar.shape[0], (len(clean),), generator=generator)
+```
+
+The exclusive upper bound preserves the original draw from timesteps 1 through `T`. Passing `alpha_bar` therefore supplies both the coefficients and the information needed to draw `t`.
+
+Reading the Gaussian initialization in `sample_loop`, Juan identified the dtype, device, and shape of `clean_batch`. He correctly noted that `n_samples` replaces the batch dimension. The image values themselves come from the random draw.
+
+Juan proposed passing the per-image shape, dtype, and device explicitly, along with the two schedule tables. He identified `alpha_bar.shape[0] - 1` as the starting timestep. After the tutor supplied the descending range, Juan wrote the update below with all six arguments in signature order. The assembled sketch retains the notebook’s no-gradient decorator and final return.
+
+```python
+@torch.no_grad()
+def sample_loop(
+    model: nn.Module,
+    generator: torch.Generator,
+    n_samples: int,
+    image_shape: tuple[int, int, int],
+    dtype: torch.dtype,
+    device: torch.device,
+    alpha_bar: torch.Tensor,
+    betas: torch.Tensor,
+) -> torch.Tensor:
+    x_t = torch.randn((n_samples, *image_shape), dtype=dtype, device=device, generator=generator)
+    for t in range(alpha_bar.shape[0] - 1, 0, -1):
+        x_t = single_step_reverse(x_t, t, model, generator, alpha_bar, betas)
+    return x_t
+```
+
+Juan extracted the schedule, coefficient lookup, and forward batch into `diffusion.py`. His guarded smoke check passed in a fresh CPU process. During review, the tutor checked the three-step schedule and lookup against hand-calculated values. On nonzero images, the extracted function returned exactly the same timesteps, noise, and noisy images as the Week 16 notebook for $T=1,3,1000$ with seeds 16 and 42. Following review, Juan added assertions for the cumulative schedule, the two gathered values, and their broadcast shape, then ran the smoke check successfully.
+
+Juan then extracted `single_step_reverse` with `alpha_bar`, `betas`, and `generator` as the final three parameters. The tutor ran the [Week 16 scalar example](../notes/w16_hf_ddpm_training.md#tracing-one-reverse-step) against this implementation. At $t=2$, it returned $0.894427$ with $z=0$ and $0.694427$ with $z=-0.6$. At $t=1$, it returned the expected mean and preserved the generator state. When connecting the loop above, pass `alpha_bar=alpha_bar, betas=betas, generator=generator` to match the implemented signature.
+
+Juan implemented `sample_loop` and recorded the timestep labels received by a constant model. His smoke check confirmed that both images visited $3,2,1$ in order and the output was finite with shape `(2, 1, 4, 4)`. The tutor also compared the loop with the Week 16 notebook using the same untrained `TinyDenoiser`. With seed 16, the output tensors and final generator states matched exactly for both the one-step and three-step CPU runs.
+
+Juan moved `TinyDenoiser` into `model.py`. His check paired two MNIST-shaped inputs with timestep labels `[1, 3]` and confirmed the noise predictions were finite and had the input shape. The tutor also passed the same image twice and swapped the labels. The two predictions differed and swapped with the labels. With identical weights and inputs, the extracted model and the Week 16 notebook produced identical CPU predictions and parameter gradients.
+
+Juan extracted `train_step` and cloned the parameters before the Adam update so the check could detect a weight change. On the seeded synthetic batch from `prepare_batch`, the tutor verified a finite noise MSE of 0.9693 and identical updated parameters in the extracted and notebook implementations. Review found that the smoke block still needed an explicit assertion for the finite loss. A rerun of the separate model smoke check found 16 images paired with the original two timestep labels.
+
+Juan added `assert math.isfinite(loss)` and restored the two-image batch for labels `[1, 3]`. Both scripts passed on rerun, including the finite-loss and weight-change assertions.

@@ -12,3 +12,14 @@ dependencies = [
     "torch>=2.13.0",
     "pandas>=3.0.3",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.17.6",
+]
+
+[tool.ruff]
+include = ["mini_projects/nano_diffusion/**/*.py"]
+
+[tool.ruff.lint]
+extend-select = ["I"]
