@@ -47,17 +47,29 @@ For an image, both Gaussian factors split across pixels and the schedule uses th
 
 ## Day 3 — Averaging over possible clean images
 
-**Can we average the possible clean images first, then compute the reverse mean just once?** Yes. With $x_t$ observed, each possible $x_0$ gets its weight from $q(x_0\mid x_t)$. Write the two coefficients from Day 2 as $a_t,b_t$. The tower property and the affine form of the mean give
+**Can we average the possible clean images first, then compute the reverse mean just once?** Yes. There are two steps to understanding why.
+
+**1. Average the candidate means (tower property).** As in Day 2, work inside a conditional distribution. This time the noisy image $X_t=x_t$ stays fixed. The inner expectation below is the Day 2 mean $\tilde\mu_t(x_t,X_0)$ for a given clean image. The outer expectation averages those means over clean images drawn from $q(x_0\mid x_t)$.
 
 $$
-\begin{aligned}
 \mathbb E[X_{t-1}\mid X_t=x_t]
-&=\mathbb E[\tilde\mu_t(x_t,X_0)\mid X_t=x_t]\\
-&=a_t\,\mathbb E[X_0\mid X_t=x_t]+b_t x_t.
-\end{aligned}
+=\mathbb E\!\left[
+  \mathbb E[X_{t-1}\mid X_t=x_t,X_0]
+  \,\middle|\, X_t=x_t
+\right].
 $$
 
-That last line is the Day 2 mean evaluated at the average plausible clean image. It determines the reverse **mean**. The reverse distribution averages over multiple clean images and can have additional variability.
+This is the tower property applied with the same observation on both sides. It tells us that averaging the candidate means gives exactly the reverse mean we want, whatever form those candidate means take. [Week 7 tower property](w07_conditional_expectation_in_diffusion.md#3-tower-property-averaging-after-conditioning)
+
+**2. Average the clean images first (linearity).** Write the Day 2 mean as $\tilde\mu_t(x_t,X_0)=a_tX_0+b_t x_t$, where $a_t,b_t$ are schedule coefficients. This is affine in the clean image. Since $x_t$ is fixed, linearity gives
+
+$$
+\mathbb E[\tilde\mu_t(x_t,X_0)\mid X_t=x_t]
+=a_t\,\mathbb E[X_0\mid X_t=x_t]+b_t x_t
+=\tilde\mu_t\!\left(x_t,\mathbb E[X_0\mid X_t=x_t]\right).
+$$
+
+For a nonlinear example, suppose two scalar clean values, $-1$ and $1$, are equally plausible. Averaging their squares gives $1$, while squaring their average gives $0$. For the affine DDPM mean, knowing the average plausible clean image is enough to compute the reverse **mean**. The reverse distribution can still have additional variability.
 
 ### Getting the reverse mean from a noise prediction
 

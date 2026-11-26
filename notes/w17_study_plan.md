@@ -4,7 +4,13 @@
 [concept note](w17_ddpm_posterior_and_objective.md) connects the notebook,
 posterior, reverse mean, and loss. The [worked derivation](../proofs/w17_ddpm_worked_derivation.md)
 preserves the handwritten steps and tutoring discussion.
-Next is the [Day 4 notebook extraction](#day-4--move-the-working-pieces-into-nano-diffusion).
+Day 4 opens with a [short read-through of the reverse step](#day-4--move-the-working-pieces-into-nano-diffusion).
+
+**Concept-note read-through.** Juan read Days 1–2 and was happy with them.
+On 2026-11-26 he read and approved the revised
+[Day 3 explanation of the tower property and linearity](w17_ddpm_posterior_and_objective.md#day-3--averaging-over-possible-clean-images).
+After each new concept section is drafted, share it
+for a read-through and record Juan’s feedback or approval here.
 
 Week 16 and Phase 2 are complete. You already have a working DDPM that
 trains on MNIST and generates images from Gaussian noise. The
@@ -112,9 +118,12 @@ variational bound can carry into Week 18.
 
 ### Day 4 — Move the Working Pieces into Nano-Diffusion
 
-**15 min.** Write a short map from notebook cells to reusable code.
-Decide which settings belong in the config and which tensors or
-generators should be passed to functions.
+**15 min.** Start with `single_step_reverse`, where the reverse mean from
+Day 3 appears in code. Read its signature and body. Which schedule tensors
+does it read from earlier cells, and how would you give it those values in
+a fresh Python process? A proposed signature and one sentence about the
+inputs are enough for the first sitting. Use the same approach for
+`prepare_batch` and `sample_loop` when you return. [Week 16 solved notebook](../notebooks/w16_train_tiny_ddpm_mnist_solved.ipynb)
 
 **40 min.** Move the dataset loading and normalization, schedule and
 coefficient lookup, TinyDenoiser, training step, and reverse sampling
@@ -122,8 +131,10 @@ into a small importable project. Connect them through one training
 entry point. The first extraction uses the same architecture, objective,
 and schedule as Week 16 so we can compare behavior.
 
-**15 min.** Check direct noising on fixed inputs and repeat the Day 3
-scalar reverse-step check, including the no-noise branch at $t=1$.
+**15 min.** Check direct noising on fixed inputs and repeat the
+[Week 16 scalar reverse step](w16_hf_ddpm_training.md#tracing-one-reverse-step).
+The reference mean is $0.894427$ and the sample with $z=-0.6$ is
+$0.694427$ (both rounded). Check the no-noise branch at $t=1$ separately.
 Run a single optimizer update and a small generation check. Record
 any behavior difference before moving on to a longer run.
 
