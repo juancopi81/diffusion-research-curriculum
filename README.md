@@ -22,9 +22,9 @@ It is divided into five phases:
 
 ## 🚀 Current Progress
 
-- **Completed:** Phases 1–2, through Week 16 on 2026-11-22.
-- **Latest work:** Week 17, Days 1–3. I connected the posterior derivation to my sampler’s reverse mean and explained how the paper weights the noise error at each timestep. [Concept note](./notes/w17_ddpm_posterior_and_objective.md) · [Worked derivation and handwritten pages](./proofs/w17_ddpm_worked_derivation.md)
-- **Next:** Move the working MNIST baseline out of the notebook and check it on fixed inputs. [Week 17, Day 4](./notes/w17_study_plan.md#day-4--move-the-working-pieces-into-nano-diffusion)
+- **Completed:** Phases 1–2 and the first week of Phase 3. Week 17 closed on 2026-11-27.
+- **Latest work:** The extracted DDPM reproduced the Week 16 two-epoch MNIST losses. A fresh run matched all 158 batch losses and both sample tensors exactly. [Run record and grids](./mini_projects/nano_diffusion/experiments/ddpm_baseline_mnist/README.md)
+- **Next:** Add EMA and use a longer run to compare the loss trend and fixed-seed digit shapes. [Week 18 handoff](./mini_projects/nano_diffusion/experiments/ddpm_baseline_mnist/README.md#what-to-compare-in-a-longer-run)
 
 See **[PROGRESS.md](./PROGRESS.md)** for detailed task tracking.
 

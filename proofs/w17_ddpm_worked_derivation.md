@@ -228,3 +228,19 @@ Juan moved `TinyDenoiser` into `model.py`. His check paired two MNIST-shaped inp
 Juan extracted `train_step` and cloned the parameters before the Adam update so the check could detect a weight change. On the seeded synthetic batch from `prepare_batch`, the tutor verified a finite noise MSE of 0.9693 and identical updated parameters in the extracted and notebook implementations. Review found that the smoke block still needed an explicit assertion for the finite loss. A rerun of the separate model smoke check found 16 images paired with the original two timestep labels.
 
 Juan added `assert math.isfinite(loss)` and restored the two-image batch for labels `[1, 3]`. Both scripts passed on rerun, including the finite-loss and weight-change assertions.
+
+## Day 5 — Checking the MNIST loader
+
+Juan moved MNIST loading into `train.py` and obtained a first-batch noise MSE of 0.9930. The tutor reproduced that result and compared one pass through the extracted loader with the Week 16 notebook. All 79 batches matched exactly in contents and order, including the final eight images. This check covered the loader and a single optimizer update.
+
+## Day 6 — Reading the sample grids
+
+Looking at the [two fixed-seed grids](../mini_projects/nano_diffusion/experiments/ddpm_baseline_mnist/README.md#results), Juan observed that neither looked very good, with more white at epoch 2 and more prominent black regions at epoch 1. The tutor checked the 16 sample tensors from each epoch against the plotting limits. The share of pixels at or above the white limit rose from 46% to 59%, and the share at or below the black limit fell from 39% to 11%.
+
+Asked what the falling loss measured, Juan identified the target as the noise used to corrupt the image and described comparing the predicted and target noise pixel by pixel. The tutor clarified the averaging step. Each batch contributes its mean squared error, so an individual pixel can have a larger error even when the epoch mean falls.
+
+Juan explained that setting the seeds and generators was intended to make the baseline repeatable. He identified the evidence that it worked on this setup: two fresh processes reproduced the same training losses and generated samples.
+
+Given the two noise terms, Juan recalled their roles in a reverse step. The sampler uses the current image and predicted noise to compute the reverse mean, then adds a scaled fresh draw to sample the previous state. He connected both terms to his derivations. The precise multiplier on the fresh draw is the standard deviation $\sqrt{\tilde\beta_t}$. [Implemented reverse step](../mini_projects/nano_diffusion/sample.py#L23-L40)
+
+For Week 18, Juan hopes to see more recognizable MNIST shapes and a downward trend in mean noise MSE over a longer run. He recalled that digit patterns began to appear in the Week 16 notebook even while many samples remained hard to recognize. [Week 16 observations](../notes/w16_hf_ddpm_training.md#what-i-see-in-the-experiment)

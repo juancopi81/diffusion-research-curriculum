@@ -3,7 +3,7 @@
 ## Current Status
 
 - **Phase:** 3 — Diffusion in Depth.
-- **Week:** 17 🔄 — Days 1–3 complete. Day 4 is in progress.
+- **Week:** 17 ✅ — Completed on 2026-11-27 with Juan’s approval of the baseline results and Week 18 handoff.
 - **Started:** 2025-01-14
 - **Phase 1 Completed:** 2026-07-24
 - **Phase 2 Completed:** 2026-11-22
@@ -14,7 +14,7 @@
 - **Week 13 Completed:** 2026-10-14
 - **Week 14 Completed:** 2026-10-27
 - **Week 15 Completed:** 2026-11-05
-- **Next study step:** The model and one-update training smoke checks both pass. Feed one normalized batch from the Week 16 MNIST loader through `prepare_batch` and `train_step`. [Day 4 worked record](proofs/w17_ddpm_worked_derivation.md#day-4--tracing-the-reverse-steps-inputs)
+- **Next study step:** Week 18 adds exponential moving average (EMA) and a longer MNIST run. Follow the mean noise MSE and compare the same fixed-seed tiles for recognizable digit strokes. [Week 18 handoff](mini_projects/nano_diffusion/experiments/ddpm_baseline_mnist/README.md#what-to-compare-in-a-longer-run)
 - **Week 14 closeout:** [Day 7 completion decision](notes/w14_study_plan.md#day-7-completion-decision); all four problems, study report, and final review complete; reference use and guided corrections recorded; blog editing continues separately
 
 ---
@@ -239,7 +239,7 @@ Day 6's synthesis and learner review closed Week 16 on 2026-11-22.
 
 ## Phase 3 — Diffusion in Depth
 
-### Week 17 — DDPM Paper and First Nano-Diffusion Baseline 🔄
+### Week 17 — DDPM Paper and First Nano-Diffusion Baseline ✅
 
 The [day-by-day plan](notes/w17_study_plan.md) covers November 23–29, 2026.
 The first two sessions were recorded here on 2026-11-25 from Juan’s
@@ -251,6 +251,9 @@ study conversation and handwritten derivation.
 | Day 2 — Clean-conditioned posterior | ✅ | [Derivation and corrections](proofs/w17_ddpm_worked_derivation.md#day-2--deriving-the-clean-conditioned-posterior). Juan matched Gaussian coefficients with prompts, checked Equation 7, and discussed the clean boundary and pixelwise covariance. |
 | Day 3 — Reverse mean and noise objective | ✅ | Juan connected posterior averaging to predicted noise, simplified the reverse mean with prompts, and explained how timestep weighting changes the contribution of equal errors. [Derivation and loss comparison](proofs/w17_ddpm_worked_derivation.md#day-3--averaging-over-possible-clean-images) |
 | Day 3 — Concept-note read-through | ✅ | Juan read and approved the revised explanation on 2026-11-26. [Tower property and linearity](notes/w17_ddpm_posterior_and_objective.md#day-3--averaging-over-possible-clean-images) |
+| Day 4 — Extract the DDPM components | ✅ | Forward noising, reverse sampling, the denoiser, and one Adam update checked against Week 16. [Worked record](proofs/w17_ddpm_worked_derivation.md#day-4--tracing-the-reverse-steps-inputs) |
+| Day 5 — Run and repeat the baseline | ✅ | Juan’s two-epoch run and a fresh-process repeat produced identical batch losses and sample tensors. Matching the notebook’s CPU thread setting also reproduced both saved figures exactly. [Run record](mini_projects/nano_diffusion/experiments/ddpm_baseline_mnist/README.md) |
+| Day 6 — Interpret the run and close the week | ✅ | Juan explained the two noise terms, interpreted the lower MSE and the still-ambiguous digits, and approved the baseline results and Week 18 handoff on 2026-11-27. [Day 6 discussion](proofs/w17_ddpm_worked_derivation.md#day-6--reading-the-sample-grids) |
 
 ---
 

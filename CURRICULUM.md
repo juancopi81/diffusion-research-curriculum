@@ -159,12 +159,15 @@ Completed:
   [Day 6 review](./notes/w16_hf_ddpm_training.md#day-6--reviewing-the-ddpm-workflow)
   on 2026-11-22, completing Week 16 and Phase 2.
 
-In progress:
+- **Week 17:** derived the DDPM posterior, connected the reverse mean to noise
+  prediction, and verified a reproducible two-epoch MNIST baseline. Juan
+  approved the run record and Week 18 handoff on 2026-11-27.
+  [Concept note](./notes/w17_ddpm_posterior_and_objective.md) · [Baseline results](./mini_projects/nano_diffusion/experiments/ddpm_baseline_mnist/README.md)
 
-- **Weeks 17–18:** establish the [clean DDPM baseline](#weeks-1718--ddpm-from-scratch-clean-baseline)
-  in Nano-Diffusion. Week 17 [Days 1–3](./notes/w17_ddpm_posterior_and_objective.md)
-  covered the paper-to-code walkthrough, posterior, reverse mean, and noise objective.
-  Resume with the [Day 4 notebook extraction](./notes/w17_study_plan.md#day-4--move-the-working-pieces-into-nano-diffusion).
+Up next:
+
+- **Week 18:** add EMA and extend the MNIST run. Compare fixed-seed samples
+  across epochs alongside the mean noise MSE. [Week 18 handoff](./mini_projects/nano_diffusion/experiments/ddpm_baseline_mnist/README.md#what-to-compare-in-a-longer-run)
 
 See [PROGRESS.md](./PROGRESS.md) for completion dates and artifact links.
 

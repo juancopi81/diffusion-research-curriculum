@@ -1,10 +1,10 @@
 # Week 17 — From the DDPM Paper to Nano-Diffusion
 
-**Week of November 23–29, 2026.** Days 1–3 are complete. The
+**Week of November 23–29, 2026.** All six study sessions were completed by November 27. The
 [concept note](w17_ddpm_posterior_and_objective.md) connects the notebook,
 posterior, reverse mean, and loss. The [worked derivation](../proofs/w17_ddpm_worked_derivation.md)
 preserves the handwritten steps and tutoring discussion.
-Day 4 opens with a [short read-through of the reverse step](#day-4--move-the-working-pieces-into-nano-diffusion).
+The [Day 5 run record](../mini_projects/nano_diffusion/experiments/ddpm_baseline_mnist/README.md) pairs the losses and timings with the generated grids for Day 6.
 
 **Concept-note read-through.** Juan read Days 1–2 and was happy with them.
 On 2026-11-26 he read and approved the revised
@@ -20,7 +20,7 @@ posterior supplies its mean and variance, and how averaging over possible
 clean images relates to the reverse mean. This week connects those
 questions to the code you wrote.
 
-**Pacing:** Six sessions totaling **5 hours 50 minutes of active study**,
+**Planned pacing:** Six sessions budgeted for **5 hours 50 minutes of active study**,
 plus an optional Sunday buffer. Days 1 and 6 are short. Days 4 and 5 have
 more space for implementation and a run from a fresh process. Track run
 time separately. The first block of each day is a place to pause if you
@@ -125,11 +125,10 @@ a fresh Python process? A proposed signature and one sentence about the
 inputs are enough for the first sitting. Use the same approach for
 `prepare_batch` and `sample_loop` when you return. [Week 16 solved notebook](../notebooks/w16_train_tiny_ddpm_mnist_solved.ipynb)
 
-**40 min.** Move the dataset loading and normalization, schedule and
-coefficient lookup, TinyDenoiser, training step, and reverse sampling
-into a small importable project. Connect them through one training
-entry point. The first extraction uses the same architecture, objective,
-and schedule as Week 16 so we can compare behavior.
+**40 min.** Move the schedule and coefficient lookup, TinyDenoiser,
+training step, and reverse sampling into the mini-project. The first
+extraction uses the same architecture, objective, and schedule as Week 16
+so we can compare behavior.
 
 **15 min.** Check direct noising on fixed inputs and repeat the
 [Week 16 scalar reverse step](w16_hf_ddpm_training.md#tracing-one-reverse-step).
@@ -139,6 +138,13 @@ Run a single optimizer update and a small generation check. Record
 any behavior difference before moving on to a longer run.
 
 ### Day 5 — Run and Repeat a Short Baseline
+
+Start by moving the Week 16 MNIST loading and normalization into the training
+entry point. Pass one real minibatch through `prepare_batch` and `train_step`.
+With the notebook's CPU settings and fresh seed-16 generators, the first batch
+has shape `(64, 1, 28, 28)` and its pre-update noise MSE rounds to 0.9930.
+This single-batch check is the first place to pause. Start the baseline
+with a fresh model, optimizer, and generators.
 
 **15 min.** Prepare one CPU config and record the exact command
 that runs it. Start with the Week 16 settings: 5,000 MNIST images,
@@ -184,12 +190,14 @@ or implementation issue with the point at which you stopped.
 
 ## Completion Checks
 
+Juan approved the baseline results and the [Week 18 handoff](../mini_projects/nano_diffusion/experiments/ddpm_baseline_mnist/README.md#what-to-compare-in-a-longer-run) on 2026-11-27, closing Week 17.
+
 - [x] Map DDPM Algorithms 1 and 2 to the working implementation.
 - [x] Derive the clean-conditioned mean and variance and identify the sampler’s noise scale and final no-noise step.
 - [x] Connect the clean-conditioned mean to the sampler’s predicted-noise mean when the clean image is unknown.
 - [x] Explain the weighted versus simplified objective for one intermediate step.
-- [ ] Run the extracted baseline from a documented command and check a repeat.
-- [ ] Save and review the config, losses, samples, and timings.
+- [x] Run the extracted baseline from a documented command and check a repeat.
+- [x] Save and review the config, losses, samples, and timings.
 
 **Week 18:** Add EMA and finish the logging, snapshots, and longer
 reference run once the plain baseline is reproducible. The wider-context
